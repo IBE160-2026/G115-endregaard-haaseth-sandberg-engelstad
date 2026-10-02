@@ -1,99 +1,99 @@
 # G115 — Studie v siden av jobb
 
-Gruppeprosjekt i **IBE160 Programmering med KI** ved Høgskolen i Molde, høsten 2026 (15 studiepoeng).
+Group project in **IBE160 Programming with AI** at Molde University College, autumn 2026 (15 ECTS credits).
 
-Repoet inneholder gruppens applikasjon og dokumentasjon av utvikling, testing og kvalitetssikring med KI.
+This repository contains the group's application and the documentation of how it was developed, tested and quality-assured with AI.
 
-## Prosjektet: KI-styrt simulering av prosjektledelse
+## The project: AI-driven project management simulation
 
-Vi bygger en webapplikasjon som simulerer planlegging og gjennomføring av et byggeprosjekt. Studenten er prosjektleder og tar de faktiske beslutningene, mens en KI-rådgiver analyserer hver situasjon og anbefaler et tiltak.
+We are building a web application that simulates the planning and execution of a construction project. The student is the project manager and makes the real decisions, while an AI advisor analyses each situation and recommends an action.
 
-Etter hver beslutning kjører simuleringen videre i to spor fra samme tilstand: det som skjedde med studentens valg, og det som ville skjedd om studenten hadde fulgt KI-ens anbefaling. De to utfallene vises side om side. Den sammenligningen er selve læringsmekanikken.
+After every decision the simulation runs forward along two paths from the same state: what happened with the student's choice, and what would have happened had the student followed the AI's recommendation. The two outcomes are shown side by side. That comparison is the teaching mechanic.
 
-### Hvorfor
+### Why
 
-Prosjektledelse undervises ofte som statiske verktøy: Gantt-diagram, WBS og risikoregister som skal fylles ut riktig. Studentene lærer hvordan en plan ser ut, men sjelden hvordan den faktisk ryker — hvordan en ressurskonflikt forplanter seg til forsinkelser, eller hvordan en liten risiko vokser til en tapt milepæl. Den typen skjønn bygges ved å ta beslutninger, se konsekvensene og sammenligne med et bedre begrunnet alternativ.
+Project management is often taught as static tools: Gantt charts, WBS and risk registers to be filled in correctly. Students learn what a plan looks like, but rarely how it actually breaks — how a resource conflict cascades into schedule slip, or how a minor risk grows into a missed milestone. That kind of judgement is built by making decisions, seeing the consequences and comparing them with a better-reasoned alternative.
 
-### Slik fungerer det
+### How it works
 
 ```mermaid
 flowchart LR
-    A[Situasjon] --> B[KI-rådgiver anbefaler]
-    B --> C[Studenten beslutter]
-    C --> D[Studentens spor]
-    C --> E[KI-ens spor]
-    D --> F[Sammenligning side om side]
+    A[Situation] --> B[AI advisor recommends]
+    B --> C[Student decides]
+    C --> D[Student's path]
+    C --> E[AI's path]
+    D --> F[Side-by-side comparison]
     E --> F
     F --> A
 ```
 
-1. Simuleringen presenterer en situasjon: en fremdriftsstatus, en ressurskonflikt, en endringsmelding eller en risikohendelse.
-2. KI-rådgiveren analyserer situasjonen og anbefaler et tiltak, med begrunnelse og forventede konsekvenser.
-3. Studenten tar sin egen beslutning, som kan følge eller avvike fra anbefalingen.
-4. Simuleringen kjøres frem to ganger fra samme tilstand, og utfallene vises side om side.
+1. The simulation presents a situation: a schedule state, a resource conflict, a change request or a risk event.
+2. The AI advisor analyses the situation and recommends an action, with its reasoning and the consequences it expects.
+3. The student makes their own decision, which may follow or diverge from the recommendation.
+4. The simulation runs forward twice from the same state, and the outcomes are shown side by side.
 
-Sløyfen gjentas ved hvert beslutningspunkt frem til prosjektet er ferdig.
+The loop repeats at every decision point until the project is complete.
 
-### Fire typer beslutninger
+### Four types of decision
 
-- Planleggingsstrategi
-- Risikohåndtering
-- Ressursallokering
-- Godkjenning av endringer
+- Planning strategy
+- Risk response
+- Resource allocation
+- Change approval
 
-### Scenarioer
+### Scenarios
 
-Scenarioene lages med en hybrid tilnærming. Et mal- og bibliotekslag bygger et sammenhengende skjelett (WBS, ressurser, kostnads- og tidsbasis, milepæler) ut fra prosjektstørrelse, budsjett og risikoprofil. Et språkmodell-lag legger på fortelling og nye risikohendelser, slik at hver gjennomspilling blir forskjellig uten at strukturen bryter sammen.
+Scenarios are generated with a hybrid approach. A template and library layer builds a coherent skeleton (WBS, resources, cost and time baseline, milestones) from project size, budget and risk profile. A language model layer adds narrative and novel risk events, so that every playthrough is different without the structure falling apart.
 
-### Det applikasjonen viser
+### What the application shows
 
-- Gantt-fremdriftsplan
-- Kostnadsprognose
-- Risikoeksponering
-- Scenarioresultater
-- Anbefalte tiltak
+- Gantt schedule
+- Cost forecast
+- Risk exposure
+- Scenario results
+- Recommended actions
 
-### Hva som er nytt
+### What is new
 
-Eksisterende KI-verktøy for prosjektledelse anbefaler tiltak, men viser ikke en beregnet sammenligning av «det du valgte» mot «det KI-en ville gjort». Akademiske byggesimulatorer som Virtual Construction Simulator (VCS3) sammenligner faktisk utfall med en fast plan. Vårt bidrag er å bytte ut den faste planen med en KI-generert og begrunnet anbefaling som sammenligningsgrunnlag — som en debrief i en flysimulator mot en ekspertfasit.
+Existing AI tools for project management recommend actions, but do not show a computed comparison of "what you chose" against "what the AI would have done". Academic construction simulators such as the Virtual Construction Simulator (VCS3) compare the actual outcome with a fixed plan. Our contribution is to replace the fixed plan with an AI-generated, reasoned recommendation as the point of comparison — like a flight simulator debrief against an expert benchmark.
 
-## Omfang for første versjon
+## Scope for the first version
 
-**Med:**
+**In:**
 
-- Enspiller-webapp uten brukerkontoer
-- Ett domene: byggeprosjekter
-- Alle fire beslutningstyper og alle fem visningene
-- Hele sløyfen med to simulerte utfall og sammenligning
-- En gjennomspilling fra start til ferdig prosjekt
+- Single-player web app without user accounts
+- One domain: construction projects
+- All four decision types and all five outputs
+- The full loop with two simulated outcomes and a comparison
+- One playthrough from start to project completion
 
-**Ikke med:**
+**Out:**
 
-- Flerspiller og forhandling mellom roller
-- Støtte for standard planleggingsformater (MSPDI, XER, PMXML)
-- Analyse på tvers av flere gjennomspillinger
+- Multiplayer and negotiation between roles
+- Support for standard scheduling formats (MSPDI, XER, PMXML)
+- Analysis across multiple playthroughs
 
-**Åpne spørsmål:**
+**Open questions:**
 
-- Skal en gjennomspilling kunne lagres og gjenopptas senere?
-- Er bygg bekreftet som eneste domene, eller forventes en mer generell simulator?
+- Should a playthrough be possible to save and resume later?
+- Is construction confirmed as the only domain, or is a more general simulator expected?
 
-## Mål for ferdig løsning
+## Success criteria
 
-- En student kan fullføre en hel gjennomspilling og møte alle fire beslutningstyper minst én gang.
-- Ved hvert beslutningspunkt gir KI-rådgiveren en forståelig anbefaling med synlig begrunnelse, og begge utfall beregnes og vises automatisk.
-- To gjennomspillinger med samme parametere gir merkbart ulike, men sammenhengende scenarioer.
-- Alle visningene oppdateres riktig etter hver beslutning.
-- Applikasjonen kan åpnes og spilles gjennom av faglærer uten hjelp.
+- A student can complete a full playthrough and meet all four decision types at least once.
+- At every decision point the AI advisor gives a legible recommendation with visible reasoning, and both outcomes are computed and shown automatically.
+- Two playthroughs with the same parameters produce recognisably different but coherent scenarios.
+- All outputs update correctly after every decision.
+- The instructor can open the application and play it through unassisted.
 
-Kriteriene er gruppens egen tolkning av «ferdig»; det finnes ingen formell vurderingsrubrikk fra faglærer.
+These criteria are the group's own reading of "done"; there is no formal grading rubric from the instructor.
 
-## Dokumentasjon og arbeidsmåte
+## Documentation and way of working
 
-- [Prosjektbrief](brief-G115-AI-prosjektledelse-simulering.md) — fullstendig beskrivelse av problem, løsning og omfang (status: utkast)
-- Utviklingen følger [BMAD-rammeverket](https://bmadcode.com/), som ligger i `_bmad/` med tilhørende skills for Claude Code i `.claude/skills/`
+- [Product brief](brief-G115-AI-prosjektledelse-simulering.md) — full description of the problem, solution and scope (status: draft)
+- Development follows the [BMAD framework](https://bmadcode.com/), which lives in `_bmad/` with its skills for Claude Code in `.claude/skills/`
 
-## Medlemmer
+## Members
 
 - Hedda R Endregaard
 - Oskar Lia Haaseth
