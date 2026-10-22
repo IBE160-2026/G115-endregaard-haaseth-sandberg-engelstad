@@ -1,10 +1,11 @@
+import { spent } from '../../engine/game';
 import { budgetOf } from '../budgetLines';
 import { formatDelta, formatMnok } from '../format';
 import { icon, type TabContext } from './context';
 
 const delta = (x: number) => (Math.abs(x) < 0.005 ? '' : formatDelta(x));
 
-export function renderBudget({ scenario, result, baseline }: TabContext): string {
+export function renderBudget({ scenario, result, baseline, game }: TabContext): string {
   const now = budgetOf(result);
   const plan = budgetOf(baseline);
   const rows = scenario.tasks.map((task, i) => {
@@ -20,9 +21,10 @@ export function renderBudget({ scenario, result, baseline }: TabContext): string
   const perWeek = formatMnok(scenario.overhead.perWeek);
 
   return `<div class="kpis">
-      <div class="kpi"><span>Totalt</span><b>${formatMnok(now.total)}</b><small>MNOK eks. mva</small></div>
+      <div class="kpi"><span>${game ? 'Prognose totalt' : 'Totalt'}</span><b>${formatMnok(now.total)}</b><small>MNOK eks. mva · mål ${formatMnok(scenario.target.total)}</small></div>
+      ${game ? `<div class="kpi"><span>Påløpt hittil (uke ${game.week})</span><b>${formatMnok(spent(game))}</b><small>MNOK</small></div>` : ''}
       <div class="kpi"><span>Endring mot plan</span><b>${formatDelta(now.total - plan.total)}</b><small>MNOK</small></div>
-      <div class="kpi"><span>Prosjekttid</span><b>${result.weeks}</b><small>uker (plan ${baseline.weeks})</small></div>
+      <div class="kpi"><span>Prosjekttid</span><b>${result.weeks}</b><small>uker (mål ${scenario.target.weeks})</small></div>
     </div>
     <div class="table-wrap"><table>
       <thead><tr><th>Post</th><th class="num">Arbeid</th><th class="num">Materiell og utstyr</th><th class="num">Sum</th><th class="num">Δ plan</th></tr></thead>
@@ -30,6 +32,7 @@ export function renderBudget({ scenario, result, baseline }: TabContext): string
       <tfoot>
         <tr><td>Sum disipliner</td><td class="num">${formatMnok(now.labour)}</td><td class="num">${formatMnok(now.materials)}</td><td class="num">${formatMnok(now.tasks)}</td><td class="num delta">${delta(now.tasks - plan.tasks)}</td></tr>
         <tr><td>Rigg og drift (${result.overheadWeeks} uker × ${perWeek})</td><td></td><td></td><td class="num">${formatMnok(now.overhead)}</td><td class="num delta">${delta(now.overhead - plan.overhead)}</td></tr>
+        <tr><td>Hendelser og tiltak</td><td></td><td></td><td class="num">${formatMnok(now.events)}</td><td class="num delta">${delta(now.events - plan.events)}</td></tr>
         <tr class="total"><td>Totalt</td><td></td><td></td><td class="num">${formatMnok(now.total)}</td><td class="num delta">${delta(now.total - plan.total)}</td></tr>
       </tfoot>
     </table></div>

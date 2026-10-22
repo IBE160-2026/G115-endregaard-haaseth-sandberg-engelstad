@@ -11,6 +11,7 @@ export interface Budget {
   materials: number;
   tasks: number;
   overhead: number;
+  events: number;
   total: number;
 }
 
@@ -24,12 +25,14 @@ export function budgetOf(r: SimulationResult): Budget {
   });
   const tasks = sum(lines.map(l => l.cost));
   const overhead = roundMnok(r.overhead);
+  const events = roundMnok(r.events);
   return {
     lines,
     labour: sum(lines.map(l => l.labour)),
     materials: sum(lines.map(l => l.materials)),
     tasks,
     overhead,
-    total: roundMnok(tasks + overhead),
+    events,
+    total: roundMnok(tasks + overhead + events),
   };
 }

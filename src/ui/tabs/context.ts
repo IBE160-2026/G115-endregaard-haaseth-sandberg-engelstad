@@ -1,3 +1,4 @@
+import type { GameState } from '../../engine/game';
 import type { Scenario } from '../../engine/scenario';
 import type { Modes, SimulationResult } from '../../engine/simulate';
 
@@ -5,8 +6,12 @@ import type { Modes, SimulationResult } from '../../engine/simulate';
 export interface TabContext {
   scenario: Scenario;
   modes: Modes;
+  /** The forecast to completion (or the static simulation when there is no game). */
   result: SimulationResult;
   baseline: SimulationResult;
+  game?: GameState;
+  /** Selected person in the org chart. */
+  selected?: string;
 }
 
 /** Icon URL that also works when the app is served from a sub-path. */

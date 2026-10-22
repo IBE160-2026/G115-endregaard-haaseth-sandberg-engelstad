@@ -22,6 +22,10 @@ export interface Person {
   role: string;
   description: string;
   icon: string;
+  /** The player, or a rule-based AI role. */
+  player?: boolean;
+  /** Who this person reports to (the owner reports to no one). */
+  reportsTo?: string;
   /** Set for foremen: the discipline they lead. */
   taskId?: string;
 }
@@ -33,6 +37,8 @@ export interface Building {
   kind: string;
   status: string;
   icon: string;
+  /** Real facts about the building as built. */
+  facts?: string[];
   /** Set for the buildings the scenario simulates. */
   simulation?: { areaM2: number; taskIds: string[] };
 }
@@ -44,6 +50,12 @@ export interface Scenario {
   factors: Record<Mode, number>;
   /** Share of the own crew added as hired workers (rounded up). */
   hireShare: number;
+  /** Allowed own crew as a share of the base crew. */
+  crewRange: { min: number; max: number };
+  /** Productivity of each worker above the base crew (crowding). */
+  crowdingProductivity: number;
+  /** The target the player is measured against. */
+  target: { weeks: number; total: number };
   overhead: { fromWeek: number; perWeek: number };
   tasks: Task[];
   people: Person[];
@@ -71,15 +83,19 @@ const tasks: Task[] = [
 
 const foremanIcon = (t: Task) => `people/foreman-${t.icon.slice('disciplines/'.length)}`;
 
+// Design and handover report to the project manager; the site work to the site manager.
+const PM_TASKS = ['A', 'N'];
+
 const people: Person[] = [
-  { id: 'owner', role: 'Prosjekteier', description: 'Statsbygg (byggherre). Eier budsjettet og godkjenner endringer.', icon: 'people/owner.svg' },
-  { id: 'pm', role: 'Prosjektleder', description: 'Studenten. Tar beslutningene om plan, ressurser og risiko.', icon: 'people/project-manager.svg' },
-  { id: 'site', role: 'Site manager', description: 'Leder byggeplassen og koordinerer formennene.', icon: 'people/site-manager.svg' },
+  { id: 'owner', role: 'Prosjekteier', description: 'Deg. Statsbygg som byggherre: eier budsjettet og tar de endelige beslutningene.', icon: 'people/owner.svg', player: true },
+  { id: 'pm', role: 'Prosjektleder', description: 'AI-rolle. Følger plan, budsjett og prognose, og anbefaler tiltak.', icon: 'people/project-manager.svg', reportsTo: 'owner' },
+  { id: 'site', role: 'Site manager', description: 'AI-rolle. Leder byggeplassen og koordinerer formennene.', icon: 'people/site-manager.svg', reportsTo: 'owner' },
   ...tasks.map(t => ({
     id: `foreman-${t.id}`,
     role: 'Formann',
     description: t.name,
     icon: foremanIcon(t),
+    reportsTo: PM_TASKS.includes(t.id) ? 'pm' : 'site',
     taskId: t.id,
   })),
 ];
@@ -88,12 +104,36 @@ const OFFICE_TASKS = ['A', 'F', 'G', 'O', 'H', 'I', 'K', 'J', 'N'];
 const BASEMENT_TASKS = ['C', 'D', 'E', 'L'];
 
 const buildings: Building[] = [
-  { id: 'bt1-a', name: 'A-blokka', phase: 'Byggetrinn 1', kind: 'Nybygg', status: 'Ferdig 2026', icon: 'buildings/bt1-a.svg', simulation: { areaM2: 11000, taskIds: OFFICE_TASKS } },
+  // Facts about A-blokka, the basement complex and Kjeller 2 were provided by the group
+  // (2026-10-22) from public sources (regjeringen.no / Statsbygg). Check them before submission.
+  {
+    id: 'bt1-a', name: 'A-blokka', phase: 'Byggetrinn 1', kind: 'Nybygg', status: 'Ferdig 2026', icon: 'buildings/bt1-a.svg',
+    facts: [
+      '11 etasjer, 50 meter høy, rundt 17 300 m² over bakken.',
+      'Ligger på Johan Nygaardsvolds plass, nær Høyblokka og D-blokka.',
+      'Digitaliserings- og forvaltningsdepartementet, Klima- og miljødepartementet og Nærings- og fiskeridepartementet.',
+      'Hovedinngang, kontorer, publikumskafé, presse- og konferansesenter, auditorium og representative arealer.',
+      'Kunstverket «AAkhA» (50 meter høyt) av Outi Pieski henger i inngangspartiet.',
+    ],
+    simulation: { areaM2: 11000, taskIds: OFFICE_TASKS },
+  },
   { id: 'bt1-d', name: 'D-blokka', phase: 'Byggetrinn 1', kind: 'Nybygg', status: 'Ferdig 2026', icon: 'buildings/bt1-d.svg' },
   { id: 'bt1-h', name: 'Høyblokka', phase: 'Byggetrinn 1', kind: 'Rehabilitering', status: 'Ferdig 2026', icon: 'buildings/bt1-h.svg' },
-  { id: 'bt1-basement', name: 'Kjelleranlegget', phase: 'Byggetrinn 1', kind: 'Kjeller', status: 'Ferdig 2026', icon: 'buildings/bt1-basement.svg', simulation: { areaM2: 4000, taskIds: BASEMENT_TASKS } },
+  {
+    id: 'bt1-basement', name: 'Kjelleranlegget', phase: 'Byggetrinn 1', kind: 'Felles logistikk- og driftsknutepunkt', status: 'Ferdig april 2026 (Veidekke)', icon: 'buildings/bt1-basement.svg',
+    facts: [
+      'Ofte kalt garasjeanlegget, men er et høysikret logistikk- og driftsknutepunkt under bakken.',
+      'Vare- og avfallshåndtering, tekniske driftsfunksjoner og store arealer for sykkelparkering med garderober.',
+      'En rotunde gir sikker kjøreadkomst.',
+      'Første del ble bygget av Veidekke og sto klart til åpningen av byggetrinn 1 i april 2026.',
+    ],
+    simulation: { areaM2: 4000, taskIds: BASEMENT_TASKS },
+  },
   { id: 'bt2-c', name: 'C-blokka', phase: 'Byggetrinn 2 del I', kind: 'Nybygg', status: 'Under bygging', icon: 'buildings/bt2-c.svg' },
-  { id: 'bt2-basement', name: 'Kjeller 2', phase: 'Byggetrinn 2 del I', kind: 'Kjeller', status: 'Under bygging', icon: 'buildings/bt2-basement.svg' },
+  {
+    id: 'bt2-basement', name: 'Kjeller 2', phase: 'Byggetrinn 2 del I', kind: 'Kjeller', status: 'Byggestart januar 2027, ferdig 2030', icon: 'buildings/bt2-basement.svg',
+    facts: ['Statsbygg inngikk i april 2026 avtale med Hent.', 'Rundt 10 000 m² i sonen mot Møllergata og Ring 1-tunnelen.'],
+  },
   { id: 'bt2-g', name: 'G-blokka', phase: 'Byggetrinn 2 del II', kind: 'Rehabilitering', status: 'Foreslått oppstart 2027', icon: 'buildings/bt2-g.svg' },
   { id: 'bt3-e', name: 'E-blokka', phase: 'Byggetrinn 3', kind: 'Nybygg', status: 'Prosjektering', icon: 'buildings/bt3-e.svg' },
   { id: 'park', name: 'Parken', phase: 'Byggetrinn 2 og 3', kind: 'Uteområde', status: 'Vestre del i BT2, resten i BT3', icon: 'buildings/park.svg' },
@@ -105,6 +145,9 @@ export const scenario: Scenario = {
   overtimeHoursPerWeek: 45,
   factors: { normal: 1.0, overtime: 1.3, hire: 1.5 },
   hireShare: 0.5,
+  crewRange: { min: 0.5, max: 2 },
+  crowdingProductivity: 0.5,
+  target: { weeks: 114, total: 283.1 },
   overhead: { fromWeek: 16, perWeek: 0.45 },
   tasks,
   people,

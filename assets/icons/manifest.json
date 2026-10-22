@@ -25,6 +25,31 @@
     "label": "Fremdriftsplan"
   },
   {
+    "category": "apps",
+    "file": "apps/view3d.svg",
+    "label": "3D-byggeplass"
+  },
+  {
+    "category": "controls",
+    "file": "controls/play.svg",
+    "label": "Spill av"
+  },
+  {
+    "category": "controls",
+    "file": "controls/pause.svg",
+    "label": "Pause"
+  },
+  {
+    "category": "controls",
+    "file": "controls/step.svg",
+    "label": "Neste uke"
+  },
+  {
+    "category": "controls",
+    "file": "controls/new-game.svg",
+    "label": "Nytt spill"
+  },
+  {
     "category": "people",
     "file": "people/owner.svg",
     "label": "Prosjekteier"
@@ -52,7 +77,7 @@
   {
     "category": "buildings",
     "file": "buildings/bt1-a.svg",
-    "label": "BT1 – A-blokka (nybygg)"
+    "label": "BT1 – A-blokka (11 etasjer)"
   },
   {
     "category": "buildings",
@@ -67,7 +92,7 @@
   {
     "category": "buildings",
     "file": "buildings/bt1-basement.svg",
-    "label": "BT1 – Kjelleranlegget"
+    "label": "BT1 – Kjelleranlegget (logistikk og rotunde)"
   },
   {
     "category": "buildings",
@@ -193,6 +218,21 @@
     "category": "risks",
     "file": "risks/R5-automation-integration.svg",
     "label": "R5 Integrasjonsfeil automasjon"
+  },
+  {
+    "category": "risks",
+    "file": "risks/R6-water.svg",
+    "label": "Vann i kjeller"
+  },
+  {
+    "category": "risks",
+    "file": "risks/R7-frost.svg",
+    "label": "Frost i betongen"
+  },
+  {
+    "category": "risks",
+    "file": "risks/R8-wind.svg",
+    "label": "Kranstans i sterk vind"
   },
   {
     "category": "decisions",

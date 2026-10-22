@@ -9,7 +9,7 @@ const ROW_H = 30;
 const TOP = 34;
 const MODE_LABEL = { normal: '', overtime: 'Overtid', hire: 'Ekstra innleie' } as const;
 
-export function ganttSvg(s: Scenario, r: SimulationResult, baseline: SimulationResult): string {
+export function ganttSvg(s: Scenario, r: SimulationResult, baseline: SimulationResult, week?: number): string {
   const maxWeeks = Math.max(r.weeks, baseline.weeks);
   const chartW = Math.ceil(maxWeeks / 10) * 10 * PX_PER_WEEK;
   const width = LABEL_W + chartW + 80;
@@ -39,6 +39,11 @@ export function ganttSvg(s: Scenario, r: SimulationResult, baseline: SimulationR
       parts.push(`<rect x="${x(b.start)}" y="${y + 6}" width="${b.weeks * PX_PER_WEEK}" height="${ROW_H - 12}" rx="4" class="g-ghost"/>`);
     }
     parts.push(`<rect x="${x(t.start)}" y="${y + 6}" width="${t.weeks * PX_PER_WEEK}" height="${ROW_H - 12}" rx="4" class="${t.critical ? 'g-bar g-critical' : 'g-bar'}"><title>${task.id} ${task.name}: uke ${t.start}–${t.finish} (${t.weeks} uker)${t.critical ? ', kritisk' : `, slakk ${t.slack} uker`}</title></rect>`);
+    // Done part of the bar, up to the current week.
+    if (week !== undefined && week > t.start) {
+      const doneTo = Math.min(week, t.finish);
+      parts.push(`<rect x="${x(t.start)}" y="${y + 6}" width="${(doneTo - t.start) * PX_PER_WEEK}" height="${ROW_H - 12}" rx="4" class="g-done"/>`);
+    }
     if (t.weeks * PX_PER_WEEK >= 34) {
       parts.push(`<text x="${x(t.start) + 6}" y="${y + 19}" class="g-bar-text">${t.weeks} u</text>`);
     }
@@ -46,6 +51,11 @@ export function ganttSvg(s: Scenario, r: SimulationResult, baseline: SimulationR
     // Placed after the outline as well, so the two never overlap.
     if (mode) parts.push(`<text x="${x(Math.max(t.finish, b.finish)) + 6}" y="${y + 19}" class="g-mode">${mode}</text>`);
   });
+
+  if (week !== undefined) {
+    parts.push(`<line x1="${x(week)}" y1="${TOP - 6}" x2="${x(week)}" y2="${height - 8}" class="g-today"/>`);
+    parts.push(`<text x="${x(week) + 4}" y="${height - 12}" class="g-axis">I dag</text>`);
+  }
 
   // Handover milestone.
   const my = TOP + s.tasks.length * ROW_H;

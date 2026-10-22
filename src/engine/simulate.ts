@@ -25,6 +25,8 @@ export interface SimulationResult {
   weeks: number;
   overheadWeeks: number;
   overhead: number;
+  /** Extra cost from events, MNOK (0 in the static simulation). */
+  events: number;
   labour: number;
   materials: number;
   total: number;
@@ -110,6 +112,7 @@ export function simulate(s: Scenario, modes: Modes = {}): SimulationResult {
     weeks,
     overheadWeeks,
     overhead,
+    events: 0,
     labour,
     materials,
     total: labour + materials + overhead,

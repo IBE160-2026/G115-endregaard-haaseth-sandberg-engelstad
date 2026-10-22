@@ -27,6 +27,12 @@ const G = {
   budget: `<rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.8"/><path d="M5.5 9v0M18.5 15v0"/>`,
   schedule: `<path d="M3.5 3v18h17"/><rect x="6" y="5" width="7" height="3" rx="1.5"/><rect x="9.5" y="10" width="8" height="3" rx="1.5"/><rect x="13.5" y="15" width="6" height="3" rx="1.5"/>`,
 
+  view3d: `<path d="M12 2.8l8 4.6v9.2l-8 4.6-8-4.6V7.4z"/><path d="M4 7.4l8 4.6 8-4.6M12 12v9.2"/>`,
+  play: `<path class="f" d="M8 5.5v13l10.5-6.5z"/>`,
+  pause: `<path d="M8.5 5.5v13M15.5 5.5v13"/>`,
+  stepWeek: `<path class="f" d="M5 5.5v13l9-6.5z"/><path d="M18 5.5v13"/>`,
+  newGame: `<path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3M19.5 4v4.5H15"/>`,
+
   // People
   owner: `<circle cx="12" cy="7" r="3.2"/><path d="M5.5 20.5c0-3.9 2.9-6.4 6.5-6.4s6.5 2.5 6.5 6.4"/><path class="f" d="M12 14.4l-1.2 2.3 1.2 3 1.2-3z"/>`,
   manager: `<circle cx="8.5" cy="7.5" r="3"/><path d="M2.5 20c0-3.6 2.7-5.7 6-5.7 1.3 0 2.5.3 3.5.9"/><rect x="14" y="10.5" width="7" height="10" rx="1.2"/><path d="M16 10.5V9.5h3v1M16 14h3M16 17h3"/>`,
@@ -36,6 +42,8 @@ const G = {
   // Buildings
   block: `<rect x="5" y="3.5" width="14" height="17" rx="1.2"/><path d="M3 20.5h18"/>`,
   phase: `<rect x="3" y="8" width="7" height="12.5" rx="1"/><rect x="11" y="3.5" width="10" height="17" rx="1"/><path d="M2 20.5h20"/>`,
+  aBlock: `<rect x="6" y="2" width="12" height="18.5" rx="1"/><path d="M3 20.5h18M6 14.5h12M6 16.5h12M6 18.5h12"/>`,
+  hub: `<path d="M2.5 8h19M8 8V4h8v4"/><ellipse cx="12" cy="15.2" rx="7.5" ry="4.8"/><ellipse cx="12" cy="15.2" rx="3" ry="1.8"/><path d="M19.5 15.2h2M2.5 15.2h2"/>`,
   tower: `<rect x="7" y="2.5" width="10" height="18" rx="1"/><path d="M3 20.5h18"/>`,
   basement: `<path d="M2.5 9.5h19M8 9.5V4h8v5.5"/><rect x="4.5" y="11.5" width="15" height="4" rx=".8"/><rect x="4.5" y="17" width="15" height="4" rx=".8"/>`,
   park: `<path d="M12 21v-5.5M12 3a4.6 4.6 0 0 1 4.5 5.6 3.8 3.8 0 0 1-1.3 7H8.8a3.8 3.8 0 0 1-1.3-7A4.6 4.6 0 0 1 12 3zM4 21h16"/>`,
@@ -62,6 +70,10 @@ const G = {
   R4: `<circle cx="9.5" cy="7.5" r="3.2"/><path d="M3 20c0-3.6 2.9-5.8 6.5-5.8 1.7 0 3.2.5 4.3 1.3M16 14.5h5.5"/>`,
   R5: `<path d="M10.5 13.5L8 16a3 3 0 0 1-4.2-4.2L6.3 9.3M13.5 10.5L16 8a3 3 0 0 1 4.2 4.2l-2.5 2.5M9 3.5v2.2M3.5 9h2.2M15 20.5v-2.2M20.5 15h-2.2"/>`,
 
+  R6: `<path d="M2 6.5h4M18 6.5h4M5 6.5v14h14v-14"/><path d="M5 12c1.4 0 1.4-1.2 2.8-1.2s1.4 1.2 2.8 1.2 1.4-1.2 2.8-1.2 1.4 1.2 2.8 1.2 1.4-1.2 2.8-1.2M5 16.5c1.4 0 1.4-1.2 2.8-1.2s1.4 1.2 2.8 1.2 1.4-1.2 2.8-1.2 1.4 1.2 2.8 1.2 1.4-1.2 2.8-1.2"/>`,
+  R7: `<path d="M12 2.5v19M3.8 7.2l16.4 9.6M3.8 16.8l16.4-9.6M9.5 4l2.5 2.2L14.5 4M9.5 20l2.5-2.2 2.5 2.2"/>`,
+  R8: `<path d="M3 8h11a2.5 2.5 0 1 0-2.5-2.5M3 12h15a2.5 2.5 0 1 1-2.5 2.5M3 16h8"/>`,
+
   // Decisions, modes, AI, milestones
   resource: `<path d="M4 8h14.5M15 4.5L18.5 8 15 11.5M20 16H5.5M9 12.5L5.5 16 9 19.5"/>`,
   riskResponse: `<path d="M12 2.8l7.5 3v5.4c0 4.6-3.1 8.2-7.5 10.2-4.4-2-7.5-5.6-7.5-10.2V5.8z"/><path d="M8.8 12l2.3 2.3 4.3-4.5"/>`,
@@ -80,6 +92,11 @@ const ICONS = [
   ['apps', 'disciplines', 'disciplines', 'Disiplinene', null, 'disciplines'],
   ['apps', 'budget', 'budget', 'Budsjett', null, 'budget'],
   ['apps', 'schedule', 'schedule', 'Fremdriftsplan', null, 'schedule'],
+  ['apps', 'view3d', 'view3d', '3D-byggeplass', null, 'buildings'],
+  ['controls', 'play', 'play', 'Spill av', null, 'decisions'],
+  ['controls', 'pause', 'pause', 'Pause', null, 'decisions'],
+  ['controls', 'step', 'stepWeek', 'Neste uke', null, 'decisions'],
+  ['controls', 'new-game', 'newGame', 'Nytt spill', null, 'decisions'],
 
   ['people', 'owner', 'owner', 'Prosjekteier'],
   ['people', 'project-manager', 'manager', 'Prosjektleder'],
@@ -88,10 +105,10 @@ const ICONS = [
 
   // Phases as in the real project (regjeringen.no, statsbudsjettet 2027).
   ['buildings', 'bt1', 'phase', 'Byggetrinn 1 (ferdig 2026)', '1'],
-  ['buildings', 'bt1-a', 'block', 'BT1 – A-blokka (nybygg)', 'A'],
+  ['buildings', 'bt1-a', 'aBlock', 'BT1 – A-blokka (11 etasjer)', 'A'],
   ['buildings', 'bt1-d', 'block', 'BT1 – D-blokka (nybygg)', 'D'],
   ['buildings', 'bt1-h', 'tower', 'BT1 – Høyblokka (rehabilitert)', 'H'],
-  ['buildings', 'bt1-basement', 'basement', 'BT1 – Kjelleranlegget'],
+  ['buildings', 'bt1-basement', 'hub', 'BT1 – Kjelleranlegget (logistikk og rotunde)'],
   ['buildings', 'bt2', 'phase', 'Byggetrinn 2', '2'],
   ['buildings', 'bt2-c', 'block', 'BT2 del I – C-blokka (nybygg)', 'C'],
   ['buildings', 'bt2-basement', 'basement', 'BT2 del I – Kjeller 2'],
@@ -119,6 +136,9 @@ const ICONS = [
   ['risks', 'R3-facade-delivery', 'R3', 'R3 Forsinket fasadeleveranse'],
   ['risks', 'R4-electrician-shortage', 'R4', 'R4 Mangel på elektrikere'],
   ['risks', 'R5-automation-integration', 'R5', 'R5 Integrasjonsfeil automasjon'],
+  ['risks', 'R6-water', 'R6', 'Vann i kjeller'],
+  ['risks', 'R7-frost', 'R7', 'Frost i betongen'],
+  ['risks', 'R8-wind', 'R8', 'Kranstans i sterk vind'],
 
   ['decisions', 'resource-allocation', 'resource', 'Ressursallokering'],
   ['decisions', 'risk-response', 'riskResponse', 'Risikorespons'],
@@ -151,9 +171,9 @@ function glyph(name, { x = 10, y = 8.5, scale = 28 / 24 } = {}) {
   return `<g transform="translate(${x} ${y}) scale(${scale})" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${G[name].replace(/class="f"/g, 'fill="#fff" stroke="none"')}</g>`;
 }
 
-function letterBadge(letter, cx = 24, w = 13) {
+function letterBadge(letter, cx = 24, w = 13, y = 15) {
   // Label plate on the building face.
-  return `<rect x="${cx - w / 2}" y="15" width="${w}" height="12.5" rx="3" fill="#fff"/><text x="${cx}" y="25.2" text-anchor="middle" font-family="${FONT}" font-size="11" font-weight="700" fill="#0B7A75">${letter}</text>`;
+  return `<rect x="${cx - w / 2}" y="${y}" width="${w}" height="12.5" rx="3" fill="#fff"/><text x="${cx}" y="${y + 10.2}" text-anchor="middle" font-family="${FONT}" font-size="11" font-weight="700" fill="#0B7A75">${letter}</text>`;
 }
 
 function disciplineBadge(disc) {
@@ -174,8 +194,9 @@ const write = (category, file, svg, label) => {
 
 for (const [category, file, g, label, letter, appColour] of ICONS) {
   const colours = PALETTE[appColour ?? category];
+  if (!colours) throw new Error(`No palette for ${category}/${file}`);
   // On the two-building glyph, the plate sits on the taller building.
-  const inner = letter ? glyph(g) + letterBadge(letter, g === 'phase' ? 28.7 : 24, g === 'tower' ? 9 : 13) : glyph(g);
+  const inner = letter ? glyph(g) + letterBadge(letter, g === 'phase' ? 28.7 : 24, g === 'tower' ? 9 : 13, g === 'aBlock' ? 12.5 : 15) : glyph(g);
   write(category, file, tile(file, colours, inner), label);
 }
 
@@ -190,6 +211,7 @@ writeFileSync(join(OUT, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\
 // Preview sheet styled as a Windows 11 window (follows the system light/dark theme).
 const SECTIONS = [
   ['apps', 'Apper (faner)'],
+  ['controls', 'Spillkontroller'],
   ['people', 'Menneskene'],
   ['buildings', 'Byggene'],
   ['disciplines', 'Disiplinene'],
