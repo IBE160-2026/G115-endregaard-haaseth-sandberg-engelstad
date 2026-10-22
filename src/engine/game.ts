@@ -29,6 +29,8 @@ export interface Pending {
   taskId: string;
   recommended: string;
   reasoning: string;
+  /** The trade-off in one short line. */
+  dilemma: string;
 }
 
 export interface GameState {
@@ -86,20 +88,22 @@ export function crewBounds(s: Scenario, task: Task) {
 /** Weekly capacity and cost per worked hour for a crew and mode. */
 export function crewPlan(s: Scenario, task: Task, crew: number, mode: Mode) {
   const base = task.crew;
-  // Workers above the base crew get in each other's way.
-  const effective = Math.min(crew, base) + Math.max(0, crew - base) * s.crowdingProductivity;
   const hired = mode === 'hire' ? Math.ceil(crew * s.hireShare) : 0;
+  // The site is planned for the base crew (plus the planned hire share when hiring).
+  // Everyone above that, own or hired, gets in each other's way.
+  const planned = base + (mode === 'hire' ? Math.ceil(base * s.hireShare) : 0);
+  const workers = crew + hired;
+  const effective = Math.min(workers, planned) + Math.max(0, workers - planned) * s.crowdingProductivity;
   const hoursPerWeek = mode === 'overtime' ? s.overtimeHoursPerWeek : s.hoursPerWeek;
-  const capacity = (effective + hired) * hoursPerWeek;
+  const capacity = effective * hoursPerWeek;
 
   let ownFactor = s.factors.normal;
   if (mode === 'overtime') {
     const overtimeShare = (s.overtimeHoursPerWeek - s.hoursPerWeek) / s.overtimeHoursPerWeek;
     ownFactor = (1 - overtimeShare) * s.factors.normal + overtimeShare * s.factors.overtime;
   }
-  const ownShare = effective / (effective + hired);
-  // Own workers are paid for all their hours, also the ones lost to crowding.
-  const perHour = task.rate * (ownShare * ownFactor * (crew / effective) + (1 - ownShare) * s.factors.hire);
+  // Everyone is paid for all their hours, also the ones lost to crowding.
+  const perHour = (task.rate * (crew * ownFactor + hired * s.factors.hire)) / effective;
   return { effective, hired, hoursPerWeek, capacity, perHour };
 }
 
@@ -192,13 +196,33 @@ function outcome(s: Scenario, g: GameState) {
   return { weeks: f.week, total: totalOf(f) };
 }
 
-function raise(s: Scenario, g: GameState, ev: EventDef, taskId: string) {
+/** How far a result misses the targets, as the sum of the relative overruns (0 = both met). */
+export function targetScore(s: Scenario, r: { weeks: number; total: number }): number {
+  return Math.max(0, (r.total - s.target.total) / s.target.total) + Math.max(0, (r.weeks - s.target.weeks) / s.target.weeks);
+}
+
+const byTarget = (s: Scenario) => (a: { weeks: number; total: number }, b: { weeks: number; total: number }) =>
+  targetScore(s, a) - targetScore(s, b) || a.total - b.total || a.weeks - b.weeks;
+
+function bestOption(s: Scenario, g: GameState, ev: EventDef, taskId: string) {
   const scored = ev.options.map(o => {
     const f = clone(g);
     applyOption(s, f, taskId, ev.id, o);
     return { o, ...outcome(s, f) };
   });
-  const best = [...scored].sort((a, b) => a.total - b.total || a.weeks - b.weeks)[0];
+  return { scored, best: [...scored].sort(byTarget(s))[0] };
+}
+
+function dilemmaFor(ev: EventDef): string {
+  const cheapest = [...ev.options].sort((a, b) => a.cost - b.cost || a.delay - b.delay)[0];
+  const fastest = [...ev.options].sort((a, b) => a.delay - b.delay || a.cost - b.cost)[0];
+  if (ev.kind === 'opportunity') return `Dilemma: spare penger nå, eller holde fremdriften?`;
+  if (cheapest === fastest) return `«${cheapest.label}» er både billigst og raskest, men har andre ulemper.`;
+  return `Dilemma: «${cheapest.label}» er billigst, «${fastest.label}» er raskest. Hver uke koster rigg og drift.`;
+}
+
+function raise(s: Scenario, g: GameState, ev: EventDef, taskId: string) {
+  const { scored, best } = bestOption(s, g, ev, taskId);
   const others = scored.filter(x => x !== best);
   // The AI role is only as reliable as the difficulty allows.
   const roll = rand(g);
@@ -206,7 +230,7 @@ function raise(s: Scenario, g: GameState, ev: EventDef, taskId: string) {
   const pick = roll < RELIABILITY[g.difficulty] || others.length === 0
     ? best
     : others[Math.floor(alt * others.length)];
-  g.pending = { eventId: ev.id, taskId, recommended: pick.o.id, reasoning: reasoningFor(pick.o, ev.options) };
+  g.pending = { eventId: ev.id, taskId, recommended: pick.o.id, reasoning: reasoningFor(pick.o, ev.options), dilemma: dilemmaFor(ev) };
   g.log.push({ week: g.week, text: `${ev.title} (${taskId}).` });
 }
 
@@ -309,6 +333,88 @@ export function forecast(s: Scenario, g: GameState): SimulationResult {
     total: labour + materials + f.overhead + f.events,
     criticalPath: tasks.filter(t => t.critical).sort((a, b) => a.start - b.start).map(t => t.id),
   };
+}
+
+/** A change the project manager recommends to use the crews as well as possible. */
+export interface StaffingChange { taskId: string; crew: number; mode: Mode }
+
+/**
+ * The project manager's staffing plan: for each discipline that is not finished, the
+ * crew and mode that bring the forecast closest to the targets (greedy, in task order).
+ */
+export function pmPlan(s: Scenario, g: GameState): StaffingChange[] {
+  if (g.done || g.pending) return [];
+  const work = clone(g);
+  const changes: StaffingChange[] = [];
+  s.tasks.forEach((task, i) => {
+    const t = work.tasks[i];
+    if (t.finish !== null) return;
+    const options: { crew: number; mode: Mode }[] = [];
+    for (const mode of ['normal', 'overtime', 'hire'] as Mode[]) options.push({ crew: task.crew, mode });
+    let best = { crew: t.crew, mode: t.mode, ...outcome(s, work) };
+    for (const o of options) {
+      const trial = clone(work);
+      trial.tasks[i].crew = o.crew;
+      trial.tasks[i].mode = o.mode;
+      const r = { ...o, ...outcome(s, trial) };
+      if (byTarget(s)(r, best) < 0) best = r;
+    }
+    if (best.crew !== t.crew || best.mode !== t.mode) {
+      t.crew = best.crew;
+      t.mode = best.mode;
+      changes.push({ taskId: task.id, crew: best.crew, mode: best.mode });
+    }
+  });
+  return changes;
+}
+
+export function applyPlan(s: Scenario, g: GameState, plan: StaffingChange[]): void {
+  for (const c of plan) {
+    setCrew(s, g, c.taskId, c.crew);
+    setMode(s, g, c.taskId, c.mode);
+  }
+}
+
+/** One step of a story's solution: the staffing plan, or the choice at an event. */
+export type StoryStep =
+  | { kind: 'plan'; week: number; changes: StaffingChange[] }
+  | { kind: 'choice'; week: number; eventId: string; taskId: string; optionId: string };
+
+export interface Story { seed: number; steps: StoryStep[]; weeks: number; total: number; solved: boolean }
+
+/** Plays a seed with perfect information: the PM plan, and the best option at every event. */
+export function solveStory(s: Scenario, difficulty: Difficulty, seed: number): Story {
+  const g = newGame(s, difficulty, seed);
+  const steps: StoryStep[] = [];
+  const plan = () => {
+    const changes = pmPlan(s, g);
+    if (changes.length) {
+      applyPlan(s, g, changes);
+      steps.push({ kind: 'plan', week: g.week, changes });
+    }
+  };
+  plan();
+  while (!g.done && g.week < MAX_WEEKS) {
+    runUntilDecision(s, g);
+    if (!g.pending) break;
+    const ev = eventById(g.pending.eventId);
+    const { best } = bestOption(s, g, ev, g.pending.taskId);
+    steps.push({ kind: 'choice', week: g.week, eventId: ev.id, taskId: g.pending.taskId, optionId: best.o.id });
+    choose(s, g, best.o.id);
+    plan();
+  }
+  return { seed, steps, weeks: g.week, total: totalOf(g), solved: verdict(s, g) === 'on-target' };
+}
+
+/** Finds a seed from `start` whose story can be solved within both targets. */
+export function findStory(s: Scenario, difficulty: Difficulty, start: number, tries = 40): Story {
+  let best: Story | null = null;
+  for (let k = 0; k < tries; k++) {
+    const story = solveStory(s, difficulty, start + k);
+    if (story.solved) return story;
+    if (!best || targetScore(s, story) < targetScore(s, best)) best = story;
+  }
+  return best!;
 }
 
 export type Verdict = 'on-target' | 'over-budget' | 'late' | 'over-and-late';

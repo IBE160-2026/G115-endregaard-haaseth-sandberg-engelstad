@@ -103,6 +103,13 @@ context:
 
 ## Spec Change Log
 
+- 2026-10-22 – the team's answers to the review's game-design questions (triage #21 and the four open questions):
+  1. **Dilemmas:** events are short dilemmas shown to the player (a one-line "Dilemma: …" in the dialog). The AI scores options against **both targets** (the sum of the relative overruns in MNOK and weeks), not cost alone. The project manager plans the staffing (`pmPlan`) so the crews are used as well as possible, and offers it to the player ("Følg prosjektlederens plan").
+  2. **Crowding:** hired workers crowd too. Above the planned crew (the base crew, plus the planned hire share when hiring), everyone counts 0.5. Base crew + hire is unchanged, so Appendix A and the v0.1 tests still hold. New **opportunities** (masses reused, cheaper steel, facade discount) save money at the cost of time, for surprise.
+  3. **No lock** on a mode chosen through an event.
+  4. **"Late but within budget" must be possible** (it now is, through the opportunities). **Every game has a story solution:** `findStory` picks a seed whose story can be solved within both targets with full information (the PM plan plus the best option at each event), and the final report shows "Historiens løsning".
+  KEEP: game ≡ simulate with no events; the seeded RNG draws both numbers on every recommendation; events are the same on every difficulty.
+
 ## Review Triage Log
 
 Pass 1 (blind-hunter, edge-case-hunter, verification-gap). Route: patch, unless noted.

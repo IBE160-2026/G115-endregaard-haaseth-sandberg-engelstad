@@ -2,8 +2,8 @@
 import manifest from '../../../assets/icons/manifest.json';
 import { describe, expect, it } from 'vitest';
 import { scenario } from '../../engine/scenario';
-import { choose, forecast, newGame, runUntilDecision, setCrew, setMode, step, triggerEvent } from '../../engine/game';
-import { renderFinal } from '../play';
+import { choose, findStory, forecast, newGame, pmPlan, runUntilDecision, setCrew, setMode, step, triggerEvent } from '../../engine/game';
+import { renderEvent, renderFinal } from '../play';
 import { simulate } from '../../engine/simulate';
 import { budgetOf } from '../budgetLines';
 import { ganttSvg } from '../gantt';
@@ -166,5 +166,32 @@ describe('review follow-ups (v0.2)', () => {
     const site = renderPeople({ ...ctx(), game, result: forecast(scenario, game), selected: 'site' });
     expect(site).toContain('Aktiv utfordring');
     expect(site).toContain('Vann i kjeller');
+  });
+});
+
+describe('dilemmas, PM plan and story (v0.2)', () => {
+  it('the event dialog shows the dilemma line', () => {
+    const g = newGame(scenario, 'easy', 1, { randomEvents: false });
+    while (g.week < 40) step(scenario, g);
+    triggerEvent(scenario, g, 'water');
+    expect(renderEvent(scenario, g)).toContain('<p class="dilemma">Dilemma: «Lei midlertidig pumpe» er billigst');
+  });
+
+  it('Disiplinene offers the project manager plan with a button', () => {
+    const game = newGame(scenario, 'easy', 1, { randomEvents: false });
+    const plan = pmPlan(scenario, game);
+    const html = renderDisciplines({ ...ctx(), game, result: forecast(scenario, game), plan });
+    expect(html).toContain('Prosjektlederen foreslår:');
+    expect(html).toContain('data-action="pm-plan"');
+  });
+
+  it('the final report tells how the story could be solved', () => {
+    const story = findStory(scenario, 'medium', 2024);
+    const g = newGame(scenario, 'medium', story.seed, { randomEvents: false });
+    runUntilDecision(scenario, g);
+    const html = renderFinal(scenario, g, story);
+    expect(html).toContain('Historiens løsning');
+    expect(html).toContain('prosjektlederen bemanner');
+    expect(html).toContain(`uke ${story.weeks}`);
   });
 });

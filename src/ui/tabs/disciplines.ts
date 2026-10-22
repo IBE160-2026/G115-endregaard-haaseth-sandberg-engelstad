@@ -1,8 +1,10 @@
 import { formatFactor, formatInt, formatMnok } from '../format';
+import { planText } from '../play';
 import { crewControl, modeControl } from './controls';
 import { icon, type TabContext } from './context';
 
-export function renderDisciplines({ scenario, result, game }: TabContext): string {
+export function renderDisciplines(ctx: TabContext): string {
+  const { scenario, result, game } = ctx;
   const f = scenario.factors;
   const rows = scenario.tasks.map((task, i) => {
     const t = result.tasks[i];
@@ -23,7 +25,10 @@ export function renderDisciplines({ scenario, result, game }: TabContext): strin
       <td>${status}${st && st.stall > 0 ? ` <span class="chip chip-busy">Stans ${st.stall} u</span>` : ''}</td>
     </tr>`;
   });
-  return `<p class="lead">Velg mannskap og arbeidsmodus per disiplin. Grunnbemanningen lønner seg: for få gir lengre tid (rigg og drift løper), for mange går i veien for hverandre (hver ekstra arbeider gir ${formatFactor(scenario.crowdingProductivity)} av en full). Kostfaktor: normaltid ${formatFactor(f.normal)}, overtidstimer ${formatFactor(f.overtime)}, innleide timer ${formatFactor(f.hire)}.</p>
+  const planBar = ctx.plan?.length && game && !game.done
+    ? `<div class="planbar">${icon('people/project-manager.svg', 24)}<span>Prosjektlederen foreslår: ${planText(ctx.plan)}.</span><button type="button" class="tool" data-action="pm-plan"><span>Følg planen</span></button></div>`
+    : '';
+  return `${planBar}<p class="lead">Velg mannskap og arbeidsmodus per disiplin. Grunnbemanningen lønner seg: for få gir lengre tid (rigg og drift løper), for mange går i veien for hverandre (hver ekstra arbeider gir ${formatFactor(scenario.crowdingProductivity)} av en full). Kostfaktor: normaltid ${formatFactor(f.normal)}, overtidstimer ${formatFactor(f.overtime)}, innleide timer ${formatFactor(f.hire)}.</p>
     <div class="table-wrap"><table>
       <thead><tr><th>Disiplin</th><th class="num">Timer</th><th>Framdrift</th><th>Mannskap</th><th>Arbeidsmodus</th><th class="num">Uker</th><th class="num">Arbeid MNOK</th><th>Status</th></tr></thead>
       <tbody>${rows.join('')}</tbody>

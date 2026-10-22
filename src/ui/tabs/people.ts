@@ -4,6 +4,7 @@ import { adviceFor } from '../../engine/advisor';
 import { eventById } from '../../engine/events';
 import type { Person } from '../../engine/scenario';
 import { formatFactor } from '../format';
+import { planText } from '../play';
 import { crewControl, modeControl } from './controls';
 import { icon, type TabContext } from './context';
 
@@ -39,6 +40,10 @@ function details(ctx: TabContext): string {
       ${modeControl(p.taskId, t.mode, locked)}
       <p class="meta">${t.hiredCrew ? `+ ${t.hiredCrew} innleid · ` : ''}${formatFactor(t.hoursPerWeek)} t/uke · uke ${t.start}–${t.finish} i prognosen</p>`;
   }
+  const plan = p.id === 'pm' && ctx.plan?.length
+    ? `<h3>Bemanningsplan</h3><p class="meta">Prosjektlederen vil bruke mannskapene slik: ${planText(ctx.plan)}.</p>
+       <button type="button" class="tool" data-action="pm-plan">${icon('people/project-manager.svg', 20)}<span>Følg prosjektlederens plan</span></button>`
+    : p.id === 'pm' && game ? '<p class="meta">Bemanningen er allerede den beste prosjektlederen finner.</p>' : '';
   const reports = scenario.people.filter(x => x.reportsTo === p.id).map(x => x.taskId ?? x.role).join(', ');
   const ev = game?.pending ? eventById(game.pending.eventId) : null;
   const challenge = ev && ev.raisedBy === p.id
@@ -49,6 +54,7 @@ function details(ctx: TabContext): string {
     ${p.player ? '<p class="meta">Du tar de endelige beslutningene. Prosjektleder og Site manager rapporterer til deg.</p>' : `<p class="meta">AI-rolle (regelbasert) · rapporterer til ${scenario.people.find(x => x.id === p.reportsTo)?.role}</p>`}
     ${reports ? `<p class="meta">Har ansvar for: ${reports}</p>` : ''}
     ${challenge}
+    ${plan}
     ${lines.length ? `<h3>Rapport</h3><ul class="advice">${lines.map(l => `<li>${l}</li>`).join('')}</ul>` : ''}
     ${controls}
   </aside>`;

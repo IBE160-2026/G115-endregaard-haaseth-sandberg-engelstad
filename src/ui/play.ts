@@ -1,6 +1,6 @@
 // Play controls, scenario buttons and dialogs (start, event decision, final report).
 import { EVENTS, eventById } from '../engine/events';
-import { canTrigger, forecast, spent, verdict, type Difficulty, type GameState } from '../engine/game';
+import { canTrigger, forecast, spent, verdict, type Difficulty, type GameState, type StaffingChange, type Story } from '../engine/game';
 import type { Scenario } from '../engine/scenario';
 import type { SimulationResult } from '../engine/simulate';
 import { budgetOf } from './budgetLines';
@@ -64,7 +64,8 @@ const dialog = (inner: string, label: string) =>
 export function renderStart(s: Scenario): string {
   return dialog(`<h2>Nytt prosjekt: ${s.name} <small class="version">${VERSION}</small></h2>
     <p>Du er <b>prosjekteier</b>. Prosjektleder, Site manager og formennene er AI-roller som melder fra om utfordringer og anbefaler tiltak. Målet er å bygge ferdig innen <b>${formatMnok(s.target.total)} MNOK</b> og <b>${s.target.weeks} uker</b>.</p>
-    <p class="meta">Velg mannskap og arbeidsmodus per disiplin. Grunnbemanning lønner seg, og hver uke ekstra koster ${formatFactor(s.overhead.perWeek)} MNOK i rigg og drift.</p>
+    <p class="meta">Velg mannskap og arbeidsmodus per disiplin, eller la prosjektlederen bemanne. Hver uke ekstra koster ${formatFactor(s.overhead.perWeek)} MNOK i rigg og drift. Underveis kommer risikoer og muligheter, og hver av dem er et dilemma mellom penger og tid.</p>
+    <p class="meta">Hvert spill er en historie som <b>kan</b> løses innenfor begge målene. I sluttrapporten ser du hvordan.</p>
     <div class="choices">${DIFFICULTIES.map(d => `<button type="button" class="choice" data-action="start" data-difficulty="${d.id}"><b>${d.label}</b><span>${d.text}</span></button>`).join('')}</div>`, 'Nytt prosjekt');
 }
 
@@ -84,11 +85,28 @@ export function renderEvent(s: Scenario, g: GameState): string {
   }).join('');
   return dialog(`<div class="dialog-head">${icon(ev.icon, 48)}<div><h2>${ev.title}</h2><p class="meta">Uke ${g.week} · rammer ${task.id} ${task.name}</p></div></div>
     <p>${ev.description}</p>
+    <p class="dilemma">${p.dilemma}</p>
     <div class="advice-box">${icon(by.icon, 32)}<div><b>${by.taskId ? `${by.role} ${by.taskId}` : by.role}</b> <small>(AI-rolle)</small><p>${p.reasoning}</p></div></div>
     <div class="choices">${options}</div>`, ev.title);
 }
 
-export function renderFinal(s: Scenario, g: GameState): string {
+const MODE_NAME = { normal: 'normaltid', overtime: 'overtid', hire: 'ekstra innleie' } as const;
+
+export const planText = (changes: StaffingChange[]) =>
+  changes.map(c => `${c.taskId} ${MODE_NAME[c.mode]}`).join(', ');
+
+function storyHtml(story: Story | undefined): string {
+  if (!story) return '';
+  const steps = story.steps.map(st => {
+    if (st.kind === 'plan') return `<li>Uke ${st.week}: prosjektlederen bemanner (${planText(st.changes)}).</li>`;
+    const ev = eventById(st.eventId);
+    return `<li>Uke ${st.week}: ${ev.title} (${st.taskId}) → «${ev.options.find(o => o.id === st.optionId)!.label}».</li>`;
+  }).join('');
+  const head = story.solved ? 'Historiens løsning' : 'Beste kjente løsning';
+  return `<h3>${head}</h3><p class="meta">Med full oversikt over hendelsene kunne prosjektet endt i uke ${story.weeks} på ${formatMnok(story.total)} MNOK:</p><ol class="story">${steps}</ol>`;
+}
+
+export function renderFinal(s: Scenario, g: GameState, story?: Story): string {
   const total = budgetOf(forecast(s, g)).total;
   const v = verdict(s, g);
   const decisions = g.log.filter(l => l.text.startsWith('Valgte')).length;
@@ -103,5 +121,6 @@ export function renderFinal(s: Scenario, g: GameState): string {
       <div class="kpi"><span>Beslutninger</span><b>${decisions}</b><small>${followed} fulgte AI-anbefalingen</small></div>
     </div>
     <p class="meta">Vanskelighetsgrad: ${DIFFICULTIES.find(d => d.id === g.difficulty)!.label} · Scenario-nr. ${g.seed} · Simulator ${VERSION}</p>
+    ${storyHtml(story)}
     <div class="choices row"><button type="button" class="choice" data-action="close-final"><b>Se resultatet</b></button><button type="button" class="choice" data-action="new"><b>Nytt spill</b></button></div>`, 'Sluttrapport');
 }

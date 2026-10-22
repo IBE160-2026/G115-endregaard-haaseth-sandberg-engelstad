@@ -272,6 +272,10 @@ button:disabled { opacity: 0.45; cursor: default; }
 .advice-box { display: flex; gap: 10px; padding: 10px 12px; background: var(--layer); border: 1px solid var(--stroke); border-radius: 6px; }
 .advice-box p { margin: 4px 0 0; }
 .statusbar .log { color: var(--text-2); }
+.dilemma { padding: 8px 12px; border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 4px; font-weight: 600; }
+.planbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 12px; padding: 10px 12px; background: var(--layer); border: 1px solid var(--accent); border-radius: 6px; }
+.planbar span { flex: 1; min-width: 200px; }
+.story { margin: 4px 0 12px; padding-left: 20px; font-size: 13px; }
 
 /* 3D window */
 .win3d { position: absolute; z-index: 10; right: 24px; bottom: 64px; width: 460px; height: 340px; min-width: 320px; min-height: 240px; resize: both; flex: none; }

@@ -235,6 +235,16 @@
     "label": "Kranstans i sterk vind"
   },
   {
+    "category": "opportunities",
+    "file": "opportunities/reuse.svg",
+    "label": "Gjenbruk av masser"
+  },
+  {
+    "category": "opportunities",
+    "file": "opportunities/discount.svg",
+    "label": "Rabatt / billigere innkjøp"
+  },
+  {
     "category": "decisions",
     "file": "decisions/resource-allocation.svg",
     "label": "Ressursallokering"

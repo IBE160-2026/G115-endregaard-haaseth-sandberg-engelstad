@@ -5,7 +5,7 @@ import type { Mode } from './scenario';
 export interface EventOption {
   id: string;
   label: string;
-  /** Extra cost, MNOK. */
+  /** Extra cost, MNOK (negative for a saving). */
   cost: number;
   /** Weeks the affected task stands still (drying, waiting, rework). */
   delay: number;
@@ -16,6 +16,8 @@ export interface EventOption {
 
 export interface EventDef {
   id: string;
+  /** A risk costs something; an opportunity saves money at the cost of time. */
+  kind: 'risk' | 'opportunity';
   title: string;
   icon: string;
   /** Person who raises the challenge and recommends an option. */
@@ -32,7 +34,7 @@ export interface EventDef {
 
 export const EVENTS: EventDef[] = [
   {
-    id: 'water', title: 'Vann i kjeller', icon: 'risks/R6-water.svg', raisedBy: 'site', taskIds: ['C', 'D', 'E', 'L'], button: true, chance: 0.06,
+    id: 'water', kind: 'risk', title: 'Vann i kjeller', icon: 'risks/R6-water.svg', raisedBy: 'site', taskIds: ['C', 'D', 'E', 'L'], button: true, chance: 0.06,
     description: 'Grunnvann trenger inn i byggegropen etter kraftig regn. Arbeidet i kjelleren må stoppe til vannet er borte og betongen er tørr.',
     options: [
       { id: 'pump', label: 'Installer fast pumpe', cost: 0.8, delay: 2, note: 'Pumpe og drenering, 2 uker tørking.' },
@@ -41,7 +43,7 @@ export const EVENTS: EventDef[] = [
     ],
   },
   {
-    id: 'rock', title: 'Forvitret fjell', icon: 'risks/R1-weathered-rock.svg', raisedBy: 'foreman-D', taskIds: ['D'], button: true, chance: 0.12,
+    id: 'rock', kind: 'risk', title: 'Forvitret fjell', icon: 'risks/R1-weathered-rock.svg', raisedBy: 'foreman-D', taskIds: ['D'], button: true, chance: 0.12,
     description: 'Deler av fjellet under fundamentene er forvitret og tåler ikke lasten, slik det skjedde under Høyblokka.',
     options: [
       { id: 'refound', label: 'Ny fundamentering i sonen', cost: 6, delay: 4, note: 'Sikker løsning, men dyr og tidkrevende.' },
@@ -50,7 +52,7 @@ export const EVENTS: EventDef[] = [
     ],
   },
   {
-    id: 'soil', title: 'Forurenset grunn', icon: 'risks/R2-contaminated-soil.svg', raisedBy: 'foreman-C', taskIds: ['C'], button: true, chance: 0.1,
+    id: 'soil', kind: 'risk', title: 'Forurenset grunn', icon: 'risks/R2-contaminated-soil.svg', raisedBy: 'foreman-C', taskIds: ['C'], button: true, chance: 0.1,
     description: 'Gravemassene inneholder forurensning fra gammel bebyggelse i sentrum.',
     options: [
       { id: 'deposit', label: 'Kjør til godkjent deponi', cost: 4, delay: 1, note: 'Rask, men deponiavgiften er høy.' },
@@ -59,7 +61,7 @@ export const EVENTS: EventDef[] = [
     ],
   },
   {
-    id: 'frost', title: 'Frost i betongen', icon: 'risks/R7-frost.svg', raisedBy: 'foreman-E', taskIds: ['E'], button: true, chance: 0.08,
+    id: 'frost', kind: 'risk', title: 'Frost i betongen', icon: 'risks/R7-frost.svg', raisedBy: 'foreman-E', taskIds: ['E'], button: true, chance: 0.08,
     description: 'Kuldeperiode. Betongen herder ikke under 5 °C uten tiltak.',
     options: [
       { id: 'heat', label: 'Vinterstøp med oppvarming', cost: 0.6, delay: 0, note: 'Telt og varme, ingen stans.' },
@@ -67,7 +69,7 @@ export const EVENTS: EventDef[] = [
     ],
   },
   {
-    id: 'wind', title: 'Kranstans i sterk vind', icon: 'risks/R8-wind.svg', raisedBy: 'foreman-F', taskIds: ['F'], button: true, chance: 0.08,
+    id: 'wind', kind: 'risk', title: 'Kranstans i sterk vind', icon: 'risks/R8-wind.svg', raisedBy: 'foreman-F', taskIds: ['F'], button: true, chance: 0.08,
     description: 'Vindkast over grensen for tårnkranen. Råbygget står uten løft.',
     options: [
       { id: 'mobile', label: 'Lei mobilkran for kritiske løft', cost: 0.5, delay: 1, note: 'Holder de viktigste løftene i gang.' },
@@ -75,7 +77,7 @@ export const EVENTS: EventDef[] = [
     ],
   },
   {
-    id: 'facade', title: 'Forsinket fasadeleveranse', icon: 'risks/R3-facade-delivery.svg', raisedBy: 'foreman-G', taskIds: ['G'], button: true, chance: 0.1,
+    id: 'facade', kind: 'risk', title: 'Forsinket fasadeleveranse', icon: 'risks/R3-facade-delivery.svg', raisedBy: 'foreman-G', taskIds: ['G'], button: true, chance: 0.1,
     description: 'Leverandøren av fasadeelementene melder kapasitetsproblemer.',
     options: [
       { id: 'wait', label: 'Vent på leveransen', cost: 0, delay: 4, note: 'Ingen ekstra kostnad.' },
@@ -84,7 +86,7 @@ export const EVENTS: EventDef[] = [
     ],
   },
   {
-    id: 'electricians', title: 'Mangel på elektrikere', icon: 'risks/R4-electrician-shortage.svg', raisedBy: 'foreman-I', taskIds: ['I'], button: true, chance: 0.1,
+    id: 'electricians', kind: 'risk', title: 'Mangel på elektrikere', icon: 'risks/R4-electrician-shortage.svg', raisedBy: 'foreman-I', taskIds: ['I'], button: true, chance: 0.1,
     description: 'Flere elektrikere er tatt ut til et annet prosjekt.',
     options: [
       { id: 'accept', label: 'Aksepter forsinkelsen', cost: 0, delay: 3, note: 'Jobber videre med færre folk.' },
@@ -93,12 +95,37 @@ export const EVENTS: EventDef[] = [
     ],
   },
   {
-    id: 'integration', title: 'Integrasjonsfeil i automasjonen', icon: 'risks/R5-automation-integration.svg', raisedBy: 'foreman-J', taskIds: ['J'], button: true, chance: 0.12,
+    id: 'integration', kind: 'risk', title: 'Integrasjonsfeil i automasjonen', icon: 'risks/R5-automation-integration.svg', raisedBy: 'foreman-J', taskIds: ['J'], button: true, chance: 0.12,
     description: 'SD-anlegget og adgangskontrollen snakker ikke sammen.',
     options: [
       { id: 'debug', label: 'Feilsøk selv', cost: 0, delay: 2, note: 'Egen kompetanse, tar tid.' },
       { id: 'specialist', label: 'Hent leverandørens spesialist', cost: 0.6, delay: 1, note: 'Rask hjelp, timepris.' },
       { id: 'standard', label: 'Bytt til standardprotokoll', cost: 1.5, delay: 0, note: 'Løser det med en gang.' },
+    ],
+  },
+  {
+    id: 'reuse', kind: 'opportunity', title: 'Gjenbruk av steinmasser', icon: 'opportunities/reuse.svg', raisedBy: 'foreman-C', taskIds: ['C'], button: true, chance: 0.1,
+    description: 'Sprengsteinen kan knuses og brukes som fyllmasse i stedet for å kjøres bort. Det krever et knuseverk på plassen.',
+    options: [
+      { id: 'reuse', label: 'Knus og gjenbruk massene', cost: -1.6, delay: 2, note: 'Sparer transport og deponi, men knusingen tar tid.' },
+      { id: 'haul', label: 'Kjør massene bort som planlagt', cost: 0, delay: 0, note: 'Ingen endring.' },
+    ],
+  },
+  {
+    id: 'steel', kind: 'opportunity', title: 'Billigere stål fra ny leverandør', icon: 'opportunities/discount.svg', raisedBy: 'pm', taskIds: ['F'], button: true, chance: 0.08,
+    description: 'En ny leverandør tilbyr armering og stål billigere, men med lengre leveringstid.',
+    options: [
+      { id: 'switch', label: 'Bytt leverandør', cost: -2.2, delay: 3, note: 'Lavere pris, tre uker venting på første leveranse.' },
+      { id: 'split', label: 'Del leveransen', cost: -0.9, delay: 1, note: 'Litt billigere, litt venting.' },
+      { id: 'keep', label: 'Behold dagens leverandør', cost: 0, delay: 0, note: 'Ingen endring.' },
+    ],
+  },
+  {
+    id: 'facade-discount', kind: 'opportunity', title: 'Rabatt mot senere fasadeleveranse', icon: 'opportunities/discount.svg', raisedBy: 'foreman-G', taskIds: ['G'], button: true, chance: 0.08,
+    description: 'Fasadeleverandøren gir rabatt hvis de kan levere etter en annen kunde.',
+    options: [
+      { id: 'accept', label: 'Ta rabatten', cost: -2.6, delay: 4, note: 'Billigere fasade, fire uker senere.' },
+      { id: 'decline', label: 'Avslå', cost: 0, delay: 0, note: 'Leveransen kommer som planlagt.' },
     ],
   },
 ];

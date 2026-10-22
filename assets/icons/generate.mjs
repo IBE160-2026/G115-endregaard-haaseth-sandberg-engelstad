@@ -16,6 +16,7 @@ const PALETTE = {
   risks: ['#FF8080', '#C50F1F'],
   decisions: ['#86AEFF', '#3A46C9'],
   ai: ['#E58BFF', '#5B3FD9'],
+  opportunities: ['#76D26A', '#107C10'],
 };
 
 // Glyphs on a 24×24 grid, drawn as white strokes. `fill` parts are drawn solid.
@@ -73,6 +74,9 @@ const G = {
   R6: `<path d="M2 6.5h4M18 6.5h4M5 6.5v14h14v-14"/><path d="M5 12c1.4 0 1.4-1.2 2.8-1.2s1.4 1.2 2.8 1.2 1.4-1.2 2.8-1.2 1.4 1.2 2.8 1.2 1.4-1.2 2.8-1.2M5 16.5c1.4 0 1.4-1.2 2.8-1.2s1.4 1.2 2.8 1.2 1.4-1.2 2.8-1.2 1.4 1.2 2.8 1.2 1.4-1.2 2.8-1.2"/>`,
   R7: `<path d="M12 2.5v19M3.8 7.2l16.4 9.6M3.8 16.8l16.4-9.6M9.5 4l2.5 2.2L14.5 4M9.5 20l2.5-2.2 2.5 2.2"/>`,
   R8: `<path d="M3 8h11a2.5 2.5 0 1 0-2.5-2.5M3 12h15a2.5 2.5 0 1 1-2.5 2.5M3 16h8"/>`,
+
+  reuse: `<path d="M7 9.5A6 6 0 0 1 17.6 7M17 14.5A6 6 0 0 1 6.4 17M17.8 3.5v3.7h-3.7M6.2 20.5v-3.7h3.7"/>`,
+  discount: `<path d="M3.5 12.2V4.5a1 1 0 0 1 1-1h7.7l8.3 8.3-8.7 8.7z"/><circle cx="8" cy="8" r="1.4"/><path d="M10 15.5l5-5"/>`,
 
   // Decisions, modes, AI, milestones
   resource: `<path d="M4 8h14.5M15 4.5L18.5 8 15 11.5M20 16H5.5M9 12.5L5.5 16 9 19.5"/>`,
@@ -140,6 +144,8 @@ const ICONS = [
   ['risks', 'R7-frost', 'R7', 'Frost i betongen'],
   ['risks', 'R8-wind', 'R8', 'Kranstans i sterk vind'],
 
+  ['opportunities', 'reuse', 'reuse', 'Gjenbruk av masser'],
+  ['opportunities', 'discount', 'discount', 'Rabatt / billigere innkjøp'],
   ['decisions', 'resource-allocation', 'resource', 'Ressursallokering'],
   ['decisions', 'risk-response', 'riskResponse', 'Risikorespons'],
   ['decisions', 'mode-normal', 'normal', 'Normaltid (1,0)'],
@@ -216,6 +222,7 @@ const SECTIONS = [
   ['buildings', 'Byggene'],
   ['disciplines', 'Disiplinene'],
   ['risks', 'Risikoer'],
+  ['opportunities', 'Muligheter'],
   ['decisions', 'Beslutninger og arbeidsmodus'],
   ['schedule', 'Fremdriftsplan'],
   ['ai', 'KI'],

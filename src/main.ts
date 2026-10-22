@@ -1,6 +1,6 @@
 // The in-game Windows-style desktop: the app window with five tabs, a 3D window and a taskbar.
 import './styles.css';
-import { canTrigger, choose, forecast, newGame, setCrew, setMode, step, triggerEvent, type Difficulty, type GameState } from './engine/game';
+import { applyPlan, canTrigger, choose, findStory, forecast, newGame, pmPlan, setCrew, setMode, step, triggerEvent, type Difficulty, type GameState, type Story } from './engine/game';
 import { scenario, type Mode } from './engine/scenario';
 import { simulate } from './engine/simulate';
 import { budgetOf } from './ui/budgetLines';
@@ -35,7 +35,7 @@ const CAPTION = {
 const WEEK_MS = 600;
 
 const baseline = simulate(scenario);
-const state: { tab: TabId; game?: GameState; selected: string; resume: boolean } & PlayUi = {
+const state: { tab: TabId; game?: GameState; story?: Story; selected: string; resume: boolean } & PlayUi = {
   tab: 'people', selected: 'owner', resume: false,
   playing: false, speed: 1, menu: false, show3d: false, finalSeen: false,
 };
@@ -111,7 +111,9 @@ function render() {
   const result = g ? forecast(scenario, g) : baseline;
   const tab = TABS.find(t => t.id === state.tab)!;
   title.textContent = tab.label;
-  body.innerHTML = tab.render({ scenario, modes: {}, result, baseline, game: g, selected: state.selected });
+  // The plan is only worked out where it is shown.
+  const plan = g && (state.tab === 'disciplines' || (state.tab === 'people' && state.selected === 'pm')) ? pmPlan(scenario, g) : [];
+  body.innerHTML = tab.render({ scenario, modes: {}, result, baseline, game: g, selected: state.selected, plan });
   const org = app.querySelector<HTMLElement>('.org');
   if (org) org.scrollLeft = orgScroll;
   toolbar.innerHTML = renderToolbar(scenario, g, result, state);
@@ -129,7 +131,7 @@ function render() {
 
   dialogHost.innerHTML = !g ? renderStart(scenario)
     : g.pending ? renderEvent(scenario, g)
-    : g.done && !state.finalSeen ? renderFinal(scenario, g)
+    : g.done && !state.finalSeen ? renderFinal(scenario, g, state.story)
     : '';
   const nextKey = g ? `${g.seed}:${g.week}:${g.pending?.eventId ?? ''}:${g.done}` : 'none';
   if (state.show3d && view && nextKey !== viewKey) {
@@ -195,7 +197,9 @@ async function toggle3d() {
 
 function startGame(difficulty: Difficulty) {
   setPlaying(false);
-  state.game = newGame(scenario, difficulty, Math.floor(Math.random() * 1e6) + 1);
+  // Every game is a story that can be solved within both targets.
+  state.story = findStory(scenario, difficulty, Math.floor(Math.random() * 1e6) + 1);
+  state.game = newGame(scenario, difficulty, state.story.seed);
   state.finalSeen = false;
   state.resume = false;
   state.menu = false;
@@ -265,6 +269,7 @@ app.addEventListener('click', e => {
       }
       break;
     case 'close-final': state.finalSeen = true; break;
+    case 'pm-plan': if (g) applyPlan(scenario, g, pmPlan(scenario, g)); break;
     case 'toggle3d': void toggle3d(); return;
   }
   render();

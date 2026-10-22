@@ -14,7 +14,10 @@ describe('event catalogue', () => {
     expect(s.people.some(p => p.id === e.raisedBy)).toBe(true);
     expect(e.taskIds.every(id => s.tasks.some(t => t.id === id))).toBe(true);
     expect(e.options.length).toBeGreaterThanOrEqual(2);
-    expect(e.options.every(o => o.cost >= 0 && o.delay >= 0)).toBe(true);
+    expect(e.options.every(o => o.delay >= 0)).toBe(true);
+    if (e.kind === 'risk') expect(e.options.every(o => o.cost >= 0)).toBe(true);
+    // An opportunity is a dilemma: a saving that costs time, or keep the plan.
+    else expect(e.options.some(o => o.cost < 0 && o.delay > 0) && e.options.some(o => o.cost === 0 && o.delay === 0)).toBe(true);
   });
 
   it('toolbar and app icons exist', () => {

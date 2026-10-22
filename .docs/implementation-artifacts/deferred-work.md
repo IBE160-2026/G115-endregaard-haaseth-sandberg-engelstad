@@ -9,7 +9,7 @@
   evidence: No test imports `main.ts` or `view3d.ts`; only checked over CDP (medium playthrough to the final report, no JS errors, light and dark).
 
 - source_spec: `.docs/implementation-artifacts/spec-v0-2-interactive-simulator.md`
-  summary: Team questions on game design. Should the "best" option be scored against the target (weeks + MNOK) instead of total cost? Should hired workers also count towards crowding? Should an event-chosen mode (overtime/hire) be locked for the rest of the discipline?
+  summary: (Resolved 2026-10-22, see the Spec Change Log in the v0.2 spec.) Team questions on game design. Should the "best" option be scored against the target (weeks + MNOK) instead of total cost? Should hired workers also count towards crowding? Should an event-chosen mode (overtime/hire) be locked for the rest of the discipline?
   evidence: maybe-false (medium if true). The frozen intent does not settle the rules. They change what the AI recommends and whether the base crew is always cheapest.
 
 - source_spec: `.docs/implementation-artifacts/spec-v0-2-interactive-simulator.md`

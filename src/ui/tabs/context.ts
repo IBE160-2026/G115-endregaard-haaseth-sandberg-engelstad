@@ -12,6 +12,8 @@ export interface TabContext {
   game?: GameState;
   /** Selected person in the org chart. */
   selected?: string;
+  /** The project manager's current staffing plan (empty when nothing would improve). */
+  plan?: import('../../engine/game').StaffingChange[];
 }
 
 /** Icon URL that also works when the app is served from a sub-path. */
