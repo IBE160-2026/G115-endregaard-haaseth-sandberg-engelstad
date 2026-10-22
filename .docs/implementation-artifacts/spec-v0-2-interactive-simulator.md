@@ -82,7 +82,7 @@ context:
 - [x] `src/ui/play.ts` -- the start screen (difficulty), play/pause/step, event dialog, status (week, cost against budget, forecast), final report.
 - [x] `src/ui/view3d.ts` -- the 3D window (three.js): basement in the pit, floors rising, facade, crane, water in the pit during the event.
 - [x] `src/main.ts`, `src/styles.css` -- wiring, the second window, taskbar.
-- [x] `changelog_G115.md`, `package.json` -- v0.2.
+- [x] `G115_Changelog.md` (was `changelog_G115.md`), `package.json` -- v0.2.
 
 **Acceptance Criteria:**
 - Given a new game on any difficulty, when it runs to the end with no decisions, then the final report appears with weeks and total.
