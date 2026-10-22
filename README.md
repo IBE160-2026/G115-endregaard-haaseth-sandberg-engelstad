@@ -88,6 +88,19 @@ Existing AI tools for project management recommend actions, but do not show a co
 
 These criteria are the group's own reading of "done"; there is no formal grading rubric from the instructor.
 
+## Kjør lokalt
+
+Requires [Node.js](https://nodejs.org/) 22.12 or newer. No API keys or accounts are needed.
+
+```bash
+npm install
+npm run dev     # serves the simulator at http://localhost:5173
+npm test        # runs the simulation engine's tests
+npm run build   # type-checks and builds to dist/
+```
+
+The simulator runs the fixed scenario *Regjeringskvartalet Light* (Appendix A of the product brief). The simulation engine is in `src/engine/` and has no UI code. The icons are generated with `npm run icons` from `assets/icons/generate.mjs`.
+
 ## Documentation and way of working
 
 - [Product brief](brief-G115-AI-prosjektledelse-simulering.md) — full description of the problem, solution and scope (status: draft)

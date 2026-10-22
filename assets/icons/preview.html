@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulator-ikoner</title>
+<style>
+  :root { --desk:#dfe7f2; --win:#f3f3f3; --card:#fbfbfb; --stroke:rgba(0,0,0,.08); --text:#1b1b1b; --sub:#5f5f5f; --accent:#0f6cbd; }
+  @media (prefers-color-scheme: dark) { :root { --desk:#1a2433; --win:#202020; --card:#2b2b2b; --stroke:rgba(255,255,255,.08); --text:#fff; --sub:#c5c5c5; --accent:#4cc2ff; } }
+  * { box-sizing:border-box; }
+  body { margin:0; min-height:100vh; padding:32px 16px; background:radial-gradient(ellipse at 20% 0%, #9fb9e0 0%, transparent 60%), var(--desk); font-family:'Segoe UI Variable Text','Segoe UI',system-ui,sans-serif; color:var(--text); }
+  .window { max-width:1100px; margin:0 auto; background:var(--win); border:1px solid var(--stroke); border-radius:8px; box-shadow:0 8px 32px rgba(0,0,0,.28); overflow:hidden; }
+  .titlebar { display:flex; align-items:center; gap:10px; height:40px; padding-left:14px; font-size:12px; }
+  .titlebar img { width:16px; height:16px; }
+  .titlebar .caption { margin-left:auto; display:flex; }
+  .titlebar .caption span { width:46px; height:40px; display:grid; place-items:center; font-size:10px; color:var(--sub); }
+  main { padding:8px 28px 28px; }
+  h1 { font:600 28px 'Segoe UI Variable Display','Segoe UI',sans-serif; margin:4px 0 20px; }
+  h2 { font:600 14px 'Segoe UI Variable Text','Segoe UI',sans-serif; margin:24px 0 8px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:4px; }
+  figure { margin:0; display:flex; flex-direction:column; align-items:center; gap:8px; padding:14px 8px; background:var(--card); border:1px solid var(--stroke); border-radius:6px; text-align:center; }
+  figcaption { font-size:12px; color:var(--sub); line-height:1.3; }
+</style>
+</head>
+<body>
+<div class="window">
+  <div class="titlebar"><img src="apps/schedule.svg" alt=""> Regjeringskvartalet Light – ikoner<div class="caption"><span>&#x2014;</span><span>&#x25A1;</span><span>&#x2715;</span></div></div>
+  <main>
+    <h1>Brikkene i simulatoren</h1>
+    <h2>Apper (faner)</h2>
+<div class="grid">
+<figure><img src="apps/people.svg" width="48" height="48" alt=""><figcaption>Menneskene</figcaption></figure>
+<figure><img src="apps/buildings.svg" width="48" height="48" alt=""><figcaption>Byggene</figcaption></figure>
+<figure><img src="apps/disciplines.svg" width="48" height="48" alt=""><figcaption>Disiplinene</figcaption></figure>
+<figure><img src="apps/budget.svg" width="48" height="48" alt=""><figcaption>Budsjett</figcaption></figure>
+<figure><img src="apps/schedule.svg" width="48" height="48" alt=""><figcaption>Fremdriftsplan</figcaption></figure>
+</div>
+<h2>Menneskene</h2>
+<div class="grid">
+<figure><img src="people/owner.svg" width="48" height="48" alt=""><figcaption>Prosjekteier</figcaption></figure>
+<figure><img src="people/project-manager.svg" width="48" height="48" alt=""><figcaption>Prosjektleder</figcaption></figure>
+<figure><img src="people/site-manager.svg" width="48" height="48" alt=""><figcaption>Site manager</figcaption></figure>
+<figure><img src="people/foreman.svg" width="48" height="48" alt=""><figcaption>Formann</figcaption></figure>
+<figure><img src="people/foreman-A-design.svg" width="48" height="48" alt=""><figcaption>Formann – Prosjektering og byggesøknad</figcaption></figure>
+<figure><img src="people/foreman-C-blasting.svg" width="48" height="48" alt=""><figcaption>Formann – Sprengning og graving</figcaption></figure>
+<figure><img src="people/foreman-D-foundations.svg" width="48" height="48" alt=""><figcaption>Formann – Fundamentering og spunt</figcaption></figure>
+<figure><img src="people/foreman-E-basement-structure.svg" width="48" height="48" alt=""><figcaption>Formann – Kjeller råbygg</figcaption></figure>
+<figure><img src="people/foreman-F-office-structure.svg" width="48" height="48" alt=""><figcaption>Formann – Kontor råbygg</figcaption></figure>
+<figure><img src="people/foreman-L-basement-fitout.svg" width="48" height="48" alt=""><figcaption>Formann – Kjeller innredning og teknikk</figcaption></figure>
+<figure><img src="people/foreman-G-roof-facade.svg" width="48" height="48" alt=""><figcaption>Formann – Tak og fasade</figcaption></figure>
+<figure><img src="people/foreman-O-lifts.svg" width="48" height="48" alt=""><figcaption>Formann – Heiser</figcaption></figure>
+<figure><img src="people/foreman-H-hvac.svg" width="48" height="48" alt=""><figcaption>Formann – VVS</figcaption></figure>
+<figure><img src="people/foreman-I-electrical.svg" width="48" height="48" alt=""><figcaption>Formann – Elkraft</figcaption></figure>
+<figure><img src="people/foreman-K-interior.svg" width="48" height="48" alt=""><figcaption>Formann – Innvendige arbeider</figcaption></figure>
+<figure><img src="people/foreman-J-automation.svg" width="48" height="48" alt=""><figcaption>Formann – Tele og automatisering</figcaption></figure>
+<figure><img src="people/foreman-N-handover.svg" width="48" height="48" alt=""><figcaption>Formann – Prøvedrift og overlevering</figcaption></figure>
+</div>
+<h2>Byggene</h2>
+<div class="grid">
+<figure><img src="buildings/bt1.svg" width="48" height="48" alt=""><figcaption>Byggetrinn 1 (ferdig 2026)</figcaption></figure>
+<figure><img src="buildings/bt1-a.svg" width="48" height="48" alt=""><figcaption>BT1 – A-blokka (nybygg)</figcaption></figure>
+<figure><img src="buildings/bt1-d.svg" width="48" height="48" alt=""><figcaption>BT1 – D-blokka (nybygg)</figcaption></figure>
+<figure><img src="buildings/bt1-h.svg" width="48" height="48" alt=""><figcaption>BT1 – Høyblokka (rehabilitert)</figcaption></figure>
+<figure><img src="buildings/bt1-basement.svg" width="48" height="48" alt=""><figcaption>BT1 – Kjelleranlegget</figcaption></figure>
+<figure><img src="buildings/bt2.svg" width="48" height="48" alt=""><figcaption>Byggetrinn 2</figcaption></figure>
+<figure><img src="buildings/bt2-c.svg" width="48" height="48" alt=""><figcaption>BT2 del I – C-blokka (nybygg)</figcaption></figure>
+<figure><img src="buildings/bt2-basement.svg" width="48" height="48" alt=""><figcaption>BT2 del I – Kjeller 2</figcaption></figure>
+<figure><img src="buildings/bt2-g.svg" width="48" height="48" alt=""><figcaption>BT2 del II – G-blokka (rehabilitering)</figcaption></figure>
+<figure><img src="buildings/bt3.svg" width="48" height="48" alt=""><figcaption>Byggetrinn 3</figcaption></figure>
+<figure><img src="buildings/bt3-e.svg" width="48" height="48" alt=""><figcaption>BT3 – E-blokka (nybygg)</figcaption></figure>
+<figure><img src="buildings/park.svg" width="48" height="48" alt=""><figcaption>BT2/BT3 – Parken</figcaption></figure>
+</div>
+<h2>Disiplinene</h2>
+<div class="grid">
+<figure><img src="disciplines/A-design.svg" width="48" height="48" alt=""><figcaption>A Prosjektering og byggesøknad</figcaption></figure>
+<figure><img src="disciplines/C-blasting.svg" width="48" height="48" alt=""><figcaption>C Sprengning og graving</figcaption></figure>
+<figure><img src="disciplines/D-foundations.svg" width="48" height="48" alt=""><figcaption>D Fundamentering og spunt</figcaption></figure>
+<figure><img src="disciplines/E-basement-structure.svg" width="48" height="48" alt=""><figcaption>E Kjeller råbygg</figcaption></figure>
+<figure><img src="disciplines/F-office-structure.svg" width="48" height="48" alt=""><figcaption>F Kontor råbygg</figcaption></figure>
+<figure><img src="disciplines/L-basement-fitout.svg" width="48" height="48" alt=""><figcaption>L Kjeller innredning og teknikk</figcaption></figure>
+<figure><img src="disciplines/G-roof-facade.svg" width="48" height="48" alt=""><figcaption>G Tak og fasade</figcaption></figure>
+<figure><img src="disciplines/O-lifts.svg" width="48" height="48" alt=""><figcaption>O Heiser</figcaption></figure>
+<figure><img src="disciplines/H-hvac.svg" width="48" height="48" alt=""><figcaption>H VVS</figcaption></figure>
+<figure><img src="disciplines/I-electrical.svg" width="48" height="48" alt=""><figcaption>I Elkraft</figcaption></figure>
+<figure><img src="disciplines/K-interior.svg" width="48" height="48" alt=""><figcaption>K Innvendige arbeider</figcaption></figure>
+<figure><img src="disciplines/J-automation.svg" width="48" height="48" alt=""><figcaption>J Tele og automatisering</figcaption></figure>
+<figure><img src="disciplines/N-handover.svg" width="48" height="48" alt=""><figcaption>N Prøvedrift og overlevering</figcaption></figure>
+</div>
+<h2>Risikoer</h2>
+<div class="grid">
+<figure><img src="risks/R1-weathered-rock.svg" width="48" height="48" alt=""><figcaption>R1 Forvitret fjell</figcaption></figure>
+<figure><img src="risks/R2-contaminated-soil.svg" width="48" height="48" alt=""><figcaption>R2 Forurenset grunn</figcaption></figure>
+<figure><img src="risks/R3-facade-delivery.svg" width="48" height="48" alt=""><figcaption>R3 Forsinket fasadeleveranse</figcaption></figure>
+<figure><img src="risks/R4-electrician-shortage.svg" width="48" height="48" alt=""><figcaption>R4 Mangel på elektrikere</figcaption></figure>
+<figure><img src="risks/R5-automation-integration.svg" width="48" height="48" alt=""><figcaption>R5 Integrasjonsfeil automasjon</figcaption></figure>
+</div>
+<h2>Beslutninger og arbeidsmodus</h2>
+<div class="grid">
+<figure><img src="decisions/resource-allocation.svg" width="48" height="48" alt=""><figcaption>Ressursallokering</figcaption></figure>
+<figure><img src="decisions/risk-response.svg" width="48" height="48" alt=""><figcaption>Risikorespons</figcaption></figure>
+<figure><img src="decisions/mode-normal.svg" width="48" height="48" alt=""><figcaption>Normaltid (1,0)</figcaption></figure>
+<figure><img src="decisions/mode-overtime.svg" width="48" height="48" alt=""><figcaption>Overtid (1,3)</figcaption></figure>
+<figure><img src="decisions/mode-hire.svg" width="48" height="48" alt=""><figcaption>Ekstra innleie (1,5)</figcaption></figure>
+<figure><img src="decisions/decision-point.svg" width="48" height="48" alt=""><figcaption>Beslutningspunkt (forgrening)</figcaption></figure>
+</div>
+<h2>Fremdriftsplan</h2>
+<div class="grid">
+<figure><img src="schedule/milestone.svg" width="48" height="48" alt=""><figcaption>Milepæl</figcaption></figure>
+</div>
+<h2>KI</h2>
+<div class="grid">
+<figure><img src="ai/ai-advisor.svg" width="48" height="48" alt=""><figcaption>KI-rådgiver</figcaption></figure>
+</div>
+  </main>
+</div>
+</body>
+</html>

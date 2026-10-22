@@ -1,0 +1,302 @@
+[
+  {
+    "category": "apps",
+    "file": "apps/people.svg",
+    "label": "Menneskene"
+  },
+  {
+    "category": "apps",
+    "file": "apps/buildings.svg",
+    "label": "Byggene"
+  },
+  {
+    "category": "apps",
+    "file": "apps/disciplines.svg",
+    "label": "Disiplinene"
+  },
+  {
+    "category": "apps",
+    "file": "apps/budget.svg",
+    "label": "Budsjett"
+  },
+  {
+    "category": "apps",
+    "file": "apps/schedule.svg",
+    "label": "Fremdriftsplan"
+  },
+  {
+    "category": "people",
+    "file": "people/owner.svg",
+    "label": "Prosjekteier"
+  },
+  {
+    "category": "people",
+    "file": "people/project-manager.svg",
+    "label": "Prosjektleder"
+  },
+  {
+    "category": "people",
+    "file": "people/site-manager.svg",
+    "label": "Site manager"
+  },
+  {
+    "category": "people",
+    "file": "people/foreman.svg",
+    "label": "Formann"
+  },
+  {
+    "category": "buildings",
+    "file": "buildings/bt1.svg",
+    "label": "Byggetrinn 1 (ferdig 2026)"
+  },
+  {
+    "category": "buildings",
+    "file": "buildings/bt1-a.svg",
+    "label": "BT1 – A-blokka (nybygg)"
+  },
+  {
+    "category": "buildings",
+    "file": "buildings/bt1-d.svg",
+    "label": "BT1 – D-blokka (nybygg)"
+  },
+  {
+    "category": "buildings",
+    "file": "buildings/bt1-h.svg",
+    "label": "BT1 – Høyblokka (rehabilitert)"
+  },
+  {
+    "category": "buildings",
+    "file": "buildings/bt1-basement.svg",
+    "label": "BT1 – Kjelleranlegget"
+  },
+  {
+    "category": "buildings",
+    "file": "buildings/bt2.svg",
+    "label": "Byggetrinn 2"
+  },
+  {
+    "category": "buildings",
+    "file": "buildings/bt2-c.svg",
+    "label": "BT2 del I – C-blokka (nybygg)"
+  },
+  {
+    "category": "buildings",
+    "file": "buildings/bt2-basement.svg",
+    "label": "BT2 del I – Kjeller 2"
+  },
+  {
+    "category": "buildings",
+    "file": "buildings/bt2-g.svg",
+    "label": "BT2 del II – G-blokka (rehabilitering)"
+  },
+  {
+    "category": "buildings",
+    "file": "buildings/bt3.svg",
+    "label": "Byggetrinn 3"
+  },
+  {
+    "category": "buildings",
+    "file": "buildings/bt3-e.svg",
+    "label": "BT3 – E-blokka (nybygg)"
+  },
+  {
+    "category": "buildings",
+    "file": "buildings/park.svg",
+    "label": "BT2/BT3 – Parken"
+  },
+  {
+    "category": "disciplines",
+    "file": "disciplines/A-design.svg",
+    "label": "A Prosjektering og byggesøknad"
+  },
+  {
+    "category": "disciplines",
+    "file": "disciplines/C-blasting.svg",
+    "label": "C Sprengning og graving"
+  },
+  {
+    "category": "disciplines",
+    "file": "disciplines/D-foundations.svg",
+    "label": "D Fundamentering og spunt"
+  },
+  {
+    "category": "disciplines",
+    "file": "disciplines/E-basement-structure.svg",
+    "label": "E Kjeller råbygg"
+  },
+  {
+    "category": "disciplines",
+    "file": "disciplines/F-office-structure.svg",
+    "label": "F Kontor råbygg"
+  },
+  {
+    "category": "disciplines",
+    "file": "disciplines/L-basement-fitout.svg",
+    "label": "L Kjeller innredning og teknikk"
+  },
+  {
+    "category": "disciplines",
+    "file": "disciplines/G-roof-facade.svg",
+    "label": "G Tak og fasade"
+  },
+  {
+    "category": "disciplines",
+    "file": "disciplines/O-lifts.svg",
+    "label": "O Heiser"
+  },
+  {
+    "category": "disciplines",
+    "file": "disciplines/H-hvac.svg",
+    "label": "H VVS"
+  },
+  {
+    "category": "disciplines",
+    "file": "disciplines/I-electrical.svg",
+    "label": "I Elkraft"
+  },
+  {
+    "category": "disciplines",
+    "file": "disciplines/K-interior.svg",
+    "label": "K Innvendige arbeider"
+  },
+  {
+    "category": "disciplines",
+    "file": "disciplines/J-automation.svg",
+    "label": "J Tele og automatisering"
+  },
+  {
+    "category": "disciplines",
+    "file": "disciplines/N-handover.svg",
+    "label": "N Prøvedrift og overlevering"
+  },
+  {
+    "category": "risks",
+    "file": "risks/R1-weathered-rock.svg",
+    "label": "R1 Forvitret fjell"
+  },
+  {
+    "category": "risks",
+    "file": "risks/R2-contaminated-soil.svg",
+    "label": "R2 Forurenset grunn"
+  },
+  {
+    "category": "risks",
+    "file": "risks/R3-facade-delivery.svg",
+    "label": "R3 Forsinket fasadeleveranse"
+  },
+  {
+    "category": "risks",
+    "file": "risks/R4-electrician-shortage.svg",
+    "label": "R4 Mangel på elektrikere"
+  },
+  {
+    "category": "risks",
+    "file": "risks/R5-automation-integration.svg",
+    "label": "R5 Integrasjonsfeil automasjon"
+  },
+  {
+    "category": "decisions",
+    "file": "decisions/resource-allocation.svg",
+    "label": "Ressursallokering"
+  },
+  {
+    "category": "decisions",
+    "file": "decisions/risk-response.svg",
+    "label": "Risikorespons"
+  },
+  {
+    "category": "decisions",
+    "file": "decisions/mode-normal.svg",
+    "label": "Normaltid (1,0)"
+  },
+  {
+    "category": "decisions",
+    "file": "decisions/mode-overtime.svg",
+    "label": "Overtid (1,3)"
+  },
+  {
+    "category": "decisions",
+    "file": "decisions/mode-hire.svg",
+    "label": "Ekstra innleie (1,5)"
+  },
+  {
+    "category": "decisions",
+    "file": "decisions/decision-point.svg",
+    "label": "Beslutningspunkt (forgrening)"
+  },
+  {
+    "category": "schedule",
+    "file": "schedule/milestone.svg",
+    "label": "Milepæl"
+  },
+  {
+    "category": "ai",
+    "file": "ai/ai-advisor.svg",
+    "label": "KI-rådgiver"
+  },
+  {
+    "category": "people",
+    "file": "people/foreman-A-design.svg",
+    "label": "Formann – Prosjektering og byggesøknad"
+  },
+  {
+    "category": "people",
+    "file": "people/foreman-C-blasting.svg",
+    "label": "Formann – Sprengning og graving"
+  },
+  {
+    "category": "people",
+    "file": "people/foreman-D-foundations.svg",
+    "label": "Formann – Fundamentering og spunt"
+  },
+  {
+    "category": "people",
+    "file": "people/foreman-E-basement-structure.svg",
+    "label": "Formann – Kjeller råbygg"
+  },
+  {
+    "category": "people",
+    "file": "people/foreman-F-office-structure.svg",
+    "label": "Formann – Kontor råbygg"
+  },
+  {
+    "category": "people",
+    "file": "people/foreman-L-basement-fitout.svg",
+    "label": "Formann – Kjeller innredning og teknikk"
+  },
+  {
+    "category": "people",
+    "file": "people/foreman-G-roof-facade.svg",
+    "label": "Formann – Tak og fasade"
+  },
+  {
+    "category": "people",
+    "file": "people/foreman-O-lifts.svg",
+    "label": "Formann – Heiser"
+  },
+  {
+    "category": "people",
+    "file": "people/foreman-H-hvac.svg",
+    "label": "Formann – VVS"
+  },
+  {
+    "category": "people",
+    "file": "people/foreman-I-electrical.svg",
+    "label": "Formann – Elkraft"
+  },
+  {
+    "category": "people",
+    "file": "people/foreman-K-interior.svg",
+    "label": "Formann – Innvendige arbeider"
+  },
+  {
+    "category": "people",
+    "file": "people/foreman-J-automation.svg",
+    "label": "Formann – Tele og automatisering"
+  },
+  {
+    "category": "people",
+    "file": "people/foreman-N-handover.svg",
+    "label": "Formann – Prøvedrift og overlevering"
+  }
+]
