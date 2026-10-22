@@ -6,26 +6,32 @@ The choices the AI (Claude Code) put to the group, with the group's reply word f
 
 **Open:** Should the project manager's staffing plan also become less reliable on Medium and Vanskelig? Today it is always right. Also to check: event prices, crowding 0.5, crew range 50–200 %, and the sources for the building facts.
 
-1. **Structure of the dilemma log.** Prompt: none (the group's own request).
+1. **Recommendations file.** Prompt: should the assessment be made into a shareable page, or should v0.3 start with forking?
+   Reply: "push reccomendations to G115_Reccomandations structured as the other two G115 .md files."
+   Result: `G115_Recommendations.md` (name spelled correctly), structured like the changelog.
+2. **Assessing how well the goals are met.** Prompt: none (the group's own request).
+   Reply: "vurder måloppnålese mot oppgavetekst etc."
+   Result: assessed against the instructor's feedback and the brief (the task description is not in the repo). Top priority is forking and side-by-side comparison.
+3. **Structure of the dilemma log.** Prompt: none (the group's own request).
    Reply: "structure G115_Dilemmas as G115_ Changelog"
    Result: the folder became this single file, structured like `G115_Changelog.md`.
-2. **Repository conventions.** Prompt: none (the group's own request).
+4. **Repository conventions.** Prompt: none (the group's own request).
    Reply: "push git for v.02 . always update changelog. rename Changelog_G115 to G115_Changelog and create G115_Dilemmas. to this folder always push your promts with our reply."
    Result: `G115_Changelog.md`; every prompt and reply is logged here and pushed with its change.
-3. **Game design after the review.** Prompt: best option = cheapest or both targets? Should hired workers crowd? Should a mode chosen at an event be locked? Late but within budget is hard to reach. Is that intended?
+5. **Game design after the review.** Prompt: best option = cheapest or both targets? Should hired workers crowd? Should a mode chosen at an event be locked? Late but within budget is hard to reach. Is that intended?
    Reply: "This should be dilemmas. Can be presentet shortly for player. yes, the project manager should mange so the staff is utilized betst possible way." / "yes, the game should be fun and suprising" / "no," / "yes, but it should be possible. implement a "story solution" for each game."
    Result: a dilemma line in events, the AI scored against both targets, a PM staffing plan, hired workers crowd, opportunities, and a story solution per game.
-4. **Version in the game.** Prompt: none (the group's own request).
+6. **Version in the game.** Prompt: none (the group's own request).
    Reply: "include version in game. this will be v0.2"
    Result: the version comes from `package.json` and shows in the title bar, the taskbar, the start dialog and the final report.
-5. **Independent review.** Prompt: run 3 reviewer agents (bugs, edge cases, test gaps)?
+7. **Independent review.** Prompt: run 3 reviewer agents (bugs, edge cases, test gaps)?
    Reply: "Yes, run 3 reviewers (Recommended)"
    Result: 30 findings; 20 fixed, the rest deferred or rejected with a reason in the spec's triage log.
-6. **Approving the spec.** Prompt: approve and build now / approve and stop / review the spec first.
+8. **Approving the spec.** Prompt: approve and build now / approve and stop / review the spec first.
    Reply: "1"
-7. **How the game works.** Prompt: AI roles rule-based or LLM? Real A-blokka size or the Light numbers? Auto-play or manual? What should difficulty change?
+9. **How the game works.** Prompt: AI roles rule-based or LLM? Real A-blokka size or the Light numbers? Auto-play or manual? What should difficulty change?
    Reply: "Rule-based (Recommended)" / "Keep the Light numbers (Recommended)" / "Auto-play with pause (Recommended)" / "Less reliable AI advice"
-8. **Split v0.2?** Prompt: four parts that could each be built on their own (game loop, org chart, 3D, Byggene). Start with the game loop?
+10. **Split v0.2?** Prompt: four parts that could each be built on their own (game loop, org chart, 3D, Byggene). Start with the game loop?
    Reply: "fortsett med alle målene nå. Dette vil bli v.02 og det vil gi oss mer å diskutere for senere input."
 
 ## v0.1 – 2026-10-22

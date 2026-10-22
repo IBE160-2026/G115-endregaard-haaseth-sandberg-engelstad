@@ -7,7 +7,7 @@ Major iterations of the *Regjeringskvartalet Light* project management simulator
 Playable: the player is the project owner and runs the build week by week to completion (play/pause, 1×/2×/4×) against 283.10 MNOK and 114 weeks. Every game is a story with a known solution.
 Rule-based AI roles in an interactive org chart: events are dilemmas (money against time), the advice is scored against both targets, and the project manager offers a staffing plan.
 Easy/medium/hard sets how reliable the advice is. Scenario buttons (e.g. "Vann i kjeller") and opportunities; crew choice where crowding applies to own and hired workers.
-A 3D window shows A-blokka as built (11 floors); Byggene has real facts; the version is shown in the game. 79 tests. AI prompts and the group's replies are logged in G115_Dilemmas.md.
+A 3D window shows A-blokka as built (11 floors); Byggene has real facts; the version is shown in the game. 79 tests. Prompts and replies are logged in G115_Dilemmas.md; the assessment against the goals is in G115_Recommendations.md.
 
 ## v0.1 – 2026-10-22
 
