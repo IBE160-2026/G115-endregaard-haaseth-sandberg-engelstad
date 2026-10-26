@@ -2,6 +2,14 @@
 
 The choices the AI (Claude Code) put to the group, with the group's reply word for word, one section per simulator version (newest first). Each entry has at most four lines: the prompt, the reply, and what came of it.
 
+## v0.4 – 2026-10-27
+
+**Open:** Is a full-screen 3D view with panels on top the right base for the next versions? Day and night, seasons and the number of figures are presentation only; check that they do not distract from the decisions. The construction start in January (which decides when it snows) is an assumption.
+
+1. **Makeover and a new agent.** Prompt: none (the group's own request).
+   Reply: "spillet er alt for kjedelig. Det er bare masse masse tekst, ingen visualisering av hva som skjer. Bygg 3d modellen sammen med spillet, og ikke som et lite vindu.Ikke bruk windows explorer som base - kun fargene. Gi hele spillet en enorm makeover. Kai kan ansette en ny AI agent som er best på 3D og utforming av spill. Kai må fortsette å oppgradere spillet."
+   Result: v0.4 with the 3D site as the game screen, the Fluent colours without the Windows layout, and the agent Vera (`g115-agent-3d-artist`) hired by Kai. Kai has a standing order to keep upgrading.
+
 ## v0.3 – 2026-10-26
 
 **Open:** All prices, delays and chances of the 16 new events are proposals for the team to check. Also to check: the strategy options (e.g. prefab on F at 5 MNOK and −30 % hours) and the v0.2 event chances that were lowered to keep about 12–15 decisions per game. Scenario buttons now fire each event once (to stop free savings from pressing an opportunity again and again). In v0.2 a button could be pressed again: should risks still be repeatable?

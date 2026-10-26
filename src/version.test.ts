@@ -3,8 +3,8 @@ import { version } from '../package.json';
 import { VERSION } from './version';
 
 describe('VERSION', () => {
-  it('is v0.3, from package.json', () => {
-    expect(version).toBe('0.3.0');
-    expect(VERSION).toBe('v0.3');
+  it('is v0.4, from package.json', () => {
+    expect(version).toBe('0.4.0');
+    expect(VERSION).toBe('v0.4');
   });
 });

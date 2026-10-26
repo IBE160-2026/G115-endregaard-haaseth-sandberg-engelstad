@@ -1,12 +1,11 @@
-// Play controls, scenario buttons, the message feed and dialogs (start, decision, fork card, final report).
+// The message feed and dialogs (start, decision, fork card, final report).
 import { CHAPTERS } from '../engine/chapters';
-import { EVENTS, KIND_LABEL, eventById, type EventOption } from '../engine/events';
+import { KIND_LABEL, eventById, type EventOption } from '../engine/events';
 import {
-  canTrigger, forecast, spent, verdict,
+  forecast, verdict,
   type Decision, type Difficulty, type GameState, type LogEntry, type Outcome, type StaffingChange, type Story, type Verdict,
 } from '../engine/game';
 import type { Scenario } from '../engine/scenario';
-import type { SimulationResult } from '../engine/simulate';
 import { budgetOf } from './budgetLines';
 import { formatDelta, formatFactor, formatMnok } from './format';
 import { icon } from './tabs/context';
@@ -18,7 +17,6 @@ export interface PlayUi {
   playing: boolean;
   speed: Speed;
   menu: boolean;
-  show3d: boolean;
   finalSeen: boolean;
   /** How many fork cards the player has closed (one per decision). */
   forkSeen: number;
@@ -29,40 +27,6 @@ export const DIFFICULTIES: { id: Difficulty; label: string; text: string }[] = [
   { id: 'medium', label: 'Medium', text: 'AI-rollene har rett omtrent 8 av 10 ganger.' },
   { id: 'hard', label: 'Vanskelig', text: 'AI-rollene har rett omtrent 6 av 10 ganger. Tenk selv.' },
 ];
-
-const btn = (action: string, label: string, ic: string, extra = '') =>
-  `<button type="button" class="tool" data-action="${action}" title="${label}" ${extra}>${icon(ic, 20)}<span>${label}</span></button>`;
-
-export function renderToolbar(s: Scenario, g: GameState | undefined, f: SimulationResult, ui: PlayUi): string {
-  const off = !g || g.done || !!g.pending ? 'disabled' : '';
-  const week = g?.week ?? 0;
-  const share = Math.min(1, week / Math.max(f.weeks, 1));
-  const total = budgetOf(f).total;
-  const speeds = ([1, 2, 4] as Speed[]).map(v =>
-    `<button type="button" data-action="speed" data-speed="${v}" aria-pressed="${ui.speed === v}">${v}×</button>`).join('');
-  const menu = ui.menu && g
-    ? `<div class="menu" role="menu">${EVENTS.filter(e => e.button).map(e =>
-      `<button type="button" role="menuitem" data-action="trigger" data-event="${e.id}"${canTrigger(s, g, e.id) ? '' : ' disabled'}>${icon(e.icon, 20)}<span>${e.title}<small>${e.taskIds.join(', ')}</small></span></button>`).join('')}</div>`
-    : '';
-  return `<div class="toolbar">
-    ${ui.playing ? btn('pause', 'Pause', 'controls/pause.svg') : btn('play', 'Spill av', 'controls/play.svg', off)}
-    ${btn('step', 'Neste uke', 'controls/step.svg', off)}
-    <div class="seg speed" role="group" aria-label="Hastighet">${speeds}</div>
-    <div class="weekbar" title="Uke ${week} av prognose ${f.weeks}">
-      <span>Uke <b>${week}</b> / ${f.weeks}</span><div class="progress wide"><i style="width:${Math.round(share * 100)}%"></i></div>
-    </div>
-    <div class="money">
-      <span>Påløpt <b>${formatMnok(g ? spent(g) : 0)}</b></span>
-      <span class="${total > s.target.total + 0.005 ? 'bad' : 'good'}">Prognose <b>${formatMnok(total)}</b> / ${formatMnok(s.target.total)}</span>
-      <span class="${f.weeks > s.target.weeks ? 'bad' : 'good'}"><b>${f.weeks}</b> / ${s.target.weeks} uker</span>
-    </div>
-    <div class="tool-group">
-      <div class="menu-wrap">${btn('menu', 'Scenarioer', 'risks/R6-water.svg', `aria-expanded="${ui.menu}" ${g && !g.done ? '' : 'disabled'}`)}${menu}</div>
-      ${btn('toggle3d', '3D', 'apps/view3d.svg', `aria-pressed="${ui.show3d}"`)}
-      ${btn('new', 'Nytt spill', 'controls/new-game.svg')}
-    </div>
-  </div>`;
-}
 
 const dialog = (inner: string, label: string) =>
   `<div class="backdrop"><div class="dialog" role="dialog" aria-modal="true" aria-label="${label}">${inner}</div></div>`;

@@ -41,7 +41,7 @@ The loop repeats at every decision point until the project is complete.
 - Resource allocation
 - Change approval
 
-In the simulator (v0.3) all four are playable: strategy choices come when the key disciplines start, risks and opportunities come at random, crews and work modes are set per discipline, and change requests can be approved now or deferred at a higher cost later.
+In the simulator (v0.4, a full-screen 3D building site with the HUD on top) all four are playable: strategy choices come when the key disciplines start, risks and opportunities come at random, crews and work modes are set per discipline, and change requests can be approved now or deferred at a higher cost later.
 
 ### Scenarios
 

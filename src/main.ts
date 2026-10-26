@@ -1,98 +1,78 @@
-// The in-game Windows-style desktop: the app window with five tabs, a 3D window and a taskbar.
+// The game screen: the 3D building site fills the window, with the HUD floating on top.
 import './styles.css';
 import { aiPath, applyPlan, canTrigger, choose, findStory, forecast, newGame, outcome, pmPlan, setCrew, setMode, step, triggerEvent, type Difficulty, type GameState, type Outcome, type Story } from './engine/game';
 import { scenario, type Mode } from './engine/scenario';
 import { simulate } from './engine/simulate';
 import { budgetOf } from './ui/budgetLines';
-import { formatMnok } from './ui/format';
-import { dialogFor, noteForecastChange, renderEvent, renderFeed, renderFinal, renderFork, renderStart, renderToolbar, type ForecastNote, type PlayUi, type Speed } from './ui/play';
-import { criticalList, icon, type TabContext } from './ui/tabs/context';
+import { TABS, renderDock, renderRail, renderTop, type Flash, type TabId } from './ui/hud';
+import { dialogFor, noteForecastChange, renderEvent, renderFeed, renderFinal, renderFork, renderStart, type ForecastNote, type PlayUi, type Speed } from './ui/play';
+import { criticalList, type TabContext } from './ui/tabs/context';
 import { renderBuildings } from './ui/tabs/buildings';
 import { renderBudget } from './ui/tabs/budget';
 import { renderDisciplines } from './ui/tabs/disciplines';
 import { renderPeople } from './ui/tabs/people';
 import { renderSchedule } from './ui/tabs/schedule';
-import type { View3d } from './ui/view3d';
-import { VERSION } from './version';
+import { createView3d, type View3d } from './ui/view3d';
 
-type TabId = 'people' | 'buildings' | 'disciplines' | 'budget' | 'schedule';
-
-const TABS: { id: TabId; label: string; render: (ctx: TabContext) => string }[] = [
-  { id: 'people', label: 'Menneskene', render: renderPeople },
-  { id: 'buildings', label: 'Byggene', render: renderBuildings },
-  { id: 'disciplines', label: 'Disiplinene', render: renderDisciplines },
-  { id: 'budget', label: 'Budsjett', render: renderBudget },
-  { id: 'schedule', label: 'Fremdriftsplan', render: renderSchedule },
-];
-
-// Title-bar glyphs as inline SVG, so they render on every OS (not only with Segoe Fluent Icons).
-const glyph = (d: string) => `<svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1">${d}</svg>`;
-const CAPTION = {
-  min: glyph('<path d="M0 5.5h10"/>'),
-  max: glyph('<rect x=".5" y=".5" width="9" height="9" rx="1"/>'),
-  close: glyph('<path d="M.5 .5l9 9M9.5 .5l-9 9"/>'),
+const RENDER: Record<TabId, (ctx: TabContext) => string> = {
+  people: renderPeople, buildings: renderBuildings, disciplines: renderDisciplines, budget: renderBudget, schedule: renderSchedule,
 };
 const WEEK_MS = 600;
 
 const baseline = simulate(scenario);
-const state: { tab: TabId; game?: GameState; story?: Story; ai?: Story; selected: string; resume: boolean } & PlayUi = {
-  tab: 'people', selected: 'owner', resume: false,
-  playing: false, speed: 1, menu: false, show3d: false, finalSeen: false, forkSeen: 0,
+const state: { panel: TabId | null; game?: GameState; story?: Story; ai?: Story; selected: string; resume: boolean; feedOpen: boolean; feedSeen: number } & PlayUi = {
+  panel: null, selected: 'owner', resume: false, feedOpen: window.innerWidth > 1100, feedSeen: 0,
+  playing: false, speed: 1, menu: false, finalSeen: false, forkSeen: 0,
 };
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 app.innerHTML = `
-  <div class="desktop">
-    <div class="window main-window">
-      <header class="titlebar">
-        ${icon('apps/schedule.svg', 16)}<span>${scenario.name} – Prosjektsimulator ${VERSION}</span>
-        <div class="caption" aria-hidden="true"><span>${CAPTION.min}</span><span>${CAPTION.max}</span><span class="close">${CAPTION.close}</span></div>
-      </header>
-      <div id="toolbar"></div>
-      <div class="body">
-        <nav class="nav" role="tablist" aria-label="Faner">
-          ${TABS.map(t => `<button type="button" role="tab" id="tab-${t.id}" aria-controls="tabpanel" data-tab="${t.id}">${icon(`apps/${t.id}.svg`, 20)}<span>${t.label}</span></button>`).join('')}
-        </nav>
-        <main class="content" role="tabpanel" id="tabpanel">
-          <h1 id="tab-title"></h1>
-          <div id="tab-body"></div>
-        </main>
-        <aside class="feed" id="feed" aria-label="Meldinger"></aside>
-      </div>
-      <footer class="statusbar"></footer>
-      <div id="dialog"></div>
-    </div>
-    <div class="window win3d" hidden>
-      <header class="titlebar" data-drag>
-        ${icon('apps/view3d.svg', 16)}<span>3D-byggeplass – A-blokka</span><span class="win3d-week" id="week3d"></span>
-        <div class="caption"><span class="close" data-action="toggle3d" role="button" aria-label="Lukk 3D">${CAPTION.close}</span></div>
-      </header>
-      <div class="view3d" id="view3d"></div>
-    </div>
-    <div class="taskbar">
-      <div class="apps">
-        ${TABS.map(t => `<button type="button" data-tab="${t.id}" title="${t.label}">${icon(`apps/${t.id}.svg`, 24)}</button>`).join('')}
-        <button type="button" data-action="toggle3d" title="3D-byggeplass" id="task3d">${icon('apps/view3d.svg', 24)}</button>
-      </div>
-      <div class="tray"><span class="version" title="Simulatorversjon">${VERSION}</span><span id="clock"></span></div>
-    </div>
+  <div class="game">
+    <div class="stage" id="stage"></div>
+    <div class="vignette" aria-hidden="true"></div>
+    <header class="hud-top glass" id="top"></header>
+    <nav class="rail glass" id="rail" aria-label="Paneler"></nav>
+    <section class="drawer glass" id="drawer" role="region" aria-labelledby="tab-title" hidden>
+      <header class="drawer-head"><h1 id="tab-title"></h1><button type="button" class="icon-btn" data-action="close-panel" aria-label="Lukk panel">✕</button></header>
+      <div class="drawer-body" id="tab-body"></div>
+    </section>
+    <aside class="feed glass" id="feed" aria-label="Meldinger"></aside>
+    <div class="ticker glass" id="ticker"></div>
+    <div class="dock glass" id="dock"></div>
+    <div id="dialog"></div>
   </div>`;
 
 const $ = <T extends HTMLElement>(sel: string) => app.querySelector<T>(sel)!;
+const stage = $<HTMLDivElement>('#stage');
+const top = $<HTMLElement>('#top');
+const rail = $<HTMLElement>('#rail');
+const drawer = $<HTMLElement>('#drawer');
 const title = $<HTMLHeadingElement>('#tab-title');
 const body = $<HTMLDivElement>('#tab-body');
-const statusbar = $<HTMLElement>('.statusbar');
-const panel = $<HTMLElement>('#tabpanel');
-const toolbar = $<HTMLDivElement>('#toolbar');
-const dialogHost = $<HTMLDivElement>('#dialog');
 const feed = $<HTMLElement>('#feed');
-const win3d = $<HTMLDivElement>('.win3d');
+const ticker = $<HTMLElement>('#ticker');
+const dock = $<HTMLDivElement>('#dock');
+const dialogHost = $<HTMLDivElement>('#dialog');
+
 let view: View3d | null = null;
-let viewLoading: Promise<View3d> | null = null;
-/** Week and state the 3D scene was last built for, so clicks elsewhere do not rebuild it. */
+try {
+  view = createView3d(stage);
+} catch {
+  stage.innerHTML = '<p class="stage-fallback">3D-byggeplassen krever WebGL. Spillet fungerer, men uten bilde av byggeplassen.</p>';
+}
+/** Week and state the 3D scene was last updated for. */
 let viewKey = '';
 
-/** A selector for the focused control, so focus survives the re-render. */
+/** Only touches the DOM when the HTML really changed (keeps focus, hover and animations). */
+const shownHtml = new WeakMap<HTMLElement, string>();
+function setHtml(el: HTMLElement, html: string): boolean {
+  if (shownHtml.get(el) === html) return false;
+  el.innerHTML = html;
+  shownHtml.set(el, html);
+  return true;
+}
+
+/** A selector for the focused control, so focus survives a re-render. */
 function focusKey(): string | null {
   const el = document.activeElement as HTMLElement | null;
   if (!el || !app.contains(el) || el.tagName !== 'BUTTON') return null;
@@ -100,55 +80,73 @@ function focusKey(): string | null {
   if (d.task && d.mode) return `[data-task="${d.task}"][data-mode="${d.mode}"]`;
   if (d.crewTask) return `[data-crew-task="${d.crewTask}"][title="${el.title}"]`;
   if (d.person) return `[data-person="${d.person}"]`;
+  if (d.tab) return `.rail [data-tab="${d.tab}"]`;
   if (d.action === 'play' || d.action === 'pause') return '[data-action="play"], [data-action="pause"]';
   if (d.action === 'speed') return `[data-action="speed"][data-speed="${d.speed}"]`;
-  if (d.action) return `.toolbar [data-action="${d.action}"]`;
+  if (d.action) return `[data-action="${d.action}"]`;
   return null;
 }
 
+let prevForecast: Outcome | null = null;
 function render() {
   const key = focusKey();
   const orgScroll = app.querySelector<HTMLElement>('.org')?.scrollLeft ?? 0;
   const g = state.game;
   const result = g ? forecast(scenario, g) : baseline;
-  const tab = TABS.find(t => t.id === state.tab)!;
-  title.textContent = tab.label;
-  // The plan is only worked out where it is shown.
-  const plan = g && (state.tab === 'disciplines' || (state.tab === 'people' && state.selected === 'pm')) ? pmPlan(scenario, g) : [];
-  body.innerHTML = tab.render({ scenario, modes: {}, result, baseline, game: g, selected: state.selected, plan });
-  const org = app.querySelector<HTMLElement>('.org');
-  if (org) org.scrollLeft = orgScroll;
-  toolbar.innerHTML = renderToolbar(scenario, g, result, state);
-  panel.setAttribute('aria-labelledby', `tab-${tab.id}`);
-  app.querySelectorAll<HTMLButtonElement>('[data-tab]').forEach(b => {
-    const active = b.dataset.tab === state.tab;
-    b.classList.toggle('active', active);
-    if (b.getAttribute('role') === 'tab') b.setAttribute('aria-selected', String(active));
-  });
-  $('#task3d').classList.toggle('active', state.show3d);
-  statusbar.innerHTML = `<span>${g ? `Uke <b>${g.week}</b>` : 'Ikke startet'}</span>
-    <span>Prognose <b>${result.weeks} uker</b> · <b>${formatMnok(budgetOf(result).total)} MNOK</b></span>
-    <span class="crit">Kritiske aktiviteter ${criticalList(result)}</span>
-    ${g ? `<span class="log">${g.log.slice(-1).map(l => `Uke ${l.week}: ${l.text}`).join('')}</span>` : ''}`;
+  const total = budgetOf(result).total;
 
-  feed.innerHTML = renderFeed(scenario, g);
+  // The gauges flash when a choice or an event moves the forecast.
+  const flash: Flash = {};
+  if (prevForecast && g) {
+    if (Math.round(total * 100) !== Math.round(prevForecast.total * 100)) flash.money = total > prevForecast.total ? 'up' : 'down';
+    if (result.weeks !== prevForecast.weeks) flash.weeks = result.weeks > prevForecast.weeks ? 'up' : 'down';
+  }
+  prevForecast = g ? { weeks: result.weeks, total } : null;
+  setHtml(top, renderTop(scenario, g, result, flash));
+
+  if (state.feedOpen && g) state.feedSeen = g.log.length;
+  setHtml(rail, renderRail(state.panel, state.feedOpen, g && !state.feedOpen ? Math.min(99, g.log.length - state.feedSeen) : 0));
+
+  drawer.hidden = !state.panel;
+  if (state.panel) {
+    title.textContent = TABS.find(t => t.id === state.panel)!.label;
+    // The plan is only worked out where it is shown.
+    const plan = g && (state.panel === 'disciplines' || (state.panel === 'people' && state.selected === 'pm')) ? pmPlan(scenario, g) : [];
+    setHtml(body, RENDER[state.panel]({ scenario, modes: {}, result, baseline, game: g, selected: state.selected, plan }));
+    const org = app.querySelector<HTMLElement>('.org');
+    if (org) org.scrollLeft = orgScroll;
+  }
+
+  feed.hidden = !state.feedOpen;
+  if (state.feedOpen) setHtml(feed, renderFeed(scenario, g, 30));
+  setHtml(ticker, g ? `<span>Kritisk linje</span><b>${criticalList(result).split(', ').join(' → ')}</b>` : '<span>Velg vanskelighetsgrad for å starte</span>');
+  setHtml(dock, renderDock(scenario, g, state));
+
   // The AI path is played once per game, when the game is done.
   if (g?.done && !state.ai) state.ai = aiPath(scenario, g.difficulty, g.seed);
   const which = dialogFor(g, state);
-  dialogHost.innerHTML = which === 'start' ? renderStart(scenario)
+  dialogHost.className = which === 'event' || which === 'fork' ? 'host-sheet' : which ? 'host-center' : '';
+  const changed = setHtml(dialogHost, which === 'start' ? renderStart(scenario)
     : which === 'fork' ? renderFork(scenario, g!.decisions[state.forkSeen])
     : which === 'event' ? renderEvent(scenario, g!)
     : which === 'final' ? renderFinal(scenario, g!, state.story, state.ai)
-    : '';
-  const nextKey = g ? `${g.seed}:${g.week}:${g.pending?.eventId ?? ''}:${g.done}` : 'none';
-  if (state.show3d && view && nextKey !== viewKey) {
-    viewKey = nextKey;
-    view.update(scenario, g);
-    $('#week3d').textContent = g ? `Uke ${g.week}` : '';
+    : '');
+
+  if (view) {
+    // A side sheet covers the right of the screen: move the action into the free part.
+    const sheet = dialogHost.querySelector<HTMLElement>('.host-sheet .dialog');
+    view.setInset(sheet && window.innerWidth > 720 ? sheet.offsetWidth : 0);
+    const nextKey = g ? `${g.seed}:${g.week}:${g.pending?.eventId ?? ''}:${g.done}:${g.decisions.length}:${g.log.length}:${g.tasks.map(t => t.mode).join('')}` : 'none';
+    if (nextKey !== viewKey) {
+      viewKey = nextKey;
+      view.update(scenario, g);
+    }
   }
+
   const again = key ? app.querySelector<HTMLElement>(key) : null;
   if (again) again.focus();
-  else dialogHost.querySelector<HTMLElement>('.dialog button')?.focus();
+  // A new dialog takes focus without scrolling away from its heading.
+  else if (changed) dialogHost.querySelector<HTMLElement>('.dialog button')?.focus({ preventScroll: true });
 }
 
 // Time: one week per tick while playing; a decision pauses until the owner has chosen.
@@ -188,28 +186,6 @@ function noteForecast(g: GameState, before: Outcome) {
   lastNote = next.note;
 }
 
-async function toggle3d() {
-  state.show3d = !state.show3d;
-  win3d.hidden = !state.show3d;
-  view?.setActive(state.show3d);
-  if (state.show3d && !view) {
-    try {
-      // three.js is only loaded when the 3D window is opened (once, even on fast double clicks).
-      viewLoading ??= import('./ui/view3d').then(m => m.createView3d($('#view3d')));
-      view = await viewLoading;
-      view.setActive(state.show3d);
-    } catch {
-      viewLoading = null;
-      state.show3d = false;
-      win3d.hidden = true;
-      $('#week3d').textContent = '';
-      alert('3D-visningen kunne ikke startes (krever WebGL).');
-    }
-  }
-  viewKey = '';
-  render();
-}
-
 function startGame(difficulty: Difficulty) {
   setPlaying(false);
   // Every game is a story that can be solved within both targets.
@@ -218,8 +194,13 @@ function startGame(difficulty: Difficulty) {
   state.ai = undefined;
   state.finalSeen = false;
   state.forkSeen = 0;
+  state.feedSeen = 0;
   state.resume = false;
   state.menu = false;
+  prevForecast = null;
+  render();
+  // Straight into the build: the clock starts running.
+  setPlaying(true);
   render();
 }
 
@@ -228,7 +209,8 @@ app.addEventListener('click', e => {
   const g = state.game;
   const tabBtn = target.closest<HTMLButtonElement>('[data-tab]');
   if (tabBtn) {
-    state.tab = tabBtn.dataset.tab as TabId;
+    const id = tabBtn.dataset.tab as TabId;
+    state.panel = state.panel === id ? null : id;
     render();
     return;
   }
@@ -266,6 +248,7 @@ app.addEventListener('click', e => {
       state.game = undefined;
       state.ai = undefined;
       state.resume = false;
+      state.panel = null;
       break;
     case 'play': setPlaying(true); break;
     case 'pause': setPlaying(false); break;
@@ -275,6 +258,9 @@ app.addEventListener('click', e => {
       if (state.playing) setPlaying(true);
       break;
     case 'menu': state.menu = !state.menu; break;
+    case 'feed': state.feedOpen = !state.feedOpen; break;
+    case 'close-panel': state.panel = null; break;
+    case 'camera': view?.resetCamera(); break;
     case 'trigger':
       if (g && canTrigger(scenario, g, action.dataset.event!)) {
         state.resume = state.playing;
@@ -309,42 +295,52 @@ app.addEventListener('click', e => {
         noteForecast(g, before);
       }
       break;
-    case 'toggle3d': void toggle3d(); return;
   }
   render();
 });
 
-// The 3D window can be moved by its title bar.
-const drag = win3d.querySelector<HTMLElement>('[data-drag]')!;
-drag.addEventListener('pointerdown', e => {
-  if ((e.target as HTMLElement).closest('[data-action]')) return;
-  const start = { x: e.clientX, y: e.clientY, left: win3d.offsetLeft, top: win3d.offsetTop };
-  drag.setPointerCapture(e.pointerId);
-  const move = (m: PointerEvent) => {
-    const maxLeft = window.innerWidth - 120;
-    win3d.style.left = `${Math.min(maxLeft, Math.max(-win3d.offsetWidth + 120, start.left + m.clientX - start.x))}px`;
-    win3d.style.top = `${Math.max(0, start.top + m.clientY - start.y)}px`;
-    win3d.style.right = win3d.style.bottom = "auto";
-  };
-  const up = () => {
-    drag.removeEventListener('pointermove', move);
-    drag.removeEventListener('pointerup', up);
-    drag.removeEventListener('pointercancel', up);
-  };
-  drag.addEventListener('pointermove', move);
-  drag.addEventListener('pointerup', up);
-  drag.addEventListener('pointercancel', up);
+// Keyboard: space plays/pauses, N steps, 1/2/4 set the speed, C resets the camera, M the messages, Esc closes.
+window.addEventListener('keydown', e => {
+  const el = e.target as HTMLElement;
+  if (e.ctrlKey || e.metaKey || e.altKey || el.closest('input, textarea, select')) return;
+  const g = state.game;
+  const free = g && !g.done && !g.pending;
+  const k = e.key.toLowerCase();
+  if (k === ' ' && el.tagName !== 'BUTTON') {
+    if (!free) return;
+    e.preventDefault();
+    setPlaying(!state.playing);
+  } else if (k === 'n' && free) step(scenario, g!);
+  else if (k === '1' || k === '2' || k === '4') {
+    state.speed = Number(k) as Speed;
+    if (state.playing) setPlaying(true);
+  } else if (k === 'c') view?.resetCamera();
+  else if (k === 'm') state.feedOpen = !state.feedOpen;
+  else if (k === 'escape') { state.panel = null; state.menu = false; }
+  else return;
+  render();
 });
 
-// Light/dark switch: rebuild the 3D scene so its background follows the theme.
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { viewKey = ''; render(); });
-
-const clock = $<HTMLSpanElement>('#clock');
-const tickClock = () => {
-  const now = new Date();
-  clock.innerHTML = `${now.toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' })}<br>${now.toLocaleDateString('nb-NO')}`;
-};
-tickClock();
-setInterval(tickClock, 30_000);
+// Pause the 3D loop while the tab is hidden.
+document.addEventListener('visibilitychange', () => view?.setActive(!document.hidden));
+window.addEventListener('resize', () => render());
 
 render();
+
+// Demo and presentation: ?uke=40 starts an easy game and fast-forwards to that week, following the Prosjektleder;
+// &hendelse=water then raises that event (any scenario button id).
+const params = new URLSearchParams(location.search);
+const demoWeek = Number(params.get('uke'));
+if (demoWeek > 0) {
+  startGame('easy');
+  setPlaying(false);
+  const g = state.game!;
+  while (!g.done && g.week < demoWeek) {
+    if (g.pending) choose(scenario, g, g.pending.recommended);
+    else step(scenario, g);
+  }
+  state.forkSeen = g.decisions.length;
+  const ev = params.get('hendelse');
+  if (ev && canTrigger(scenario, g, ev)) triggerEvent(scenario, g, ev);
+  render();
+}

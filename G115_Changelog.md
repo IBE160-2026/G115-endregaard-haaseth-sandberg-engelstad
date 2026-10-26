@@ -2,6 +2,13 @@
 
 Major iterations of the *Regjeringskvartalet Light* project management simulator. Each entry has a summary of at most four lines.
 
+## v0.4 – 2026-10-27
+
+Makeover: the 3D site now fills the whole screen and is the game. The HUD sits on top as glass panels in the Fluent colours (week and gauges for money and time, a panel rail, the message feed, a play dock). The Windows desktop, window frame and taskbar are gone.
+A living site: progress grows week by week; the crane slews and lifts, workers move in hi-vis (hired workers in blue), trucks drive past, rock is blasted, welders spark, snow falls in winter, and day turns to night with lit floors. The city and Høyblokka surround the site.
+Events can be seen: the camera flies to the decision, with a beacon coloured by kind, water in the pit, the crane swaying in wind, red beacons over stalls, and choices that show on the building (solar panels, prefab, pump, bollards). The AI roles speak in speech bubbles where they stand.
+Kai hired Vera (🎨, 3D art director and game designer). Shortcuts (space, N, 1/2/4, C, M, Esc) and a demo link (`?uke=40&hendelse=water`). 171 tests (9 new for the scene state).
+
 ## v0.3 – 2026-10-27
 
 More story: six chapters opened by the Prosjektleder, 4 strategy choices that always come when C, F, H and N start, change requests, follow-ups and delayed consequences (16 new events, about 12–15 decisions per game).
