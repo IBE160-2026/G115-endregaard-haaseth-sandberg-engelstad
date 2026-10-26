@@ -36,3 +36,25 @@ The user asked Kai (the game developer agent) for more content: more scenarios, 
 - The group should check all prices, delays and chances of the new events, and the 9 v0.2 event chances that were lowered.
 - Scenario buttons now fire each event once, which reverses v0.2. The group must decide whether risks should still be repeatable.
 - Deferred: dedicated icons for the v0.3 events, and a DOM test for resuming play after the fork card.
+
+## 2026-10-27 kl. 00:16 — Trond Engelstad
+
+### Oppgave
+Play-test v0.3 in the browser ("test spill").
+
+### Plan
+- Ran `npm run dev` (port 5199) and drove headless Edge with `playwright-core` from the scratchpad. Nothing was installed in the repo.
+- Played two full games on Medium at 4×. In each game the first choice went against the advice; after that the advice was followed. The PM staffing plan was not used.
+
+### Resultat
+- No JS errors in either game. One game had 15 decisions, finishing in week 113 at 296,23 MNOK; the other had 15 decisions, finishing in week 117 at 294,77 MNOK.
+- All four decision types appeared: strategy choices, risks, opportunities and change requests. One follow-up appeared (the hired pump failed after "lei midlertidig pumpe").
+- Checked with screenshots, all correct:
+  - the strategy dialog, the three voices, and the option previews with Δ against today;
+  - the fork card with two columns;
+  - the feed, with chapters, starts and finishes, consequences and "Prognosen er endret";
+  - the final report, which compares you, the AI path and the story, and lists every decision;
+  - dark theme, and the 3D window at week 113.
+
+### Åpne punkter
+- Balance: following the advice without the PM staffing plan ended about 12–13 MNOK over budget in both games. In one game the AI path was also over budget (284,80). The group should decide whether that is too hard.
