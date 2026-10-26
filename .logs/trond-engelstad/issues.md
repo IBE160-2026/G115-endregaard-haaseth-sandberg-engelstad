@@ -6,3 +6,6 @@
 - [ ] 2026-10-27 [v0-3-content-consequences-ai-roles](998-2026-10-27-00-12-31-v0-3-content-consequences-ai-roles.md) — Decide whether scenario buttons for risks should be repeatable again (v0.3 fires each event once)
 - [ ] 2026-10-27 [v0-3-content-consequences-ai-roles](998-2026-10-27-00-12-31-v0-3-content-consequences-ai-roles.md) — Deferred: dedicated icons for the v0.3 events, and a DOM test for resuming play after the fork card
 - [ ] 2026-10-27 [v0-3-content-consequences-ai-roles](998-2026-10-27-00-12-31-v0-3-content-consequences-ai-roles.md) — Balance: following the advice without the PM staffing plan ends about 12 MNOK over budget. Is that too hard?
+- [ ] 2026-10-27 [v0-4-3d-makeover](997-2026-10-27-00-41-01-v0-4-3d-makeover.md) — Play v0.4 on a real GPU (only tested in headless Chrome with software WebGL): frame rate, shadows, readability of the labels
+- [ ] 2026-10-27 [v0-4-3d-makeover](997-2026-10-27-00-41-01-v0-4-3d-makeover.md) — Test Vera (g115-agent-3d-artist) in a real session ("talk to Vera")
+- [ ] 2026-10-27 [v0-4-3d-makeover](997-2026-10-27-00-41-01-v0-4-3d-makeover.md) — Next slices: the fork in 3D (ghost building for the AI path), click in 3D to open the right panel, sound
