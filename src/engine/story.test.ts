@@ -2,7 +2,7 @@
 import { describe, expect, it } from 'vitest';
 import { eventById } from './events';
 import {
-  applyPlan, choose, crewPlan, findStory, forecast, newGame, pmPlan, runUntilDecision, setCrew, setMode, spent,
+  applyPlan, choose, crewPlan, findStory, forecast, newGame, pmPlan, runUntilDecision, setCrew, setMode, solveStory, spent,
   step, targetScore, triggerEvent, verdict, type GameState,
 } from './game';
 import { scenario as s } from './scenario';
@@ -90,6 +90,31 @@ describe('story solution', () => {
       expect(story.weeks).toBeLessThanOrEqual(s.target.weeks);
       expect(story.total).toBeLessThanOrEqual(s.target.total);
     }
+  });
+
+  it('v0.3: findStory on all three difficulties together takes under 3 s', () => {
+    const t0 = performance.now();
+    for (const d of ['easy', 'medium', 'hard'] as const) expect(findStory(s, d, 31337).solved).toBe(true);
+    expect(performance.now() - t0).toBeLessThan(3000);
+  });
+
+  it('v0.3: playing the story meets the 4 strategy decisions plus random events, on target', () => {
+    for (const d of ['easy', 'medium', 'hard'] as const) {
+      const story = findStory(s, d, 900);
+      const choices = story.steps.filter(st => st.kind === 'choice');
+      const strategies = choices.filter(st => st.kind === 'choice' && eventById(st.eventId).kind === 'strategy');
+      expect(strategies.length).toBe(4);
+      expect(choices.length).toBeGreaterThan(4);
+      expect(story.solved).toBe(true);
+    }
+  });
+
+  it('v0.3 pace: the story path averages about 12–15 decisions per game (30 fixed seeds)', () => {
+    let total = 0;
+    for (let seed = 1; seed <= 30; seed++) total += solveStory(s, 'medium', seed).steps.filter(st => st.kind === 'choice').length;
+    const mean = total / 30;
+    expect(mean).toBeGreaterThanOrEqual(12);
+    expect(mean).toBeLessThanOrEqual(15);
   });
 
   it('replaying the story steps gives the same, solved result', () => {

@@ -15,11 +15,13 @@ function node(ctx: TabContext, p: Person): string {
   if (p.taskId && game) {
     const i = scenario.tasks.findIndex(t => t.id === p.taskId);
     const t = game.tasks[i];
-    const share = t.hoursDone / scenario.tasks[i].hours;
+    const share = t.hoursDone / t.work;
     status = t.finish !== null ? '<span class="chip chip-on">Ferdig</span>' : t.start !== null ? '<span class="chip chip-busy">Pågår</span>' : '<span class="chip">Venter</span>';
     bar = `<div class="progress" aria-hidden="true"><i style="width:${Math.round(share * 100)}%"></i></div>`;
   }
-  const alert = game?.pending && eventById(game.pending.eventId).raisedBy === p.id ? '<span class="alert" title="Trenger beslutning">!</span>' : '';
+  // Everyone who speaks at the open decision (and whoever raised it) is marked.
+  const speaks = game?.pending && (game.pending.voices.some(v => v.personId === p.id) || eventById(game.pending.eventId).raisedBy === p.id);
+  const alert = speaks ? '<span class="alert" title="Trenger beslutning">!</span>' : '';
   const title = p.taskId ? `${p.role} ${p.taskId}` : p.role;
   const sub = p.taskId ? p.description : p.player ? 'Spiller' : 'AI-rolle';
   return `<button type="button" class="org-node${selected === p.id ? ' selected' : ''}${p.player ? ' player' : ''}" data-person="${p.id}" aria-pressed="${selected === p.id}">
@@ -45,15 +47,25 @@ function details(ctx: TabContext): string {
        <button type="button" class="tool" data-action="pm-plan">${icon('people/project-manager.svg', 20)}<span>Følg prosjektlederens plan</span></button>`
     : p.id === 'pm' && game ? '<p class="meta">Bemanningen er allerede den beste prosjektlederen finner.</p>' : '';
   const reports = scenario.people.filter(x => x.reportsTo === p.id).map(x => x.taskId ?? x.role).join(', ');
-  const ev = game?.pending ? eventById(game.pending.eventId) : null;
-  const challenge = ev && ev.raisedBy === p.id
-    ? `<h3>Aktiv utfordring</h3><p class="meta"><b>${ev.title}</b> (${game!.pending!.taskId}). Anbefaler «${ev.options.find(o => o.id === game!.pending!.recommended)!.label}».</p>`
-    : !p.player && game ? '<p class="meta">Ingen aktive utfordringer.</p>' : '';
+  const pending = game?.pending ?? null;
+  const ev = pending ? eventById(pending.eventId) : null;
+  const voice = pending?.voices.find(v => v.personId === p.id);
+  const label = (id: string) => ev!.options.find(o => o.id === id)!.label;
+  const challenge = ev && voice
+    ? `<h3>Aktiv utfordring</h3><p class="meta"><b>${ev.title}</b> (${pending!.taskId})${voice.raised ? ' · <span class="chip">meldte saken</span>' : ''}. Anbefaler «${label(voice.optionId)}».</p><p class="meta">${voice.reason}</p>`
+    : ev && ev.raisedBy === p.id
+      ? `<h3>Aktiv utfordring</h3><p class="meta"><b>${ev.title}</b> (${pending!.taskId}). Prosjektlederen anbefaler «${label(pending!.recommended)}».</p>`
+      : !p.player && game ? '<p class="meta">Ingen aktive utfordringer.</p>' : '';
+  const messages = game ? game.log.filter(l => (l.from ?? 'pm') === p.id).slice(-3).reverse() : [];
+  const messagesHtml = messages.length
+    ? `<h3>Siste meldinger</h3><ul class="advice">${messages.map(l => `<li><small>Uke ${l.week}:</small> ${l.text}</li>`).join('')}</ul>`
+    : '';
   return `<aside class="details card">
     <div class="details-head">${icon(p.icon, 48)}<div><h2>${p.taskId ? `${p.role} ${p.taskId}` : p.role}</h2><p>${p.description}</p></div></div>
     ${p.player ? '<p class="meta">Du tar de endelige beslutningene. Prosjektleder og Site manager rapporterer til deg.</p>' : `<p class="meta">AI-rolle (regelbasert) · rapporterer til ${scenario.people.find(x => x.id === p.reportsTo)?.role}</p>`}
     ${reports ? `<p class="meta">Har ansvar for: ${reports}</p>` : ''}
     ${challenge}
+    ${messagesHtml}
     ${plan}
     ${lines.length ? `<h3>Rapport</h3><ul class="advice">${lines.map(l => `<li>${l}</li>`).join('')}</ul>` : ''}
     ${controls}

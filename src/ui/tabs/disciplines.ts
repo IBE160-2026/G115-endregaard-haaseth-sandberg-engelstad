@@ -10,13 +10,13 @@ export function renderDisciplines(ctx: TabContext): string {
     const t = result.tasks[i];
     const st = game?.tasks[i];
     const locked = !game || game.done || st!.finish !== null;
-    const share = st ? st.hoursDone / task.hours : 0;
+    const share = st ? st.hoursDone / st.work : 0;
     const status = st?.finish != null
       ? '<span class="chip chip-on">Ferdig</span>'
       : t.critical ? '<span class="chip chip-crit">Kritisk</span>' : `<span class="chip">Slakk ${t.slack} u</span>`;
     return `<tr>
       <td><div class="name">${icon(task.icon, 24)}<span><b>${task.id}</b> ${task.name}</span></div></td>
-      <td class="num">${formatInt(task.hours)}</td>
+      <td class="num">${formatInt(Math.round(st?.work ?? task.hours))}</td>
       <td><div class="progress wide" title="${Math.round(share * 100)} %"><i style="width:${Math.round(share * 100)}%"></i></div></td>
       <td>${crewControl(scenario, task.id, t.ownCrew, locked)}${t.hiredCrew ? `<div class="meta">+ ${t.hiredCrew} innleid</div>` : ''}</td>
       <td>${modeControl(task.id, t.mode, locked)}</td>

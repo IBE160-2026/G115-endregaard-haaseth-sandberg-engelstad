@@ -2,6 +2,23 @@
 
 The choices the AI (Claude Code) put to the group, with the group's reply word for word, one section per simulator version (newest first). Each entry has at most four lines: the prompt, the reply, and what came of it.
 
+## v0.3 – 2026-10-26
+
+**Open:** All prices, delays and chances of the 16 new events are proposals for the team to check. Also to check: the strategy options (e.g. prefab on F at 5 MNOK and −30 % hours) and the v0.2 event chances that were lowered to keep about 12–15 decisions per game. Scenario buttons now fire each event once (to stop free savings from pressing an opportunity again and again). In v0.2 a button could be pressed again: should risks still be repeatable?
+
+1. **Approving the spec.** Prompt: approve and build now / approve and stop / review the spec first.
+   Reply: "Review spec", then, while the review was running: "go for it." and "start implementering nå"
+   Result: an independent reviewer found 12 gaps (4 high); all were fixed in the spec before the build started.
+2. **Game design for v0.3.** Prompt: a third score for change requests and strategy, or only money and time? How many decisions per game? How should the fork be shown? The spec is about 2,500 tokens: keep it or split it?
+   Reply: "Keep two targets (Recommended)" / "About 12–15 (Recommended)" / "Short dialog (Recommended)" / "Keep full spec (Recommended)" (asked twice; the first prompt was interrupted: "spør på nytt")
+   Result: benefits are expressed as money and time (declining a change costs more later); event chances tuned to about 14 decisions; the fork card after every choice.
+3. **Scope, git and reviewers.** Prompt: build content, consequences and AI roles together or split? Commit the Kai agent files first? Use subagents?
+   Reply: "Keep all goals (Recommended)" / "Commit them first (Recommended)" / "Yes, use subagents (Recommended)"
+   Result: one v0.3 spec; Kai committed separately (`69f3ac8`); independent reviewers check the spec and the build.
+4. **A game developer agent.** Prompt: none (the group's own request).
+   Reply: "Kan du sette opp en ny AI agent for prosjektet. Den skal ta rolle som en spillutvikler og ta spillet til nye høyder. Spesielt på 3d fronten." Then, to Kai: "Start med å lage mer innhold. Flere scenarioer, større handling i hvert game. Bedre histore, flere valg. Det må komme bedre frem hvilke konsekvenser og fordeler alle valg har. Dette skal være interaktivt. Gi også AI rollene større plass i hver game."
+   Result: the BMAD agent Kai (🎮, game developer and 3D specialist), and this v0.3.
+
 ## v0.2 – 2026-10-22
 
 **Open:** Should the project manager's staffing plan also become less reliable on Medium and Vanskelig? Today it is always right. Also to check: event prices, crowding 0.5, crew range 50–200 %, and the sources for the building facts.

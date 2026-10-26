@@ -306,3 +306,54 @@ button:disabled { opacity: 0.45; cursor: default; }
   .tool-group { margin-left: 0; }
   .win3d { left: 0 !important; right: 0; top: 40px !important; width: auto; height: 50vh; }
 }
+
+/* v0.3: message feed, kind chips, voices, option previews, fork card, final comparison */
+.feed { width: 300px; flex: none; overflow: auto; padding: 4px 12px 12px; border-left: 1px solid var(--stroke); background: var(--mica); }
+.feed h2 { margin: 8px 0 2px; }
+.feed-list { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; }
+.feed-list li { display: flex; gap: 8px; padding: 8px; background: var(--layer); border: 1px solid var(--stroke); border-radius: 6px; font-size: 12px; }
+.feed-list li img { width: 24px; height: 24px; }
+.feed-list small { color: var(--text-2); }
+.feed-list p { margin: 2px 0 0; }
+
+.chip.kind { margin: 0 6px 0 0; font-weight: 600; }
+.kind-risk { background: transparent; color: var(--bad); border: 1px solid var(--bad); }
+.kind-opportunity { background: var(--chip-on-bg); color: var(--chip-on); }
+.kind-change { background: var(--accent-soft); color: var(--accent); }
+.kind-strategy { background: var(--busy-bg); color: var(--busy); }
+
+.dialog .good, .compare .good, .decisions .good { color: var(--good); }
+.dialog .bad, .compare .bad { color: var(--bad); }
+.voices { display: grid; gap: 6px; margin: 4px 0 8px; }
+.voice { display: flex; gap: 10px; padding: 8px 12px; background: var(--layer); border: 1px solid var(--stroke); border-radius: 6px; font-size: 13px; }
+.voice.official { border-color: var(--accent); }
+.voice .chip { margin: 0 0 0 4px; font-size: 11px; }
+.voice p { margin: 2px 0 0; }
+.voice .voice-pick { font-weight: 600; }
+.choice .backers { font-size: 11px; color: var(--accent); }
+.choice .effect i, .choice .preview i { font-style: normal; font-weight: 600; }
+.choice .later { color: var(--busy); }
+.choice .preview { color: var(--text); font-variant-numeric: tabular-nums; }
+.choice .preview .chip { margin: 0 0 0 6px; }
+.choice .delta { margin-left: 6px; font-style: normal; color: var(--text-2); }
+
+.fork { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0 12px; }
+.fork.one { grid-template-columns: 1fr; }
+.fork-col { display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; background: var(--layer); border: 1px solid var(--stroke-strong); border-radius: 6px; font-variant-numeric: tabular-nums; }
+.fork-col:first-child { border-color: var(--accent); }
+.fork-same { font-weight: 600; color: var(--good); }
+
+.compare { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; margin: 4px 0 8px; }
+.compare th, .compare td { padding: 6px 8px; text-align: left; border-bottom: 1px solid var(--stroke); }
+.compare thead th { font-size: 12px; color: var(--text-2); }
+.decisions { margin: 4px 0 12px; padding-left: 20px; font-size: 13px; }
+.decisions li { margin: 4px 0; }
+.decisions .chip { margin: 0 0 0 4px; font-size: 11px; }
+.story-wrap { margin: 8px 0 12px; }
+.story-wrap summary { cursor: pointer; }
+
+@media (max-width: 1000px) { .feed { width: 240px; } }
+@media (max-width: 720px) {
+  .feed { width: auto; max-height: 32vh; border-left: 0; border-top: 1px solid var(--stroke-strong); }
+  .fork { grid-template-columns: 1fr; }
+}

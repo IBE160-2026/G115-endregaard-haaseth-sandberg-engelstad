@@ -41,6 +41,8 @@ The loop repeats at every decision point until the project is complete.
 - Resource allocation
 - Change approval
 
+In the simulator (v0.3) all four are playable: strategy choices come when the key disciplines start, risks and opportunities come at random, crews and work modes are set per discipline, and change requests can be approved now or deferred at a higher cost later.
+
 ### Scenarios
 
 Scenarios are generated with a hybrid approach. A template and library layer builds a coherent skeleton (WBS, resources, cost and time baseline, milestones) from project size, budget and risk profile. A language model layer adds narrative and novel risk events, so that every playthrough is different without the structure falling apart.

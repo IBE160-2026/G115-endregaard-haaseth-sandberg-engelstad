@@ -1,11 +1,11 @@
 // The in-game Windows-style desktop: the app window with five tabs, a 3D window and a taskbar.
 import './styles.css';
-import { applyPlan, canTrigger, choose, findStory, forecast, newGame, pmPlan, setCrew, setMode, step, triggerEvent, type Difficulty, type GameState, type Story } from './engine/game';
+import { aiPath, applyPlan, canTrigger, choose, findStory, forecast, newGame, outcome, pmPlan, setCrew, setMode, step, triggerEvent, type Difficulty, type GameState, type Outcome, type Story } from './engine/game';
 import { scenario, type Mode } from './engine/scenario';
 import { simulate } from './engine/simulate';
 import { budgetOf } from './ui/budgetLines';
 import { formatMnok } from './ui/format';
-import { renderEvent, renderFinal, renderStart, renderToolbar, type PlayUi, type Speed } from './ui/play';
+import { dialogFor, noteForecastChange, renderEvent, renderFeed, renderFinal, renderFork, renderStart, renderToolbar, type ForecastNote, type PlayUi, type Speed } from './ui/play';
 import { criticalList, icon, type TabContext } from './ui/tabs/context';
 import { renderBuildings } from './ui/tabs/buildings';
 import { renderBudget } from './ui/tabs/budget';
@@ -35,9 +35,9 @@ const CAPTION = {
 const WEEK_MS = 600;
 
 const baseline = simulate(scenario);
-const state: { tab: TabId; game?: GameState; story?: Story; selected: string; resume: boolean } & PlayUi = {
+const state: { tab: TabId; game?: GameState; story?: Story; ai?: Story; selected: string; resume: boolean } & PlayUi = {
   tab: 'people', selected: 'owner', resume: false,
-  playing: false, speed: 1, menu: false, show3d: false, finalSeen: false,
+  playing: false, speed: 1, menu: false, show3d: false, finalSeen: false, forkSeen: 0,
 };
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
@@ -57,6 +57,7 @@ app.innerHTML = `
           <h1 id="tab-title"></h1>
           <div id="tab-body"></div>
         </main>
+        <aside class="feed" id="feed" aria-label="Meldinger"></aside>
       </div>
       <footer class="statusbar"></footer>
       <div id="dialog"></div>
@@ -84,6 +85,7 @@ const statusbar = $<HTMLElement>('.statusbar');
 const panel = $<HTMLElement>('#tabpanel');
 const toolbar = $<HTMLDivElement>('#toolbar');
 const dialogHost = $<HTMLDivElement>('#dialog');
+const feed = $<HTMLElement>('#feed');
 const win3d = $<HTMLDivElement>('.win3d');
 let view: View3d | null = null;
 let viewLoading: Promise<View3d> | null = null;
@@ -129,9 +131,14 @@ function render() {
     <span class="crit">Kritiske aktiviteter ${criticalList(result)}</span>
     ${g ? `<span class="log">${g.log.slice(-1).map(l => `Uke ${l.week}: ${l.text}`).join('')}</span>` : ''}`;
 
-  dialogHost.innerHTML = !g ? renderStart(scenario)
-    : g.pending ? renderEvent(scenario, g)
-    : g.done && !state.finalSeen ? renderFinal(scenario, g, state.story)
+  feed.innerHTML = renderFeed(scenario, g);
+  // The AI path is played once per game, when the game is done.
+  if (g?.done && !state.ai) state.ai = aiPath(scenario, g.difficulty, g.seed);
+  const which = dialogFor(g, state);
+  dialogHost.innerHTML = which === 'start' ? renderStart(scenario)
+    : which === 'fork' ? renderFork(scenario, g!.decisions[state.forkSeen])
+    : which === 'event' ? renderEvent(scenario, g!)
+    : which === 'final' ? renderFinal(scenario, g!, state.story, state.ai)
     : '';
   const nextKey = g ? `${g.seed}:${g.week}:${g.pending?.eventId ?? ''}:${g.done}` : 'none';
   if (state.show3d && view && nextKey !== viewKey) {
@@ -173,6 +180,14 @@ function tick() {
   else render();
 }
 
+/** The Prosjektleder reports when a choice or a staffing change moves the forecast. */
+let lastNote: ForecastNote | null = null;
+function noteForecast(g: GameState, before: Outcome) {
+  const next = noteForecastChange(g.log, g.week, before, outcome(scenario, g), lastNote);
+  g.log = next.log;
+  lastNote = next.note;
+}
+
 async function toggle3d() {
   state.show3d = !state.show3d;
   win3d.hidden = !state.show3d;
@@ -200,7 +215,9 @@ function startGame(difficulty: Difficulty) {
   // Every game is a story that can be solved within both targets.
   state.story = findStory(scenario, difficulty, Math.floor(Math.random() * 1e6) + 1);
   state.game = newGame(scenario, difficulty, state.story.seed);
+  state.ai = undefined;
   state.finalSeen = false;
+  state.forkSeen = 0;
   state.resume = false;
   state.menu = false;
   render();
@@ -223,13 +240,17 @@ app.addEventListener('click', e => {
   }
   const modeBtn = target.closest<HTMLButtonElement>('[data-mode]');
   if (modeBtn && g) {
+    const before = outcome(scenario, g);
     setMode(scenario, g, modeBtn.dataset.task!, modeBtn.dataset.mode as Mode);
+    noteForecast(g, before);
     render();
     return;
   }
   const crewBtn = target.closest<HTMLButtonElement>('[data-crew-task]');
   if (crewBtn && g) {
+    const before = outcome(scenario, g);
     setCrew(scenario, g, crewBtn.dataset.crewTask!, Number(crewBtn.dataset.crew));
+    noteForecast(g, before);
     render();
     return;
   }
@@ -243,6 +264,7 @@ app.addEventListener('click', e => {
     case 'new':
       setPlaying(false);
       state.game = undefined;
+      state.ai = undefined;
       state.resume = false;
       break;
     case 'play': setPlaying(true); break;
@@ -262,14 +284,31 @@ app.addEventListener('click', e => {
       state.menu = false;
       break;
     case 'choose':
-      if (g) {
+      // Time stays paused: the fork card comes first, and «Fortsett» resumes play.
+      if (g?.pending) {
+        const before = g.pending.before;
         choose(scenario, g, action.dataset.option!);
-        if (state.resume) setPlaying(true);
-        state.resume = false;
+        noteForecast(g, before);
+      }
+      break;
+    case 'fork-continue':
+      if (g) {
+        state.forkSeen = g.decisions.length;
+        // A queued strategy choice keeps play paused until it is decided too.
+        if (!g.pending) {
+          if (state.resume) setPlaying(true);
+          state.resume = false;
+        }
       }
       break;
     case 'close-final': state.finalSeen = true; break;
-    case 'pm-plan': if (g) applyPlan(scenario, g, pmPlan(scenario, g)); break;
+    case 'pm-plan':
+      if (g) {
+        const before = outcome(scenario, g);
+        applyPlan(scenario, g, pmPlan(scenario, g));
+        noteForecast(g, before);
+      }
+      break;
     case 'toggle3d': void toggle3d(); return;
   }
   render();

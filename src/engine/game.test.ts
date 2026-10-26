@@ -203,3 +203,306 @@ describe('review follow-ups', () => {
 
 import { eventById } from './events';
 const firstOption = (id: string) => eventById(id).options[0].id;
+
+// ---- v0.3: the I/O matrix of spec-v0-3-content-consequences-ai-roles.md ----
+import { CHAPTERS, chapterOf } from './chapters';
+import { aiPath, outcome, pmPlan, progress, solveStory } from './game';
+
+/** Plays with events on, taking the first option, until `stop` holds at a decision. */
+function playUntil(g: GameState, stop: (g: GameState) => boolean, pick = (g: GameState) => g.pending!.outcomes[0].optionId): boolean {
+  while (!g.done) {
+    runUntilDecision(s, g);
+    if (!g.pending) break;
+    if (stop(g)) return true;
+    choose(s, g, pick(g));
+  }
+  return false;
+}
+const taskOf = (g: GameState, id: string) => g.tasks.find(t => t.id === id)!;
+
+describe('v0.3 strategy at start', () => {
+  it('C and F: the strategy decision is pending in the start week, every seed', () => {
+    for (let seed = 1; seed <= 12; seed++) {
+      const g = newGame(s, 'medium', seed);
+      runUntilDecision(s, g);
+      expect(g.pending?.eventId).toBe('strategy-C');
+      expect(g.week).toBe(16);
+      expect(taskOf(g, 'C')).toMatchObject({ start: 16, hoursDone: 0 });
+      expect(playUntil(g, x => x.pending!.eventId === 'strategy-F')).toBe(true);
+      expect(taskOf(g, 'F').start).toBe(g.week);
+      expect(taskOf(g, 'F').hoursDone).toBe(0);
+      expect(taskOf(g, 'E').finish).toBe(g.week);
+    }
+  });
+
+  it('is not in forecasts: a new game with events on forecasts 114 weeks and 283.10', () => {
+    const g = newGame(s, 'medium', 3);
+    const f = forecast(s, g);
+    expect(f.weeks).toBe(114);
+    expect(f.total).toBeCloseTo(283.1, 9);
+  });
+
+  it('choosing the plan option keeps the schedule of a game without events', () => {
+    const g = newGame(s, 'easy', 3);
+    runUntilDecision(s, g);
+    choose(s, g, 'plan');
+    expect(outcome(s, g).weeks).toBe(114);
+    expect(outcome(s, g).total).toBeCloseTo(283.1, 9);
+  });
+
+  it('a start trigger that comes while a decision is open waits in the queue', () => {
+    const g = quiet();
+    stepTo(g, 40);
+    triggerEvent(s, g, 'water');
+    g.queue.push({ eventId: 'strategy-H', taskId: 'H' });
+    choose(s, g, 'pump');
+    expect(g.pending?.eventId).toBe('strategy-H');
+    expect(g.queue).toEqual([]);
+  });
+});
+
+describe('v0.3 delayed consequences', () => {
+  it('defer at week 55: lands at week 85 on K, forecasts include it from the start', () => {
+    const g = quiet();
+    stepTo(g, 55);
+    triggerEvent(s, g, 'change-security');
+    const preview = g.pending!.outcomes.find(o => o.optionId === 'defer')!;
+    choose(s, g, 'defer');
+    expect(g.scheduled).toMatchObject([{ week: 85, cost: 2.4, delay: 1, taskId: 'K' }]);
+    const f = forecast(s, g);
+    // K has 10 weeks of slack, so one week of stall costs no time.
+    expect(f.weeks).toBe(114);
+    expect(f.total).toBeCloseTo(283.1 + 2.4, 9);
+    expect(preview.weeks).toBe(114);
+    expect(preview.total).toBeCloseTo(283.1 + 2.4, 9);
+    stepTo(g, 85);
+    expect(g.events).toBe(0);
+    step(s, g); // week 85: it lands
+    expect(g.events).toBeCloseTo(2.4, 9);
+    expect(g.scheduled).toEqual([]);
+    expect(g.log.some(l => l.week === 85 && l.from === 'pm' && l.text.startsWith('Konsekvens: Sikringen må bygges inn i ferdige vegger. +2,40 MNOK, K står 1 uke'))).toBe(true);
+    play(g);
+    expect(g.week).toBe(114);
+    expect(spent(g)).toBeCloseTo(283.1 + 2.4, 9);
+  });
+
+  it('a finished task gets the cost only', () => {
+    const g = quiet();
+    stepTo(g, 30); // C finished in week 28
+    g.scheduled.push({ week: 40, cost: 1, delay: 3, taskId: 'C', text: 'Test', eventId: 'soil', from: 'foreman-C' });
+    play(g);
+    expect(taskOf(g, 'C').stall).toBe(0);
+    expect(g.week).toBe(114);
+    expect(spent(g)).toBeCloseTo(284.1, 9);
+  });
+
+  it('what is still outstanding at completion is charged at once, so the result equals the forecast', () => {
+    const g = newGame(s, 'easy', 11);
+    expect(playUntil(g, x => x.pending!.eventId === 'strategy-N')).toBe(true);
+    const preview = g.pending!.outcomes.find(o => o.optionId === 'short')!;
+    choose(s, g, 'short');
+    expect(g.scheduled.length).toBeGreaterThan(0);
+    playUntil(g, () => false);
+    expect(g.done).toBe(true);
+    expect(g.scheduled).toEqual([]);
+    expect(g.week).toBe(preview.weeks);
+    expect(spent(g)).toBeCloseTo(preview.total, 9);
+    expect(g.log.some(l => l.week === g.week && l.text.includes('garantitiden'))).toBe(true);
+  });
+});
+
+describe('v0.3 follow-ups', () => {
+  it('the pump failure only comes after "lei midlertidig pumpe"', () => {
+    const fired = (option: string) => {
+      let n = 0;
+      for (let seed = 1; seed <= 80; seed++) {
+        const g = newGame(s, 'easy', seed);
+        playUntil(g, () => false, x => (x.pending!.eventId === 'water' ? option : x.pending!.outcomes[0].optionId));
+        if (g.fired.includes('pump-fail')) n++;
+      }
+      return n;
+    };
+    expect(fired('pump')).toBe(0);
+    expect(fired('rent')).toBeGreaterThan(0);
+  });
+});
+
+describe('v0.3 option previews, fork records and voices', () => {
+  const sameAsForecast = (g: GameState) => {
+    for (const o of g.pending!.outcomes) {
+      const c = structuredClone(g);
+      choose(s, c, o.optionId);
+      c.pending = null; // a queued decision is not part of the preview either
+      const f = forecast(s, c);
+      expect(f.weeks).toBe(o.weeks);
+      expect(f.total).toBeCloseTo(o.total, 9);
+    }
+  };
+
+  it('each option preview equals forecast() after choosing it (risk and strategy)', () => {
+    const g = quiet();
+    stepTo(g, 40);
+    triggerEvent(s, g, 'water');
+    sameAsForecast(g);
+    const h = newGame(s, 'medium', 21);
+    expect(playUntil(h, x => x.pending!.eventId === 'strategy-F')).toBe(true);
+    sameAsForecast(h);
+  });
+
+  it('records the fork: chosen and recommended outcome from the same state', () => {
+    const g = quiet();
+    stepTo(g, 40);
+    triggerEvent(s, g, 'water');
+    expect(g.pending!.recommended).toBe('pump');
+    const p = g.pending!;
+    choose(s, g, 'wait');
+    expect(g.decisions).toEqual([{
+      week: 40, eventId: 'water', taskId: 'E', chosen: 'wait', recommended: 'pump', followed: false,
+      chosenOutcome: { weeks: p.outcomes[2].weeks, total: p.outcomes[2].total },
+      recommendedOutcome: { weeks: p.outcomes[0].weeks, total: p.outcomes[0].total },
+    }]);
+    expect(g.decisions[0].chosenOutcome.weeks - g.decisions[0].recommendedOutcome.weeks).toBe(4);
+  });
+
+  it('three voices with their own lenses: Prosjektleder, Site manager (least delay), foreman (cheapest now)', () => {
+    const g = quiet();
+    stepTo(g, 40);
+    triggerEvent(s, g, 'water');
+    expect(g.pending!.voices.map(v => [v.personId, v.optionId, v.raised])).toEqual([
+      ['pm', 'pump', false], ['site', 'pump', true], ['foreman-E', 'rent', false],
+    ]);
+    expect(g.pending!.reasoning).toBe(g.pending!.voices[0].reason);
+    choose(s, g, 'pump');
+    stepTo(g, 45);
+    triggerEvent(s, g, 'frost');
+    // Heating: no stall; pausing: nothing to pay now. They disagree.
+    expect(g.pending!.voices.map(v => [v.personId, v.optionId])).toEqual([['pm', 'heat'], ['site', 'heat'], ['foreman-E', 'pause']]);
+    expect(g.pending!.voices[2].raised).toBe(true);
+  });
+
+  it('a strategy raised by the Prosjektleder: the PM is marked, Site manager and foreman also speak', () => {
+    const g = newGame(s, 'easy', 2);
+    runUntilDecision(s, g);
+    expect(g.pending!.voices.map(v => [v.personId, v.raised])).toEqual([['pm', true], ['site', false], ['foreman-C', false]]);
+  });
+});
+
+describe('v0.3 work change', () => {
+  it('prefab on F: the remaining hours × 0.7; progress and costs use the new total', () => {
+    const g = newGame(s, 'easy', 21);
+    expect(playUntil(g, x => x.pending!.eventId === 'strategy-F')).toBe(true);
+    choose(s, g, 'prefab');
+    const F = taskOf(g, 'F');
+    expect(F.work).toBeCloseTo(25500 * 0.7, 9);
+    // Run a few weeks on and check progress against the new total.
+    while (F.hoursDone === 0 && !g.pending) step(s, g);
+    if (!g.pending) expect(progress(s, g).F).toBeCloseTo(F.hoursDone / 17850, 12);
+    playUntil(g, () => false);
+    const done = taskOf(g, 'F');
+    expect(done.hoursDone).toBeCloseTo(17850, 6);
+    expect(done.materials).toBe(19.7);
+  });
+
+  it('a work fraction applies to the remaining hours only; labour follows the hours', () => {
+    const g = quiet();
+    stepTo(g, 60); // F half done (12,750 of 25,500)
+    const F = taskOf(g, 'F');
+    F.work = F.hoursDone + (F.work - F.hoursDone) * (1 - 0.2);
+    expect(F.work).toBeCloseTo(12750 + 12750 * 0.8, 9);
+    play(g);
+    const done = taskOf(g, 'F');
+    expect(done.materials).toBe(19.7);
+    expect(done.labour).toBeCloseTo((22950 * 600) / 1e6, 9);
+  });
+});
+
+describe('v0.3 feed and chapters', () => {
+  it('start, finish and chapter messages come from the right role with the week', () => {
+    const g = play(quiet());
+    expect(g.log[0]).toMatchObject({ week: 0, from: 'pm' });
+    expect(g.log).toContainEqual({ week: 16, from: 'foreman-C', text: 'C Sprengning og graving starter.' });
+    expect(g.log).toContainEqual({ week: 28, from: 'foreman-C', text: 'C Sprengning og graving er ferdig.' });
+    const chapters = g.log.filter(l => l.text.startsWith('Kapittel'));
+    expect(chapters.map(l => [l.week, l.from])).toEqual([[16, 'pm'], [36, 'pm'], [50, 'pm'], [70, 'pm'], [84, 'pm'], [110, 'pm']]);
+    expect(chapters.map(l => l.text)).toEqual(CHAPTERS.map(c => c.intro));
+    expect(g.log.at(-1)).toMatchObject({ week: 114, from: 'pm', text: 'Bygget er ferdigstilt.' });
+  });
+
+  it('chapterOf: prologue, then the chapter of the earliest started unfinished task', () => {
+    const g = quiet();
+    expect(chapterOf(s, g)).toBeNull();
+    const at = (w: number) => { stepTo(g, w); return chapterOf(s, g)?.title ?? null; };
+    expect(at(10)).toBeNull();
+    expect(at(20)).toBe('Grunnarbeid');
+    expect(at(40)).toBe('Kjeller');
+    expect(at(55)).toBe('Råbygg');
+    expect(at(75)).toBe('Tett bygg');
+    expect(at(90)).toBe('Teknikk og innredning');
+    expect(at(112)).toBe('Overlevering');
+    play(g);
+    expect(chapterOf(s, g)).toBeNull();
+  });
+
+  it('forecasts, previews and the PM plan never grow the log', () => {
+    const g = newGame(s, 'medium', 5);
+    runUntilDecision(s, g);
+    const n = g.log.length;
+    forecast(s, g);
+    outcome(s, g);
+    choose(s, g, g.pending!.recommended);
+    const m = g.log.length;
+    forecast(s, g);
+    pmPlan(s, g);
+    expect(g.log.length).toBe(m);
+    expect(m).toBe(n + 1); // only the choice itself
+  });
+});
+
+describe('v0.3 review fixes', () => {
+  it('a scenario button event that has fired cannot be triggered again', () => {
+    const g = quiet();
+    stepTo(g, 72); // O is active
+    expect(canTrigger(s, g, 'lift-crew')).toBe(true);
+    triggerEvent(s, g, 'lift-crew');
+    choose(s, g, 'accept');
+    expect(canTrigger(s, g, 'lift-crew')).toBe(false);
+    triggerEvent(s, g, 'lift-crew');
+    expect(g.pending).toBeNull();
+    expect(g.events).toBeCloseTo(-0.6, 9);
+  });
+
+  it('a delayed consequence keeps the cause of a stall that is already running', () => {
+    const g = quiet();
+    stepTo(g, 40);
+    triggerEvent(s, g, 'water');
+    choose(s, g, 'wait'); // E stalls 6 weeks for water
+    g.scheduled.push({ week: 40, cost: 0.5, delay: 2, taskId: 'E', text: 'Test', eventId: 'frost', from: 'foreman-E' });
+    step(s, g);
+    const E = taskOf(g, 'E');
+    expect(E.stallCause).toBe('water');
+    expect(E.stall).toBe(6 + 2 - 1);
+  });
+
+  it('a chapter jump still introduces every skipped chapter, in order', () => {
+    const g = quiet();
+    stepTo(g, 40); // Kjeller
+    g.chapter = -1;
+    const n = g.log.length;
+    step(s, g);
+    expect(g.log.slice(n).filter(l => l.text.startsWith('Kapittel')).map(l => l.text)).toEqual([CHAPTERS[0].intro, CHAPTERS[1].intro]);
+    expect(g.chapter).toBe(1);
+  });
+});
+
+describe('v0.3 AI path', () => {
+  it('follows every recommendation with the PM plan; deterministic per seed', () => {
+    const a = aiPath(s, 'hard', 77);
+    expect(aiPath(s, 'hard', 77)).toEqual(a);
+    expect(a.steps.filter(x => x.kind === 'choice').length).toBeGreaterThanOrEqual(4);
+    // On easy the recommendation is always the best option, so the AI path is the story.
+    const easy = aiPath(s, 'easy', 77);
+    const story = solveStory(s, 'easy', 77);
+    expect(easy.weeks).toBe(story.weeks);
+    expect(easy.total).toBeCloseTo(story.total, 9);
+  });
+});

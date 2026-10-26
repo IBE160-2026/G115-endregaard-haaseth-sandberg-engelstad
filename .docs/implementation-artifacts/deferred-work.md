@@ -15,3 +15,11 @@
 - source_spec: `.docs/implementation-artifacts/spec-v0-2-interactive-simulator.md`
   summary: Let the player enter a scenario number (seed) to replay or share a game.
   evidence: The seed is shown in the final report but cannot be entered.
+
+- source_spec: `.docs/implementation-artifacts/spec-v0-3-content-consequences-ai-roles.md`
+  summary: Generate dedicated icons (via `assets/icons/generate.mjs`) for the v0.3 events, so strategy choices, change requests and risks such as theft, inspection and crane failure no longer share or borrow unrelated icons.
+  evidence: Review 1 (BH13): every strategy uses `decision-point.svg` and every change request uses `resource-allocation.svg`; `theft`, `inspection` and `crane` reuse risk icons drawn for other risks.
+
+- source_spec: `.docs/implementation-artifacts/spec-v0-3-content-consequences-ai-roles.md`
+  summary: Cover play/pause resume around the fork card in a DOM test (resume only after «Fortsett», and stay paused while a queued decision is open).
+  evidence: Review 1 (VG1): no test imports `main.ts`; only checked by reading the click handler. Belongs with the existing DOM-test entries above.
