@@ -1,6 +1,11 @@
 import { defineConfig } from 'vitest/config';
 
+// Node's process, without pulling in all of @types/node for one variable.
+declare const process: { env: Record<string, string | undefined> };
+
 export default defineConfig({
+  // GitHub Pages serves the game from /<repo>/; the deploy workflow sets BASE_PATH. Locally it is /.
+  base: process.env.BASE_PATH ?? '/',
   // The icon set lives in assets/icons and is served as /icons/...
   publicDir: 'assets',
   // three.js is the game's stage and is loaded at start. Pre-bundling it keeps the

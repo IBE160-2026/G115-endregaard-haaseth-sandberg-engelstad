@@ -90,6 +90,10 @@ Existing AI tools for project management recommend actions, but do not show a co
 
 These criteria are the group's own reading of "done"; there is no formal grading rubric from the instructor.
 
+## Spill det
+
+**https://ibe160-2026.github.io/G115-endregaard-haaseth-sandberg-engelstad/**. Only a browser is needed (a desktop with a keyboard is best). The game is published from `main` by `.github/workflows/deploy.yml` every time it is pushed.
+
 ## Kjør lokalt
 
 Requires [Node.js](https://nodejs.org/) 22.12 or newer. No API keys or accounts are needed.
