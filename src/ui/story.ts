@@ -3,10 +3,10 @@
 // Pure (no DOM, no three.js): main.ts keeps the state and the scene shows it.
 import { CHAPTERS } from '../engine/chapters';
 import { eventById } from '../engine/events';
-import { crewPlan, type GameState, type Pending } from '../engine/game';
+import type { GameState, Pending } from '../engine/game';
 import type { Scenario } from '../engine/scenario';
 import type { SimulationResult } from '../engine/simulate';
-import { formatInt, formatMnok } from './format';
+import { formatMnok } from './format';
 import { GATE_IN, OFFICE_MEET, foremanSpot, type P2 } from './scene/walk';
 
 /** Protective gear. The player arrives with the first three; Oskar makes sure of the rest. */
@@ -76,24 +76,6 @@ export const HMS_CHECKS: HmsCheck[] = [
       { id: 'fingers', label: '«Jeg holder meg for ørene når det smeller.»', answer: 'Med begge hendene? Og hvem holder kaffen da? Øreklokker på, sjef.', scolded: true },
     ],
     outro: 'Sånn. Og hold deg bak sperringen når de roper «salve!».',
-  },
-  {
-    id: 'structure', chapter: 2, item: 'strap',
-    opener: 'Kranen løfter over hodene våre hele dagen nå. Og hakestroppen din henger og slenger. Hva skjer når du bøyer deg over rekkverket?',
-    replies: [
-      { id: 'fasten', label: '«Den skal festes. Gjort!»', answer: 'Perfekt. En hjelm som triller ned i gropa uten deg, gjør ingen nytte.', scolded: false },
-      { id: 'tight', label: '«Den strammer så i haka …»', answer: 'Bedre litt stram hake enn en hjelm som flyr når du ser opp på kranen. Fest den, takk.', scolded: true },
-    ],
-    outro: 'Takk. Og gå aldri under en hengende last, uansett hvor travelt det er.',
-  },
-  {
-    id: 'services', chapter: 4, item: 'gloves',
-    opener: 'Nå er det skarpe kanaler og kabelbroer overalt. Hendene dine ser veldig … kontoraktige ut.',
-    replies: [
-      { id: 'gloves', label: '«Arbeidshansker på.»', answer: 'Sånn! Nå kan du håndhilse på Formann Elektro uten å ofre en finger.', scolded: false },
-      { id: 'point', label: '«Jeg skal bare peke, ikke ta i noe.»', answer: 'Det sier alle. Så tar de i noe. Hansker på, takk.', scolded: true },
-    ],
-    outro: 'Takk! Da er du fullt utstyrt. Jeg er stolt av deg.',
   },
 ];
 export const hmsById = (id: string) => HMS_CHECKS.find(c => c.id === id)!;
@@ -182,16 +164,15 @@ export function reviewLine(s: Scenario, g: GameState, ids: string[]): Line {
   return { who: 'site', text: `${c.title}! ${list} er klare. Se over timene og bemanningen før vi kjører videre.` };
 }
 
-/** A foreman's pitch for the plan: estimate, crew, weeks and slack, in their own words. */
+/**
+ * A foreman's pitch for the plan, in a few words. The hours and weeks are in the table next to
+ * it, so the pitch only says what they mean.
+ */
 export function foremanPitch(s: Scenario, g: GameState | undefined, f: SimulationResult, taskId: string): string {
   const i = s.tasks.findIndex(t => t.id === taskId);
   const task = s.tasks[i];
   const st = g?.tasks[i];
-  const r = f.tasks[i];
-  const left = st ? st.work - st.hoursDone : task.hours;
-  const crew = st?.crew ?? task.crew;
-  const plan = crewPlan(s, task, crew, st?.mode ?? 'normal');
-  const weeks = Math.ceil(left / plan.capacity);
-  const slack = r.critical ? 'Vi ligger på kritisk linje, så hver uke vi sparer, sparer hele prosjektet.' : `Vi har ${r.slack} uker slakk, så fart her gir ingenting.`;
-  return `${formatInt(Math.round(left))} timer igjen. Med ${crew} mann blir det rundt ${weeks} uker. ${slack}`;
+  if (st && st.crew < task.crew) return 'Vi er for få. Det tar lengre tid.';
+  if (st && st.crew > task.crew) return 'Vi er for mange. Folk går i veien for hverandre.';
+  return f.tasks[i].critical ? 'Kritisk linje: hver uke vi sparer, sparer hele prosjektet.' : 'Slakk: fart her gir ingenting.';
 }

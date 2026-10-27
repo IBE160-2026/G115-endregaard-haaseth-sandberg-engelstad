@@ -16,7 +16,7 @@ An assessment of how well the simulator meets its goals, measured against the in
    Time a full game: if walking and meetings make it too long, keep «Hopp over intro», G (walk there) and «Hopp over» in the meetings as the fast route, and consider a setting that starts meetings without walking.
 4. **Clarify the AI part.** The AI roles are still rule-based. In v0.5 the foreman's view is input to Elisabeth and Hedda, and the player only sees their proposals.
    Explain this in the brief as a deliberate choice (testable, no key needed), or add an optional LLM layer for the reasoning text, with a demo mode of saved answers.
-5. **Decisions that are still open.** Should the HMS checks or the replies cost money or time? Are the foremen's titles right (e.g. «Formann Betong» for E)? Are the v0.3 event prices and chances right?
+5. **Decisions that are still open.** Is 9 challenges per game the right pace (the story solutions now reach about 8–9)? Should the HMS checks or the replies cost money or time? Are the foremen's titles right (e.g. «Formann Betong» for E)? Are the v0.3 event prices and chances right?
    Answer them in `G115_Dilemmas.md` and update the scenario.
 6. **Publishing.** Testers play the Claude Artifact (https://claude.ai/artifact/Nh9p4q3T5mbQaphKD9iSdY), which has to be shared from the Share menu and republished by hand.
    Ask the repo admins (bipa, TesAgi-HiMolde) to turn on GitHub Pages, so that every push to main publishes itself after the tests, at a fixed link anyone can open without logging in.

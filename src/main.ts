@@ -498,14 +498,17 @@ if (demoWeek > 0) {
   startGame('easy', true);
   setPlaying(false);
   const g = state.game!;
+  // With an event asked for, the fast-forward has no other events, so there is room for it.
+  const ev = params.get('hendelse');
+  if (ev) g.randomEvents = false;
   while (!g.done && g.week < demoWeek) {
     if (g.pending) choose(scenario, g, g.pending.recommended);
     else step(scenario, g);
   }
   state.forkSeen = g.decisions.length;
   state.reviewed = g.chapter;
-  state.hmsSeen = ['intro', 'ground', 'structure', 'services'].slice(0, 1 + [0, 2, 4].filter(c => c <= g.chapter).length);
-  const ev = params.get('hendelse');
+  state.hmsSeen = g.chapter >= 0 ? ['intro', 'ground'] : ['intro'];
+  g.randomEvents = true;
   if (ev && canTrigger(scenario, g, ev)) triggerEvent(scenario, g, ev);
   if (g.pending) { state.meeting = true; state.line = Number(params.get('steg') ?? 0); }
   render();

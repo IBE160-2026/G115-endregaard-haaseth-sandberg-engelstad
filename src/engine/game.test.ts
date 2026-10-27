@@ -1,6 +1,6 @@
 // The game engine against the I/O matrix of spec-v0-2-interactive-simulator.md.
 import { describe, expect, it } from 'vitest';
-import { canTrigger, choose, crewBounds, forecast, newGame, runUntilDecision, setCrew, setMode, spent, step, triggerEvent, verdict, type GameState } from './game';
+import { MAX_CHALLENGES, canTrigger, choose, crewBounds, forecast, newGame, runUntilDecision, setCrew, setMode, spent, step, triggerEvent, verdict, type GameState } from './game';
 import { scenario as s } from './scenario';
 import { simulate, type Modes } from './simulate';
 
@@ -191,13 +191,34 @@ describe('review follow-ups', () => {
     expect(events('easy')).toEqual(events('hard'));
   });
 
-  it('crew and mode cannot change while a decision is pending', () => {
+  it('crew and mode can change while a decision is pending, and its forecasts follow', () => {
     const g = quiet();
     stepTo(g, 40);
     triggerEvent(s, g, 'water');
-    setCrew(s, g, 'E', 40);
-    setMode(s, g, 'E', 'hire');
-    expect(task(g, 'E')).toMatchObject({ crew: 30, mode: 'normal' });
+    const before = g.pending!.before;
+    setMode(s, g, 'E', 'overtime');
+    expect(task(g, 'E')).toMatchObject({ mode: 'overtime' });
+    expect(g.pending!.before).toEqual(outcome(s, g));
+    expect(g.pending!.before).not.toEqual(before);
+    // Every preview is the forecast after that option, from the new staffing.
+    for (const o of g.pending!.outcomes) {
+      const f = structuredClone(g);
+      choose(s, f, o.optionId);
+      expect(outcome(s, f)).toMatchObject({ weeks: o.weeks });
+    }
+    expect(g.pending!.voices).toHaveLength(3);
+  });
+
+  it('a game has at most MAX_CHALLENGES challenges, strategy choices included', () => {
+    for (const seed of [1, 2, 3, 4, 5, 6, 7, 8]) {
+      const g = newGame(s, 'medium', seed);
+      while (!g.done) {
+        runUntilDecision(s, g);
+        if (g.pending) choose(s, g, g.pending.recommended);
+      }
+      expect(g.decisions.length).toBeLessThanOrEqual(MAX_CHALLENGES);
+      expect(g.decisions.filter(d => eventById(d.eventId).kind === 'strategy')).toHaveLength(4);
+    }
   });
 });
 

@@ -58,7 +58,8 @@ describe('the story around the simulation', () => {
     expect(renderEvent(scenario, g, lines.length)).toContain('data-action="choose"');
   });
 
-  it('HMS: glasses at the gate, then ear defenders, a chin strap and gloves as the chapters open', () => {
+  it('HMS: at most two checks, glasses at the gate and ear defenders when the blasting starts', () => {
+    expect(HMS_CHECKS.map(c => c.id)).toEqual(['intro', 'ground']);
     const ui = newStory();
     expect(ppeOf(ui)).toEqual(['helmet', 'vest', 'boots']);
     ui.hmsSeen = ['intro'];
@@ -68,8 +69,8 @@ describe('the story around the simulation', () => {
     ui.reviewed = 0;
     expect(hmsDue(ui)!.id).toBe('ground');
     ui.hmsSeen.push('ground');
-    ui.reviewed = 2;
-    expect(hmsDue(ui)!.item).toBe('strap');
+    ui.reviewed = 5;
+    expect(hmsDue(ui)).toBeNull();
     for (const c of HMS_CHECKS) expect(c.replies.some(r => r.scolded)).toBe(true);
   });
 
@@ -92,7 +93,8 @@ describe('the story around the simulation', () => {
     expect(html).toContain('Formann VVS');
     expect(html).toContain(formatInt(21600));
     expect(html).toContain('data-action="kickoff-done"');
-    expect(foremanPitch(scenario, g, f, 'F')).toContain('kritisk linje');
+    expect(foremanPitch(scenario, g, f, 'F')).toBe('Kritisk linje: hver uke vi sparer, sparer hele prosjektet.');
+    expect(foremanPitch(scenario, g, f, 'H')).toBe('Slakk: fart her gir ingenting.');
   });
 
   it('a chapter review brings the foremen of the new chapter', () => {

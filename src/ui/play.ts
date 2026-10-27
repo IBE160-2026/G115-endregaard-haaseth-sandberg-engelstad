@@ -69,6 +69,14 @@ function outcomeText(s: Scenario, r: Outcome): string {
   return `<span class="${late ? 'bad' : 'good'}">uke <b>${r.weeks}</b></span> · <span class="${over ? 'bad' : 'good'}"><b>${formatMnok(r.total)}</b> MNOK</span>`;
 }
 
+/** An option's effect on the end result in a few words, e.g. "+2 uker · +1,70 MNOK" or "Ingen endring". */
+function shortDelta(a: Outcome, b: Outcome): string {
+  const dw = a.weeks - b.weeks;
+  const dm = Math.round((a.total - b.total) * 100) / 100;
+  const parts = [dw ? `${signedWeeks(dw)} uke${Math.abs(dw) === 1 ? '' : 'r'}` : '', dm ? `${formatDelta(dm)} MNOK` : ''].filter(Boolean);
+  return parts.length ? parts.join(' · ') : 'Ingen endring';
+}
+
 /** The difference between two outcomes, e.g. "+2 uker, +0,45 MNOK". */
 const deltaText = (a: Outcome, b: Outcome) => `${signedWeeks(a.weeks - b.weeks)} uker, ${formatDelta(a.total - b.total)} MNOK`;
 
@@ -134,19 +142,17 @@ export function renderEvent(s: Scenario, g: GameState, line = Infinity): string 
     const r = p.outcomes.find(x => x.optionId === o.id)!;
     const { now, later } = effectsOf(s, o, p.taskId);
     const backers = proposals(p).filter(v => v.optionId === o.id);
-    // Δ against today's forecast on every option; the recommended one is also marked.
-    const delta = `<em class="delta">Δ ${deltaText(r, p.before)} mot i dag</em>${isRec ? '<span class="chip chip-on">anbefalt</span>' : ''}`;
+    // One short change against today per option (the totals are in the top bar); the recommended one is marked.
+    const delta = `<em class="delta">${shortDelta(r, p.before)}</em>${isRec ? '<span class="chip chip-on">anbefalt</span>' : ''}`;
     const faces = backers.map(v => `<span class="backer" title="${personName(s, v.personId)}: ${v.reason}">${icon(s.people.find(x => x.id === v.personId)!.icon, 20)}${personName(s, v.personId)}</span>`).join('');
     return `<button type="button" class="choice${isRec ? ' recommended' : ''}" data-action="choose" data-option="${o.id}">
       <b>${o.label}</b>${backers.length ? `<span class="backers">${faces}</span>` : '<span class="backers none">Ingen foreslår dette</span>'}
       <span class="effect"><i>Nå:</i> ${now}</span>
       ${later ? `<span class="effect later"><i>Senere:</i> ${later}</span>` : ''}
-      <span class="preview">Prognose ${outcomeText(s, r)} ${delta}</span>
-      <small>${o.note}</small></button>`;
+      <span class="preview">${delta}</span></button>`;
   }).join('');
   return scenePanel(`${eventHead(s, g)}
     <p class="dilemma">${p.dilemma}</p>
-    <p class="meta">Prognose i dag: ${outcomeText(s, p.before)} · mål ${s.target.weeks} uker og ${formatMnok(s.target.total)} MNOK. Prognosene forutsetter ingen nye hendelser.</p>
     <div class="voices">${voices}</div>
     ${input ? `<p class="meta input">${icon(s.people.find(x => x.id === input.personId)!.icon, 20)} ${personName(s, input.personId)}${input.raised ? ' meldte saken og' : ''} ga Elisabeth og Hedda sitt innspill (lavest kostnad nå). Det er med i rådene deres.</p>` : ''}
     <div class="choices options">${options}</div>

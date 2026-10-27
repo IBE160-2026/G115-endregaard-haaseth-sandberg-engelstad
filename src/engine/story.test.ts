@@ -2,7 +2,7 @@
 import { describe, expect, it } from 'vitest';
 import { eventById } from './events';
 import {
-  applyPlan, choose, crewPlan, findStory, forecast, newGame, pmPlan, runUntilDecision, setCrew, setMode, solveStory, spent,
+  applyPlan, choose, crewPlan, findStory, forecast, newGame, outcome, pmPlan, runUntilDecision, setCrew, setMode, solveStory, spent,
   step, targetScore, triggerEvent, verdict, type GameState,
 } from './game';
 import { scenario as s } from './scenario';
@@ -74,11 +74,14 @@ describe('project manager staffing plan', () => {
     expect(pmPlan(s, g)).toEqual([]); // nothing left to improve
   });
 
-  it('suggests nothing while a decision is pending', () => {
+  it("still plans while a decision is pending, and the decision's forecasts follow the plan", () => {
     const g = quiet();
     stepTo(g, 40);
     triggerEvent(s, g, 'water');
-    expect(pmPlan(s, g)).toEqual([]);
+    const plan = pmPlan(s, g);
+    expect(plan.length).toBeGreaterThan(0);
+    applyPlan(s, g, plan);
+    expect(g.pending!.before).toEqual(outcome(s, g));
   });
 });
 
@@ -109,12 +112,14 @@ describe('story solution', () => {
     }
   });
 
-  it('v0.3 pace: the story path averages about 12–15 decisions per game (30 fixed seeds)', () => {
+  it('v0.5 pace: at most 9 decisions per game, and most games use them all (30 fixed seeds)', () => {
     let total = 0;
-    for (let seed = 1; seed <= 30; seed++) total += solveStory(s, 'medium', seed).steps.filter(st => st.kind === 'choice').length;
-    const mean = total / 30;
-    expect(mean).toBeGreaterThanOrEqual(12);
-    expect(mean).toBeLessThanOrEqual(15);
+    for (let seed = 1; seed <= 30; seed++) {
+      const n = solveStory(s, 'medium', seed).steps.filter(st => st.kind === 'choice').length;
+      expect(n).toBeLessThanOrEqual(9);
+      total += n;
+    }
+    expect(total / 30).toBeGreaterThanOrEqual(7);
   });
 
   it('replaying the story steps gives the same, solved result', () => {

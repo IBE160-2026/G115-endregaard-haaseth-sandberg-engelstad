@@ -16,7 +16,7 @@ export interface Spot { x: number; y: number; z: number }
 
 /** Fixed places on the site. */
 export const SPOTS = {
-  office: { x: -40, y: 6, z: 24 },
+  office: { x: -45, y: 6, z: 26 },
   hut: { x: 28, y: 3.5, z: 22 },
   pit: { x: 0, y: -PIT.depth + 1, z: 0 },
   entrance: { x: 0, y: 2, z: TOWER.d / 2 + 5 },

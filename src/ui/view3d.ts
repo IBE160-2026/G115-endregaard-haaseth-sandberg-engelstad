@@ -19,7 +19,7 @@ import {
   FLOOR_H, FLOORS, PIT, TOWER, BASEMENT_TASKS, SPOTS, figuresFor, sceneState, speakerSpot, taskSpot,
   type SceneState, type Spot,
 } from './scene/visuals';
-import { GATE_IN, GATE_OUT, OFFICE_MEET, foremanSpot, meetingLayout, resolve, route, type P2 } from './scene/walk';
+import { GATE_IN, GATE_OUT, OFFICE_MEET, foremanSpot, meetingLayout, resolve, route, walkable, type P2 } from './scene/walk';
 import { buildWorld, latticeMap, mullionMap, part, roadPoint, signMap, tiledBox } from './scene/world';
 import { iconUrl } from './tabs/context';
 
@@ -500,6 +500,8 @@ export function createView3d(container: HTMLElement, hooks: ViewHooks): View3d {
     if (spec.kind === 'meeting' || spec.kind === 'kickoff') {
       const host = spec.kind === 'meeting' ? foremanSpot(spec.ids[0].slice(8)) : OFFICE_MEET;
       ({ center, spots, view } = meetingLayout(host, spec.ids));
+      // The start-up meeting is filmed from the site side, with the site offices behind the people.
+      if (spec.kind === 'kickoff') { const l = Math.hypot(center.x, center.z) || 1; view = { x: -center.x / l, z: -center.z / l }; }
     } else {
       // Oskar (or the team) comes to where the player stands.
       ({ center, spots, view } = meetingLayout({ x: p.x * 0.98, z: p.z * 0.98 }, spec.ids));
@@ -1245,10 +1247,24 @@ export function createView3d(container: HTMLElement, hooks: ViewHooks): View3d {
     if (staging) {
       // A scene: a slow dolly to a shot from the side of the circle, looking at the table.
       // The look point sits below the people, so they stand in the upper half, clear of the panel.
-      const far = width < 700 ? 21 : 16;
       const c = staging.center;
-      camGoal.set(c.x + staging.view.x * far, 7.5, c.z + staging.view.z * far);
-      lookGoal.set(c.x, 0.2, c.z);
+      const sp = castState.speaker && staging.spots[castState.speaker] ? actors.get(castState.speaker) : undefined;
+      if (sp) {
+        // Someone speaks: a closer shot of them, from in front, with the table between.
+        const dx = c.x - sp.pos.x, dz = c.z - sp.pos.z, dl = Math.hypot(dx, dz) || 1;
+        const sideX = -dz / dl, sideZ = dx / dl;
+        // 45° off the line to the table, so the model on it does not cover the speaker.
+        const near = width < 700 ? 10 : 7.5;
+        camGoal.set(sp.pos.x + (dx / dl + sideX) * near * 0.71, 4.4, sp.pos.z + (dz / dl + sideZ) * near * 0.71);
+        // Never from inside a hut or the pit: then from the scene's own side instead.
+        if (!walkable({ x: camGoal.x, z: camGoal.z }, 1.5)) camGoal.set(sp.pos.x + staging.view.x * near, 4.4, sp.pos.z + staging.view.z * near);
+        // Looking a little below the face keeps the speaker clear of the panel at the bottom.
+        lookGoal.set(sp.pos.x, 0.9, sp.pos.z);
+      } else {
+        const far = width < 700 ? 21 : 16;
+        camGoal.set(c.x + staging.view.x * far, 7.5, c.z + staging.view.z * far);
+        lookGoal.set(c.x, 0.2, c.z);
+      }
       // A cut when the shot is far away, a slow dolly when it is close.
       const kk = camera.position.distanceTo(camGoal) > 25 || look.distanceTo(lookGoal) > 12 ? 1 : 1 - Math.exp(-dt * 2.2);
       camera.position.lerp(camGoal, kk);

@@ -220,15 +220,14 @@ describe('v0.3 renderers: decision dialog, fork card, feed, final report, routin
     // The foreman's pick (the cheapest now) is not shown to the player.
     expect(html).not.toContain('Anbefaler «Lei midlertidig pumpe»');
     expect(html).toContain('Anbefaler «Installer fast pumpe»');
-    // Every option shows its forecast and Δ against today's forecast; the recommended one is also marked.
-    for (const o of g.pending!.outcomes) expect(html).toContain(`uke <b>${o.weeks}</b>`);
-    expect(html).toContain(`<b>${formatMnok(g.pending!.outcomes[0].total)}</b> MNOK`);
+    // Every option shows one short change against today (no repeated totals); the recommended one is also marked.
     expect(count(html, '<span class="chip chip-on">anbefalt</span>')).toBe(1);
-    expect(count(html, 'mot i dag</em>')).toBe(3);
+    expect(count(html, '<em class="delta">')).toBe(3);
     // Today 114 weeks / 283.10. Pump: +2 weeks, 0.8 + 2 × 0.45. Rent: +4 weeks, 0.3 + 4 × 0.45.
-    expect(html).toContain('<em class="delta">Δ +2 uker, +1,70 MNOK mot i dag</em><span class="chip chip-on">anbefalt</span>');
-    expect(html).toContain('<em class="delta">Δ +4 uker, +2,10 MNOK mot i dag</em>');
-    expect(html).toContain('Prognose i dag:');
+    expect(html).toContain('<em class="delta">+2 uker · +1,70 MNOK</em><span class="chip chip-on">anbefalt</span>');
+    expect(html).toContain('<em class="delta">+4 uker · +2,10 MNOK</em>');
+    expect(html).not.toContain('Prognose i dag:');
+    expect(html).not.toContain(`uke <b>${g.pending!.outcomes[0].weeks}</b>`);
   });
 
   it('a change request shows what deferring costs later', () => {

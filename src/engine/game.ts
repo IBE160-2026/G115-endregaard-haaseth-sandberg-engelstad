@@ -56,7 +56,12 @@ export interface Pending {
   outcomes: OptionOutcome[];
   /** Prosjektleder, Site manager and the affected discipline's foreman. */
   voices: Voice[];
+  /** The Prosjektleder picked the best option (not one of the difficulty's mistakes). */
+  bestPicked: boolean;
 }
+
+/** At most this many challenges per game (strategy choices included). */
+export const MAX_CHALLENGES = 9;
 
 /** A delayed consequence waiting to land. */
 export interface Scheduled {
@@ -296,7 +301,7 @@ export function step(s: Scenario, g: GameState): void {
     g.scheduled = [];
     for (const x of rest) land(s, g, x, false);
     g.log.push({ week: g.week, from: 'pm', text: 'Bygget er ferdigstilt.' });
-  } else if (g.randomEvents && g.quiet !== w) {
+  } else if (g.randomEvents && g.quiet !== w && roomForChallenge(g)) {
     for (const ev of EVENTS) {
       if (ev.chance <= 0 || g.fired.includes(ev.id)) continue;
       if (ev.requires && !g.choices.some(c => c.eventId === ev.requires!.eventId && c.optionId === ev.requires!.optionId)) continue;
@@ -320,10 +325,19 @@ function targetTask(s: Scenario, g: GameState, ev: EventDef): string | null {
   return ev.taskIds.find(id => g.tasks[taskIndex(s, id)].finish === null) ?? null;
 }
 
-/** A scenario button can start an event while its task is not finished. */
+/**
+ * Is there room for another random or button challenge? The strategy choices that are still
+ * to come are always kept room for, so a game never has more than MAX_CHALLENGES.
+ */
+export function roomForChallenge(g: GameState): boolean {
+  const strategiesLeft = EVENTS.filter(e => e.trigger === 'start' && !g.fired.includes(e.id)).length;
+  return g.fired.length + strategiesLeft < MAX_CHALLENGES;
+}
+
+/** A scenario button can start an event while its task is not finished (and there is room). */
 export function canTrigger(s: Scenario, g: GameState, eventId: string): boolean {
   const ev = eventById(eventId);
-  return ev.button && !g.done && !g.pending && !g.fired.includes(ev.id) && targetTask(s, g, ev) !== null;
+  return ev.button && !g.done && !g.pending && !g.fired.includes(ev.id) && targetTask(s, g, ev) !== null && roomForChallenge(g);
 }
 
 export function triggerEvent(s: Scenario, g: GameState, eventId: string): void {
@@ -418,8 +432,23 @@ function raise(s: Scenario, g: GameState, ev: EventDef, taskId: string) {
     : others[Math.floor(alt * others.length)];
   const outcomes = scored.map(x => ({ optionId: x.o.id, weeks: x.weeks, total: x.total }));
   const voices = voicesFor(s, ev, taskId, outcomes, pick.o.id);
-  g.pending = { eventId: ev.id, taskId, recommended: pick.o.id, reasoning: voices[0].reason, dilemma: dilemmaFor(ev), before, outcomes, voices };
+  g.pending = { eventId: ev.id, taskId, recommended: pick.o.id, reasoning: voices[0].reason, dilemma: dilemmaFor(ev), before, outcomes, voices, bestPicked: pick === best };
   g.log.push({ week: g.week, from: ev.raisedBy, text: `${ev.title} (${taskId}).` });
+}
+
+/**
+ * Works out the open decision's forecasts again after a staffing change (no rng: the same
+ * game stays the same). A correct recommendation follows the new best option; a wrong one stays.
+ */
+function refreshPending(s: Scenario, g: GameState) {
+  const p = g.pending;
+  if (!p) return;
+  const ev = eventById(p.eventId);
+  const { scored, best } = bestOption(s, g, ev, p.taskId);
+  const recommended = p.bestPicked ? best.o.id : p.recommended;
+  const outcomes = scored.map(x => ({ optionId: x.o.id, weeks: x.weeks, total: x.total }));
+  const voices = voicesFor(s, ev, p.taskId, outcomes, recommended);
+  g.pending = { ...p, recommended, reasoning: voices[0].reason, before: outcome(s, g), outcomes, voices };
 }
 
 export function choose(s: Scenario, g: GameState, optionId: string): void {
@@ -444,21 +473,27 @@ export function choose(s: Scenario, g: GameState, optionId: string): void {
   if (next) raise(s, g, eventById(next.eventId), next.taskId);
 }
 
+// Staffing can also change while a decision is open; its forecasts are then worked out again.
 function editable(s: Scenario, g: GameState, taskId: string) {
   const t = g.tasks[taskIndex(s, taskId)];
-  return g.done || g.pending || t.finish !== null ? null : t;
+  return g.done || t.finish !== null ? null : t;
 }
 
 export function setCrew(s: Scenario, g: GameState, taskId: string, crew: number): void {
   const t = editable(s, g, taskId);
   if (!t) return;
   const { min, max } = crewBounds(s, s.tasks[taskIndex(s, taskId)]);
-  t.crew = Math.max(min, Math.min(max, Math.round(crew)));
+  const next = Math.max(min, Math.min(max, Math.round(crew)));
+  if (next === t.crew) return;
+  t.crew = next;
+  refreshPending(s, g);
 }
 
 export function setMode(s: Scenario, g: GameState, taskId: string, mode: Mode): void {
   const t = editable(s, g, taskId);
-  if (t) t.mode = mode;
+  if (!t || t.mode === mode) return;
+  t.mode = mode;
+  refreshPending(s, g);
 }
 
 const totalOf = (g: GameState) =>
@@ -533,7 +568,7 @@ export interface StaffingChange { taskId: string; crew: number; mode: Mode }
  * crew and mode that bring the forecast closest to the targets (greedy, in task order).
  */
 export function pmPlan(s: Scenario, g: GameState): StaffingChange[] {
-  if (g.done || g.pending) return [];
+  if (g.done) return [];
   const work = clone(g);
   const changes: StaffingChange[] = [];
   // The forecast of the plan so far; it only changes when a change is kept.

@@ -101,8 +101,9 @@ describe('advisor', () => {
   it('voice reasons quote the numbers from their own lens', () => {
     const o = { id: 'x', label: 'Lei pumpe', cost: 0.3, delay: 4, note: '', later: { weeks: 6, cost: 1.2, delay: 0, text: 't' } };
     const r = { weeks: 118, total: 285.4 };
-    expect(voiceReason('pm', s, o, r)).toBe('Jeg anbefaler «Lei pumpe». Prognosen blir uke 118 og 285,40 MNOK, mot målet 114 uker og 283,10 MNOK.');
-    expect(voiceReason('site', s, o, r)).toBe('«Lei pumpe» gir tidligst ferdigstillelse: uke 118. Hver uke ekstra koster 0,45 MNOK i rigg og drift.');
+    expect(voiceReason('pm', s, o, r)).toBe('Jeg anbefaler «Lei pumpe». Det kommer nærmest målene.');
+    expect(voiceReason('pm', s, o, { weeks: 110, total: 280 })).toBe('Jeg anbefaler «Lei pumpe». Da holder vi både budsjett og plan.');
+    expect(voiceReason('site', s, o, r)).toBe('«Lei pumpe» gir minst stans på plassen. Hver uke ekstra koster rigg og drift.');
     expect(voiceReason('foreman', s, o, r)).toBe('«Lei pumpe» koster 0,30 MNOK nå, men gir 1,20 MNOK om 6 uker. Prognose: uke 118 og 285,40 MNOK.');
   });
 });

@@ -109,6 +109,7 @@ const people: Person[] = [
 const OFFICE_TASKS = ['A', 'F', 'G', 'O', 'H', 'I', 'K', 'J', 'N'];
 const BASEMENT_TASKS = ['C', 'D', 'E', 'L'];
 
+// Only the buildings the scenario simulates (the group asked to remove the others in v0.5).
 const buildings: Building[] = [
   // Facts about A-blokka, the basement complex and Kjeller 2 were provided by the group
   // (2026-10-22) from public sources (regjeringen.no / Statsbygg). Check them before submission.
@@ -123,8 +124,6 @@ const buildings: Building[] = [
     ],
     simulation: { areaM2: 11000, taskIds: OFFICE_TASKS },
   },
-  { id: 'bt1-d', name: 'D-blokka', phase: 'Byggetrinn 1', kind: 'Nybygg', status: 'Ferdig 2026', icon: 'buildings/bt1-d.svg' },
-  { id: 'bt1-h', name: 'Høyblokka', phase: 'Byggetrinn 1', kind: 'Rehabilitering', status: 'Ferdig 2026', icon: 'buildings/bt1-h.svg' },
   {
     id: 'bt1-basement', name: 'Kjelleranlegget', phase: 'Byggetrinn 1', kind: 'Felles logistikk- og driftsknutepunkt', status: 'Ferdig april 2026 (Veidekke)', icon: 'buildings/bt1-basement.svg',
     facts: [
@@ -135,14 +134,6 @@ const buildings: Building[] = [
     ],
     simulation: { areaM2: 4000, taskIds: BASEMENT_TASKS },
   },
-  { id: 'bt2-c', name: 'C-blokka', phase: 'Byggetrinn 2 del I', kind: 'Nybygg', status: 'Under bygging', icon: 'buildings/bt2-c.svg' },
-  {
-    id: 'bt2-basement', name: 'Kjeller 2', phase: 'Byggetrinn 2 del I', kind: 'Kjeller', status: 'Byggestart januar 2027, ferdig 2030', icon: 'buildings/bt2-basement.svg',
-    facts: ['Statsbygg inngikk i april 2026 avtale med Hent.', 'Rundt 10 000 m² i sonen mot Møllergata og Ring 1-tunnelen.'],
-  },
-  { id: 'bt2-g', name: 'G-blokka', phase: 'Byggetrinn 2 del II', kind: 'Rehabilitering', status: 'Foreslått oppstart 2027', icon: 'buildings/bt2-g.svg' },
-  { id: 'bt3-e', name: 'E-blokka', phase: 'Byggetrinn 3', kind: 'Nybygg', status: 'Prosjektering', icon: 'buildings/bt3-e.svg' },
-  { id: 'park', name: 'Parken', phase: 'Byggetrinn 2 og 3', kind: 'Uteområde', status: 'Vestre del i BT2, resten i BT3', icon: 'buildings/park.svg' },
 ];
 
 export const scenario: Scenario = {

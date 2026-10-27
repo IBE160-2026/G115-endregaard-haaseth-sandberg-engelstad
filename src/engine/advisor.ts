@@ -21,12 +21,14 @@ function costNow(o: EventOption): string {
  * Prosjektleder = both targets, Site manager = least delay, foreman = lowest cost now.
  */
 export function voiceReason(lens: 'pm' | 'site' | 'foreman', s: Scenario, o: EventOption, r: Outcome): string {
+  // Short and in words: the numbers are on the options and in the top bar.
   const forecastText = `uke ${r.weeks} og ${mnok(r.total)} MNOK`;
   if (lens === 'pm') {
-    return `Jeg anbefaler «${o.label}». Prognosen blir ${forecastText}, mot målet ${s.target.weeks} uker og ${mnok(s.target.total)} MNOK.`;
+    const hits = r.weeks <= s.target.weeks && Math.round(r.total * 100) <= Math.round(s.target.total * 100);
+    return `Jeg anbefaler «${o.label}». ${hits ? 'Da holder vi både budsjett og plan.' : 'Det kommer nærmest målene.'}`;
   }
   if (lens === 'site') {
-    return `«${o.label}» gir tidligst ferdigstillelse: uke ${r.weeks}. Hver uke ekstra koster ${mnok(s.overhead.perWeek)} MNOK i rigg og drift.`;
+    return `«${o.label}» gir minst stans på plassen. Hver uke ekstra koster rigg og drift.`;
   }
   const later = o.later ? `, men gir ${mnok(o.later.cost)} MNOK om ${weeksText(o.later.weeks)}` : '';
   return `«${o.label}» ${costNow(o)}${later}. Prognose: ${forecastText}.`;
