@@ -4,6 +4,8 @@ An assessment of how well the simulator meets its goals, measured against the in
 
 ## v0.5 – 2026-10-27
 
+**Status estimate (2026-10-27):** brief about 75 %, the part 1 grading criteria about 74 % weighted, the BMAD flow about 35 % (brief and specs exist; no PRD, architecture or epics). The whole game is described in `G115_FinalPrompt.md`, which can be the starting point for a PRD written after the fact.
+
 **Overall:** the app is now a game you walk through. As Statsbygg you go to a foreman with a «!», meet with Elisabeth and Hedda round a 3D model of the challenge, and review the hours at the start-up meeting and at each chapter. The core from the feedback, the fork and the comparison with the AI's path, has been in place since v0.3. The engine is unchanged in v0.5: walking, meetings and HMS are presentation only. The biggest gaps now are the planning documents and tests of the click flow.
 
 1. **Update the brief, the PRD and the architecture for v0.5 (top priority).** The documents still describe a dialog-based simulator without walking, meetings, HMS or staffing reviews.
