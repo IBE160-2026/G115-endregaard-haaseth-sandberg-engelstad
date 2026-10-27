@@ -92,7 +92,9 @@ These criteria are the group's own reading of "done"; there is no formal grading
 
 ## Spill det
 
-**https://ibe160-2026.github.io/G115-endregaard-haaseth-sandberg-engelstad/**. Only a browser is needed (a desktop with a keyboard is best). The game is published from `main` by `.github/workflows/deploy.yml` every time it is pushed.
+Test version: **https://claude.ai/artifact/Nh9p4q3T5mbQaphKD9iSdY** (a Claude Artifact; testers need access through its Share menu). Only a browser is needed, and a desktop with a keyboard is best.
+
+When a repo admin has turned on GitHub Pages (Settings → Pages → Source: GitHub Actions), `.github/workflows/deploy.yml` publishes `main` on every push to **https://ibe160-2026.github.io/G115-endregaard-haaseth-sandberg-engelstad/**.
 
 ## Kjør lokalt
 

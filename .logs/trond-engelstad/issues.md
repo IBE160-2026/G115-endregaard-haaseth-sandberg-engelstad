@@ -13,3 +13,5 @@
 - [ ] 2026-10-27 [v0-5-walkable-site](996-2026-10-27-20-47-30-v0-5-walkable-site.md) — Confirm with the group: the player is Statsbygg (the prompt also said «Statnet»)
 - [ ] 2026-10-27 [v0-5-walkable-site](996-2026-10-27-20-47-30-v0-5-walkable-site.md) — Decide whether the HMS checks or the replies should cost money or time
 - [ ] 2026-10-27 [v0-5-walkable-site](996-2026-10-27-20-47-30-v0-5-walkable-site.md) — Check the foremen's titles chosen by the AI (e.g. «Formann Betong» for E, «Formann Prosjektering» for A)
+- [ ] 2026-10-27 [v0-5-walkable-site](996-2026-10-27-20-47-30-v0-5-walkable-site.md) — Ask bipa or TesAgi-HiMolde to turn on GitHub Pages (Source: GitHub Actions) and re-run the deploy
+- [ ] 2026-10-27 [v0-5-walkable-site](996-2026-10-27-20-47-30-v0-5-walkable-site.md) — Until then: republish the Claude Artifact by hand after each change

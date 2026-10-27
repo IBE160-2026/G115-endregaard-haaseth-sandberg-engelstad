@@ -18,9 +18,11 @@ An assessment of how well the simulator meets its goals, measured against the in
    Explain this in the brief as a deliberate choice (testable, no key needed), or add an optional LLM layer for the reasoning text, with a demo mode of saved answers.
 5. **Decisions that are still open.** Should the HMS checks or the replies cost money or time? Are the foremen's titles right (e.g. «Formann Betong» for E)? Are the v0.3 event prices and chances right?
    Answer them in `G115_Dilemmas.md` and update the scenario.
-6. **The fork in 3D.** The fork card and the final report show the AI's path in numbers, but the site does not show it.
+6. **Publishing.** Testers play the Claude Artifact (https://claude.ai/artifact/Nh9p4q3T5mbQaphKD9iSdY), which has to be shared from the Share menu and republished by hand.
+   Ask the repo admins (bipa, TesAgi-HiMolde) to turn on GitHub Pages, so that every push to main publishes itself after the tests, at a fixed link anyone can open without logging in.
+7. **The fork in 3D.** The fork card and the final report show the AI's path in numbers, but the site does not show it.
    A ghost building for the AI's path (Kai's roadmap) would make the comparison visible where the player is.
-7. **What is going well, and should be kept.** The engine is pure and deterministic, and v0.5 left it untouched. The new story and walking logic is pure and tested. Demo links make presentations easy.
+8. **What is going well, and should be kept.** The engine is pure and deterministic, and v0.5 left it untouched. The new story and walking logic is pure and tested. Demo links make presentations easy.
    `G115_Changelog.md`, `G115_Dilemmas.md` and the session logs give traceability. Keep updating them with every change.
 ## v0.2 – 2026-10-22
 
