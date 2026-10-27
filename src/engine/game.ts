@@ -84,6 +84,8 @@ export interface Decision {
   followed: boolean;
   chosenOutcome: Outcome;
   recommendedOutcome: Outcome;
+  /** The forecast just before the choice (the revised budget and schedule are measured from it). */
+  before: Outcome;
 }
 
 export interface LogEntry {
@@ -465,6 +467,7 @@ export function choose(s: Scenario, g: GameState, optionId: string): void {
     week: g.week, eventId: ev.id, taskId: p.taskId, chosen: optionId, recommended: p.recommended, followed,
     chosenOutcome: strip(p.outcomes.find(x => x.optionId === optionId)!),
     recommendedOutcome: strip(p.outcomes.find(x => x.optionId === p.recommended)!),
+    before: strip(p.before),
   });
   g.log.push({ week: g.week, from: 'owner', text: `Valgte «${o.label}» (${followed ? 'fulgte anbefalingen' : 'valgte annerledes enn anbefalingen'}).` });
   g.pending = null;

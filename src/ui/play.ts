@@ -152,6 +152,7 @@ export function renderEvent(s: Scenario, g: GameState, line = Infinity): string 
       <span class="preview">${delta}</span></button>`;
   }).join('');
   return scenePanel(`${eventHead(s, g)}
+    <p class="summary">${ev.description}</p>
     <p class="dilemma">${p.dilemma}</p>
     <div class="voices">${voices}</div>
     ${input ? `<p class="meta input">${icon(s.people.find(x => x.id === input.personId)!.icon, 20)} ${personName(s, input.personId)}${input.raised ? ' meldte saken og' : ''} ga Elisabeth og Hedda sitt innspill (lavest kostnad nå). Det er med i rådene deres.</p>` : ''}
@@ -166,14 +167,26 @@ export function renderFork(s: Scenario, d: Decision): string {
   const col = (head: string, optionId: string, r: Outcome) =>
     `<div class="fork-col"><span class="meta">${head}</span><b>«${label(optionId)}»</b><span>${outcomeText(s, r)}</span></div>`;
   const body = d.followed
-    ? `<p class="fork-same">Du fulgte anbefalingen.</p><div class="fork one">${col('Ditt valg = Elisabeths anbefaling', d.chosen, d.chosenOutcome)}</div>`
-    : `<div class="fork">${col('Ditt valg', d.chosen, d.chosenOutcome)}${col('Elisabeths anbefaling', d.recommended, d.recommendedOutcome)}</div>
-       <p class="dilemma">Ditt valg gir ${deltaText(d.chosenOutcome, d.recommendedOutcome)} mot anbefalingen.</p>`;
+    ? `<p class="fork-same">Konklusjon: du fulgte Elisabeths anbefaling.</p><div class="fork one">${col('Ditt valg = Elisabeths anbefaling', d.chosen, d.chosenOutcome)}</div>`
+    : `<p class="fork-same differ">Konklusjon: du valgte annerledes enn Elisabeth. Ditt valg gir ${deltaText(d.chosenOutcome, d.recommendedOutcome)} mot anbefalingen.</p>
+       <div class="fork">${col('Ditt valg', d.chosen, d.chosenOutcome)}${col('Elisabeths anbefaling', d.recommended, d.recommendedOutcome)}</div>`;
   return scenePanel(`<div class="sp-head">${icon('decisions/decision-point.svg', 40)}<div><h2>Veivalg: ${ev.title}</h2>
-    <p class="meta"><span class="chip kind kind-${ev.kind}">${KIND_LABEL[ev.kind]}</span> Uke ${d.week} · mål ${s.target.weeks} uker og ${formatMnok(s.target.total)} MNOK</p></div></div>
+    <p class="meta"><span class="chip kind kind-${ev.kind}">${KIND_LABEL[ev.kind]}</span> Uke ${d.week}</p></div></div>
     ${body}
-    <p class="meta">Begge veiene er regnet frem fra samme tilstand, uten nye hendelser.</p>
+    ${revisedHtml(s, d.before, d.chosenOutcome)}
     <div class="sp-actions"><button type="button" class="primary" data-action="fork-continue">Avslutt møtet ▸</button></div>`, 'Veivalg');
+}
+
+/** The revised budget and schedule after a choice: before → after, against the targets. */
+function revisedHtml(s: Scenario, before: Outcome, after: Outcome): string {
+  const late = after.weeks > s.target.weeks;
+  const over = Math.round(after.total * 100) > Math.round(s.target.total * 100);
+  const row = (label: string, from: string, to: string, bad: boolean, target: string) =>
+    `<div class="rev-row"><span>${label}</span><b class="${bad ? 'bad' : 'good'}">${from} → ${to}</b><small>mål ${target}</small></div>`;
+  return `<div class="revised">
+    ${row('Revidert budsjett', formatMnok(before.total), `${formatMnok(after.total)} MNOK`, over, `${formatMnok(s.target.total)} MNOK`)}
+    ${row('Revidert fremdrift', `uke ${before.weeks}`, `uke ${after.weeks}`, late, `uke ${s.target.weeks}`)}
+  </div>`;
 }
 
 /** The message feed: what the AI roles report, newest first. */

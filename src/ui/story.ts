@@ -80,6 +80,21 @@ export const HMS_CHECKS: HmsCheck[] = [
 ];
 export const hmsById = (id: string) => HMS_CHECKS.find(c => c.id === id)!;
 
+/**
+ * Oskar's rounds in the background: he stops at a spot, looks at someone and tells them off
+ * (a speech bubble, nothing in the simulation). `needs` skips a stop when that is not on site.
+ */
+export const OSKAR_ROUNDS: { spot: P2; look: P2; line: string; needs?: 'crane' | 'pump' | 'pit' }[] = [
+  { spot: { x: 23, z: -15 }, look: { x: 19, z: -10 }, line: 'Kranfører! Ingen løft over folk. Og sjekk vindmåleren før neste løft!', needs: 'crane' },
+  { spot: { x: -20, z: 29 }, look: { x: -24, z: 32 }, line: 'Pallene stables ikke høyere enn det der, folkens!' },
+  { spot: { x: 6, z: 16 }, look: { x: 6, z: 13 }, line: 'Rekkverket er ikke en benk! Opp og stå.', needs: 'pit' },
+  { spot: { x: 30, z: 18 }, look: { x: 34, z: 26 }, line: 'Kaffepause er fint, men hjelmen blir på i køen også.' },
+  { spot: { x: 4, z: 37 }, look: { x: 4, z: 40.5 }, line: 'Flaggmann! Refleksvesten skal lukkes, det er ikke en kappe.' },
+  { spot: { x: -24, z: -18 }, look: { x: -18, z: -14 }, line: 'Hvem har latt en løs planke ligge her? Rydd før noen snubler.' },
+  { spot: { x: 24, z: -21 }, look: { x: 17, z: -28 }, line: 'Pumpebilen! Støttebeina helt ut før dere bommer opp.', needs: 'pump' },
+  { spot: { x: -9, z: 18 }, look: { x: -9, z: 12 }, line: 'Du der nede! Hørselvernet på, det er ikke pynt.', needs: 'pit' },
+];
+
 /** The next HMS check that is due: a chapter that has been reviewed and has a check not yet done. */
 export function hmsDue(ui: Pick<StoryUi, 'hmsSeen' | 'reviewed' | 'phase'>): HmsCheck | null {
   if (ui.phase !== 'play') return null;

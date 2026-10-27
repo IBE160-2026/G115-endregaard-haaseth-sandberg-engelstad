@@ -4,8 +4,8 @@ import { scenario } from '../engine/scenario';
 import { renderHms, renderKickoff, renderReview } from './scenes';
 import { formatInt } from './format';
 import { renderEvent } from './play';
-import { foremanSpot, GATE_IN, OFFICE_MEET } from './scene/walk';
-import { HMS_CHECKS, hmsDue, meetingLines, newStory, objectiveFor, ppeOf, reviewTasks, foremanPitch } from './story';
+import { foremanSpot, GATE_IN, OFFICE_MEET, walkable } from './scene/walk';
+import { HMS_CHECKS, OSKAR_ROUNDS, hmsDue, meetingLines, newStory, objectiveFor, ppeOf, reviewTasks, foremanPitch } from './story';
 
 const at = (week: number, eventId: string) => {
   const g = newGame(scenario, 'easy', 1, { randomEvents: false });
@@ -105,5 +105,14 @@ describe('the story around the simulation', () => {
     const html = renderReview(scenario, g, forecast(scenario, g), ids, 99, []);
     expect(html).toContain('Bemanningsmøte: Grunnarbeid');
     expect(html).toContain('data-action="review-done"');
+  });
+
+
+  it("Oskar's rounds stop on free ground, each with a remark", () => {
+    expect(OSKAR_ROUNDS.length).toBeGreaterThanOrEqual(5);
+    for (const r of OSKAR_ROUNDS) {
+      expect(walkable(r.spot)).toBe(true);
+      expect(r.line.length).toBeGreaterThan(10);
+    }
   });
 });

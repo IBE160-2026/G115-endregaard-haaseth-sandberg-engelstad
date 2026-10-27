@@ -286,7 +286,8 @@ function arrive(id: string) {
   state.talk = null;
   if (state.phase === 'intro' && id === 'hms' && !state.hmsSeen.includes('intro')) { state.hms = 'intro'; state.hmsReply = null; return; }
   if (state.phase === 'intro' && id === 'pm') { state.phase = 'kickoff'; state.line = 0; return; }
-  if (g.pending && id === `foreman-${g.pending.taskId}`) { state.meeting = true; state.line = 0; }
+  // The first meeting is played line by line; from the second one it opens on the summary and the choice.
+  if (g.pending && id === `foreman-${g.pending.taskId}`) { state.meeting = true; state.line = g.decisions.length ? 99 : 0; }
 }
 
 function startGame(difficulty: Difficulty, skipIntro: boolean) {
@@ -401,9 +402,10 @@ app.addEventListener('click', e => {
       if (g) {
         const done = g.decisions[state.forkSeen];
         state.forkSeen = g.decisions.length;
-        state.line = 0;
-        // A queued decision for the same foreman goes on in the same meeting; another foreman waits on site.
+        // A queued decision for the same foreman goes on in the same meeting (straight to the choice);
+        // another foreman waits on site.
         state.meeting = !!g.pending && g.pending.taskId === done?.taskId;
+        state.line = state.meeting ? 99 : 0;
         resumeIfFree();
       }
       break;

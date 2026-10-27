@@ -257,7 +257,10 @@ describe('v0.3 renderers: decision dialog, fork card, feed, final report, routin
     const same = at(40, 'water');
     choose(scenario, same, 'pump');
     const one = renderFork(scenario, same.decisions[0]);
-    expect(one).toContain('Du fulgte anbefalingen.');
+    expect(one).toContain('Konklusjon: du fulgte Elisabeths anbefaling.');
+    // The revised budget and schedule: from the forecast before the choice to after it (pump: +0,80 + 2 × 0,45).
+    expect(one).toContain('<span>Revidert budsjett</span><b class="bad">283,10 → 284,80 MNOK</b>');
+    expect(one).toContain('<span>Revidert fremdrift</span><b class="bad">uke 114 → uke 116</b>');
     expect(count(one, 'class="fork-col"')).toBe(1);
   });
 

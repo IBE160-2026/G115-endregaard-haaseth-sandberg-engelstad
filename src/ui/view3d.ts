@@ -11,7 +11,7 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import type { GameState } from '../engine/game';
 import type { Scenario } from '../engine/scenario';
-import type { Phase, Ppe } from './story';
+import { OSKAR_ROUNDS, type Phase, type Ppe } from './story';
 import { LOOKS, createCharacter, foremanLook, type Character } from './scene/cast';
 import { buildChallenge, type Model } from './scene/challenge';
 import { buildProps } from './scene/props';
@@ -639,16 +639,30 @@ export function createView3d(container: HTMLElement, hooks: ViewHooks): View3d {
       os.speed = walkPath(os, dt, 3);
       if (!os.speed) face(os, { x: pl.pos.x, z: pl.pos.z }, dt);
     } else {
+      // His rounds: walk to a spot, look at whoever is there and tell them off, then on to the next.
       if (!os.path.length) {
+        const stop = OSKAR_ROUNDS[oskarStop];
+        if (oskarRemark && stop) {
+          oskarRemark = false;
+          if (scenarioRef && !staging) addBubble(scenarioRef, 'hms', stop.line);
+          oskarTalk = 3.5;
+          os.wait = 6;
+        }
+        if (stop) face(os, stop.look, dt);
         os.wait -= dt;
         if (os.wait <= 0) {
-          const rounds: P2[] = [{ x: 30, z: 18 }, { x: -30, z: 24 }, { x: -26, z: -22 }, { x: 26, z: -22 }, { x: 0, z: 30 }];
-          os.path = route({ x: os.pos.x, z: os.pos.z }, rounds[Math.floor(t / 9) % rounds.length]);
-          os.wait = 3;
+          const has = (n?: string) => !n || (n === 'crane' ? target.crane !== 'off' : n === 'pump' ? target.active.some(id => id === 'E' || id === 'F') : (shown.E ?? 0) < 0.999);
+          for (let k = 1; k <= OSKAR_ROUNDS.length; k++) {
+            const next = (oskarStop + k) % OSKAR_ROUNDS.length;
+            if (has(OSKAR_ROUNDS[next].needs)) { oskarStop = next; break; }
+          }
+          os.path = route({ x: os.pos.x, z: os.pos.z }, OSKAR_ROUNDS[oskarStop].spot);
+          oskarRemark = true;
         }
       }
       os.speed = walkPath(os, dt, 2.2);
     }
+    oskarTalk = Math.max(0, oskarTalk - dt);
 
     // Foremen: at their spot next to their work while the discipline runs (or a challenge waits).
     const wanted = new Set(target.active.map(id => `foreman-${id}`));
@@ -682,7 +696,7 @@ export function createView3d(container: HTMLElement, hooks: ViewHooks): View3d {
     // Animate and place every figure.
     pl.speed = speed;
     for (const a of actors.values()) {
-      const talking = castState.speaker === a.id ? 1 : 0;
+      const talking = castState.speaker === a.id || (a.id === 'hms' && oskarTalk > 0) ? 1 : 0;
       a.talk += (talking - a.talk) * Math.min(1, dt * 6);
       a.c.setPpe(a.id === 'owner' ? castState.ppe : NPC_PPE);
       a.c.animate(dt, a.speed, a.talk);
@@ -738,6 +752,10 @@ export function createView3d(container: HTMLElement, hooks: ViewHooks): View3d {
     clickRing.scale.setScalar(1 + (1 - cm.opacity) * 1.5);
   }
   let autoSpeed = 9;
+  /** Oskar's rounds: the stop he walks to, whether he still has to say something there, and how long he talks. */
+  let oskarStop = 0;
+  let oskarRemark = false;
+  let oskarTalk = 0;
   /** Everyone else is already fully equipped (Oskar sees to that). */
   const NPC_PPE: Ppe[] = ['helmet', 'vest', 'boots', 'glasses', 'gloves'];
 

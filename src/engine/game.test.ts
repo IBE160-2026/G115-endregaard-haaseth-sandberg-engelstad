@@ -381,6 +381,7 @@ describe('v0.3 option previews, fork records and voices', () => {
       week: 40, eventId: 'water', taskId: 'E', chosen: 'wait', recommended: 'pump', followed: false,
       chosenOutcome: { weeks: p.outcomes[2].weeks, total: p.outcomes[2].total },
       recommendedOutcome: { weeks: p.outcomes[0].weeks, total: p.outcomes[0].total },
+      before: { weeks: p.before.weeks, total: p.before.total },
     }]);
     expect(g.decisions[0].chosenOutcome.weeks - g.decisions[0].recommendedOutcome.weeks).toBe(4);
   });

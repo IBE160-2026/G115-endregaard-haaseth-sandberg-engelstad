@@ -9,7 +9,7 @@ An assessment of how well the simulator meets its goals, measured against the in
 1. **Update the brief, the PRD and the architecture for v0.5 (top priority).** The documents still describe a dialog-based simulator without walking, meetings, HMS or staffing reviews.
    Describe the story layer (`src/ui/story.ts`) and the scene (`src/ui/scene/`) as their own parts beside the pure engine, and add the group's choices: Statsbygg as the player, the foremen's titles, and the foreman's view as input to Elisabeth and Hedda.
    Affects criterion 1, Process (30 %), and criterion 5, Architecture (10 %).
-2. **Tests of the click flow.** The new logic is pure and tested (walking, routes, meeting scripts, HMS, objectives; 184 tests), but `main.ts`, which drives the clock and the scenes, has no tests.
+2. **Tests of the click flow.** The new logic is pure and tested (walking, routes, meeting scripts, HMS, Oskar's rounds, objectives; 186 tests), but `main.ts`, which also decides that only the first meeting is played line by line,, which drives the clock and the scenes, has no tests.
    Add DOM tests (Vitest + happy-dom) for: arrive → meeting → choice → fork → resume, the staffing review, and the HMS check that pauses and resumes the clock.
    Affects criterion 3, Quality assurance (15 %).
 3. **Play it on a real GPU, and keep the pace.** v0.5 has only been checked in headless Chrome with software WebGL. Bloom, up to 160 workers and the cast must hold a good frame rate on a student laptop.

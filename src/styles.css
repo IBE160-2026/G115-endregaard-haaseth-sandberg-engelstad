@@ -632,6 +632,17 @@ table.plan .seg button span { display: none; }
   .hint { bottom: 148px; }
   .drawer { left: 8px; right: 8px; width: auto; }
 }
+/* The decision's summary, and the conclusion with the revised budget and schedule after it. */
+.scene-panel .summary { margin: 0 0 8px; font-size: 14px; }
+.fork-same.differ { color: var(--busy); }
+.revised { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 4px 0 4px; }
+.rev-row { display: flex; flex-direction: column; gap: 2px; padding: 10px 14px; border-radius: 10px; background: var(--layer); border: 1px solid var(--stroke); font-variant-numeric: tabular-nums; }
+.rev-row span { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-2); }
+.rev-row b { font: 700 20px/26px var(--font-display); }
+.rev-row b.good { color: var(--good); }
+.rev-row b.bad { color: var(--bad); }
+.rev-row small { font-size: 12px; color: var(--text-2); }
+@media (max-width: 720px) { .revised { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
