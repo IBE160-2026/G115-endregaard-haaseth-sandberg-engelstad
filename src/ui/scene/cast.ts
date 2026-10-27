@@ -44,17 +44,18 @@ const HAND = new THREE.SphereGeometry(0.075, 8, 6);
 const EAR = new THREE.CylinderGeometry(0.09, 0.09, 0.08, 12).rotateZ(Math.PI / 2);
 const BUN = new THREE.SphereGeometry(0.1, 8, 6);
 
-function box(m: THREE.Material, w: number, h: number, d: number, x = 0, y = 0, z = 0): THREE.Mesh {
+// Small parts (eyes, hands, hair, gear) cast no shadow; the body, legs and helmet do (see below).
+function box(m: THREE.Material, w: number, h: number, d: number, x = 0, y = 0, z = 0, shadow = false): THREE.Mesh {
   const mesh = new THREE.Mesh(BOX, m);
   mesh.scale.set(w, h, d);
   mesh.position.set(x, y, z);
-  mesh.castShadow = true;
+  mesh.castShadow = shadow;
   return mesh;
 }
-function mesh(geo: THREE.BufferGeometry, m: THREE.Material, x = 0, y = 0, z = 0): THREE.Mesh {
+function mesh(geo: THREE.BufferGeometry, m: THREE.Material, x = 0, y = 0, z = 0, shadow = false): THREE.Mesh {
   const out = new THREE.Mesh(geo, m);
   out.position.set(x, y, z);
-  out.castShadow = true;
+  out.castShadow = shadow;
   return out;
 }
 
@@ -70,14 +71,14 @@ export function createCharacter(look: Look, scale = 1.3): Character {
   const legs = [-0.14, 0.14].map(x => {
     const hip = new THREE.Group();
     hip.position.set(x, 0.95, 0);
-    keep(box(matOf(look.pants), 0.2, 0.84, 0.22, 0, -0.42, 0), hip);
+    keep(box(matOf(look.pants), 0.2, 0.84, 0.22, 0, -0.42, 0, true), hip);
     keep(box(dark, 0.22, 0.14, 0.32, 0, -0.88, 0.04), hip);
     body.add(hip);
     return hip;
   });
 
   // Torso: the hi-vis vest with reflective bands and an optional coloured band.
-  keep(box(matOf(look.vest), 0.56, 0.68, 0.32, 0, 1.28, 0), body);
+  keep(box(matOf(look.vest), 0.56, 0.68, 0.32, 0, 1.28, 0, true), body);
   keep(box(reflect, 0.575, 0.05, 0.335, 0, 1.12, 0), body);
   keep(box(reflect, 0.575, 0.05, 0.335, 0, 1.34, 0), body);
   if (look.band !== undefined) keep(box(matOf(look.band), 0.2, 0.12, 0.02, 0.14, 1.5, 0.17), body);
@@ -108,7 +109,7 @@ export function createCharacter(look: Look, scale = 1.3): Character {
   if (look.hairStyle === 'bun') keep(mesh(BUN, hair, 0, 0.3, -0.22), head);
   if (look.hairStyle === 'beard') keep(box(hair, 0.3, 0.12, 0.08, 0, 0.12, 0.15), head);
   if (look.hairStyle === 'short') keep(box(hair, 0.36, 0.08, 0.3, 0, 0.3, -0.05), head);
-  keep(mesh(HELMET, matOf(look.helmet), 0, 0.3, 0), head);
+  keep(mesh(HELMET, matOf(look.helmet), 0, 0.3, 0, true), head);
   keep(mesh(BRIM, matOf(look.helmet), 0, 0.31, 0.02), head);
 
   // Protective gear the player collects: glasses, ear defenders, chin strap.

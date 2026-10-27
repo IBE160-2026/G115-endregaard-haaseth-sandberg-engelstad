@@ -16,3 +16,4 @@
 - [ ] 2026-10-27 [v0-5-walkable-site](996-2026-10-27-20-47-30-v0-5-walkable-site.md) — Ask bipa or TesAgi-HiMolde to turn on GitHub Pages (Source: GitHub Actions) and re-run the deploy
 - [ ] 2026-10-27 [v0-5-walkable-site](996-2026-10-27-20-47-30-v0-5-walkable-site.md) — Until then: republish the Claude Artifact by hand after each change
 - [ ] 2026-10-27 [v0-5-walkable-site](996-2026-10-27-20-47-30-v0-5-walkable-site.md) — A PRD, architecture and epics/stories written after the fact (input: G115_FinalPrompt.md), and an updated brief
+- [ ] 2026-10-27 [v0-5-walkable-site](996-2026-10-27-20-47-30-v0-5-walkable-site.md) — Check the automatic low-quality mode (below about 32 fps) and the frame rate on a real student PC

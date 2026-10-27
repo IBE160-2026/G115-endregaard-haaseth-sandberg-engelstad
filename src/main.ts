@@ -141,6 +141,9 @@ function speakerFor(which: DialogId | null, g: GameState | undefined): string | 
 }
 
 let prevForecast: Outcome | null = null;
+/** The scene panel is folded to its heading (and which dialog that was for). */
+let folded = false;
+let lastDialog: DialogId | null = null;
 function render() {
   const key = focusKey();
   const orgScroll = app.querySelector<HTMLElement>('.org')?.scrollLeft ?? 0;
@@ -189,7 +192,9 @@ function render() {
 
   // The AI path is played once per game, when the game is done.
   if (g?.done && !state.ai) state.ai = aiPath(scenario, g.difficulty, g.seed);
-  dialogHost.className = which === 'start' || which === 'final' ? 'host-center' : which === 'talk' ? 'host-talk' : which ? 'host-scene' : '';
+  // A folded scene panel opens again when the next scene comes.
+  if (which !== lastDialog) { folded = false; lastDialog = which; }
+  dialogHost.className = which === 'start' || which === 'final' ? 'host-center' : which === 'talk' ? 'host-talk' : which ? `host-scene${folded ? ' folded' : ''}` : '';
   const plan = g && ((which === 'kickoff' && state.line >= kickoffLines(scenario).length) || (which === 'review' && state.line >= 2)) ? pmPlan(scenario, g) : [];
   const changed = setHtml(dialogHost, which === 'start' ? renderStart(scenario)
     : which === 'hms' ? renderHms(scenario, state)
@@ -379,6 +384,7 @@ app.addEventListener('click', e => {
       break;
     case 'talk': state.talk = action.dataset.who!; state.selected = state.talk; break;
     case 'talk-close': state.talk = null; break;
+    case 'panel-fold': folded = !folded; break;
     case 'line-next': state.line++; break;
     case 'line-skip': state.line = 99; break;
     case 'line-replay': state.line = 0; break;

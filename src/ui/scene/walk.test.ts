@@ -29,7 +29,23 @@ describe('walking on site', () => {
     expect(path[0].z).toBeLessThan(SITE.maxZ);
     expect(path[path.length - 1]).toEqual({ x: 0, z: -18 });
     // A free line is walked straight.
-    expect(route({ x: -40, z: 30 }, { x: 40, z: 30 })).toEqual([{ x: 40, z: 30 }]);
+    expect(route({ x: -40, z: -37 }, { x: 30, z: -37 })).toEqual([{ x: 30, z: -37 }]);
+  });
+
+  it('routes round the material yard, the huts and the machines too, never through them', () => {
+    const blocked = (a: P2, b: P2) => {
+      for (let i = 1; i < 300; i++) {
+        const p = { x: a.x + ((b.x - a.x) * i) / 300, z: a.z + ((b.z - a.z) * i) / 300 };
+        if (BLOCKS.some(r => p.x > r.minX && p.x < r.maxX && p.z > r.minZ && p.z < r.maxZ)) return true;
+      }
+      return false;
+    };
+    const trips: [P2, P2][] = [[GATE_OUT, OFFICE_MEET], [{ x: -40, z: 30 }, { x: 40, z: 30 }], [GATE_IN, foremanSpot('H')], [OFFICE_MEET, foremanSpot('I')], [foremanSpot('G'), foremanSpot('F')]];
+    for (const [a, b] of trips) {
+      const pts = [a, ...route(a, b)];
+      for (let i = 0; i < pts.length - 1; i++) expect(blocked(pts[i], pts[i + 1])).toBe(false);
+      expect(pts[pts.length - 1]).toEqual(b);
+    }
   });
 
   it('every foreman waits on free ground next to the site', () => {

@@ -3,10 +3,12 @@
 // with the tower. Built once; update() shows what the current phase needs.
 import * as THREE from 'three';
 import { FLOOR_H, FLOORS, PIT, TOWER, type SceneState } from './visuals';
+import { PLACES } from './walk';
 import { UNIT, part, tiledBox } from './world';
 
 export interface Props {
-  update(t: number, s: SceneState, p: Record<string, number>, night: number): void;
+  /** inScene: the camera films a meeting, so the signs step aside. */
+  update(t: number, s: SceneState, p: Record<string, number>, night: number, inScene: boolean): void;
 }
 
 function canvasTex(w: number, h: number, draw: (c: CanvasRenderingContext2D) => void) {
@@ -124,7 +126,7 @@ export function buildProps(parent: THREE.Object3D): Props {
 
   // A mobile crane west of the pit: the boom slews and lifts while the basement is built.
   const mobile = new THREE.Group();
-  mobile.position.set(-PIT.w / 2 - 7, 0, -4);
+  mobile.position.set(PLACES.mobileCrane.x, 0, PLACES.mobileCrane.z);
   mobile.add(part(M.yellow, 3, 1.4, 9, 0, 0.5, 0), part(M.dark, 3.2, 0.7, 9.2, 0, 0, 0), part(M.white, 2.6, 1.6, 2.2, 0, 1.9, 3.2));
   const boomPivot = new THREE.Group();
   boomPivot.position.set(0, 2.2, -1.5);
@@ -143,7 +145,7 @@ export function buildProps(parent: THREE.Object3D): Props {
 
   // A concrete pump truck north of the pit (clear of the foremen's meeting spots), its arm towards the tower.
   const pump = new THREE.Group();
-  pump.position.set(17, 0, -29);
+  pump.position.set(PLACES.pump.x, 0, PLACES.pump.z);
   pump.rotation.y = Math.PI;
   pump.add(part(M.white, 2.6, 2.4, 2.4, 0, 0.6, 4), part(M.dark, 2.8, 0.7, 10, 0, 0, 0), part(mat(0x0078d4), 2.6, 1.6, 6, 0, 0.7, -1));
   const pumpArm = new THREE.Group();
@@ -175,9 +177,80 @@ export function buildProps(parent: THREE.Object3D): Props {
   scaffold.castShadow = true;
   root.add(scaffold);
 
+  // ---- Orientation: the driving road, the walkways and signs at the main places ----
+  // The road from the gate to the unloading area at the pit (dark), the walkways to the site
+  // offices and the site hut (green, as painted on site), each a few metres wide.
+  const roadMat = mat(0x55504a, { roughness: 1 });
+  const walkMat = mat(0x5f8f5a, { roughness: 1 });
+  const lineMat = mat(0xf2f2f2, { roughness: 0.9 });
+  root.add(part(roadMat, 7, 0.03, 22, 0, 0, 31, false), part(roadMat, 14, 0.03, 4, 0, 0, 18, false));
+  for (const x of [-3.6, 3.6]) root.add(part(lineMat, 0.2, 0.04, 22, x, 0, 31, false));
+  const strip = (a: { x: number; z: number }, b: { x: number; z: number }) => {
+    const len = Math.hypot(b.x - a.x, b.z - a.z);
+    const m = part(walkMat, 2.2, 0.035, len, (a.x + b.x) / 2, 0, (a.z + b.z) / 2, false);
+    m.rotation.y = Math.atan2(b.x - a.x, b.z - a.z);
+    root.add(m);
+  };
+  const walkways: { x: number; z: number }[][] = [
+    [{ x: -5, z: 39 }, { x: -12, z: 25 }, { x: -36, z: 20 }],
+    [{ x: 5, z: 39 }, { x: 12, z: 27 }, { x: 31, z: 26.5 }],
+  ];
+  for (const w of walkways) for (let i = 0; i < w.length - 1; i++) strip(w[i], w[i + 1]);
+
+  // Signs: white text on a dark pill, standing on the ground, hidden while the camera films a scene.
+  const sign = (text: string, x: number, y: number, z: number, w = 9) => {
+    const tex = canvasTex(512, 128, c => {
+      c.fillStyle = 'rgba(20, 30, 45, 0.85)';
+      c.beginPath(); c.roundRect(4, 14, 504, 100, 50); c.fill();
+      c.fillStyle = '#ffffff'; c.font = 'bold 58px "Segoe UI", system-ui, sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle';
+      c.fillText(text, 256, 66);
+    });
+    const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true }));
+    s.scale.set(w, w / 4, 1);
+    s.position.set(x, y, z);
+    root.add(s);
+    return s;
+  };
+  const signs = [
+    sign('PORT', 0, 6.5, 42.5, 6),
+    sign('BRAKKERIGG', -45, 8.5, 26),
+    sign('SITE-HYTTE', 31, 5.5, 22),
+    sign('MATERIALLAGER', -22.5, 4.5, 34, 8),
+    sign('KJØREVEI', 5.5, 1.6, 22, 5),
+  ];
+  const pitSign = sign('BYGGEGROP', 0, 3.5, PIT.d / 2 + 1.5, 10);
+
+  // Working zones under the machines: a yellow and black border nobody walks into.
+  const hatch = canvasTex(128, 128, c => {
+    c.clearRect(0, 0, 128, 128);
+    for (let i = -128; i < 256; i += 32) {
+      c.fillStyle = '#f2b81c'; c.beginPath(); c.moveTo(i, 0); c.lineTo(i + 16, 0); c.lineTo(i + 16 - 128, 128); c.lineTo(i - 128, 128); c.fill();
+    }
+  });
+  hatch.wrapS = hatch.wrapT = THREE.RepeatWrapping;
+  const zoneMat = new THREE.MeshBasicMaterial({ map: hatch, transparent: true, opacity: 0.55, depthWrite: false });
+  const zoneOf = (w: number, d: number, x: number, z: number) => {
+    const g = new THREE.Group();
+    for (const [sx, sz, px, pz] of [[w, 0.6, 0, -d / 2], [w, 0.6, 0, d / 2], [0.6, d, -w / 2, 0], [0.6, d, w / 2, 0]]) {
+      const m = new THREE.Mesh(new THREE.PlaneGeometry(sx, sz).rotateX(-Math.PI / 2), zoneMat);
+      m.position.set(x + px, 0.06, z + pz);
+      g.add(m);
+    }
+    root.add(g);
+    return g;
+  };
+  const mobileZone = zoneOf(9, 12, PLACES.mobileCrane.x, PLACES.mobileCrane.z);
+  const pumpZone = zoneOf(5.5, 13, PLACES.pump.x, PLACES.pump.z);
+  const craneZone = zoneOf(5, 5, TOWER.w / 2 + 6, -TOWER.d / 2 - 2);
+
   return {
-    update(t, s, p, night) {
+    update(t, s, p, night, inScene) {
       const a = s.active;
+      for (const sg of signs) sg.visible = !inScene;
+      pitSign.visible = !inScene && (p.F ?? 0) === 0 && !s.done;
+      mobileZone.visible = (a.includes('C') || a.includes('D') || a.includes('E')) && !s.done;
+      pumpZone.visible = (a.includes('E') || a.includes('F')) && !s.done;
+      craneZone.visible = s.crane !== 'off';
       for (const l of lamps) (l.material as THREE.MeshStandardMaterial).emissiveIntensity = night > 0.4 ? 3 : 0.1;
       railing.visible = (p.E ?? 0) < 0.999;
 

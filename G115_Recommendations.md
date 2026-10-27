@@ -14,7 +14,7 @@ An assessment of how well the simulator meets its goals, measured against the in
 2. **Tests of the click flow.** The new logic is pure and tested (walking, routes, meeting scripts, HMS, Oskar's rounds, objectives; 186 tests), but `main.ts`, which also decides that only the first meeting is played line by line,, which drives the clock and the scenes, has no tests.
    Add DOM tests (Vitest + happy-dom) for: arrive → meeting → choice → fork → resume, the staffing review, and the HMS check that pauses and resumes the clock.
    Affects criterion 3, Quality assurance (15 %).
-3. **Play it on a real GPU, and keep the pace.** v0.5 has only been checked in headless Chrome with software WebGL. Bloom, up to 160 workers and the cast must hold a good frame rate on a student laptop.
+3. **Play it on a real GPU, and keep the pace.** v0.5 has only been checked in headless Chrome with software WebGL. It now drops to low quality by itself below about 32 fps (or with `?kvalitet=lav`); check that this is enough on the weakest PC in the group. Bloom, up to 160 workers and the cast must hold a good frame rate on a student laptop.
    Time a full game: if walking and meetings make it too long, keep «Hopp over intro», G (walk there) and «Hopp over» in the meetings as the fast route, and consider a setting that starts meetings without walking.
 4. **Clarify the AI part.** The AI roles are still rule-based. In v0.5 the foreman's view is input to Elisabeth and Hedda, and the player only sees their proposals.
    Explain this in the brief as a deliberate choice (testable, no key needed), or add an optional LLM layer for the reasoning text, with a demo mode of saved answers.

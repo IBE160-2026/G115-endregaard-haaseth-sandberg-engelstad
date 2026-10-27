@@ -643,6 +643,28 @@ table.plan .seg button span { display: none; }
 .rev-row b.bad { color: var(--bad); }
 .rev-row small { font-size: 12px; color: var(--text-2); }
 @media (max-width: 720px) { .revised { grid-template-columns: 1fr; } }
+/* The minimap (bottom right), and a feed that leaves room for it. */
+.stage .minimap { position: absolute; z-index: 9; right: 12px; bottom: 16px; width: 200px; height: 176px; border-radius: 12px; background: rgba(14, 22, 38, 0.72); box-shadow: var(--shadow); cursor: crosshair; }
+.stage .minimap[hidden] { display: none; }
+.feed { bottom: 206px; }
+.cinema .stage .minimap { display: none; }
+
+/* The scene panel can be folded down to its heading, so the site is visible behind it. */
+.sp-min { position: absolute; right: 10px; top: 10px; margin: 0; }
+.host-scene.folded .scene-panel > :not(.sp-head):not(.sp-min) { display: none; }
+.host-scene.folded .scene-panel { width: min(520px, calc(100% - 24px)); }
+@media (max-height: 820px) {
+  .scene-panel { max-height: 48vh; }
+  .scene-panel.wide { max-height: 54vh; }
+}
+@media (max-width: 1000px) {
+  .stage .minimap { width: 150px; height: 132px; bottom: 84px; }
+  .feed { bottom: 226px; }
+}
+@media (max-width: 720px) {
+  .stage .minimap { width: 120px; height: 106px; right: 8px; top: 120px; bottom: auto; }
+  .scene-panel { max-height: 45vh; }
+}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }

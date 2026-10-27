@@ -16,16 +16,35 @@ export const GATE_IN: P2 = { x: 0, z: 37 };
 interface Rect { minX: number; maxX: number; minZ: number; maxZ: number }
 const rect = (cx: number, cz: number, hw: number, hd: number): Rect => ({ minX: cx - hw, maxX: cx + hw, minZ: cz - hd, maxZ: cz + hd });
 
-/** The pit (later the tower over it) with a railing, the site offices, the site hut and the crane foot. */
+/** Where the machines and stores stand (props.ts builds them here). */
+export const PLACES = {
+  mobileCrane: { x: -PIT.w / 2 - 13, z: -4 },
+  pump: { x: 17, z: -29 },
+  yard: { x: -22.5, z: 34 },
+  toilets: { x: 43.6, z: 31 },
+  skips: [{ x: 38, z: -30 }, { x: 44, z: -24 }],
+  masts: [{ x: -PIT.w / 2 - 6, z: -PIT.d / 2 - 6 }, { x: PIT.w / 2 + 6, z: -PIT.d / 2 - 6 }, { x: -PIT.w / 2 - 6, z: PIT.d / 2 + 8 }, { x: PIT.w / 2 + 6, z: PIT.d / 2 + 8 }],
+} as const;
+
+/**
+ * Everything people cannot walk through: the pit (later the tower over it) with its railing, the
+ * site offices, the site hut, the crane foot, the material yard, the toilets, the skips, the
+ * floodlight masts and the two machines that stand on site.
+ */
 export const BLOCKS: Rect[] = [
   rect(0, 0, PIT.w / 2 + 1, PIT.d / 2 + 1),
   rect(SPOTS.office.x, SPOTS.office.z, 5, 3.6),
   rect(SPOTS.hut.x + 3.2, SPOTS.hut.z, 6.4, 1.8),
   rect(TOWER.w / 2 + 6, -TOWER.d / 2 - 2, 1.6, 1.6),
+  rect(PLACES.yard.x, PLACES.yard.z, 9.5, 6.2),
+  rect(PLACES.toilets.x, PLACES.toilets.z, 2.4, 0.9),
+  ...PLACES.skips.map(s => rect(s.x, s.z, 3, 1.5)),
+  ...PLACES.masts.map(m => rect(m.x, m.z, 0.5, 0.5)),
+  rect(PLACES.mobileCrane.x, PLACES.mobileCrane.z, 3.5, 5),
+  rect(PLACES.pump.x, PLACES.pump.z, 1.8, 5.4),
 ];
-const PIT_RECT = BLOCKS[0];
-/** How far paths keep from the pit corners. */
-const MARGIN = 2.2;
+/** How far paths keep from the corners of what they go round. */
+const MARGIN = 1.6;
 
 const inside = (p: P2, r: Rect, pad = 0) => p.x > r.minX - pad && p.x < r.maxX + pad && p.z > r.minZ - pad && p.z < r.maxZ + pad;
 
@@ -55,24 +74,54 @@ export function resolve(p: P2, radius = 0.5): P2 {
   return { x, z };
 }
 
-/** Does the straight line a→b cross the pit? */
-function crossesPit(a: P2, b: P2): boolean {
-  const r = PIT_RECT;
-  // Sample the segment: the pit is large compared with the step, so this is exact enough.
-  const n = Math.ceil(Math.hypot(b.x - a.x, b.z - a.z) / 0.5);
+/** The first block the straight line a→b crosses (sampled every 0.4 m; the blocks are larger). */
+function firstBlock(a: P2, b: P2): Rect | null {
+  const n = Math.ceil(Math.hypot(b.x - a.x, b.z - a.z) / 0.4);
   for (let i = 1; i < n; i++) {
     const t = i / n;
-    if (inside({ x: a.x + (b.x - a.x) * t, z: a.z + (b.z - a.z) * t }, r)) return true;
+    const p = { x: a.x + (b.x - a.x) * t, z: a.z + (b.z - a.z) * t };
+    const r = BLOCKS.find(r => inside(p, r, 0.3));
+    if (r) return r;
   }
-  return false;
+  return null;
 }
 
 const length = (pts: P2[]) => pts.slice(1).reduce((s, p, i) => s + Math.hypot(p.x - pts[i].x, p.z - pts[i].z), 0);
 
 /**
- * Waypoints from a to b round the pit (and in through the gate), not including a.
- * Tries the direct line, then one or two of the pit's corners, and keeps the shortest.
+ * Waypoints from a to b round whatever is in the way, not including a. For the first block
+ * on the line it tries one or two of its corners, finds the rest of the way from there the
+ * same way (a few levels deep), and keeps the shortest.
  */
+function detour(a: P2, b: P2, depth: number): P2[] {
+  const r = firstBlock(a, b);
+  if (!r || depth > 2) return [b];
+  // The four corners in order round the block (a corner that is not free is left out).
+  const corners = [
+    { x: r.minX - MARGIN, z: r.minZ - MARGIN }, { x: r.maxX + MARGIN, z: r.minZ - MARGIN },
+    { x: r.maxX + MARGIN, z: r.maxZ + MARGIN }, { x: r.minX - MARGIN, z: r.maxZ + MARGIN },
+  ].map(c => (walkable(c) ? c : null));
+  const vias: P2[][] = [];
+  corners.forEach((c, i) => {
+    const n = corners[(i + 1) % 4];
+    if (c) vias.push([c]);
+    // Two neighbouring corners: going round one side.
+    if (c && n) vias.push([c, n], [n, c]);
+  });
+  let best: P2[] | null = null;
+  for (const via of vias) {
+    // The legs next to this block must not cross it; the rest is found recursively.
+    const pts = [a, ...via, b];
+    if (pts.slice(0, -1).some((p, i) => firstBlock(p, pts[i + 1]) === r)) continue;
+    const path: P2[] = [];
+    let from = a;
+    for (const p of [...via, b]) { path.push(...detour(from, p, depth + 1)); from = p; }
+    if (!best || length([a, ...path]) < length([a, ...best])) best = path;
+  }
+  return best ?? [b];
+}
+
+/** Waypoints from a to b round the pit, buildings and machines (and in through the gate), not including a. */
 export function route(a: P2, b: P2): P2[] {
   const pre: P2[] = [];
   let from = a;
@@ -81,25 +130,7 @@ export function route(a: P2, b: P2): P2[] {
     from = { x: 0, z: SITE.maxZ - 2 };
     pre.push(from);
   }
-  if (!crossesPit(from, b)) return [...pre, b];
-  const r = PIT_RECT;
-  const corners: P2[] = [
-    { x: r.minX - MARGIN, z: r.minZ - MARGIN }, { x: r.maxX + MARGIN, z: r.minZ - MARGIN },
-    { x: r.maxX + MARGIN, z: r.maxZ + MARGIN }, { x: r.minX - MARGIN, z: r.maxZ + MARGIN },
-  ];
-  let best: P2[] | null = null;
-  const consider = (via: P2[]) => {
-    const pts = [from, ...via, b];
-    for (let i = 0; i < pts.length - 1; i++) if (crossesPit(pts[i], pts[i + 1])) return;
-    if (!best || length(pts) < length([from, ...best, b])) best = via;
-  };
-  for (const c of corners) consider([c]);
-  // Two neighbouring corners (going round one side of the pit).
-  for (let i = 0; i < 4; i++) {
-    consider([corners[i], corners[(i + 1) % 4]]);
-    consider([corners[(i + 1) % 4], corners[i]]);
-  }
-  return [...pre, ...(best ?? []), b];
+  return [...pre, ...detour(from, b, 0)];
 }
 
 /** Where each foreman waits on the ground, next to their work (always outside the pit). */

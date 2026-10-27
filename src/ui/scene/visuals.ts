@@ -22,7 +22,8 @@ export const SPOTS = {
   entrance: { x: 0, y: 2, z: TOWER.d / 2 + 5 },
 } satisfies Record<string, Spot>;
 
-export interface Crew { taskId: string; own: number; hired: number }
+/** People working on a task: own crew, hired workers, the base crew and the work mode (for the tags). */
+export interface Crew { taskId: string; own: number; hired: number; base?: number; mode?: 'normal' | 'overtime' | 'hire' }
 
 export interface SceneState {
   week: number;
@@ -90,7 +91,7 @@ export function sceneState(s: Scenario, g: GameState | undefined): SceneState {
 
   const crews = active.map(id => {
     const t = ts(id);
-    return { taskId: id, own: t.crew, hired: t.mode === 'hire' ? Math.ceil(t.crew * s.hireShare) : 0 };
+    return { taskId: id, own: t.crew, hired: t.mode === 'hire' ? Math.ceil(t.crew * s.hireShare) : 0, base: s.tasks.find(x => x.id === id)!.crew, mode: t.mode };
   });
 
   const focus = g.pending

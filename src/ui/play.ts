@@ -95,7 +95,7 @@ function effectsOf(s: Scenario, o: EventOption, taskId: string): { now: string; 
 
 /** The panel at the bottom of the screen while the camera shows a scene on site. */
 export const scenePanel = (inner: string, label: string, wide = false) =>
-  `<div class="scene-panel glass${wide ? ' wide' : ''}" role="dialog" aria-modal="true" aria-label="${label}">${inner}</div>`;
+  `<div class="scene-panel glass${wide ? ' wide' : ''}" role="dialog" aria-modal="true" aria-label="${label}">${inner}<button type="button" class="icon-btn sp-min" data-action="panel-fold" title="Skjul eller vis panelet (se byggeplassen bak)" aria-label="Skjul eller vis panelet">▾</button></div>`;
 
 const portrait = (s: Scenario, id: string, size = 56) => {
   const p = s.people.find(x => x.id === id);

@@ -16,10 +16,10 @@ import { LOOKS, createCharacter, foremanLook, type Character } from './scene/cas
 import { buildChallenge, type Model } from './scene/challenge';
 import { buildProps } from './scene/props';
 import {
-  FLOOR_H, FLOORS, PIT, TOWER, BASEMENT_TASKS, SPOTS, figuresFor, sceneState, speakerSpot, taskSpot,
+  FLOOR_H, FLOORS, PIT, TOWER, BASEMENT_TASKS, SPOTS, figuresFor, sceneState, speakerSpot, taskSpot, towerLevels,
   type SceneState, type Spot,
 } from './scene/visuals';
-import { GATE_IN, GATE_OUT, OFFICE_MEET, foremanSpot, meetingLayout, resolve, route, walkable, type P2 } from './scene/walk';
+import { GATE_IN, GATE_OUT, OFFICE_MEET, PLACES, foremanSpot, meetingLayout, resolve, route, walkable, type P2 } from './scene/walk';
 import { buildWorld, latticeMap, mullionMap, part, roadPoint, signMap, tiledBox } from './scene/world';
 import { iconUrl } from './tabs/context';
 
@@ -70,11 +70,19 @@ export interface View3d {
 }
 
 const KIND_COLOR = { risk: '#c42b1c', opportunity: '#0f7b0f', change: '#005fb8', strategy: '#d29200' } as const;
+/** Why a task stands still, in a few words on its tag (the event behind the stall). */
 const STALL_TEXT: Record<string, string> = {
-  water: 'vann i gropa', 'pump-fail': 'pumpen sviktet', rock: 'dårlig fjell', soil: 'forurenset grunn', frost: 'frost',
-  wind: 'sterk vind', facade: 'venter på fasade', electricians: 'mangler folk', integration: 'feilsøking',
+  water: 'vann i gropa', 'pump-fail': 'pumpen sviktet', rock: 'dårlig fjell', soil: 'forurenset grunn', frost: 'frost i betongen',
+  wind: 'kranen står i vinden', facade: 'venter på fasade', electricians: 'mangler elektrikere', integration: 'feilsøker automasjon',
+  reuse: 'knuser steinmasser', steel: 'venter på stål', 'facade-discount': 'venter på fasade', 'strategy-C': 'planlegger sprengningen',
+  'strategy-F': 'venter på elementer', 'strategy-H': 'venter på moduler', 'change-security': 'omprosjekterer sikring',
+  'change-solar': 'monterer solceller', 'change-layout': 'flytter vegger', 'change-charging': 'legger ladekabler',
+  'grout-leak': 'tetter lekkasje', 'steel-quality': 'venter på ny stålleveranse', crane: 'kranen er nede', theft: 'venter på ny kabel',
+  inspection: 'utbedrer stillas', formwork: 'tilpasser forskaling', 'lift-crew': 'venter på heismontører',
 };
 const MAX_FIGURES = 170;
+/** On a weaker PC (or ?kvalitet=lav): fewer figures, no bloom, smaller shadows, pixel ratio 1. */
+const LOW_FIGURES = 90;
 const TRUCKS = 7;
 const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
 const ease = (x: number) => x * x * (3 - 2 * x);
@@ -98,7 +106,8 @@ export function createView3d(container: HTMLElement, hooks: ViewHooks): View3d {
   container.appendChild(overlay);
 
   const scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0xc9d9ef, 220, 700);
+  // The fog sets the city back behind the site (depth: foreground, site, city).
+  scene.fog = new THREE.Fog(0xc9d9ef, 170, 560);
   // Soft reflections from a studio environment: metal, glass and helmets read as materials.
   const pmrem = new THREE.PMREMGenerator(renderer);
   scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
@@ -120,7 +129,8 @@ export function createView3d(container: HTMLElement, hooks: ViewHooks): View3d {
   const sun = new THREE.DirectionalLight(0xfff1dc, 2.2);
   sun.castShadow = true;
   sun.shadow.mapSize.set(2048, 2048);
-  Object.assign(sun.shadow.camera, { left: -110, right: 110, top: 110, bottom: -110, near: 10, far: 500 });
+  // The shadows cover the site and its nearest surroundings (sharper, and cheaper than the whole city).
+  Object.assign(sun.shadow.camera, { left: -80, right: 80, top: 80, bottom: -80, near: 10, far: 500 });
   sun.shadow.bias = -0.0005;
   scene.add(sun, sun.target);
 
@@ -277,17 +287,18 @@ export function createView3d(container: HTMLElement, hooks: ViewHooks): View3d {
   const water = add(part(M.water, PIT.w - 1.6, 1, PIT.d - 1.6, 0, -D + 0.1, 0, false));
 
   // ---------- Workers: instanced figures in hi-vis whose legs and arms swing (hired in Fluent blue) ----------
-  const inst = (geo: THREE.BufferGeometry, m: THREE.Material, n: number) => {
+  // Only the bodies cast shadows: limbs and heads add draw cost and little to read.
+  const inst = (geo: THREE.BufferGeometry, m: THREE.Material, n: number, shadow = false) => {
     const mesh = new THREE.InstancedMesh(geo, m, n);
     mesh.count = 0;
-    mesh.castShadow = true;
+    mesh.castShadow = shadow;
     // The figures move every frame, so a bounding sphere computed once would cull them wrongly.
     mesh.frustumCulled = false;
     scene.add(mesh);
     return mesh;
   };
   const vestMat = new THREE.MeshStandardMaterial({ roughness: 0.7 });
-  const torsos = inst(new THREE.BoxGeometry(0.56, 0.68, 0.32).translate(0, 1.28, 0), vestMat, MAX_FIGURES);
+  const torsos = inst(new THREE.BoxGeometry(0.56, 0.68, 0.32).translate(0, 1.28, 0), vestMat, MAX_FIGURES, true);
   const legs = inst(new THREE.BoxGeometry(0.2, 0.92, 0.22).translate(0, -0.46, 0), new THREE.MeshStandardMaterial({ color: 0x2f3b4c, roughness: 0.8 }), MAX_FIGURES * 2);
   const arms = inst(new THREE.BoxGeometry(0.15, 0.62, 0.17).translate(0, -0.31, 0), new THREE.MeshStandardMaterial({ roughness: 0.7 }), MAX_FIGURES * 2);
   const heads = inst(new THREE.SphereGeometry(0.2, 10, 8).translate(0, 1.86, 0), new THREE.MeshStandardMaterial({ color: 0xe0ac86, roughness: 0.6 }), MAX_FIGURES);
@@ -297,8 +308,12 @@ export function createView3d(container: HTMLElement, hooks: ViewHooks): View3d {
   const YARD = new THREE.Color(0xd8ff3a);
   const HELMET_OWN = new THREE.Color(0xf2b81c);
   const HELMET_HIRED = new THREE.Color(0xffffff);
-  interface Figure { taskId: string; hired: boolean; pos: THREE.Vector3; to: THREE.Vector3; wait: number; speed: number; yaw: number; phase: number; moving: number }
+  interface Figure { taskId: string; hired: boolean; pos: THREE.Vector3; to: THREE.Vector3; wait: number; speed: number; yaw: number; phase: number; moving: number; slotX: number; slotZ: number; beat: number }
   let figures: Figure[] = [];
+  /** How each trade works when it stands still: digging, hammering, carrying panels, work overhead, inspecting. */
+  const WORK_STYLE: Record<string, 'dig' | 'hammer' | 'carry' | 'overhead' | 'inspect'> = {
+    C: 'dig', D: 'dig', E: 'hammer', F: 'hammer', G: 'carry', O: 'overhead', H: 'overhead', I: 'overhead', J: 'overhead', K: 'hammer', L: 'overhead', A: 'inspect', N: 'inspect',
+  };
   /** Workers who are not on a discipline: the yard, the site hut and the flagman at the gate. */
   const AMBIENT: { taskId: string; n: number }[] = [{ taskId: '_yard', n: 4 }, { taskId: '_hut', n: 3 }, { taskId: '_gate', n: 1 }];
 
@@ -490,9 +505,15 @@ export function createView3d(container: HTMLElement, hooks: ViewHooks): View3d {
     staging = null;
     table.visible = false;
     if (!spec) {
-      // The scene ends: the orbit camera takes over from where the shot was.
+      // The scene ends: back behind the player, facing the site, so the way on is easy to find.
       controls.enabled = true;
-      controls.target.copy(look);
+      const p = player().pos;
+      const l = Math.hypot(p.x, p.z) || 1;
+      controls.target.set(p.x, 2, p.z);
+      camera.position.set(p.x + (p.x / l) * 26, 14, p.z + (p.z / l) * 26);
+      look.copy(controls.target);
+      camMode = 'follow';
+      camTween = null;
       return;
     }
     const p = player().pos;
@@ -767,6 +788,23 @@ export function createView3d(container: HTMLElement, hooks: ViewHooks): View3d {
   const bubbleLayer = document.createElement('div');
   overlay.append(tagLayer, bubbleLayer);
 
+  /** Where the work is, in the building's own terms: floors cast, floors with facade, or per cent. */
+  function progressText(id: string): string {
+    const lv = towerLevels(target.progress);
+    if (id === 'F') return `etasje ${Math.min(FLOORS, lv.floors + 1)} av ${FLOORS}`;
+    if (id === 'G') return `fasade ${lv.glazed} av ${FLOORS} etasjer`;
+    return `${Math.round((target.progress[id] ?? 0) * 100)} %`;
+  }
+  /** Extra effort on a task, shown where the work is: overtime, hired workers or a changed crew. */
+  function staffText(id: string): string {
+    const c = target.crews.find(x => x.taskId === id);
+    if (!c) return '';
+    if (c.mode === 'overtime') return ' · overtid';
+    if (c.hired) return ` · +${c.hired} innleid`;
+    if (c.base && c.own !== c.base) return ` · ${c.own} mann (${c.own > c.base ? '+' : '−'}${Math.abs(c.own - c.base)})`;
+    return '';
+  }
+
   function rebuildTags(s: Scenario) {
     tagLayer.innerHTML = '';
     tags = [];
@@ -775,8 +813,7 @@ export function createView3d(container: HTMLElement, hooks: ViewHooks): View3d {
       const stall = target.stalled.find(x => x.taskId === id);
       const el = document.createElement('div');
       el.className = `tag${stall ? ' stalled' : ''}`;
-      const pct = Math.round((target.progress[id] ?? 0) * 100);
-      el.innerHTML = `<b>${id}</b><span>${task.name}</span><i>${stall ? `står · ${STALL_TEXT[stall.cause ?? ''] ?? 'stans'}` : `${pct} %`}</i>`;
+      el.innerHTML = `<b>${id}</b><span>${task.name}</span><i>${stall ? `står · ${STALL_TEXT[stall.cause ?? ''] ?? 'stans'}` : `${progressText(id)}${staffText(id)}`}</i>`;
       tagLayer.append(el);
       tags.push({ el, spot: new THREE.Vector3() });
       el.dataset.task = id;
@@ -839,10 +876,16 @@ export function createView3d(container: HTMLElement, hooks: ViewHooks): View3d {
       const frac = clamp01(fLevel - i);
       f.group.visible = frac > 0;
       if (!f.group.visible) return;
-      for (const c of f.columns) { c.scale.y = Math.max(0.01, (FLOOR_H - 0.5) * ease(frac)); c.material = has('prefab') ? M.precast : M.concrete; }
+      // A floor in the order it is built: the slab is cast from one end (the first third),
+      // then the columns rise in their formwork (prefab: elements, no formwork).
+      const slabFrac = clamp01(frac / 0.35);
+      const colFrac = clamp01((frac - 0.35) / 0.65);
+      f.slab.scale.z = Math.max(0.01, TOWER.d * ease(slabFrac));
+      f.slab.position.z = (TOWER.d * ease(slabFrac) - TOWER.d) / 2;
+      for (const c of f.columns) { c.visible = colFrac > 0; c.scale.y = Math.max(0.01, (FLOOR_H - 0.5) * ease(colFrac)); c.material = has('prefab') ? M.precast : M.concrete; }
       f.slab.material = has('prefab') ? M.precast : M.slab;
-      f.form.visible = frac < 1 && !has('prefab');
-      f.form.scale.y = Math.max(0.01, (FLOOR_H - 0.5) * frac);
+      f.form.visible = colFrac > 0 && frac < 1 && !has('prefab');
+      f.form.scale.y = Math.max(0.01, (FLOOR_H - 0.5) * colFrac);
       const g = clamp01(gLevel - i);
       f.glass.visible = g > 0;
       f.glass.scale.y = Math.max(0.01, ease(g));
@@ -911,20 +954,28 @@ export function createView3d(container: HTMLElement, hooks: ViewHooks): View3d {
     out.x = 0; out.z = 0;
     return { rx: TOWER.w / 2 - 1.2, rz: TOWER.d / 2 - 1.2 };
   }
+  /** Each worker has a fixed place in the work area and only moves a little round it (less wandering). */
   function pickTarget(f: Figure) {
     const r = zoneFor(f.taskId, zone);
-    f.to.set(zone.x + (Math.random() * 2 - 1) * r.rx, zone.y, zone.z + (Math.random() * 2 - 1) * r.rz);
+    const jitter = () => (Math.random() * 2 - 1) * 1.6;
+    f.to.set(zone.x + f.slotX * r.rx + jitter(), zone.y, zone.z + f.slotZ * r.rz + jitter());
+    // On the ground the yard and hut crews keep out of the stores and the huts.
+    if (zone.y > -0.5 && zone.y < 0.5 && f.taskId.startsWith('_')) { const p = resolve({ x: f.to.x, z: f.to.z }); f.to.x = p.x; f.to.z = p.z; }
   }
   function syncFigures() {
     const ambient = seed >= 0 && !target.done ? AMBIENT.flatMap(a => Array.from({ length: a.n }, () => ({ taskId: a.taskId, hired: false }))) : [];
-    const want = [...ambient, ...figuresFor(target.crews, MAX_FIGURES - ambient.length)];
+    const want = [...ambient, ...figuresFor(target.crews, (quality === 'low' ? LOW_FIGURES : MAX_FIGURES) - ambient.length)];
     const next: Figure[] = [];
     const pool = [...figures];
     for (const w of want) {
       const i = pool.findIndex(f => f.taskId === w.taskId && f.hired === w.hired);
       if (i >= 0) { next.push(pool.splice(i, 1)[0]); continue; }
       // New workers walk in from the gate; the yard and hut crews are already at their posts.
-      const f: Figure = { taskId: w.taskId, hired: w.hired, pos: new THREE.Vector3((Math.random() - 0.5) * 8, 0, 42), to: new THREE.Vector3(), wait: 0, speed: 2 + Math.random() * 1.5, yaw: Math.PI, phase: Math.random() * 10, moving: 0 };
+      const f: Figure = {
+        taskId: w.taskId, hired: w.hired, pos: new THREE.Vector3((Math.random() - 0.5) * 8, 0, 42), to: new THREE.Vector3(), wait: Math.random() * 4,
+        speed: 1.6 + Math.random() * 1.6, yaw: Math.PI, phase: Math.random() * 10, moving: 0,
+        slotX: Math.random() * 1.8 - 0.9, slotZ: Math.random() * 1.8 - 0.9, beat: 4 + Math.random() * 3,
+      };
       pickTarget(f);
       if (w.taskId.startsWith('_')) f.pos.copy(f.to);
       next.push(f);
@@ -959,7 +1010,8 @@ export function createView3d(container: HTMLElement, hooks: ViewHooks): View3d {
         const dist = v3.length();
         if (dist < 0.3) {
           f.wait -= dt;
-          if (f.wait <= 0) { pickTarget(f); f.wait = 0.5 + Math.random() * 2.5; }
+          // Workers stay to work a while; the yard and hut crews take it easier.
+          if (f.wait <= 0) { pickTarget(f); f.wait = (f.taskId.startsWith('_') ? 4 : 3) + Math.random() * 6; }
         } else {
           v3.multiplyScalar(Math.min(dist, f.speed * dt) / dist);
           f.pos.add(v3);
@@ -971,8 +1023,10 @@ export function createView3d(container: HTMLElement, hooks: ViewHooks): View3d {
       f.moving += (moving - f.moving) * Math.min(1, dt * 8);
       f.phase += dt * (3 + f.moving * 6);
       const swing = Math.sin(f.phase) * 0.65 * f.moving;
-      // Standing still on a working discipline: hammering (the right arm goes up and down).
+      // Standing still on a working discipline: a motion that fits the trade, each in their own rhythm.
       const work = !moving && !stalled.has(f.taskId) && !f.taskId.startsWith('_') ? 1 : 0;
+      const style = WORK_STYLE[f.taskId] ?? 'hammer';
+      const beat = Math.abs(Math.sin(t * f.beat + f.phase));
       q.setFromAxisAngle(up, f.yaw);
       const bob = Math.abs(Math.cos(f.phase)) * 0.07 * f.moving;
       m4.compose(v3.set(f.pos.x, f.pos.y + bob, f.pos.z), q, figScale);
@@ -984,7 +1038,13 @@ export function createView3d(container: HTMLElement, hooks: ViewHooks): View3d {
         limb.makeRotationX(side ? -swing : swing).setPosition(sx, 0.95, 0);
         legs.setMatrixAt(i * 2 + side, limb.premultiply(m4));
         const ax = side ? 0.37 : -0.37;
-        const armAngle = side && work ? -1.6 + Math.abs(Math.sin(t * 6 + i)) * 0.9 : side ? swing * 0.8 : -swing * 0.8;
+        const walkArm = side ? swing * 0.8 : -swing * 0.8;
+        const armAngle = !work ? walkArm
+          : style === 'dig' ? -0.5 - beat * 0.7
+          : style === 'carry' ? -1.3 + beat * 0.15
+          : style === 'overhead' ? -2.5 + beat * 0.35 * (side ? 1 : -1)
+          : style === 'inspect' ? (side ? -0.9 : 0)
+          : side ? -1.6 + beat * 0.9 : 0;
         limb.makeRotationX(armAngle).setPosition(ax, 1.56, 0);
         arms.setMatrixAt(i * 2 + side, limb.premultiply(m4));
       }
@@ -1200,6 +1260,129 @@ export function createView3d(container: HTMLElement, hooks: ViewHooks): View3d {
     camTween = { from: dist, to: target.focus ? (width < 700 ? 110 : 75) : target.done ? defaultDistance() + 10 : defaultDistance(), t: 0 };
   }
 
+  // ---------- Keeping the player in sight ----------
+  const occluder = new THREE.Box3();
+  const sightRay = new THREE.Ray();
+  const hitPoint = new THREE.Vector3();
+  const head = new THREE.Vector3();
+  const savedCam = new THREE.Vector3();
+  /** The tower, the site offices, the site hut and Høyblokka, as boxes the camera must not be behind. */
+  function occluders(): [number, number, number, number, number, number][] {
+    const o = SPOTS.office, h = SPOTS.hut;
+    const list: [number, number, number, number, number, number][] = [
+      [o.x - 5, 0, o.z - 3.6, o.x + 5, 5.4, o.z + 3.6],
+      [h.x - 3.2, 0, h.z - 1.8, h.x + 9.6, 2.8, h.z + 1.8],
+      [-37, 0, -78.5, 25, 68, -65.5],
+    ];
+    if (siteHeight > 0.5) list.push([-TOWER.w / 2 - 0.6, -1, -TOWER.d / 2 - 0.6, TOWER.w / 2 + 0.6, siteHeight + 1, TOWER.d / 2 + 0.6]);
+    return list;
+  }
+  /** Moves the camera in front of whatever hides the player (for this frame only); returns where it was. */
+  function keepInSight(): THREE.Vector3 | null {
+    if (staging || seed < 0 || camMode !== 'follow') return null;
+    const p = player().pos;
+    head.set(p.x, 2.6, p.z);
+    v3.subVectors(camera.position, head);
+    const dist = v3.length();
+    sightRay.set(head, v3.normalize());
+    let nearest = dist;
+    for (const [x0, y0, z0, x1, y1, z1] of occluders()) {
+      occluder.min.set(x0, y0, z0);
+      occluder.max.set(x1, y1, z1);
+      if (occluder.containsPoint(head)) continue;
+      if (sightRay.intersectBox(occluder, hitPoint)) nearest = Math.min(nearest, head.distanceTo(hitPoint));
+    }
+    if (nearest >= dist - 0.5) return null;
+    savedCam.copy(camera.position);
+    camera.position.copy(head).addScaledVector(sightRay.direction, Math.max(3, nearest - 0.8));
+    camera.updateMatrixWorld();
+    return savedCam;
+  }
+
+  // ---------- The minimap: the site from above, with the player, the team and the objective ----------
+  const mini = document.createElement('canvas');
+  mini.className = 'minimap';
+  mini.title = 'Kart over byggeplassen. Klikk for å gå dit.';
+  const MINI = { w: 200, h: 176, x0: -56, z0: -46, s: 1.75 };
+  const dpr = Math.min(window.devicePixelRatio, 2);
+  mini.width = MINI.w * dpr;
+  mini.height = MINI.h * dpr;
+  container.appendChild(mini);
+  const mctx = mini.getContext('2d')!;
+  const mx = (x: number) => (x - MINI.x0) * MINI.s;
+  const mz = (z: number) => (z - MINI.z0) * MINI.s;
+  let miniFrame = 0;
+  function drawMinimap(t: number) {
+    mini.hidden = seed < 0 || !!staging;
+    if (mini.hidden || miniFrame++ % 4) return;
+    const c = mctx;
+    c.setTransform(dpr, 0, 0, dpr, 0, 0);
+    c.clearRect(0, 0, MINI.w, MINI.h);
+    const rect = (x0: number, z0: number, x1: number, z1: number, fill: string) => { c.fillStyle = fill; c.fillRect(mx(x0), mz(z0), mx(x1) - mx(x0), mz(z1) - mz(z0)); };
+    const label = (text: string, x: number, z: number) => { c.fillStyle = 'rgba(255,255,255,0.85)'; c.font = '600 9px "Segoe UI", system-ui, sans-serif'; c.textAlign = 'center'; c.fillText(text, mx(x), mz(z)); };
+    rect(-52, -42, 52, 42, '#9a8a70');
+    rect(-3.5, 20, 3.5, 42, '#5b5650');
+    rect(-7, 41.5, 7, 43, '#ffffff');
+    const towerUp = (shown.F ?? 0) > 0;
+    rect(-PIT.w / 2, -PIT.d / 2, PIT.w / 2, PIT.d / 2, towerUp ? '#d4d0c8' : '#4e3d2f');
+    rect(SPOTS.office.x - 4.4, SPOTS.office.z - 3.1, SPOTS.office.x + 3.4, SPOTS.office.z + 3.1, '#3a7bd5');
+    rect(SPOTS.hut.x - 3, SPOTS.hut.z - 1.3, SPOTS.hut.x + 9.4, SPOTS.hut.z + 1.3, '#f7630c');
+    rect(PLACES.yard.x - 9, PLACES.yard.z - 6, PLACES.yard.x + 9, PLACES.yard.z + 6, '#8a5a3a');
+    label(towerUp ? 'A-blokka' : 'Byggegrop', 0, 2);
+    label('Brakke', SPOTS.office.x, SPOTS.office.z + 7);
+    label('Lager', PLACES.yard.x, PLACES.yard.z + 2);
+    label('Port', 0, 49);
+    const dot = (x: number, z: number, color: string, r = 3) => { c.fillStyle = color; c.beginPath(); c.arc(mx(x), mz(z), r, 0, Math.PI * 2); c.fill(); };
+    for (const a of actors.values()) {
+      if (a.id === 'owner' || !a.c.group.visible) continue;
+      dot(a.pos.x, a.pos.z, a.id === 'pm' ? '#60cdff' : a.id === 'site' ? '#ff9a4d' : a.id === 'hms' ? '#4fd14f' : '#f2b81c', a.id.startsWith('foreman-') ? 2.5 : 3);
+    }
+    const o = castState.objective;
+    if (o) {
+      const pulse = 5 + Math.sin(t * 5) * 1.5;
+      c.strokeStyle = '#f7630c'; c.lineWidth = 2; c.beginPath(); c.arc(mx(o.spot.x), mz(o.spot.z), pulse, 0, Math.PI * 2); c.stroke();
+      c.fillStyle = '#f7630c'; c.font = '800 10px "Segoe UI", system-ui, sans-serif'; c.textAlign = 'center'; c.fillText('!', mx(o.spot.x), mz(o.spot.z) + 3.5);
+    }
+    // The player: an arrow in the walking direction, and the camera's view as a faint wedge.
+    const p = player();
+    const camYaw = Math.atan2(controls.target.x - camera.position.x, controls.target.z - camera.position.z);
+    c.fillStyle = 'rgba(255,255,255,0.18)';
+    c.beginPath(); c.moveTo(mx(p.pos.x), mz(p.pos.z));
+    c.arc(mx(p.pos.x), mz(p.pos.z), 26, Math.PI / 2 - camYaw - 0.5, Math.PI / 2 - camYaw + 0.5); c.closePath(); c.fill();
+    c.save(); c.translate(mx(p.pos.x), mz(p.pos.z)); c.rotate(-p.yaw + Math.PI);
+    c.fillStyle = '#ffffff'; c.strokeStyle = '#005fb8'; c.lineWidth = 1.5;
+    c.beginPath(); c.moveTo(0, -7); c.lineTo(5, 5); c.lineTo(0, 2.5); c.lineTo(-5, 5); c.closePath(); c.fill(); c.stroke();
+    c.restore();
+  }
+  mini.addEventListener('click', e => {
+    if (seed < 0 || castState.locked || staging) return;
+    const r = mini.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width * MINI.w / MINI.s + MINI.x0;
+    const z = (e.clientY - r.top) / r.height * MINI.h / MINI.s + MINI.z0;
+    const pl = player();
+    pl.path = route({ x: pl.pos.x, z: pl.pos.z }, resolve({ x, z }));
+    autoSpeed = 9;
+  });
+
+  // ---------- Quality: high by default, low on a weak PC (measured) or with ?kvalitet=lav ----------
+  const forced = new URLSearchParams(location.search).get('kvalitet');
+  let quality: 'high' | 'low' = forced === 'lav' ? 'low' : 'high';
+  let qSamples = 0;
+  let qTime = 0;
+  function setQuality(q: 'high' | 'low') {
+    quality = q;
+    const pr = q === 'low' ? 1 : pixelRatio;
+    renderer.setPixelRatio(pr);
+    composer.setPixelRatio(pr);
+    bloom.enabled = q === 'high';
+    const size = q === 'low' ? 1024 : 2048;
+    sun.shadow.mapSize.set(size, size);
+    sun.shadow.map?.dispose();
+    sun.shadow.map = null;
+    resize();
+    syncFigures();
+  }
+
   // ---------- Resize, inset and the render loop ----------
   function resize() {
     width = container.clientWidth;
@@ -1227,9 +1410,15 @@ export function createView3d(container: HTMLElement, hooks: ViewHooks): View3d {
   const loop = () => {
     raf = requestAnimationFrame(loop);
     const now = performance.now();
-    const dt = Math.min(0.1, (now - last) / 1000);
+    const raw = (now - last) / 1000;
+    const dt = Math.min(0.1, raw);
     last = now;
     const t = (now - start) / 1000;
+    // After the start-up, measure 4 seconds of frames; below about 32 fps, switch to low quality.
+    if (quality === 'high' && !forced && t > 3 && qSamples < 240) {
+      qTime += raw;
+      if (++qSamples === 240 && qTime / 240 > 1 / 32) setQuality('low');
+    }
 
     // Progress eases towards the game state, so a new week grows instead of popping.
     const k = 1 - Math.exp(-dt * 5);
@@ -1248,10 +1437,11 @@ export function createView3d(container: HTMLElement, hooks: ViewHooks): View3d {
     nightNow += ((1 - daylight) - nightNow) * Math.min(1, dt * 2);
     const ang = cycle < dayLen ? (cycle / dayLen) * Math.PI : Math.PI;
     sun.position.set(Math.cos(ang) * 160, 30 + Math.sin(ang) * 150, 60);
-    sun.intensity = 0.15 + daylight * 2.3;
-    sun.color.setHSL(0.09, 0.6, 0.6 + daylight * 0.35);
-    hemi.intensity = 0.35 + daylight * 0.75;
-    world.setLight(nightNow, target.season === 'winter' ? 1 : target.frost ? 0.6 : 0);
+    // Night and winter stay playable: a cool moonlight and a sky light that never go dark.
+    sun.intensity = 0.35 + daylight * 2.1;
+    sun.color.setHSL(daylight > 0.1 ? 0.09 : 0.6, daylight > 0.1 ? 0.6 : 0.3, 0.6 + daylight * 0.35);
+    hemi.intensity = 0.6 + daylight * 0.5;
+    world.setLight(Math.min(0.85, nightNow), target.season === 'winter' ? 1 : target.frost ? 0.6 : 0);
 
     applyProgress(t);
     moveFigures(dt, t);
@@ -1259,8 +1449,8 @@ export function createView3d(container: HTMLElement, hooks: ViewHooks): View3d {
     stepParticles(dt, t);
     placeBeacons(t);
     moveCast(dt, t);
-    props.update(t, target, shown, nightNow);
-    bloom.strength = 0.22 + nightNow * 0.55;
+    props.update(t, target, shown, nightNow, !!staging);
+    bloom.strength = 0.12 + nightNow * 0.45;
 
     if (staging) {
       // A scene: a slow dolly to a shot from the side of the circle, looking at the table.
@@ -1279,9 +1469,15 @@ export function createView3d(container: HTMLElement, hooks: ViewHooks): View3d {
         // Looking a little below the face keeps the speaker clear of the panel at the bottom.
         lookGoal.set(sp.pos.x, 0.9, sp.pos.z);
       } else {
+        // The dilemma: the team, the model and the work area it is about, in one shot.
         const far = width < 700 ? 21 : 16;
-        camGoal.set(c.x + staging.view.x * far, 7.5, c.z + staging.view.z * far);
+        camGoal.set(c.x + staging.view.x * far, 8.5, c.z + staging.view.z * far);
         lookGoal.set(c.x, 0.2, c.z);
+        if (target.focus && castState.scene?.kind === 'meeting') {
+          const w = taskSpot(target.focus.taskId, shown);
+          // Turned a little towards the work area, but low, so the team stays clear of the panel.
+          lookGoal.set(c.x + (w.x - c.x) * 0.15, -2.2, c.z + (w.z - c.z) * 0.15);
+        }
       }
       // A cut when the shot is far away, a slow dolly when it is close.
       const kk = camera.position.distanceTo(camGoal) > 25 || look.distanceTo(lookGoal) > 12 ? 1 : 1 - Math.exp(-dt * 2.2);
@@ -1322,8 +1518,13 @@ export function createView3d(container: HTMLElement, hooks: ViewHooks): View3d {
       camera.position.y += (Math.random() - 0.5) * a;
     }
     placeOverlay(now);
+    drawMinimap(t);
+    // The building or a hut must never hide the player: the camera moves in front of it for this frame.
+    const saved = keepInSight();
     composer.render(dt);
+    if (saved) camera.position.copy(saved);
   };
+  if (quality === 'low') setQuality('low');
   loop();
 
   return {
@@ -1333,6 +1534,8 @@ export function createView3d(container: HTMLElement, hooks: ViewHooks): View3d {
       const prevActive = target.active.join();
       const prevFocus = target.focus?.eventId;
       const prevStalls = target.stalled.map(x => x.taskId + x.cause).join();
+      const crewKey = () => target.crews.map(x => `${x.taskId}${x.own}${x.hired}${x.mode}`).join();
+      const prevCrews = crewKey();
       const prevPct = target.active.map(id => Math.round((target.progress[id] ?? 0) * 100)).join();
       target = sceneState(s, g);
       if (first) Object.assign(shown, target.progress);
@@ -1359,7 +1562,7 @@ export function createView3d(container: HTMLElement, hooks: ViewHooks): View3d {
         logSeen = g.log.length;
       }
       const pct = target.active.map(id => Math.round((target.progress[id] ?? 0) * 100)).join();
-      if (prevActive !== target.active.join() || prevFocus !== target.focus?.eventId || prevStalls !== target.stalled.map(x => x.taskId + x.cause).join() || pct !== prevPct) rebuildTags(s);
+      if (prevActive !== target.active.join() || prevFocus !== target.focus?.eventId || prevStalls !== target.stalled.map(x => x.taskId + x.cause).join() || pct !== prevPct || crewKey() !== prevCrews) rebuildTags(s);
       world.gravel.color.set(target.done ? 0x7fae63 : 0xa08e73);
       world.parkTrees.forEach(t => { t.visible = target.done; });
       world.fence.visible = !target.done;
