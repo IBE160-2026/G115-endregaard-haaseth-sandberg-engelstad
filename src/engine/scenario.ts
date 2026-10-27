@@ -5,6 +5,8 @@ export type Mode = 'normal' | 'overtime' | 'hire';
 export interface Task {
   id: string;
   name: string;
+  /** The trade in the foreman's title, e.g. «Formann VVS». */
+  trade: string;
   icon: string;
   predecessors: string[];
   /** Own crew at normal time. */
@@ -19,6 +21,8 @@ export interface Task {
 
 export interface Person {
   id: string;
+  /** What the player calls them: a first name, or «Formann VVS» for a foreman. */
+  name: string;
   role: string;
   description: string;
   icon: string;
@@ -66,19 +70,19 @@ const TRADE = 600;
 const ENGINEER = 1000;
 
 const tasks: Task[] = [
-  { id: 'A', name: 'Prosjektering og byggesøknad', icon: 'disciplines/A-design.svg', predecessors: [], crew: 36, hours: 21600, rate: ENGINEER, materials: 3.4 },
-  { id: 'C', name: 'Sprengning og graving', icon: 'disciplines/C-blasting.svg', predecessors: ['A'], crew: 14, hours: 6300, rate: TRADE, materials: 10.22 },
-  { id: 'D', name: 'Fundamentering og spunt', icon: 'disciplines/D-foundations.svg', predecessors: ['C'], crew: 16, hours: 4800, rate: TRADE, materials: 7.12 },
-  { id: 'E', name: 'Kjeller råbygg', icon: 'disciplines/E-basement-structure.svg', predecessors: ['D'], crew: 30, hours: 15750, rate: TRADE, materials: 12.55 },
-  { id: 'F', name: 'Kontor råbygg', icon: 'disciplines/F-office-structure.svg', predecessors: ['E'], crew: 34, hours: 25500, rate: TRADE, materials: 19.7 },
-  { id: 'L', name: 'Kjeller innredning og teknikk', icon: 'disciplines/L-basement-fitout.svg', predecessors: ['E'], crew: 8, hours: 3000, rate: TRADE, materials: 3.2 },
-  { id: 'G', name: 'Tak og fasade', icon: 'disciplines/G-roof-facade.svg', predecessors: ['F'], crew: 30, hours: 15750, rate: TRADE, materials: 18.55 },
-  { id: 'O', name: 'Heiser', icon: 'disciplines/O-lifts.svg', predecessors: ['F'], crew: 6, hours: 1800, rate: TRADE, materials: 5.92 },
-  { id: 'H', name: 'VVS', icon: 'disciplines/H-hvac.svg', predecessors: ['G'], crew: 32, hours: 21600, rate: TRADE, materials: 19.04 },
-  { id: 'I', name: 'Elkraft', icon: 'disciplines/I-electrical.svg', predecessors: ['G'], crew: 32, hours: 19200, rate: TRADE, materials: 14.48 },
-  { id: 'K', name: 'Innvendige arbeider', icon: 'disciplines/K-interior.svg', predecessors: ['G'], crew: 30, hours: 18000, rate: TRADE, materials: 9.2 },
-  { id: 'J', name: 'Tele og automatisering', icon: 'disciplines/J-automation.svg', predecessors: ['I'], crew: 18, hours: 6750, rate: TRADE, materials: 8.95 },
-  { id: 'N', name: 'Prøvedrift og overlevering', icon: 'disciplines/N-handover.svg', predecessors: ['H', 'J', 'K', 'L', 'O'], crew: 10, hours: 1500, rate: ENGINEER, materials: 0.5 },
+  { id: 'A', name: 'Prosjektering og byggesøknad', trade: 'Prosjektering', icon: 'disciplines/A-design.svg', predecessors: [], crew: 36, hours: 21600, rate: ENGINEER, materials: 3.4 },
+  { id: 'C', name: 'Sprengning og graving', trade: 'Sprengning', icon: 'disciplines/C-blasting.svg', predecessors: ['A'], crew: 14, hours: 6300, rate: TRADE, materials: 10.22 },
+  { id: 'D', name: 'Fundamentering og spunt', trade: 'Fundament', icon: 'disciplines/D-foundations.svg', predecessors: ['C'], crew: 16, hours: 4800, rate: TRADE, materials: 7.12 },
+  { id: 'E', name: 'Kjeller råbygg', trade: 'Betong', icon: 'disciplines/E-basement-structure.svg', predecessors: ['D'], crew: 30, hours: 15750, rate: TRADE, materials: 12.55 },
+  { id: 'F', name: 'Kontor råbygg', trade: 'Råbygg', icon: 'disciplines/F-office-structure.svg', predecessors: ['E'], crew: 34, hours: 25500, rate: TRADE, materials: 19.7 },
+  { id: 'L', name: 'Kjeller innredning og teknikk', trade: 'Kjellerteknikk', icon: 'disciplines/L-basement-fitout.svg', predecessors: ['E'], crew: 8, hours: 3000, rate: TRADE, materials: 3.2 },
+  { id: 'G', name: 'Tak og fasade', trade: 'Fasade', icon: 'disciplines/G-roof-facade.svg', predecessors: ['F'], crew: 30, hours: 15750, rate: TRADE, materials: 18.55 },
+  { id: 'O', name: 'Heiser', trade: 'Heis', icon: 'disciplines/O-lifts.svg', predecessors: ['F'], crew: 6, hours: 1800, rate: TRADE, materials: 5.92 },
+  { id: 'H', name: 'VVS', trade: 'VVS', icon: 'disciplines/H-hvac.svg', predecessors: ['G'], crew: 32, hours: 21600, rate: TRADE, materials: 19.04 },
+  { id: 'I', name: 'Elkraft', trade: 'Elektro', icon: 'disciplines/I-electrical.svg', predecessors: ['G'], crew: 32, hours: 19200, rate: TRADE, materials: 14.48 },
+  { id: 'K', name: 'Innvendige arbeider', trade: 'Innredning', icon: 'disciplines/K-interior.svg', predecessors: ['G'], crew: 30, hours: 18000, rate: TRADE, materials: 9.2 },
+  { id: 'J', name: 'Tele og automatisering', trade: 'Automasjon', icon: 'disciplines/J-automation.svg', predecessors: ['I'], crew: 18, hours: 6750, rate: TRADE, materials: 8.95 },
+  { id: 'N', name: 'Prøvedrift og overlevering', trade: 'Overlevering', icon: 'disciplines/N-handover.svg', predecessors: ['H', 'J', 'K', 'L', 'O'], crew: 10, hours: 1500, rate: ENGINEER, materials: 0.5 },
 ];
 
 const foremanIcon = (t: Task) => `people/foreman-${t.icon.slice('disciplines/'.length)}`;
@@ -87,11 +91,13 @@ const foremanIcon = (t: Task) => `people/foreman-${t.icon.slice('disciplines/'.l
 const PM_TASKS = ['A', 'N'];
 
 const people: Person[] = [
-  { id: 'owner', role: 'Prosjekteier', description: 'Deg. Statsbygg som byggherre: eier budsjettet og tar de endelige beslutningene.', icon: 'people/owner.svg', player: true },
-  { id: 'pm', role: 'Prosjektleder', description: 'AI-rolle. Følger plan, budsjett og prognose, og anbefaler tiltak.', icon: 'people/project-manager.svg', reportsTo: 'owner' },
-  { id: 'site', role: 'Site manager', description: 'AI-rolle. Leder byggeplassen og koordinerer formennene.', icon: 'people/site-manager.svg', reportsTo: 'owner' },
+  { id: 'owner', name: 'Du', role: 'Prosjekteier', description: 'Deg. Statsbygg som byggherre: eier budsjettet og tar de endelige beslutningene.', icon: 'people/owner.svg', player: true },
+  { id: 'pm', name: 'Elisabeth', role: 'Prosjektleder', description: 'AI-rolle. Følger plan, budsjett og prognose, og anbefaler tiltak. Går sammen med deg på byggeplassen.', icon: 'people/project-manager.svg', reportsTo: 'owner' },
+  { id: 'site', name: 'Hedda', role: 'Site manager', description: 'AI-rolle. Leder byggeplassen og koordinerer formennene. Går sammen med deg på byggeplassen.', icon: 'people/site-manager.svg', reportsTo: 'owner' },
+  { id: 'hms', name: 'Oskar', role: 'HMS-leder', description: 'AI-rolle. Sjekker verneutstyr og sikkerhet, og stopper alle som mangler noe. Også byggherren.', icon: 'people/hms.svg', reportsTo: 'owner' },
   ...tasks.map(t => ({
     id: `foreman-${t.id}`,
+    name: `Formann ${t.trade}`,
     role: 'Formann',
     description: t.name,
     icon: foremanIcon(t),

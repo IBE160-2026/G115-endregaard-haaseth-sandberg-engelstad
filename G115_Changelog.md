@@ -2,6 +2,12 @@
 
 Major iterations of the *Regjeringskvartalet Light* project management simulator. Each entry has a summary of at most four lines.
 
+## v0.5 – 2026-10-27
+
+You walk the site: the player (Statsbygg) moves with WASD, the arrow keys or a click on the ground, with Elisabeth (prosjektleder) and Hedda (site manager) following. A foreman with a challenge stands with a «!» over their head; you walk there (or press G), and the camera cuts to a meeting of the four round a table with a 3D model of the challenge.
+Meetings instead of a dialog box: the foreman explains and Elisabeth names the dilemma. The foreman's view goes to Elisabeth and Hedda as input to the AI and is not shown to the player as a recommendation; Hedda and Elisabeth give their proposals, and the decision shows each one on the option it backs. The foremen are called «Formann VVS», «Formann Elektro», «Formann Heis» and so on; Oskar (HMS) stops you at the gate for missing safety glasses and checks your gear again as the chapters open.
+The plan is reviewed before the clock runs: a start-up meeting goes through every discipline's estimated hours with the foreman's pitch, and each new chapter opens a staffing review (crew, mode, Elisabeth's proposal, the forecast against both targets). The left rail shows the objective, the team and what each panel has to say.
+3D: articulated people and workers (legs and arms swing, workers hammer), a mobile crane and a concrete pump, a tower crane from the basement on, scaffolding that climbs with the tower, a material yard, floodlights, a pit railing and a signboard; bloom and environment lighting. Demo links `?scene=hms`, `?scene=kickoff&steg=9`, `?uke=60&hendelse=change-security&steg=9`. 184 tests. The assessment against the goals is updated in G115_Recommendations.md.
 ## v0.4 – 2026-10-27
 
 Makeover: the 3D site now fills the whole screen and is the game. The HUD sits on top as glass panels in the Fluent colours (week and gauges for money and time, a panel rail, the message feed, a play dock). The Windows desktop, window frame and taskbar are gone.

@@ -8,12 +8,13 @@ import {
 import type { Scenario } from '../engine/scenario';
 import { budgetOf } from './budgetLines';
 import { formatDelta, formatFactor, formatMnok } from './format';
+import { foremanInput, meetingLines, proposals, type StoryUi } from './story';
 import { icon } from './tabs/context';
 import { VERSION } from '../version';
 
 export type Speed = 1 | 2 | 4;
 
-export interface PlayUi {
+export interface PlayUi extends StoryUi {
   playing: boolean;
   speed: Speed;
   menu: boolean;
@@ -33,21 +34,32 @@ const dialog = (inner: string, label: string) =>
 
 export function renderStart(s: Scenario): string {
   return dialog(`<h2>Nytt prosjekt: ${s.name} <small class="version">${VERSION}</small></h2>
-    <p>Du er <b>prosjekteier</b>. Prosjektleder, Site manager og formennene er AI-roller som melder fra om utfordringer og anbefaler tiltak. Målet er å bygge ferdig innen <b>${formatMnok(s.target.total)} MNOK</b> og <b>${s.target.weeks} uker</b>.</p>
-    <p class="meta">Velg mannskap og arbeidsmodus per disiplin, eller la prosjektlederen bemanne. Hver uke ekstra koster ${formatFactor(s.overhead.perWeek)} MNOK i rigg og drift. Underveis kommer strategivalg, risikoer, muligheter og endringsønsker, og hver av dem er et dilemma mellom penger og tid.</p>
-    <p class="meta">Ved hvert valg gir tre AI-roller sitt råd, og du ser hva hvert alternativ gir nå, senere og i prognosen. Etter valget viser et veivalgkort din vei ved siden av prosjektlederens anbefaling.</p>
+    <p>Du er <b>Statsbygg</b>, byggherren for A-blokka. Målet er å bygge ferdig innen <b>${formatMnok(s.target.total)} MNOK</b> og <b>${s.target.weeks} uker</b>.</p>
+    <div class="cast-intro">
+      <div>${icon('people/project-manager.svg', 32)}<span><b>Elisabeth</b> prosjektleder. Følger plan og budsjett, og gir deg et råd ved hvert veivalg.</span></div>
+      <div>${icon('people/site-manager.svg', 32)}<span><b>Hedda</b> site manager. Kjenner plassen og formennene, og går med deg rundt.</span></div>
+      <div>${icon('people/hms.svg', 32)}<span><b>Oskar</b> HMS-leder. Sjekker verneutstyret. Også ditt.</span></div>
+      <div>${icon('people/foreman.svg', 32)}<span><b>Formennene</b> Formann VVS, Formann Elektro, Formann Heis … Står det et <b class="bang">!</b> over hodet deres, har de en utfordring til deg.</span></div>
+    </div>
+    <p class="meta">Gå rundt på byggeplassen med <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> eller piltastene, eller klikk på bakken. <kbd>E</kbd> snakker med den du står ved, <kbd>G</kbd> går til neste oppdrag. Hver uke ekstra koster ${formatFactor(s.overhead.perWeek)} MNOK i rigg og drift, og hvert veivalg er et dilemma mellom penger og tid.</p>
     <p class="meta">Hvert spill er en historie som <b>kan</b> løses innenfor begge målene. I sluttrapporten ser du hvordan, og hvordan AI-veien gikk.</p>
-    <div class="choices">${DIFFICULTIES.map(d => `<button type="button" class="choice" data-action="start" data-difficulty="${d.id}"><b>${d.label}</b><span>${d.text}</span></button>`).join('')}</div>`, 'Nytt prosjekt');
+    <div class="choices">${DIFFICULTIES.map(d => `<button type="button" class="choice" data-action="start" data-difficulty="${d.id}"><b>${d.label}</b><span>${d.text}</span></button>`).join('')}</div>
+    <label class="skip"><input type="checkbox" id="skip-intro"> Hopp over introen (rett til byggingen)</label>`, 'Nytt prosjekt');
 }
 
 const signedWeeks = (n: number) => (n > 0 ? `+${n}` : n < 0 ? `−${-n}` : '±0');
 const weeksWord = (n: number) => `${n} uke${Math.abs(n) === 1 ? '' : 'r'}`;
 
-/** A person's display name, e.g. "Formann F" or "Prosjektleder". */
+/** A person's display name, e.g. "Formann VVS" or "Elisabeth". */
 export function personName(s: Scenario, id: string): string {
+  return s.people.find(x => x.id === id)?.name ?? id;
+}
+
+/** The role under the name, e.g. "Prosjektleder" or "H VVS". */
+export function personRole(s: Scenario, id: string): string {
   const p = s.people.find(x => x.id === id);
-  if (!p) return id;
-  return p.taskId ? `${p.role} ${p.taskId}` : p.role;
+  if (!p) return '';
+  return p.player ? 'Prosjekteier, Statsbygg' : p.taskId ? `${p.taskId} ${s.tasks.find(t => t.id === p.taskId)!.name}` : p.role;
 }
 
 /** End week and total, coloured against the targets. */
@@ -73,37 +85,72 @@ function effectsOf(s: Scenario, o: EventOption, taskId: string): { now: string; 
   return { now, later };
 }
 
-export function renderEvent(s: Scenario, g: GameState): string {
+/** The panel at the bottom of the screen while the camera shows a scene on site. */
+export const scenePanel = (inner: string, label: string, wide = false) =>
+  `<div class="scene-panel glass${wide ? ' wide' : ''}" role="dialog" aria-modal="true" aria-label="${label}">${inner}</div>`;
+
+const portrait = (s: Scenario, id: string, size = 56) => {
+  const p = s.people.find(x => x.id === id);
+  return p ? `<span class="portrait who-${id.startsWith('foreman-') ? 'foreman' : id}">${icon(p.icon, size)}</span>` : '';
+};
+
+/** One line in a scene: who speaks, in a speech panel, with «Neste». */
+export function speechHtml(s: Scenario, who: string, text: string, step: number, steps: number, skip?: string): string {
+  const dots = Array.from({ length: steps }, (_, i) => `<i class="${i === step ? 'on' : i < step ? 'done' : ''}"></i>`).join('');
+  return `<div class="sp-line">${portrait(s, who)}<div class="sp-text"><b>${personName(s, who)}</b><small>${personRole(s, who)}</small><p>${text}</p></div></div>
+    <div class="sp-actions"><span class="sp-dots" aria-hidden="true">${dots}</span>${skip ? `<button type="button" class="link" data-action="${skip}">Hopp over</button>` : ''}<button type="button" class="primary" data-action="line-next">Neste ▸</button></div>`;
+}
+
+function eventHead(s: Scenario, g: GameState): string {
   const p = g.pending!;
   const ev = eventById(p.eventId);
   const task = s.tasks.find(t => t.id === p.taskId)!;
+  return `<div class="sp-head">${icon(ev.icon, 40)}<div><h2>${ev.title}</h2><p class="meta"><span class="chip kind kind-${ev.kind}">${KIND_LABEL[ev.kind]}</span> Uke ${g.week} · rammer ${task.id} ${task.name}</p></div></div>`;
+}
+
+/**
+ * The challenge meeting with the foreman: first the lines (who raised it, the dilemma and the three
+ * proposals, one at a time), then the decision with every proposal next to the option it backs.
+ * Without a line (or past the last one) it shows the decision.
+ */
+export function renderEvent(s: Scenario, g: GameState, line = Infinity): string {
+  const p = g.pending!;
+  const ev = eventById(p.eventId);
+  const lines = meetingLines(s, g);
+  if (line < lines.length) {
+    return scenePanel(`${eventHead(s, g)}${speechHtml(s, lines[line].who, lines[line].text, line, lines.length + 1, 'line-skip')}`, ev.title);
+  }
   const label = (id: string) => ev.options.find(o => o.id === id)!.label;
-  const voices = p.voices.map(v => {
+  const input = foremanInput(p);
+  // Only Elisabeth and Hedda propose to the player; the foreman's input is part of their basis.
+  const voices = proposals(p).map(v => {
     const person = s.people.find(x => x.id === v.personId)!;
-    return `<div class="voice${v.personId === 'pm' ? ' official' : ''}">${icon(person.icon, 32)}<div>
+    return `<div class="voice${v.personId === 'pm' ? ' official' : ''}" title="${v.reason}">${icon(person.icon, 28)}<div>
       <b>${personName(s, v.personId)}</b>${v.raised ? ' <span class="chip">meldte saken</span>' : ''}
-      <p class="voice-pick">Anbefaler «${label(v.optionId)}»</p><p>${v.reason}</p></div></div>`;
+      <p class="voice-pick">Anbefaler «${label(v.optionId)}»</p></div></div>`;
   }).join('');
   const options = ev.options.map(o => {
     const isRec = o.id === p.recommended;
     const r = p.outcomes.find(x => x.optionId === o.id)!;
     const { now, later } = effectsOf(s, o, p.taskId);
-    const backers = p.voices.filter(v => v.optionId === o.id).map(v => personName(s, v.personId));
+    const backers = proposals(p).filter(v => v.optionId === o.id);
     // Δ against today's forecast on every option; the recommended one is also marked.
     const delta = `<em class="delta">Δ ${deltaText(r, p.before)} mot i dag</em>${isRec ? '<span class="chip chip-on">anbefalt</span>' : ''}`;
+    const faces = backers.map(v => `<span class="backer" title="${personName(s, v.personId)}: ${v.reason}">${icon(s.people.find(x => x.id === v.personId)!.icon, 20)}${personName(s, v.personId)}</span>`).join('');
     return `<button type="button" class="choice${isRec ? ' recommended' : ''}" data-action="choose" data-option="${o.id}">
-      <b>${o.label}</b>${backers.length ? `<span class="backers">${backers.join(' · ')}</span>` : ''}
+      <b>${o.label}</b>${backers.length ? `<span class="backers">${faces}</span>` : '<span class="backers none">Ingen foreslår dette</span>'}
       <span class="effect"><i>Nå:</i> ${now}</span>
       ${later ? `<span class="effect later"><i>Senere:</i> ${later}</span>` : ''}
       <span class="preview">Prognose ${outcomeText(s, r)} ${delta}</span>
       <small>${o.note}</small></button>`;
   }).join('');
-  return dialog(`<div class="dialog-head">${icon(ev.icon, 48)}<div><h2>${ev.title}</h2><p class="meta"><span class="chip kind kind-${ev.kind}">${KIND_LABEL[ev.kind]}</span> Uke ${g.week} · rammer ${task.id} ${task.name}</p></div></div>
-    <p>${ev.description}</p>
+  return scenePanel(`${eventHead(s, g)}
     <p class="dilemma">${p.dilemma}</p>
     <p class="meta">Prognose i dag: ${outcomeText(s, p.before)} · mål ${s.target.weeks} uker og ${formatMnok(s.target.total)} MNOK. Prognosene forutsetter ingen nye hendelser.</p>
     <div class="voices">${voices}</div>
-    <div class="choices">${options}</div>`, ev.title);
+    ${input ? `<p class="meta input">${icon(s.people.find(x => x.id === input.personId)!.icon, 20)} ${personName(s, input.personId)}${input.raised ? ' meldte saken og' : ''} ga Elisabeth og Hedda sitt innspill (lavest kostnad nå). Det er med i rådene deres.</p>` : ''}
+    <div class="choices options">${options}</div>
+    <p class="meta sp-foot">Du bestemmer. Hold musa over et navn for å se begrunnelsen. <button type="button" class="link" data-action="line-replay">Hør forslagene igjen</button></p>`, ev.title, true);
 }
 
 /** The fork card after a choice: the player's path next to the recommendation from the same state. */
@@ -113,14 +160,14 @@ export function renderFork(s: Scenario, d: Decision): string {
   const col = (head: string, optionId: string, r: Outcome) =>
     `<div class="fork-col"><span class="meta">${head}</span><b>«${label(optionId)}»</b><span>${outcomeText(s, r)}</span></div>`;
   const body = d.followed
-    ? `<p class="fork-same">Du fulgte anbefalingen.</p><div class="fork one">${col('Ditt valg = Prosjektlederens anbefaling', d.chosen, d.chosenOutcome)}</div>`
-    : `<div class="fork">${col('Ditt valg', d.chosen, d.chosenOutcome)}${col('Prosjektlederens anbefaling', d.recommended, d.recommendedOutcome)}</div>
+    ? `<p class="fork-same">Du fulgte anbefalingen.</p><div class="fork one">${col('Ditt valg = Elisabeths anbefaling', d.chosen, d.chosenOutcome)}</div>`
+    : `<div class="fork">${col('Ditt valg', d.chosen, d.chosenOutcome)}${col('Elisabeths anbefaling', d.recommended, d.recommendedOutcome)}</div>
        <p class="dilemma">Ditt valg gir ${deltaText(d.chosenOutcome, d.recommendedOutcome)} mot anbefalingen.</p>`;
-  return dialog(`<h2>Veivalg: ${ev.title}</h2>
-    <p class="meta"><span class="chip kind kind-${ev.kind}">${KIND_LABEL[ev.kind]}</span> Uke ${d.week} · mål ${s.target.weeks} uker og ${formatMnok(s.target.total)} MNOK</p>
+  return scenePanel(`<div class="sp-head">${icon('decisions/decision-point.svg', 40)}<div><h2>Veivalg: ${ev.title}</h2>
+    <p class="meta"><span class="chip kind kind-${ev.kind}">${KIND_LABEL[ev.kind]}</span> Uke ${d.week} · mål ${s.target.weeks} uker og ${formatMnok(s.target.total)} MNOK</p></div></div>
     ${body}
     <p class="meta">Begge veiene er regnet frem fra samme tilstand, uten nye hendelser.</p>
-    <div class="choices"><button type="button" class="choice" data-action="fork-continue"><b>Fortsett</b></button></div>`, 'Veivalg');
+    <div class="sp-actions"><button type="button" class="primary" data-action="fork-continue">Avslutt møtet ▸</button></div>`, 'Veivalg');
 }
 
 /** The message feed: what the AI roles report, newest first. */
@@ -153,14 +200,28 @@ export function noteForecastChange(log: LogEntry[], week: number, before: Outcom
   return { log: [...(merging ? log.slice(0, -1) : log), entry], note: { entry, base } };
 }
 
-/** Which dialog to show. A fork card comes before a queued decision, so no fork is skipped. */
-export function dialogFor(g: GameState | undefined, ui: Pick<PlayUi, 'forkSeen' | 'finalSeen'>): 'start' | 'fork' | 'event' | 'final' | null {
+export type DialogId = 'start' | 'hms' | 'kickoff' | 'fork' | 'event' | 'review' | 'final' | 'talk';
+
+/**
+ * Which dialog or scene to show. A fork card comes before a queued decision, so no fork is skipped.
+ * A decision only opens when the player has walked to the foreman (the meeting is on); until then
+ * the open challenge is an objective on site.
+ */
+export function dialogFor(g: GameState | undefined, ui: Pick<PlayUi, 'forkSeen' | 'finalSeen' | 'phase' | 'meeting' | 'hms' | 'reviewed' | 'talk'>): DialogId | null {
   if (!g) return 'start';
+  if (ui.hms) return 'hms';
+  if (ui.phase === 'intro') return null;
+  if (ui.phase === 'kickoff') return 'kickoff';
   if (g.decisions.length > ui.forkSeen) return 'fork';
-  if (g.pending) return 'event';
+  if (g.pending) return ui.meeting ? 'event' : null;
+  if (!g.done && g.chapter > ui.reviewed) return 'review';
   if (g.done && !ui.finalSeen) return 'final';
+  if (ui.talk) return 'talk';
   return null;
 }
+
+/** Dialogs that stop the clock until they are closed. */
+export const BLOCKING: DialogId[] = ['hms', 'kickoff', 'fork', 'event', 'review'];
 
 const MODE_NAME = { normal: 'normaltid', overtime: 'overtid', hire: 'ekstra innleie' } as const;
 
@@ -170,7 +231,7 @@ export const planText = (changes: StaffingChange[]) =>
 function storyHtml(story: Story | undefined): string {
   if (!story) return '';
   const steps = story.steps.map(st => {
-    if (st.kind === 'plan') return `<li>Uke ${st.week}: prosjektlederen bemanner (${planText(st.changes)}).</li>`;
+    if (st.kind === 'plan') return `<li>Uke ${st.week}: Elisabeth bemanner (${planText(st.changes)}).</li>`;
     const ev = eventById(st.eventId);
     return `<li>Uke ${st.week}: ${ev.title} (${st.taskId}) → «${ev.options.find(o => o.id === st.optionId)!.label}».</li>`;
   }).join('');
@@ -203,7 +264,7 @@ function compareHtml(s: Scenario, you: Outcome & { decisions: number }, ai?: Sto
         ${row('Resultat', c => VERDICT_TEXT[verdictOf(s, c.r)])}
       </tbody>
     </table></div>
-    ${ai ? '<p class="meta">AI-veien spiller samme scenario med prosjektlederens bemanning og anbefaling ved hvert valg. Den kan møte andre hendelser enn du gjorde.</p>' : ''}`;
+    ${ai ? '<p class="meta">AI-veien spiller samme scenario med Elisabeths bemanning og anbefaling ved hvert valg. Den kan møte andre hendelser enn du gjorde.</p>' : ''}`;
 }
 
 /** Every decision with the Δ between the player's and the recommended outcome (from the fork records). */
@@ -220,7 +281,7 @@ function decisionsHtml(g: GameState): string {
   return `<h3>Dine beslutninger</h3><ol class="decisions">${items}</ol>`;
 }
 
-export function renderFinal(s: Scenario, g: GameState, story?: Story, ai?: Story): string {
+export function renderFinal(s: Scenario, g: GameState, story?: Story, ai?: Story, scolded = 0): string {
   const total = budgetOf(forecast(s, g)).total;
   const v = verdict(s, g);
   const decisions = g.decisions.length;
@@ -235,6 +296,7 @@ export function renderFinal(s: Scenario, g: GameState, story?: Story, ai?: Story
       <div class="kpi"><span>Beslutninger</span><b>${decisions}</b><small>${followed} fulgte AI-anbefalingen</small></div>
     </div>
     <p class="meta">Vanskelighetsgrad: ${DIFFICULTIES.find(d => d.id === g.difficulty)!.label} · Scenario-nr. ${g.seed} · Simulator ${VERSION}</p>
+    <p class="meta">${icon('people/hms.svg', 20)} HMS: ${scolded === 0 ? 'Oskar ga deg aldri tilsnakk. Et forbilde på plassen!' : `Oskar måtte gi deg tilsnakk ${scolded} gang${scolded === 1 ? '' : 'er'}. Alle gikk likevel hjem hele.`}</p>
     ${compareHtml(s, { weeks: g.week, total, decisions }, ai, story)}
     ${decisionsHtml(g)}
     ${storyHtml(story)}

@@ -32,7 +32,7 @@ export interface SceneState {
   active: string[];
   /** Active tasks that stand still, and why. */
   stalled: { taskId: string; cause: string | null }[];
-  /** The crane stands from the start of F until the facade is closed. */
+  /** The tower crane stands from the start of the basement structure (E) until the facade is closed. */
   crane: 'off' | 'working' | 'stopped';
   flooded: boolean;
   frost: boolean;
@@ -84,9 +84,9 @@ export function sceneState(s: Scenario, g: GameState | undefined): SceneState {
   const pendingId = g.pending?.eventId ?? null;
   const stalledBy = (cause: string) => stalled.some(x => x.cause === cause);
 
-  const craneUp = ts('F').start !== null && ts('G').finish === null;
+  const craneUp = ts('E').start !== null && ts('G').finish === null;
   const windy = pendingId === 'wind' || stalledBy('wind');
-  const crane = !craneUp ? 'off' : windy || stalled.some(x => x.taskId === 'F' || x.taskId === 'G') ? 'stopped' : 'working';
+  const crane = !craneUp ? 'off' : windy || stalled.some(x => x.taskId === 'E' || x.taskId === 'F' || x.taskId === 'G') ? 'stopped' : 'working';
 
   const crews = active.map(id => {
     const t = ts(id);
@@ -153,12 +153,12 @@ export function speakerSpot(personId: string, p: Record<string, number>): Spot {
   return SPOTS.office;
 }
 
-/** How many figures to draw for a crew: one per four workers, at least one, at most 120 in total. */
-export function figuresFor(crews: Crew[], max = 120): { taskId: string; hired: boolean }[] {
+/** How many figures to draw for a crew: one per three workers, at least one, at most 160 in total. */
+export function figuresFor(crews: Crew[], max = 160): { taskId: string; hired: boolean }[] {
   const out: { taskId: string; hired: boolean }[] = [];
   for (const c of crews) {
-    for (let i = 0; i < Math.max(1, Math.round(c.own / 4)); i++) out.push({ taskId: c.taskId, hired: false });
-    for (let i = 0; i < Math.round(c.hired / 4); i++) out.push({ taskId: c.taskId, hired: true });
+    for (let i = 0; i < Math.max(1, Math.round(c.own / 3)); i++) out.push({ taskId: c.taskId, hired: false });
+    for (let i = 0; i < Math.round(c.hired / 3); i++) out.push({ taskId: c.taskId, hired: true });
   }
   return out.slice(0, max);
 }

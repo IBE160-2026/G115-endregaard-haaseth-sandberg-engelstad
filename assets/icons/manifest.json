@@ -66,6 +66,11 @@
   },
   {
     "category": "people",
+    "file": "people/hms.svg",
+    "label": "HMS-leder"
+  },
+  {
+    "category": "people",
     "file": "people/foreman.svg",
     "label": "Formann"
   },

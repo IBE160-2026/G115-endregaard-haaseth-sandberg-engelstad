@@ -2,6 +2,26 @@
 
 An assessment of how well the simulator meets its goals, measured against the instructor's feedback (`tilbakemelding-product-brief.md`, the part 1 criteria of the grading guide) and the brief's success criteria, with recommended next steps. One section per simulator version (newest first). Each entry has at most four lines.
 
+## v0.5 – 2026-10-27
+
+**Overall:** the app is now a game you walk through. As Statsbygg you go to a foreman with a «!», meet with Elisabeth and Hedda round a 3D model of the challenge, and review the hours at the start-up meeting and at each chapter. The core from the feedback, the fork and the comparison with the AI's path, has been in place since v0.3. The engine is unchanged in v0.5: walking, meetings and HMS are presentation only. The biggest gaps now are the planning documents and tests of the click flow.
+
+1. **Update the brief, the PRD and the architecture for v0.5 (top priority).** The documents still describe a dialog-based simulator without walking, meetings, HMS or staffing reviews.
+   Describe the story layer (`src/ui/story.ts`) and the scene (`src/ui/scene/`) as their own parts beside the pure engine, and add the group's choices: Statsbygg as the player, the foremen's titles, and the foreman's view as input to Elisabeth and Hedda.
+   Affects criterion 1, Process (30 %), and criterion 5, Architecture (10 %).
+2. **Tests of the click flow.** The new logic is pure and tested (walking, routes, meeting scripts, HMS, objectives; 184 tests), but `main.ts`, which drives the clock and the scenes, has no tests.
+   Add DOM tests (Vitest + happy-dom) for: arrive → meeting → choice → fork → resume, the staffing review, and the HMS check that pauses and resumes the clock.
+   Affects criterion 3, Quality assurance (15 %).
+3. **Play it on a real GPU, and keep the pace.** v0.5 has only been checked in headless Chrome with software WebGL. Bloom, up to 160 workers and the cast must hold a good frame rate on a student laptop.
+   Time a full game: if walking and meetings make it too long, keep «Hopp over intro», G (walk there) and «Hopp over» in the meetings as the fast route, and consider a setting that starts meetings without walking.
+4. **Clarify the AI part.** The AI roles are still rule-based. In v0.5 the foreman's view is input to Elisabeth and Hedda, and the player only sees their proposals.
+   Explain this in the brief as a deliberate choice (testable, no key needed), or add an optional LLM layer for the reasoning text, with a demo mode of saved answers.
+5. **Decisions that are still open.** Should the HMS checks or the replies cost money or time? Are the foremen's titles right (e.g. «Formann Betong» for E)? Are the v0.3 event prices and chances right?
+   Answer them in `G115_Dilemmas.md` and update the scenario.
+6. **The fork in 3D.** The fork card and the final report show the AI's path in numbers, but the site does not show it.
+   A ghost building for the AI's path (Kai's roadmap) would make the comparison visible where the player is.
+7. **What is going well, and should be kept.** The engine is pure and deterministic, and v0.5 left it untouched. The new story and walking logic is pure and tested. Demo links make presentations easy.
+   `G115_Changelog.md`, `G115_Dilemmas.md` and the session logs give traceability. Keep updating them with every change.
 ## v0.2 – 2026-10-22
 
 **Overall:** the app is playable, tested and runs without an API key, but it has drifted away from what the instructor called the core of the project (forking and side-by-side comparison). The planning documents (brief → PRD → architecture → stories) have not kept up. The task description itself is not in the repo, so these parts were assessed against the feedback and the brief.

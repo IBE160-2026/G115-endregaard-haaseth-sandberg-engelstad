@@ -1,22 +1,70 @@
 // The full-screen 3D construction site: A-blokka (11 floors) over the basement complex, in the city.
 // The scene reads a SceneState (see scene/visuals.ts) and never changes the game. Everything that
-// moves (progress, crane, workers, trucks, weather, day and night) is presentation time only.
+// moves (progress, crane, workers, trucks, weather, day and night, and the people the player walks
+// with) is presentation time only.
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import type { GameState } from '../engine/game';
 import type { Scenario } from '../engine/scenario';
+import type { Phase, Ppe } from './story';
+import { LOOKS, createCharacter, foremanLook, type Character } from './scene/cast';
+import { buildChallenge, type Model } from './scene/challenge';
+import { buildProps } from './scene/props';
 import {
-  FLOOR_H, FLOORS, PIT, TOWER, BASEMENT_TASKS, figuresFor, sceneState, speakerSpot, taskSpot,
+  FLOOR_H, FLOORS, PIT, TOWER, BASEMENT_TASKS, SPOTS, figuresFor, sceneState, speakerSpot, taskSpot,
   type SceneState, type Spot,
 } from './scene/visuals';
+import { GATE_IN, GATE_OUT, OFFICE_MEET, foremanSpot, meetingLayout, resolve, route, type P2 } from './scene/walk';
 import { buildWorld, latticeMap, mullionMap, part, roadPoint, signMap, tiledBox } from './scene/world';
 import { iconUrl } from './tabs/context';
 
+/** A scene on site: the camera frames the people in it, round a table with the challenge model. */
+export interface SceneSpec {
+  kind: 'meeting' | 'kickoff' | 'hms' | 'review';
+  /** Everyone in the scene; the first is the host. */
+  ids: string[];
+  /** The challenge shown over the table (meetings). */
+  eventId?: string;
+  eventKind?: string;
+}
+
+/** What main.ts tells the scene about the story (never game state). */
+export interface CastState {
+  phase: Phase;
+  /** Where the player should go, and who waits there with a «!». */
+  objective: { id: string; spot: P2; kind?: string } | null;
+  scene: SceneSpec | null;
+  speaker: string | null;
+  ppe: Ppe[];
+  /** No walking (a dialog is open). */
+  locked: boolean;
+  /** The intro is done: Oskar has left the gate. */
+  gateChecked: boolean;
+}
+
+export interface ViewHooks {
+  /** The player reached the objective. */
+  onArrive(id: string): void;
+  /** The named person the player stands next to changed. */
+  onNear(id: string | null): void;
+  /** The player clicked a person. */
+  onPick(id: string): void;
+}
+
 export interface View3d {
   update(s: Scenario, g: GameState | undefined): void;
+  setCast(c: CastState): void;
+  /** Walks the player to the objective (or to a person). */
+  goTo(id: string): void;
   /** Keeps the action clear of a panel covering the right side of the screen (px). */
   setInset(px: number): void;
   setActive(on: boolean): void;
+  /** Switches between following the player and the overview of the site. */
   resetCamera(): void;
   dispose(): void;
 }
@@ -26,7 +74,7 @@ const STALL_TEXT: Record<string, string> = {
   water: 'vann i gropa', 'pump-fail': 'pumpen sviktet', rock: 'dårlig fjell', soil: 'forurenset grunn', frost: 'frost',
   wind: 'sterk vind', facade: 'venter på fasade', electricians: 'mangler folk', integration: 'feilsøking',
 };
-const MAX_FIGURES = 120;
+const MAX_FIGURES = 170;
 const TRUCKS = 7;
 const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
 const ease = (x: number) => x * x * (3 - 2 * x);
@@ -36,11 +84,12 @@ function mat(color: THREE.ColorRepresentation, extra: THREE.MeshStandardMaterial
   return new THREE.MeshStandardMaterial({ color, roughness: 0.85, ...extra });
 }
 
-export function createView3d(container: HTMLElement): View3d {
+export function createView3d(container: HTMLElement, hooks: ViewHooks): View3d {
   const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  const pixelRatio = Math.min(window.devicePixelRatio, 2);
+  renderer.setPixelRatio(pixelRatio);
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.type = THREE.PCFShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
   container.appendChild(renderer.domElement);
@@ -50,13 +99,18 @@ export function createView3d(container: HTMLElement): View3d {
 
   const scene = new THREE.Scene();
   scene.fog = new THREE.Fog(0xc9d9ef, 220, 700);
+  // Soft reflections from a studio environment: metal, glass and helmets read as materials.
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  scene.environmentIntensity = 0.35;
+  pmrem.dispose();
   const camera = new THREE.PerspectiveCamera(40, 1, 0.5, 2000);
   camera.position.set(80, 62, 88);
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.target.set(0, 12, 0);
   controls.enableDamping = true;
   controls.enablePan = false;
-  controls.minDistance = 30;
+  controls.minDistance = 9;
   controls.maxDistance = 320;
   controls.maxPolarAngle = Math.PI * 0.47;
   controls.autoRotateSpeed = 0.35;
@@ -70,7 +124,16 @@ export function createView3d(container: HTMLElement): View3d {
   sun.shadow.bias = -0.0005;
   scene.add(sun, sun.target);
 
+  // Post-processing: a soft bloom makes lamps, beacons and lit windows glow, most of all at night.
+  const composer = new EffectComposer(renderer);
+  composer.setPixelRatio(pixelRatio);
+  composer.addPass(new RenderPass(scene, camera));
+  const bloom = new UnrealBloomPass(new THREE.Vector2(512, 512), 0.3, 0.45, 0.86);
+  composer.addPass(bloom);
+  composer.addPass(new OutputPass());
+
   const world = buildWorld(scene);
+  const props = buildProps(scene);
 
   // ---------- Materials (shared) ----------
   const M = {
@@ -213,19 +276,31 @@ export function createView3d(container: HTMLElement): View3d {
   // Water in the pit.
   const water = add(part(M.water, PIT.w - 1.6, 1, PIT.d - 1.6, 0, -D + 0.1, 0, false));
 
-  // ---------- Workers (instanced figures in hi-vis; hired workers in Fluent blue) ----------
-  const bodyGeo = new THREE.CapsuleGeometry(0.42, 1.1, 2, 6).translate(0, 0.98, 0);
-  const headGeo = new THREE.SphereGeometry(0.36, 8, 6).translate(0, 2.1, 0);
-  const bodies = new THREE.InstancedMesh(bodyGeo, new THREE.MeshStandardMaterial({ roughness: 0.7 }), MAX_FIGURES);
-  const helmets = new THREE.InstancedMesh(headGeo, new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.5 }), MAX_FIGURES);
-  bodies.count = helmets.count = 0;
-  // The figures move every frame, so a bounding sphere computed once would cull them wrongly.
-  bodies.frustumCulled = helmets.frustumCulled = false;
-  scene.add(bodies, helmets);
+  // ---------- Workers: instanced figures in hi-vis whose legs and arms swing (hired in Fluent blue) ----------
+  const inst = (geo: THREE.BufferGeometry, m: THREE.Material, n: number) => {
+    const mesh = new THREE.InstancedMesh(geo, m, n);
+    mesh.count = 0;
+    mesh.castShadow = true;
+    // The figures move every frame, so a bounding sphere computed once would cull them wrongly.
+    mesh.frustumCulled = false;
+    scene.add(mesh);
+    return mesh;
+  };
+  const vestMat = new THREE.MeshStandardMaterial({ roughness: 0.7 });
+  const torsos = inst(new THREE.BoxGeometry(0.56, 0.68, 0.32).translate(0, 1.28, 0), vestMat, MAX_FIGURES);
+  const legs = inst(new THREE.BoxGeometry(0.2, 0.92, 0.22).translate(0, -0.46, 0), new THREE.MeshStandardMaterial({ color: 0x2f3b4c, roughness: 0.8 }), MAX_FIGURES * 2);
+  const arms = inst(new THREE.BoxGeometry(0.15, 0.62, 0.17).translate(0, -0.31, 0), new THREE.MeshStandardMaterial({ roughness: 0.7 }), MAX_FIGURES * 2);
+  const heads = inst(new THREE.SphereGeometry(0.2, 10, 8).translate(0, 1.86, 0), new THREE.MeshStandardMaterial({ color: 0xe0ac86, roughness: 0.6 }), MAX_FIGURES);
+  const helmets = inst(new THREE.SphereGeometry(0.245, 12, 6, 0, Math.PI * 2, 0, Math.PI * 0.55).translate(0, 1.93, 0), new THREE.MeshStandardMaterial({ roughness: 0.35 }), MAX_FIGURES);
   const VEST = new THREE.Color(0xf7630c);
   const HIRED = new THREE.Color(0x0078d4);
-  interface Figure { taskId: string; hired: boolean; pos: THREE.Vector3; to: THREE.Vector3; wait: number; speed: number; yaw: number }
+  const YARD = new THREE.Color(0xd8ff3a);
+  const HELMET_OWN = new THREE.Color(0xf2b81c);
+  const HELMET_HIRED = new THREE.Color(0xffffff);
+  interface Figure { taskId: string; hired: boolean; pos: THREE.Vector3; to: THREE.Vector3; wait: number; speed: number; yaw: number; phase: number; moving: number }
   let figures: Figure[] = [];
+  /** Workers who are not on a discipline: the yard, the site hut and the flagman at the gate. */
+  const AMBIENT: { taskId: string; n: number }[] = [{ taskId: '_yard', n: 4 }, { taskId: '_hut', n: 3 }, { taskId: '_gate', n: 1 }];
 
   // ---------- Trucks on the ring road ----------
   interface Truck { group: THREE.Group; t: number; speed: number; drum?: THREE.Mesh }
@@ -312,8 +387,360 @@ export function createView3d(container: HTMLElement): View3d {
 
   controls.addEventListener('start', () => { lastInteraction = performance.now(); camTween = null; });
 
+  // ---------- The cast: the player, Elisabeth, Hedda, Oskar and the foremen ----------
+  interface Actor { id: string; c: Character; pos: THREE.Vector3; yaw: number; path: P2[]; speed: number; talk: number; wait: number }
+  const actors = new Map<string, Actor>();
+  const cast = new THREE.Group();
+  scene.add(cast);
+  let castState: CastState = { phase: 'play', objective: null, scene: null, speaker: null, ppe: [], locked: true, gateChecked: false };
+  function actor(id: string): Actor {
+    let a = actors.get(id);
+    if (!a) {
+      const look = id.startsWith('foreman-') ? foremanLook(id.slice(8)) : LOOKS[id];
+      const c = createCharacter(look);
+      for (const m of c.meshes) m.userData.actor = id;
+      cast.add(c.group);
+      a = { id, c, pos: new THREE.Vector3(), yaw: 0, path: [], speed: 0, talk: 0, wait: 0 };
+      actors.set(id, a);
+      placeHome(a);
+    }
+    return a;
+  }
+  const player = () => actor('owner');
+  /** Where each person stands when nothing is going on. */
+  function home(id: string): P2 {
+    if (id === 'owner') return GATE_OUT;
+    if (id === 'pm') return { x: OFFICE_MEET.x - 1.6, z: OFFICE_MEET.z + 0.8 };
+    if (id === 'site') return { x: OFFICE_MEET.x + 1.4, z: OFFICE_MEET.z + 1.4 };
+    if (id === 'hms') return castState.gateChecked ? { x: SPOTS.hut.x - 4, z: SPOTS.hut.z - 4 } : { x: GATE_IN.x + 2.4, z: GATE_IN.z - 0.6 };
+    return foremanSpot(id.slice(8));
+  }
+  function placeHome(a: Actor) {
+    const h = home(a.id);
+    a.pos.set(h.x, 0, h.z);
+    a.path = [];
+    // Face the site (the player at the gate faces the site too).
+    a.yaw = a.id === 'hms' && !castState.gateChecked ? 0 : Math.atan2(-h.x, -h.z);
+  }
+  const keys = new Set<string>();
+  const KEYS = ['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'shift'];
+  const onKey = (down: boolean) => (e: KeyboardEvent) => {
+    const k = e.key.toLowerCase();
+    if (!KEYS.includes(k)) return;
+    const el = e.target as HTMLElement;
+    if (down && (el.closest?.('input, textarea, select') || e.ctrlKey || e.metaKey || e.altKey)) return;
+    if (down) { keys.add(k); if (k.startsWith('arrow')) e.preventDefault(); } else keys.delete(k);
+  };
+  const keyDown = onKey(true);
+  const keyUp = onKey(false);
+  const blur = () => keys.clear();
+  window.addEventListener('keydown', keyDown);
+  window.addEventListener('keyup', keyUp);
+  window.addEventListener('blur', blur);
+
+  /** Moves an actor along its path; returns the speed. */
+  function walkPath(a: Actor, dt: number, max: number): number {
+    while (a.path.length && Math.hypot(a.path[0].x - a.pos.x, a.path[0].z - a.pos.z) < 0.2) a.path.shift();
+    if (!a.path.length) return 0;
+    const goal = a.path[0];
+    const dx = goal.x - a.pos.x, dz = goal.z - a.pos.z;
+    const dist = Math.hypot(dx, dz);
+    const step = Math.min(dist, max * dt);
+    const r = resolve({ x: a.pos.x + (dx / dist) * step, z: a.pos.z + (dz / dist) * step });
+    a.pos.x = r.x;
+    a.pos.z = r.z;
+    turnTo(a, Math.atan2(dx, dz), dt);
+    return max;
+  }
+  function turnTo(a: Actor, yaw: number, dt: number) {
+    let d = yaw - a.yaw;
+    while (d > Math.PI) d -= Math.PI * 2;
+    while (d < -Math.PI) d += Math.PI * 2;
+    a.yaw += d * Math.min(1, dt * 10);
+  }
+  const face = (a: Actor, p: P2, dt: number) => turnTo(a, Math.atan2(p.x - a.pos.x, p.z - a.pos.z), dt);
+
+  // The scene in progress: positions, the table with the challenge model, and the camera shot.
+  interface Staging { key: string; center: P2; spots: Record<string, P2>; view: P2; model: Model | null }
+  let staging: Staging | null = null;
+  const table = new THREE.Group();
+  const holoMat = new THREE.MeshBasicMaterial({ color: 0x60cdff, transparent: true, opacity: 0.22, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide });
+  table.add(part(new THREE.MeshStandardMaterial({ color: 0x3a3f47, roughness: 0.5 }), 0.3, 1.05, 0.3, 0, 0, 0));
+  // A dark plan table, so the bright model over it reads clearly.
+  const top = new THREE.Mesh(new THREE.CylinderGeometry(1.25, 1.25, 0.08, 32), new THREE.MeshStandardMaterial({ color: 0x1f2a3a, roughness: 0.35, metalness: 0.4 }));
+  top.position.y = 1.08;
+  top.castShadow = top.receiveShadow = true;
+  const holoDisc = new THREE.Mesh(new THREE.RingGeometry(0.3, 1.15, 40).rotateX(-Math.PI / 2), holoMat);
+  holoDisc.position.y = 1.13;
+  const holoCone = new THREE.Mesh(new THREE.CylinderGeometry(1.1, 0.9, 2.2, 32, 1, true), holoMat.clone());
+  (holoCone.material as THREE.MeshBasicMaterial).opacity = 0.08;
+  holoCone.position.y = 2.25;
+  const holo = new THREE.Group();
+  holo.position.y = 1.2;
+  holo.scale.setScalar(1.15);
+  table.add(top, holoDisc, holoCone, holo);
+  table.visible = false;
+  scene.add(table);
+  const KIND_HEX: Record<string, number> = { risk: 0xc42b1c, opportunity: 0x0f7b0f, change: 0x60cdff, strategy: 0xd29200 };
+
+  function stage(spec: SceneSpec | null) {
+    const key = spec ? `${spec.kind}:${spec.ids.join(',')}:${spec.eventId ?? ''}` : '';
+    if (key === (staging?.key ?? '')) return;
+    staging?.model?.dispose();
+    staging = null;
+    table.visible = false;
+    if (!spec) {
+      // The scene ends: the orbit camera takes over from where the shot was.
+      controls.enabled = true;
+      controls.target.copy(look);
+      return;
+    }
+    const p = player().pos;
+    let center: P2, spots: Record<string, P2>, view: P2;
+    if (spec.kind === 'meeting' || spec.kind === 'kickoff') {
+      const host = spec.kind === 'meeting' ? foremanSpot(spec.ids[0].slice(8)) : OFFICE_MEET;
+      ({ center, spots, view } = meetingLayout(host, spec.ids));
+    } else {
+      // Oskar (or the team) comes to where the player stands.
+      ({ center, spots, view } = meetingLayout({ x: p.x * 0.98, z: p.z * 0.98 }, spec.ids));
+    }
+    for (const id of Object.keys(spots)) spots[id] = resolve(spots[id]);
+    for (const id of spec.ids) {
+      const a = actor(id);
+      // Whoever is far away comes straight into the shot, from just outside it.
+      const d = Math.hypot(spots[id].x - a.pos.x, spots[id].z - a.pos.z);
+      if (d > 14) {
+        const ox = spots[id].x - center.x, oz = spots[id].z - center.z, ol = Math.hypot(ox, oz) || 1;
+        const r = resolve({ x: spots[id].x + (ox / ol) * 4, z: spots[id].z + (oz / ol) * 4 });
+        a.pos.set(r.x, 0, r.z);
+      }
+      a.path = route({ x: a.pos.x, z: a.pos.z }, spots[id]);
+    }
+    let model: Model | null = null;
+    if (spec.kind === 'meeting' || spec.kind === 'kickoff') {
+      model = buildChallenge(spec.eventId ?? 'strategy-F', spec.eventKind ?? 'strategy');
+      holo.add(model.group);
+      table.position.set(center.x, 0, center.z);
+      table.visible = true;
+      const tint = spec.kind === 'kickoff' ? 0x60cdff : KIND_HEX[spec.eventKind ?? 'risk'] ?? 0x60cdff;
+      holoMat.color.setHex(tint);
+      (holoCone.material as THREE.MeshBasicMaterial).color.setHex(tint);
+    }
+    staging = { key, center, spots, view, model };
+    controls.enabled = false;
+  }
+
+  // The «!» over whoever waits for the player, a ring where to go, and an arrow at the player's feet.
+  const bang = new THREE.Sprite();
+  bang.renderOrder = 12;
+  bang.scale.setScalar(2.2);
+  scene.add(bang);
+  const goalRing = new THREE.Mesh(new THREE.RingGeometry(1.6, 2.1, 40).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: 0xf7630c, transparent: true, opacity: 0.8, depthWrite: false }));
+  goalRing.position.y = 0.05;
+  scene.add(goalRing);
+  const arrowShape = new THREE.Shape([new THREE.Vector2(0, 1.4), new THREE.Vector2(0.75, 0.2), new THREE.Vector2(0.28, 0.2), new THREE.Vector2(0.28, -0.6), new THREE.Vector2(-0.28, -0.6), new THREE.Vector2(-0.28, 0.2), new THREE.Vector2(-0.75, 0.2)]);
+  const arrow = new THREE.Mesh(new THREE.ShapeGeometry(arrowShape).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: 0xf7630c, transparent: true, opacity: 0.85, depthWrite: false, side: THREE.DoubleSide }));
+  scene.add(arrow);
+  const clickRing = new THREE.Mesh(new THREE.RingGeometry(0.4, 0.6, 24).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0, depthWrite: false }));
+  clickRing.position.y = 0.05;
+  scene.add(clickRing);
+  const speakRing = new THREE.Mesh(new THREE.RingGeometry(0.75, 0.95, 32).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: 0x60cdff, transparent: true, opacity: 0.9, depthWrite: false }));
+  speakRing.position.y = 0.06;
+  scene.add(speakRing);
+
+  // Walking by clicking: a click (not a drag) on the ground walks there; on a person, picks them.
+  const ray = new THREE.Raycaster();
+  const ndc = new THREE.Vector2();
+  const ground = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+  let downAt: { x: number; y: number; t: number } | null = null;
+  const onDown = (e: PointerEvent) => { downAt = { x: e.clientX, y: e.clientY, t: performance.now() }; };
+  const onUp = (e: PointerEvent) => {
+    const d = downAt;
+    downAt = null;
+    if (!d || Math.hypot(e.clientX - d.x, e.clientY - d.y) > 6 || performance.now() - d.t > 400) return;
+    if (seed < 0 || castState.locked || staging) return;
+    const rect = renderer.domElement.getBoundingClientRect();
+    ndc.set(((e.clientX - rect.left) / rect.width) * 2 - 1, -((e.clientY - rect.top) / rect.height) * 2 + 1);
+    ray.setFromCamera(ndc, camera);
+    const hit = ray.intersectObjects(cast.children, true).find(h => h.object.userData.actor && h.object.userData.actor !== 'owner');
+    if (hit) { hooks.onPick(hit.object.userData.actor); return; }
+    const pt = ray.ray.intersectPlane(ground, v3);
+    if (!pt) return;
+    const r = resolve({ x: pt.x, z: pt.z });
+    player().path = route({ x: player().pos.x, z: player().pos.z }, r);
+    clickRing.position.set(r.x, 0.05, r.z);
+    (clickRing.material as THREE.MeshBasicMaterial).opacity = 1;
+  };
+  renderer.domElement.addEventListener('pointerdown', onDown);
+  renderer.domElement.addEventListener('pointerup', onUp);
+
+  let near: string | null = null;
+  let arrivedKey = '';
+  let followTimer = 0;
+  const fwd = new THREE.Vector3();
+  const side = new THREE.Vector3();
+  function moveCast(dt: number, t: number) {
+    cast.visible = seed >= 0;
+    if (seed < 0) return;
+    const pl = player();
+    const sc = castState.scene;
+
+    // The player: keys (relative to the camera), else the clicked or automatic path.
+    let speed = 0;
+    if (!castState.locked && !staging) {
+      fwd.subVectors(controls.target, camera.position).setY(0).normalize();
+      side.crossVectors(fwd, up).normalize();
+      let mx = 0, mz = 0;
+      if (keys.has('w') || keys.has('arrowup')) { mx += fwd.x; mz += fwd.z; }
+      if (keys.has('s') || keys.has('arrowdown')) { mx -= fwd.x; mz -= fwd.z; }
+      if (keys.has('d') || keys.has('arrowright')) { mx += side.x; mz += side.z; }
+      if (keys.has('a') || keys.has('arrowleft')) { mx -= side.x; mz -= side.z; }
+      const len = Math.hypot(mx, mz);
+      if (len > 0) {
+        pl.path = [];
+        speed = keys.has('shift') ? 11 : 7;
+        const r = resolve({ x: pl.pos.x + (mx / len) * speed * dt, z: pl.pos.z + (mz / len) * speed * dt });
+        pl.pos.x = r.x;
+        pl.pos.z = r.z;
+        turnTo(pl, Math.atan2(mx, mz), dt);
+      } else speed = walkPath(pl, dt, autoSpeed);
+    } else if (staging) speed = walkPath(pl, dt, 4);
+
+    // Elisabeth and Hedda: wait at the offices until the start-up meeting, then follow the player.
+    followTimer -= dt;
+    for (const id of ['pm', 'site']) {
+      const a = actor(id);
+      let s = 0;
+      if (staging && staging.spots[id]) s = walkPath(a, dt, 4.5);
+      else if (castState.phase === 'play') {
+        const behind = id === 'pm' ? 1.7 : -1.7;
+        fwd.set(Math.sin(pl.yaw), 0, Math.cos(pl.yaw));
+        const goal = resolve({ x: pl.pos.x - fwd.x * 2.6 + fwd.z * behind, z: pl.pos.z - fwd.z * 2.6 - fwd.x * behind });
+        const dist = Math.hypot(goal.x - a.pos.x, goal.z - a.pos.z);
+        if (followTimer <= 0) a.path = dist > 1 ? route({ x: a.pos.x, z: a.pos.z }, goal) : [];
+        s = walkPath(a, dt, Math.min(12, 2 + dist * 1.6));
+        if (!s) face(a, { x: pl.pos.x, z: pl.pos.z }, dt);
+      } else {
+        if (!a.path.length && Math.hypot(home(id).x - a.pos.x, home(id).z - a.pos.z) > 0.5) a.path = route({ x: a.pos.x, z: a.pos.z }, home(id));
+        s = walkPath(a, dt, 3);
+        if (!s) face(a, pl.pos.distanceTo(a.pos) < 14 ? { x: pl.pos.x, z: pl.pos.z } : { x: 0, z: 0 }, dt);
+      }
+      a.speed = s;
+    }
+    if (followTimer <= 0) followTimer = 0.4;
+
+    // Oskar: guards the gate until the first check, then walks his rounds.
+    const os = actor('hms');
+    if (staging?.spots.hms) os.speed = walkPath(os, dt, 6);
+    else if (!castState.gateChecked) {
+      if (!os.path.length && os.pos.distanceTo(v3.set(home('hms').x, 0, home('hms').z)) > 0.5) os.path = route({ x: os.pos.x, z: os.pos.z }, home('hms'));
+      os.speed = walkPath(os, dt, 3);
+      if (!os.speed) face(os, { x: pl.pos.x, z: pl.pos.z }, dt);
+    } else {
+      if (!os.path.length) {
+        os.wait -= dt;
+        if (os.wait <= 0) {
+          const rounds: P2[] = [{ x: 30, z: 18 }, { x: -30, z: 24 }, { x: -26, z: -22 }, { x: 26, z: -22 }, { x: 0, z: 30 }];
+          os.path = route({ x: os.pos.x, z: os.pos.z }, rounds[Math.floor(t / 9) % rounds.length]);
+          os.wait = 3;
+        }
+      }
+      os.speed = walkPath(os, dt, 2.2);
+    }
+
+    // Foremen: at their spot next to their work while the discipline runs (or a challenge waits).
+    const wanted = new Set(target.active.map(id => `foreman-${id}`));
+    if (castState.objective?.id.startsWith('foreman-')) wanted.add(castState.objective.id);
+    if (sc) for (const id of sc.ids) if (id.startsWith('foreman-')) wanted.add(id);
+    for (const id of wanted) actor(id);
+    for (const a of actors.values()) {
+      if (!a.id.startsWith('foreman-')) continue;
+      a.c.group.visible = wanted.has(a.id);
+      if (!a.c.group.visible) { placeHome(a); continue; }
+      if (staging?.spots[a.id]) a.speed = walkPath(a, dt, 4);
+      else {
+        const h = home(a.id);
+        if (!a.path.length && Math.hypot(h.x - a.pos.x, h.z - a.pos.z) > 0.5) a.path = route({ x: a.pos.x, z: a.pos.z }, h);
+        a.speed = walkPath(a, dt, 3);
+        if (!a.speed) face(a, pl.pos.distanceTo(a.pos) < 10 ? { x: pl.pos.x, z: pl.pos.z } : { x: 0, z: 0 }, dt);
+      }
+    }
+
+    // In a scene everyone who has arrived faces the table (the host faces the player).
+    if (staging) {
+      for (const id of Object.keys(staging.spots)) {
+        const a = actor(id);
+        if (!a.path.length) face(a, id === sc?.ids[0] && sc.kind === 'hms' ? { x: pl.pos.x, z: pl.pos.z } : staging.center, dt);
+      }
+      staging.model?.update(t);
+      holo.rotation.y = t * 0.35;
+      holoDisc.rotation.y = -t * 0.5;
+    }
+
+    // Animate and place every figure.
+    pl.speed = speed;
+    for (const a of actors.values()) {
+      const talking = castState.speaker === a.id ? 1 : 0;
+      a.talk += (talking - a.talk) * Math.min(1, dt * 6);
+      a.c.setPpe(a.id === 'owner' ? castState.ppe : NPC_PPE);
+      a.c.animate(dt, a.speed, a.talk);
+      a.c.group.position.copy(a.pos);
+      a.c.group.rotation.y = a.yaw;
+    }
+
+    // Arriving at the objective, and who the player stands next to.
+    const o = castState.objective;
+    if (o && !staging && !castState.locked) {
+      const k = `${o.id}:${o.spot.x}:${o.spot.z}`;
+      if (k !== arrivedKey && Math.hypot(pl.pos.x - o.spot.x, pl.pos.z - o.spot.z) < 3.4) {
+        arrivedKey = k;
+        pl.path = [];
+        hooks.onArrive(o.id);
+      }
+    }
+    if (!o) arrivedKey = '';
+    let best: string | null = null;
+    let bestD = 3.6;
+    if (!staging) for (const a of actors.values()) {
+      if (a.id === 'owner' || !a.c.group.visible) continue;
+      const d = a.pos.distanceTo(pl.pos);
+      if (d < bestD) { best = a.id; bestD = d; }
+    }
+    if (best !== near) { near = best; hooks.onNear(best); }
+
+    // Markers: «!» over whoever waits, the ring where to go, the arrow at the player's feet.
+    const waiting = o ? actors.get(o.id) : undefined;
+    bang.visible = !!o && !staging;
+    goalRing.visible = arrow.visible = bang.visible;
+    if (o && bang.visible) {
+      const hex = o.kind ? (KIND_HEX[o.kind] ?? 0xf7630c) : 0x005fb8;
+      bang.material = signFor('!', `#${new THREE.Color(hex).getHexString()}`);
+      const at = waiting?.c.group.visible ? waiting.pos : v3.set(o.spot.x, 0, o.spot.z);
+      bang.position.set(at.x, 4.4 + Math.abs(Math.sin(t * 3)) * 0.5, at.z);
+      goalRing.position.set(o.spot.x, 0.05, o.spot.z);
+      goalRing.scale.setScalar(1 + Math.sin(t * 4) * 0.12);
+      (goalRing.material as THREE.MeshBasicMaterial).color.setHex(hex);
+      (arrow.material as THREE.MeshBasicMaterial).color.setHex(hex);
+      const dist = Math.hypot(o.spot.x - pl.pos.x, o.spot.z - pl.pos.z);
+      arrow.visible = dist > 6;
+      const yaw = Math.atan2(o.spot.x - pl.pos.x, o.spot.z - pl.pos.z);
+      arrow.position.set(pl.pos.x + Math.sin(yaw) * 2.4, 0.08, pl.pos.z + Math.cos(yaw) * 2.4);
+      arrow.rotation.y = yaw;
+      arrow.scale.setScalar(1 + Math.sin(t * 5) * 0.08);
+    }
+    const sp = castState.speaker ? actors.get(castState.speaker) : undefined;
+    speakRing.visible = !!sp && !!staging;
+    if (sp) speakRing.position.set(sp.pos.x, 0.06, sp.pos.z);
+    const cm = clickRing.material as THREE.MeshBasicMaterial;
+    cm.opacity = Math.max(0, cm.opacity - dt * 1.5);
+    clickRing.scale.setScalar(1 + (1 - cm.opacity) * 1.5);
+  }
+  let autoSpeed = 9;
+  /** Everyone else is already fully equipped (Oskar sees to that). */
+  const NPC_PPE: Ppe[] = ['helmet', 'vest', 'boots', 'glasses', 'gloves'];
+
   // ---------- HTML overlay: task tags, the decision label and speech bubbles ----------
-  interface Tag { el: HTMLElement; spot: THREE.Vector3; ttl?: number; born?: number }
+  interface Tag { el: HTMLElement; spot: THREE.Vector3; ttl?: number; born?: number; who?: string }
   let tags: Tag[] = [];
   let bubbles: Tag[] = [];
   const tagLayer = document.createElement('div');
@@ -349,11 +776,11 @@ export function createView3d(container: HTMLElement): View3d {
     const person = s.people.find(p => p.id === from);
     const el = document.createElement('div');
     el.className = `bubble${from === 'pm' ? ' pm' : from === 'site' ? ' site' : ''}`;
-    const name = person ? (person.taskId ? `${person.role} ${person.taskId}` : person.role) : from;
+    const name = person?.name ?? from;
     const short = text.length > 140 ? `${text.slice(0, 137)}…` : text;
     el.innerHTML = `${person ? `<img src="${iconUrl(person.icon)}" alt="" width="28" height="28">` : ''}<div><b>${name}</b><p>${short}</p></div>`;
     bubbleLayer.append(el);
-    bubbles.push({ el, spot: toV(speakerSpot(from, shown)).add(new THREE.Vector3(0, 4, 0)), ttl: 7000, born: performance.now() });
+    bubbles.push({ el, spot: toV(speakerSpot(from, shown)).add(new THREE.Vector3(0, 4, 0)), ttl: 7000, born: performance.now(), who: from });
     while (bubbles.length > 3) bubbles.shift()!.el.remove();
   }
 
@@ -456,6 +883,9 @@ export function createView3d(container: HTMLElement): View3d {
     }
     if (taskId === 'A') return { rx: 5, rz: 5 };
     if (taskId === 'N') return { rx: 9, rz: 3 };
+    if (taskId === '_yard') { out.set(-24, 0, 32); return { rx: 8, rz: 4 }; }
+    if (taskId === '_hut') { out.set(34, 0, 27); return { rx: 7, rz: 2.5 }; }
+    if (taskId === '_gate') { out.set(4, 0, 40.5); return { rx: 1.5, rz: 0.6 }; }
     out.y = (taskId === 'F' ? Math.floor((shown.F ?? 0) * FLOORS) : Math.floor(out.y / FLOOR_H)) * FLOOR_H + 0.5;
     out.y = Math.min(out.y, (FLOORS - 1) * FLOOR_H + 0.5);
     out.x = 0; out.z = 0;
@@ -466,23 +896,33 @@ export function createView3d(container: HTMLElement): View3d {
     f.to.set(zone.x + (Math.random() * 2 - 1) * r.rx, zone.y, zone.z + (Math.random() * 2 - 1) * r.rz);
   }
   function syncFigures() {
-    const want = figuresFor(target.crews, MAX_FIGURES);
+    const ambient = seed >= 0 && !target.done ? AMBIENT.flatMap(a => Array.from({ length: a.n }, () => ({ taskId: a.taskId, hired: false }))) : [];
+    const want = [...ambient, ...figuresFor(target.crews, MAX_FIGURES - ambient.length)];
     const next: Figure[] = [];
     const pool = [...figures];
     for (const w of want) {
       const i = pool.findIndex(f => f.taskId === w.taskId && f.hired === w.hired);
       if (i >= 0) { next.push(pool.splice(i, 1)[0]); continue; }
-      // New workers walk in from the gate.
-      const f: Figure = { taskId: w.taskId, hired: w.hired, pos: new THREE.Vector3((Math.random() - 0.5) * 8, 0, 42), to: new THREE.Vector3(), wait: 0, speed: 2 + Math.random() * 1.5, yaw: Math.PI };
+      // New workers walk in from the gate; the yard and hut crews are already at their posts.
+      const f: Figure = { taskId: w.taskId, hired: w.hired, pos: new THREE.Vector3((Math.random() - 0.5) * 8, 0, 42), to: new THREE.Vector3(), wait: 0, speed: 2 + Math.random() * 1.5, yaw: Math.PI, phase: Math.random() * 10, moving: 0 };
       pickTarget(f);
+      if (w.taskId.startsWith('_')) f.pos.copy(f.to);
       next.push(f);
     }
     figures = next;
-    bodies.count = helmets.count = figures.length;
-    figures.forEach((f, i) => bodies.setColorAt(i, f.hired ? HIRED : VEST));
-    if (bodies.instanceColor) bodies.instanceColor.needsUpdate = true;
+    torsos.count = heads.count = helmets.count = figures.length;
+    legs.count = arms.count = figures.length * 2;
+    figures.forEach((f, i) => {
+      const vest = f.hired ? HIRED : f.taskId.startsWith('_') ? YARD : VEST;
+      torsos.setColorAt(i, vest);
+      arms.setColorAt(i * 2, vest);
+      arms.setColorAt(i * 2 + 1, vest);
+      helmets.setColorAt(i, f.hired ? HELMET_HIRED : HELMET_OWN);
+    });
+    for (const m of [torsos, arms, helmets]) if (m.instanceColor) m.instanceColor.needsUpdate = true;
   }
   const m4 = new THREE.Matrix4();
+  const limb = new THREE.Matrix4();
   const q = new THREE.Quaternion();
   const up = new THREE.Vector3(0, 1, 0);
   const figScale = new THREE.Vector3(1.25, 1.25, 1.25);
@@ -492,6 +932,7 @@ export function createView3d(container: HTMLElement): View3d {
       const r = zoneFor(f.taskId, zone);
       // Keep them on the current level as the work moves up the tower.
       if (Math.abs(f.to.y - zone.y) > 0.5) { f.to.y = zone.y; if (Math.abs(f.pos.y - zone.y) > 0.5) f.pos.set(zone.x + (Math.random() * 2 - 1) * r.rx, zone.y, zone.z + (Math.random() * 2 - 1) * r.rz); }
+      let moving = 0;
       if (!stalled.has(f.taskId)) {
         v3.subVectors(f.to, f.pos);
         v3.y = 0;
@@ -503,17 +944,32 @@ export function createView3d(container: HTMLElement): View3d {
           v3.multiplyScalar(Math.min(dist, f.speed * dt) / dist);
           f.pos.add(v3);
           f.yaw = Math.atan2(v3.x, v3.z);
+          moving = 1;
         }
         f.pos.y += (f.to.y - f.pos.y) * Math.min(1, dt * 4);
       }
+      f.moving += (moving - f.moving) * Math.min(1, dt * 8);
+      f.phase += dt * (3 + f.moving * 6);
+      const swing = Math.sin(f.phase) * 0.65 * f.moving;
+      // Standing still on a working discipline: hammering (the right arm goes up and down).
+      const work = !moving && !stalled.has(f.taskId) && !f.taskId.startsWith('_') ? 1 : 0;
       q.setFromAxisAngle(up, f.yaw);
-      const bob = stalled.has(f.taskId) ? 0 : Math.abs(Math.sin(t * 8 + i)) * 0.12;
+      const bob = Math.abs(Math.cos(f.phase)) * 0.07 * f.moving;
       m4.compose(v3.set(f.pos.x, f.pos.y + bob, f.pos.z), q, figScale);
-      bodies.setMatrixAt(i, m4);
+      torsos.setMatrixAt(i, m4);
+      heads.setMatrixAt(i, m4);
       helmets.setMatrixAt(i, m4);
+      for (const side of [0, 1]) {
+        const sx = side ? 0.14 : -0.14;
+        limb.makeRotationX(side ? -swing : swing).setPosition(sx, 0.95, 0);
+        legs.setMatrixAt(i * 2 + side, limb.premultiply(m4));
+        const ax = side ? 0.37 : -0.37;
+        const armAngle = side && work ? -1.6 + Math.abs(Math.sin(t * 6 + i)) * 0.9 : side ? swing * 0.8 : -swing * 0.8;
+        limb.makeRotationX(armAngle).setPosition(ax, 1.56, 0);
+        arms.setMatrixAt(i * 2 + side, limb.premultiply(m4));
+      }
     });
-    bodies.instanceMatrix.needsUpdate = true;
-    helmets.instanceMatrix.needsUpdate = true;
+    for (const m of [torsos, heads, helmets, legs, arms]) m.instanceMatrix.needsUpdate = true;
   }
 
   // ---------- Trucks ----------
@@ -632,7 +1088,8 @@ export function createView3d(container: HTMLElement): View3d {
     }
     beacons.forEach((b, i) => {
       const item = list[i];
-      b.group.visible = !!item;
+      // In a scene the camera is close to the people: the beacons would only be in the way.
+      b.group.visible = !!item && !staging;
       if (!item) return;
       b.group.position.set(item.spot.x, item.spot.y, item.spot.z);
       const pulse = (Math.sin(t * (item.big ? 5 : 3)) * 0.5 + 0.5);
@@ -659,6 +1116,7 @@ export function createView3d(container: HTMLElement): View3d {
       el.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px)`;
       el.style.visibility = behind || x < -50 || x > width + 50 ? 'hidden' : 'visible';
     };
+    tagLayer.style.display = staging ? 'none' : '';
     for (const tg of tags) {
       const id = tg.el.dataset.task!;
       tg.spot.copy(toV(taskSpot(id, shown)));
@@ -671,19 +1129,50 @@ export function createView3d(container: HTMLElement): View3d {
       b.el.style.opacity = String(age > b.ttl! - 800 ? (b.ttl! - age) / 800 : 1);
       return true;
     });
-    // Newest bubble on top, older ones stacked above it.
+    // Newest bubble on top, older ones stacked above it; a bubble follows the person who speaks.
+    // In a scene the speech panel carries the words, so the bubbles step aside.
     bubbles.forEach((b, i) => {
+      const a = b.who ? actors.get(b.who) : undefined;
+      if (a?.c.group.visible) b.spot.set(a.pos.x, 4.2, a.pos.z);
       place(b.el, b.spot);
       b.el.style.marginTop = `${-(bubbles.length - 1 - i) * 64}px`;
+      if (staging) b.el.style.visibility = 'hidden';
     });
+    // Name tags over the named people (the speaker is lit up in a scene).
+    for (const a of actors.values()) {
+      let el = names.get(a.id);
+      if (!el) {
+        el = document.createElement('div');
+        el.className = `nametag who-${a.id.startsWith('foreman-') ? 'foreman' : a.id}`;
+        el.textContent = a.id === 'owner' ? 'Du' : (scenarioRef?.people.find(p => p.id === a.id)?.name ?? a.id);
+        nameLayer.append(el);
+        names.set(a.id, el);
+      }
+      const inScene = !!staging?.spots[a.id];
+      const show = seed >= 0 && a.c.group.visible && (inScene || (!staging && a.pos.distanceTo(camera.position) < 90));
+      el.classList.toggle('speaking', castState.speaker === a.id);
+      el.classList.toggle('waiting', castState.objective?.id === a.id && !staging);
+      if (!show) { el.style.visibility = 'hidden'; continue; }
+      proj.set(a.pos.x, 3.1, a.pos.z);
+      place(el, proj);
+    }
   }
+  const nameLayer = document.createElement('div');
+  overlay.append(nameLayer);
+  const names = new Map<string, HTMLElement>();
 
-  // ---------- Camera ----------
+  // ---------- Camera: follow the player, the overview of the site, or a scene's shot ----------
   const desired = new THREE.Vector3(0, 12, 0);
+  const look = new THREE.Vector3(0, 12, 0);
+  const camGoal = new THREE.Vector3();
+  const lookGoal = new THREE.Vector3();
+  const prevTarget = new THREE.Vector3();
+  let camMode: 'follow' | 'overview' = 'overview';
   function defaultDistance() {
-    return width < 700 ? 175 : 125;
+    return camMode === 'follow' ? (width < 700 ? 46 : 34) : width < 700 ? 175 : 125;
   }
   function focusCamera() {
+    if (camMode === 'follow') return;
     const key = target.focus ? `${target.focus.eventId}:${target.focus.taskId}` : target.done ? 'done' : '';
     if (key === lastFocus) return;
     lastFocus = key;
@@ -697,6 +1186,7 @@ export function createView3d(container: HTMLElement): View3d {
     height = container.clientHeight;
     if (width === 0 || height === 0) return;
     renderer.setSize(width, height, false);
+    composer.setSize(width, height);
     applyInset();
   }
   function applyInset() {
@@ -748,21 +1238,48 @@ export function createView3d(container: HTMLElement): View3d {
     moveTrucks(dt);
     stepParticles(dt, t);
     placeBeacons(t);
+    moveCast(dt, t);
+    props.update(t, target, shown, nightNow);
+    bloom.strength = 0.22 + nightNow * 0.55;
 
-    // Camera: follows the story (the open decision, else the top of the building) unless the player drags.
-    const idle = now - lastInteraction > 9000;
-    if (target.focus) desired.copy(toV(taskSpot(target.focus.taskId, shown)));
-    else desired.set(0, Math.max(6, Math.min(siteHeight, FLOORS * FLOOR_H) * 0.55), 0);
-    controls.target.lerp(desired, 1 - Math.exp(-dt * 2));
-    if (camTween) {
-      camTween.t = Math.min(1, camTween.t + dt / 1.6);
-      const d = camTween.from + (camTween.to - camTween.from) * ease(camTween.t);
-      v3.subVectors(camera.position, controls.target).setLength(d);
-      camera.position.copy(controls.target).add(v3);
-      if (camTween.t >= 1) camTween = null;
+    if (staging) {
+      // A scene: a slow dolly to a shot from the side of the circle, looking at the table.
+      // The look point sits below the people, so they stand in the upper half, clear of the panel.
+      const far = width < 700 ? 21 : 16;
+      const c = staging.center;
+      camGoal.set(c.x + staging.view.x * far, 7.5, c.z + staging.view.z * far);
+      lookGoal.set(c.x, 0.2, c.z);
+      // A cut when the shot is far away, a slow dolly when it is close.
+      const kk = camera.position.distanceTo(camGoal) > 25 || look.distanceTo(lookGoal) > 12 ? 1 : 1 - Math.exp(-dt * 2.2);
+      camera.position.lerp(camGoal, kk);
+      look.lerp(lookGoal, kk);
+      camera.lookAt(look);
+    } else {
+      // Follow the player, or (overview) the story: the open decision, else the top of the building.
+      const idle = now - lastInteraction > 9000;
+      prevTarget.copy(controls.target);
+      if (seed >= 0 && camMode === 'follow') {
+        const p = player().pos;
+        desired.set(p.x, 2, p.z);
+        controls.target.lerp(desired, 1 - Math.exp(-dt * 6));
+        // The camera moves with its target, so the player stays in the same place on screen.
+        camera.position.add(v3.subVectors(controls.target, prevTarget));
+      } else {
+        if (target.focus) desired.copy(toV(taskSpot(target.focus.taskId, shown)));
+        else desired.set(0, Math.max(6, Math.min(siteHeight, FLOORS * FLOOR_H) * 0.55), 0);
+        controls.target.lerp(desired, 1 - Math.exp(-dt * 2));
+      }
+      if (camTween) {
+        camTween.t = Math.min(1, camTween.t + dt / 1.6);
+        const d = camTween.from + (camTween.to - camTween.from) * ease(camTween.t);
+        v3.subVectors(camera.position, controls.target).setLength(d);
+        camera.position.copy(controls.target).add(v3);
+        if (camTween.t >= 1) camTween = null;
+      }
+      controls.autoRotate = camMode === 'overview' && idle && !target.focus;
+      controls.update();
+      look.copy(controls.target);
     }
-    controls.autoRotate = idle && !target.focus;
-    controls.update();
 
     if (shake > 0) {
       shake = Math.max(0, shake - dt);
@@ -771,7 +1288,7 @@ export function createView3d(container: HTMLElement): View3d {
       camera.position.y += (Math.random() - 0.5) * a;
     }
     placeOverlay(now);
-    renderer.render(scene, camera);
+    composer.render(dt);
   };
   loop();
 
@@ -793,6 +1310,15 @@ export function createView3d(container: HTMLElement): View3d {
         bubbles.forEach(b => b.el.remove());
         bubbles = [];
         lastFocus = '__';
+        // Everyone back to their place; the player at the gate, the camera behind them.
+        for (const a of actors.values()) placeHome(a);
+        if (g) {
+          camMode = 'follow';
+          const p = player().pos;
+          controls.target.set(p.x, 2, p.z);
+          camera.position.set(p.x + 6, 15, p.z + 28);
+          camTween = null;
+        } else camMode = 'overview';
       }
       if (g) {
         for (const entry of g.log.slice(logSeen)) addBubble(s, entry.from ?? 'pm', entry.text);
@@ -807,6 +1333,26 @@ export function createView3d(container: HTMLElement): View3d {
       syncFigures();
       focusCamera();
     },
+    setCast(c) {
+      castState = c;
+      stage(c.scene);
+    },
+    goTo(id) {
+      if (seed < 0 || castState.locked || staging) return;
+      const pl = player();
+      const from = { x: pl.pos.x, z: pl.pos.z };
+      const o = castState.objective;
+      if (o && (id === 'objective' || id === o.id)) pl.path = route(from, o.spot);
+      else {
+        const a = actors.get(id);
+        if (!a) return;
+        // Stop a couple of metres short, on the side the player comes from.
+        const d = Math.max(0.01, Math.hypot(from.x - a.pos.x, from.z - a.pos.z));
+        pl.path = route(from, resolve({ x: a.pos.x + ((from.x - a.pos.x) / d) * 2.2, z: a.pos.z + ((from.z - a.pos.z) / d) * 2.2 }));
+      }
+      autoSpeed = 9;
+      if (camMode !== 'follow') this.resetCamera();
+    },
     setInset(px) {
       if (px === inset) return;
       inset = px;
@@ -818,12 +1364,18 @@ export function createView3d(container: HTMLElement): View3d {
     },
     resetCamera() {
       lastInteraction = -1e9;
+      if (seed >= 0) camMode = camMode === 'follow' ? 'overview' : 'follow';
+      lastFocus = '__';
       camTween = { from: camera.position.distanceTo(controls.target), to: defaultDistance(), t: 0 };
     },
     dispose() {
       cancelAnimationFrame(raf);
       observer.disconnect();
+      window.removeEventListener('keydown', keyDown);
+      window.removeEventListener('keyup', keyUp);
+      window.removeEventListener('blur', blur);
       controls.dispose();
+      composer.dispose();
       renderer.dispose();
       renderer.domElement.remove();
       overlay.remove();

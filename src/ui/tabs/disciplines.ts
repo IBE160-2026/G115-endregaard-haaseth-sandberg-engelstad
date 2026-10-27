@@ -26,7 +26,7 @@ export function renderDisciplines(ctx: TabContext): string {
     </tr>`;
   });
   const planBar = ctx.plan?.length && game && !game.done
-    ? `<div class="planbar">${icon('people/project-manager.svg', 24)}<span>Prosjektlederen foreslår: ${planText(ctx.plan)}.</span><button type="button" class="tool" data-action="pm-plan"><span>Følg planen</span></button></div>`
+    ? `<div class="planbar">${icon('people/project-manager.svg', 24)}<span>Elisabeth foreslår: ${planText(ctx.plan)}.</span><button type="button" class="tool" data-action="pm-plan"><span>Følg Elisabeths plan</span></button></div>`
     : '';
   return `${planBar}<p class="lead">Velg mannskap og arbeidsmodus per disiplin. Grunnbemanningen lønner seg: for få gir lengre tid (rigg og drift løper), for mange går i veien for hverandre (hver ekstra arbeider gir ${formatFactor(scenario.crowdingProductivity)} av en full). Kostfaktor: normaltid ${formatFactor(f.normal)}, overtidstimer ${formatFactor(f.overtime)}, innleide timer ${formatFactor(f.hire)}.</p>
     <div class="table-wrap"><table>

@@ -6,7 +6,11 @@ export default defineConfig({
   // three.js is the game's stage and is loaded at start. Pre-bundling it keeps the
   // dev server from reloading the page (and losing the game) on first use.
   optimizeDeps: {
-    include: ['three', 'three/examples/jsm/controls/OrbitControls.js'],
+    include: [
+      'three', 'three/examples/jsm/controls/OrbitControls.js', 'three/examples/jsm/environments/RoomEnvironment.js',
+      'three/examples/jsm/postprocessing/EffectComposer.js', 'three/examples/jsm/postprocessing/RenderPass.js',
+      'three/examples/jsm/postprocessing/UnrealBloomPass.js', 'three/examples/jsm/postprocessing/OutputPass.js',
+    ],
   },
   // three.js alone is about 600 kB; the game is one screen, so one chunk is fine.
   build: { chunkSizeWarningLimit: 900 },

@@ -22,13 +22,14 @@ function node(ctx: TabContext, p: Person): string {
   // Everyone who speaks at the open decision (and whoever raised it) is marked.
   const speaks = game?.pending && (game.pending.voices.some(v => v.personId === p.id) || eventById(game.pending.eventId).raisedBy === p.id);
   const alert = speaks ? '<span class="alert" title="Trenger beslutning">!</span>' : '';
-  const title = p.taskId ? `${p.role} ${p.taskId}` : p.role;
-  const sub = p.taskId ? p.description : p.player ? 'Spiller' : 'AI-rolle';
+  const title = p.name;
+  const sub = p.taskId ? `${p.taskId} ${p.description}` : p.player ? 'Statsbygg (spiller)' : p.role;
   return `<button type="button" class="org-node${selected === p.id ? ' selected' : ''}${p.player ? ' player' : ''}" data-person="${p.id}" aria-pressed="${selected === p.id}">
     ${icon(p.icon, 32)}<span class="org-text"><b>${title}</b><small>${sub}</small>${bar}</span>${status}${alert}</button>`;
 }
 
-function details(ctx: TabContext): string {
+/** A person's card: report, active challenge, messages and controls (also the talk card on site). */
+export function details(ctx: TabContext): string {
   const { scenario, game, result, selected } = ctx;
   const p = scenario.people.find(x => x.id === (selected ?? 'owner'))!;
   const lines = game && !p.player ? adviceFor(p.id, scenario, game, result) : [];
@@ -43,26 +44,29 @@ function details(ctx: TabContext): string {
       <p class="meta">${t.hiredCrew ? `+ ${t.hiredCrew} innleid · ` : ''}${formatFactor(t.hoursPerWeek)} t/uke · uke ${t.start}–${t.finish} i prognosen</p>`;
   }
   const plan = p.id === 'pm' && ctx.plan?.length
-    ? `<h3>Bemanningsplan</h3><p class="meta">Prosjektlederen vil bruke mannskapene slik: ${planText(ctx.plan)}.</p>
-       <button type="button" class="tool" data-action="pm-plan">${icon('people/project-manager.svg', 20)}<span>Følg prosjektlederens plan</span></button>`
-    : p.id === 'pm' && game ? '<p class="meta">Bemanningen er allerede den beste prosjektlederen finner.</p>' : '';
-  const reports = scenario.people.filter(x => x.reportsTo === p.id).map(x => x.taskId ?? x.role).join(', ');
+    ? `<h3>Bemanningsplan</h3><p class="meta">Elisabeth vil bruke mannskapene slik: ${planText(ctx.plan)}.</p>
+       <button type="button" class="tool" data-action="pm-plan">${icon('people/project-manager.svg', 20)}<span>Følg Elisabeths plan</span></button>`
+    : p.id === 'pm' && game ? '<p class="meta">Bemanningen er allerede den beste Elisabeth finner.</p>' : '';
+  const reports = scenario.people.filter(x => x.reportsTo === p.id).map(x => x.name).join(', ');
   const pending = game?.pending ?? null;
   const ev = pending ? eventById(pending.eventId) : null;
   const voice = pending?.voices.find(v => v.personId === p.id);
   const label = (id: string) => ev!.options.find(o => o.id === id)!.label;
-  const challenge = ev && voice
+  // A foreman's view goes to Elisabeth and Hedda as input; the player only sees their proposals.
+  const challenge = ev && voice && p.taskId
+    ? `<h3>Aktiv utfordring</h3><p class="meta"><b>${ev.title}</b> (${pending!.taskId})${voice.raised ? ' · <span class="chip">meldte saken</span>' : ''}. Har gitt Elisabeth og Hedda sitt innspill. Elisabeth anbefaler «${label(pending!.recommended)}».</p>`
+    : ev && voice
     ? `<h3>Aktiv utfordring</h3><p class="meta"><b>${ev.title}</b> (${pending!.taskId})${voice.raised ? ' · <span class="chip">meldte saken</span>' : ''}. Anbefaler «${label(voice.optionId)}».</p><p class="meta">${voice.reason}</p>`
     : ev && ev.raisedBy === p.id
-      ? `<h3>Aktiv utfordring</h3><p class="meta"><b>${ev.title}</b> (${pending!.taskId}). Prosjektlederen anbefaler «${label(pending!.recommended)}».</p>`
+      ? `<h3>Aktiv utfordring</h3><p class="meta"><b>${ev.title}</b> (${pending!.taskId}). Elisabeth anbefaler «${label(pending!.recommended)}».</p>`
       : !p.player && game ? '<p class="meta">Ingen aktive utfordringer.</p>' : '';
   const messages = game ? game.log.filter(l => (l.from ?? 'pm') === p.id).slice(-3).reverse() : [];
   const messagesHtml = messages.length
     ? `<h3>Siste meldinger</h3><ul class="advice">${messages.map(l => `<li><small>Uke ${l.week}:</small> ${l.text}</li>`).join('')}</ul>`
     : '';
   return `<aside class="details card">
-    <div class="details-head">${icon(p.icon, 48)}<div><h2>${p.taskId ? `${p.role} ${p.taskId}` : p.role}</h2><p>${p.description}</p></div></div>
-    ${p.player ? '<p class="meta">Du tar de endelige beslutningene. Prosjektleder og Site manager rapporterer til deg.</p>' : `<p class="meta">AI-rolle (regelbasert) · rapporterer til ${scenario.people.find(x => x.id === p.reportsTo)?.role}</p>`}
+    <div class="details-head">${icon(p.icon, 48)}<div><h2>${p.name}</h2><p><b>${p.player ? 'Prosjekteier, Statsbygg' : p.role}</b> · ${p.description}</p></div></div>
+    ${p.player ? '<p class="meta">Du tar de endelige beslutningene. Elisabeth (prosjektleder), Hedda (site manager) og Oskar (HMS) rapporterer til deg.</p>' : `<p class="meta">AI-rolle (regelbasert) · rapporterer til ${scenario.people.find(x => x.id === p.reportsTo)?.name}</p>`}
     ${reports ? `<p class="meta">Har ansvar for: ${reports}</p>` : ''}
     ${challenge}
     ${messagesHtml}

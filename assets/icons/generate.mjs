@@ -38,6 +38,7 @@ const G = {
   owner: `<circle cx="12" cy="7" r="3.2"/><path d="M5.5 20.5c0-3.9 2.9-6.4 6.5-6.4s6.5 2.5 6.5 6.4"/><path class="f" d="M12 14.4l-1.2 2.3 1.2 3 1.2-3z"/>`,
   manager: `<circle cx="8.5" cy="7.5" r="3"/><path d="M2.5 20c0-3.6 2.7-5.7 6-5.7 1.3 0 2.5.3 3.5.9"/><rect x="14" y="10.5" width="7" height="10" rx="1.2"/><path d="M16 10.5V9.5h3v1M16 14h3M16 17h3"/>`,
   siteManager: `<path d="M5 10.5h14M6.5 10.5a5.5 5.5 0 0 1 11 0M12 5v3M8.6 11.2a3.4 3.4 0 0 0 6.8 0M5.5 21c0-3.3 2.9-5.2 6.5-5.2s6.5 1.9 6.5 5.2M9.5 16.3l2.5 2.7 2.5-2.7"/>`,
+  hms: `<path d="M12 2.8l7.5 3v5.4c0 4.6-3.1 8.2-7.5 10.2-4.4-2-7.5-5.6-7.5-10.2V5.8z"/><path d="M12 8.2v7.2M8.4 11.8h7.2"/>`,
   foreman: `<path d="M4.5 12h15M6.2 12a5.8 5.8 0 0 1 11.6 0M12 6v3.5M8.5 12.6a3.5 3.5 0 0 0 7 0M6 21c0-2.9 2.7-4.7 6-4.7s6 1.8 6 4.7"/>`,
 
   // Buildings
@@ -105,6 +106,7 @@ const ICONS = [
   ['people', 'owner', 'owner', 'Prosjekteier'],
   ['people', 'project-manager', 'manager', 'Prosjektleder'],
   ['people', 'site-manager', 'siteManager', 'Site manager'],
+  ['people', 'hms', 'hms', 'HMS-leder'],
   ['people', 'foreman', 'foreman', 'Formann'],
 
   // Phases as in the real project (regjeringen.no, statsbudsjettet 2027).

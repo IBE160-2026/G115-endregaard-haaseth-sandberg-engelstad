@@ -78,12 +78,12 @@ describe('spots and figures', () => {
     expect(speakerSpot('foreman-F', { F: 0.5 })).toEqual(taskSpot('F', { F: 0.5 }));
   });
 
-  it('draws one figure per four workers, own and hired apart', () => {
+  it('draws one figure per three workers, own and hired apart', () => {
     const f = figuresFor([{ taskId: 'F', own: 34, hired: 17 }, { taskId: 'O', own: 2, hired: 0 }]);
-    expect(f.filter(x => x.taskId === 'F' && !x.hired)).toHaveLength(9);
-    expect(f.filter(x => x.hired)).toHaveLength(4);
+    expect(f.filter(x => x.taskId === 'F' && !x.hired)).toHaveLength(11);
+    expect(f.filter(x => x.hired)).toHaveLength(6);
     expect(f.filter(x => x.taskId === 'O')).toHaveLength(1);
-    expect(figuresFor([{ taskId: 'F', own: 1000, hired: 0 }])).toHaveLength(120);
+    expect(figuresFor([{ taskId: 'F', own: 1000, hired: 0 }])).toHaveLength(160);
   });
 
   it('has winter at the start and summer mid-year', () => {

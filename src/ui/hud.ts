@@ -56,17 +56,39 @@ export function renderTop(s: Scenario, g: GameState | undefined, f: SimulationRe
     </div>`;
 }
 
-export function renderRail(open: TabId | null, feedOpen: boolean, alerts: number): string {
-  return `${TABS.map(t => `<button type="button" class="rail-btn${open === t.id ? ' active' : ''}" data-tab="${t.id}" title="${t.label}" aria-pressed="${open === t.id}">${icon(`apps/${t.id}.svg`, 24)}<span>${t.label}</span></button>`).join('')}
+/** What each panel has to say right now (a short hint and a badge), so the rail is worth a look. */
+export type RailHints = Partial<Record<TabId, { text: string; badge?: string }>>;
+
+export function railHints(s: Scenario, g: GameState | undefined, f: SimulationResult, reviewDue: boolean): RailHints {
+  if (!g) return {};
+  const total = budgetOf(f).total;
+  const over = total - s.target.total;
+  const late = f.weeks - s.target.weeks;
+  const active = s.tasks.filter((_, i) => g.tasks[i].start !== null && g.tasks[i].finish === null);
+  const stalled = active.filter(t => g.tasks[s.tasks.indexOf(t)].stall > 0);
+  const waiting = g.pending ? g.pending.voices.length : 0;
+  return {
+    people: { text: waiting ? `${waiting} har forslag til deg` : `${active.length} formenn i arbeid`, badge: waiting ? String(waiting) : undefined },
+    buildings: { text: 'A-blokka og kjelleren' },
+    disciplines: { text: reviewDue ? 'Bemanningsmøte!' : stalled.length ? `${stalled.map(t => t.id).join(', ')} står stille` : `${active.map(t => t.id).join(', ') || 'Ingen'} pågår`, badge: reviewDue || stalled.length ? '!' : undefined },
+    budget: { text: over > 0.005 ? `${formatMnok(over)} MNOK over` : `${formatMnok(-over)} MNOK i buffer`, badge: over > 0.005 ? '!' : undefined },
+    schedule: { text: late > 0 ? `${late} uker etter planen` : late < 0 ? `${-late} uker foran` : 'Akkurat i rute', badge: late > 0 ? '!' : undefined },
+  };
+}
+
+export function renderRail(open: TabId | null, feedOpen: boolean, alerts: number, top = '', hints: RailHints = {}): string {
+  const hint = (id: TabId) => hints[id];
+  return `${top}
+    <div class="rail-tabs">${TABS.map(t => `<button type="button" class="rail-btn${open === t.id ? ' active' : ''}" data-tab="${t.id}" title="${t.label}" aria-pressed="${open === t.id}">${icon(`apps/${t.id}.svg`, 24)}<span>${t.label}${hint(t.id) ? `<small>${hint(t.id)!.text}</small>` : ''}</span>${hint(t.id)?.badge ? `<em class="badge">${hint(t.id)!.badge}</em>` : ''}</button>`).join('')}
     <span class="rail-sep"></span>
-    <button type="button" class="rail-btn${feedOpen ? ' active' : ''}" data-action="feed" title="Meldinger" aria-pressed="${feedOpen}">${icon('ai/ai-advisor.svg', 24)}<span>Meldinger</span>${alerts ? `<em class="badge">${alerts}</em>` : ''}</button>`;
+    <button type="button" class="rail-btn${feedOpen ? ' active' : ''}" data-action="feed" title="Meldinger" aria-pressed="${feedOpen}">${icon('ai/ai-advisor.svg', 24)}<span>Meldinger<small>${alerts ? `${alerts} nye` : 'Fra teamet'}</small></span>${alerts ? `<em class="badge">${alerts}</em>` : ''}</button></div>`;
 }
 
 const dockBtn = (action: string, label: string, ic: string, extra = '') =>
   `<button type="button" class="dock-btn" data-action="${action}" title="${label}" ${extra}>${icon(ic, 22)}<span>${label}</span></button>`;
 
-export function renderDock(s: Scenario, g: GameState | undefined, ui: PlayUi): string {
-  const off = !g || g.done || !!g.pending ? 'disabled' : '';
+export function renderDock(s: Scenario, g: GameState | undefined, ui: PlayUi, blocked = false): string {
+  const off = !g || g.done || !!g.pending || blocked ? 'disabled' : '';
   const speeds = ([1, 2, 4] as Speed[]).map(v =>
     `<button type="button" data-action="speed" data-speed="${v}" aria-pressed="${ui.speed === v}">${v}×</button>`).join('');
   const menu = ui.menu && g
@@ -81,7 +103,7 @@ export function renderDock(s: Scenario, g: GameState | undefined, ui: PlayUi): s
     ${play}
     <div class="seg speed" role="group" aria-label="Hastighet">${speeds}</div>
     <span class="dock-sep"></span>
-    <div class="menu-wrap">${dockBtn('menu', 'Scenarioer', 'risks/R6-water.svg', `aria-expanded="${ui.menu}" ${g && !g.done ? '' : 'disabled'}`)}${menu}</div>
-    ${dockBtn('camera', 'Kamera', 'apps/view3d.svg', 'title="Tilbake til oversikt (C)"')}
+    <div class="menu-wrap">${dockBtn('menu', 'Scenarioer', 'risks/R6-water.svg', `aria-expanded="${ui.menu}" ${g && !g.done && !blocked && ui.phase === 'play' ? '' : 'disabled'}`)}${menu}</div>
+    ${dockBtn('camera', 'Kamera', 'apps/view3d.svg', 'title="Bytt mellom å følge deg og oversikt over plassen (C)"')}
     ${dockBtn('new', 'Nytt spill', 'controls/new-game.svg')}`;
 }

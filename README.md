@@ -41,7 +41,7 @@ The loop repeats at every decision point until the project is complete.
 - Resource allocation
 - Change approval
 
-In the simulator (v0.4, a full-screen 3D building site with the HUD on top) all four are playable: strategy choices come when the key disciplines start, risks and opportunities come at random, crews and work modes are set per discipline, and change requests can be approved now or deferred at a higher cost later.
+In the simulator (v0.5, a full-screen 3D building site you walk around as Statsbygg, with Elisabeth the project manager and Hedda the site manager at your side) all four are playable: strategy choices come when the key disciplines start, risks and opportunities come at random, crews and work modes are reviewed with the foremen at the start-up meeting and whenever a chapter opens, and change requests can be approved now or deferred at a higher cost later. A foreman with a challenge waits with a «!» over their head; the decision is made in a meeting on site, round a 3D model of the challenge.
 
 ### Scenarios
 

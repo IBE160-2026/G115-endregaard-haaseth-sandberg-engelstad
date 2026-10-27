@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { scenario } from '../../engine/scenario';
 import { choose, findStory, forecast, newGame, pmPlan, runUntilDecision, setCrew, setMode, step, triggerEvent } from '../../engine/game';
 import { dialogFor, noteForecastChange, renderEvent, renderFeed, renderFinal, renderFork } from '../play';
+import { newStory } from '../story';
 import { aiPath } from '../../engine/game';
 import { formatInt, formatMnok } from '../format';
 import { simulate } from '../../engine/simulate';
@@ -64,13 +65,13 @@ describe('Disiplinene', () => {
 });
 
 describe('Menneskene (org chart)', () => {
-  it('shows all 16 people as nodes', () => {
-    expect(count(renderPeople(ctx()), 'data-person=')).toBe(16);
+  it('shows all 17 people as nodes', () => {
+    expect(count(renderPeople(ctx()), 'data-person=')).toBe(17);
   });
 
-  it('only the project manager and the site manager report to the owner', () => {
-    const direct = scenario.people.filter(p => p.reportsTo === 'owner').map(p => p.id);
-    expect(direct).toEqual(['pm', 'site']);
+  it('Elisabeth, Hedda and Oskar report to the owner; the foremen to Elisabeth or Hedda', () => {
+    const direct = scenario.people.filter(p => p.reportsTo === 'owner').map(p => p.name);
+    expect(direct).toEqual(['Elisabeth', 'Hedda', 'Oskar']);
     const foremen = scenario.people.filter(p => p.taskId);
     expect(foremen.every(p => p.reportsTo === 'pm' || p.reportsTo === 'site')).toBe(true);
     expect(scenario.people.filter(p => p.player).map(p => p.role)).toEqual(['Prosjekteier']);
@@ -81,7 +82,8 @@ describe('Menneskene (org chart)', () => {
     const html = renderPeople({ ...ctx(), game, selected: 'foreman-F' });
     expect(html).toContain('data-person="foreman-F" aria-pressed="true"');
     expect(html).toContain('data-crew-task="F"');
-    expect(html).toContain('rapporterer til Site manager');
+    expect(html).toContain('rapporterer til Hedda');
+    expect(html).toContain('<h2>Formann Råbygg</h2>');
   });
 });
 
@@ -183,7 +185,7 @@ describe('dilemmas, PM plan and story (v0.2)', () => {
     const game = newGame(scenario, 'easy', 1, { randomEvents: false });
     const plan = pmPlan(scenario, game);
     const html = renderDisciplines({ ...ctx(), game, result: forecast(scenario, game), plan });
-    expect(html).toContain('Prosjektlederen foreslår:');
+    expect(html).toContain('Elisabeth foreslår:');
     expect(html).toContain('data-action="pm-plan"');
   });
 
@@ -193,7 +195,7 @@ describe('dilemmas, PM plan and story (v0.2)', () => {
     runUntilDecision(scenario, g);
     const html = renderFinal(scenario, g, story);
     expect(html).toContain('Historiens løsning');
-    expect(html).toContain('prosjektlederen bemanner');
+    expect(html).toContain('Elisabeth bemanner');
     expect(html).toContain(`uke ${story.weeks}`);
   });
 });
@@ -206,15 +208,18 @@ describe('v0.3 renderers: decision dialog, fork card, feed, final report, routin
     return g;
   };
 
-  it('the dialog shows the kind, three voices and a preview for every option', () => {
+  it("the dialog shows the kind, Elisabeth's and Hedda's proposals (the foreman's only as input) and a preview for every option", () => {
     const g = at(40, 'water');
     const html = renderEvent(scenario, g);
     expect(html).toContain('<span class="chip kind kind-risk">Risiko</span>');
-    expect(count(html, 'class="voice official"') + count(html, 'class="voice"')).toBe(3);
-    expect(count(html, 'class="voice-pick"')).toBe(3);
-    expect(html).toContain('<b>Site manager</b> <span class="chip">meldte saken</span>');
-    expect(html).toContain('<b>Formann E</b>');
-    expect(html).toContain('Anbefaler «Lei midlertidig pumpe»');
+    expect(count(html, 'class="voice official"') + count(html, 'class="voice"')).toBe(2);
+    expect(count(html, 'class="voice-pick"')).toBe(2);
+    expect(html).toContain('<b>Hedda</b> <span class="chip">meldte saken</span>');
+    expect(html).toContain('Formann Betong ga Elisabeth og Hedda sitt innspill');
+    expect(html).not.toContain('<b>Formann Betong</b>');
+    // The foreman's pick (the cheapest now) is not shown to the player.
+    expect(html).not.toContain('Anbefaler «Lei midlertidig pumpe»');
+    expect(html).toContain('Anbefaler «Installer fast pumpe»');
     // Every option shows its forecast and Δ against today's forecast; the recommended one is also marked.
     for (const o of g.pending!.outcomes) expect(html).toContain(`uke <b>${o.weeks}</b>`);
     expect(html).toContain(`<b>${formatMnok(g.pending!.outcomes[0].total)}</b> MNOK`);
@@ -239,7 +244,7 @@ describe('v0.3 renderers: decision dialog, fork card, feed, final report, routin
     const html = renderEvent(scenario, g);
     expect(html).toContain('Strategivalg</span>');
     expect(html).toContain('−25 % timer igjen på C');
-    expect(html).toContain('<b>Prosjektleder</b> <span class="chip">meldte saken</span>');
+    expect(html).toContain('<b>Elisabeth</b> <span class="chip">meldte saken</span>');
   });
 
   it('the fork card: two columns and Δ when the player differs; one column when followed', () => {
@@ -247,7 +252,7 @@ describe('v0.3 renderers: decision dialog, fork card, feed, final report, routin
     choose(scenario, g, 'wait');
     const html = renderFork(scenario, g.decisions[0]);
     expect(count(html, 'class="fork-col"')).toBe(2);
-    expect(html).toContain('Prosjektlederens anbefaling');
+    expect(html).toContain('Elisabeths anbefaling');
     expect(html).toContain('Ditt valg gir +4 uker, +2,20 MNOK mot anbefalingen.');
     expect(html).toContain('data-action="fork-continue"');
     const same = at(40, 'water');
@@ -263,7 +268,7 @@ describe('v0.3 renderers: decision dialog, fork card, feed, final report, routin
     while (g.week < 20) step(scenario, g);
     const html = renderFeed(scenario, g);
     expect(html).toContain('Kapittel: <b>Grunnarbeid</b>');
-    expect(html).toContain('<b>Formann C</b> <small>Uke 16</small><p>C Sprengning og graving starter.</p>');
+    expect(html).toContain('<b>Formann Sprengning</b> <small>Uke 16</small><p>C Sprengning og graving starter.</p>');
     expect(html.indexOf('Kapittel 1')).toBeLessThan(html.indexOf('Velkommen'));
     // The header reads the latest chapter announced, not the task state.
     g.chapter = 4;
@@ -322,18 +327,36 @@ describe('v0.3 renderers: decision dialog, fork card, feed, final report, routin
     if (differed) expect(html).toContain('· Δ ');
   });
 
-  it('routing: start → fork (until Fortsett) → event → final', () => {
-    const ui = { forkSeen: 0, finalSeen: false };
+  it('routing: start → walk to the foreman → meeting → fork (until Avslutt) → review → final', () => {
+    const ui = { ...newStory(true), forkSeen: 0, finalSeen: false };
     expect(dialogFor(undefined, ui)).toBe('start');
     const g = at(40, 'water');
+    ui.reviewed = g.chapter;
+    // The decision waits on site until the player has walked to the foreman.
+    expect(dialogFor(g, ui)).toBeNull();
+    ui.meeting = true;
     expect(dialogFor(g, ui)).toBe('event');
     choose(scenario, g, 'pump');
     expect(dialogFor(g, ui)).toBe('fork');
     ui.forkSeen = g.decisions.length;
+    ui.meeting = false;
     expect(dialogFor(g, ui)).toBeNull();
+    // A new chapter opens a staffing review.
+    while (g.chapter === ui.reviewed) step(scenario, g);
+    expect(dialogFor(g, ui)).toBe('review');
+    ui.reviewed = 99;
     runUntilDecision(scenario, g);
     expect(dialogFor(g, ui)).toBe('final');
     expect(dialogFor(g, { ...ui, finalSeen: true })).toBeNull();
+    expect(dialogFor(g, { ...ui, finalSeen: true, talk: 'pm' })).toBe('talk');
+  });
+
+  it('routing in the intro: walking first, then the HMS check, then the start-up meeting', () => {
+    const g = newGame(scenario, 'easy', 1);
+    const ui = { ...newStory(), forkSeen: 0, finalSeen: false };
+    expect(dialogFor(g, ui)).toBeNull();
+    expect(dialogFor(g, { ...ui, hms: 'intro' })).toBe('hms');
+    expect(dialogFor(g, { ...ui, phase: 'kickoff' as const })).toBe('kickoff');
   });
 
   it('Menneskene: every voice is alerted, shows its pick and reason, and its latest messages', () => {
@@ -341,8 +364,10 @@ describe('v0.3 renderers: decision dialog, fork card, feed, final report, routin
     const result = forecast(scenario, game);
     const tree = renderPeople({ ...ctx(), game, result, selected: 'foreman-E' });
     expect(count(tree, 'class="alert"')).toBe(3);
-    expect(tree).toContain('Anbefaler «Lei midlertidig pumpe»');
-    expect(tree).toContain('koster 0,30 MNOK nå');
+    // The foreman's view is input to Elisabeth and Hedda, not a recommendation to the player.
+    expect(tree).toContain('Har gitt Elisabeth og Hedda sitt innspill');
+    expect(tree).not.toContain('koster 0,30 MNOK nå');
+    expect(renderPeople({ ...ctx(), game, result, selected: 'site' })).toContain('Anbefaler «Installer fast pumpe»');
     expect(tree).toContain('<h3>Siste meldinger</h3>');
     expect(tree).toContain('E Kjeller råbygg starter.');
   });
