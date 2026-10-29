@@ -8,7 +8,7 @@ review_loop_iteration: 0
 baseline_commit: '40b488efb4ed2d8ae320edf7eff47df4eb56ed57'
 context:
   - '{project-root}/brief-G115-AI-prosjektledelse-simulering.md'
-  - '{project-root}/.docs/implementation-artifacts/spec-simulator-environment.md'
+  - '{project-root}/ByggAPP/.docs/implementation-artifacts/spec-simulator-environment.md'
 ---
 
 <frozen-after-approval reason="human-owned intent — do not modify unless human renegotiates">
@@ -68,7 +68,7 @@ context:
 - `src/ui/tabs/*.ts`, `src/main.ts` -- add the org chart (people), the play controls and event panel, and the 3D window toggle in the taskbar.
 - `src/ui/budgetLines.ts`, `format.ts`, `gantt.ts` -- reuse for the live budget and the Gantt (progress overlay).
 - `assets/icons/generate.mjs` -- add icons: a 3D app, events (water, pump), play controls, and as-built A-blokka and basement hub.
-- `.docs/implementation-artifacts/deferred-work.md` -- the DOM-test item from v0.1 still applies.
+- `ByggAPP/.docs/implementation-artifacts/deferred-work.md` -- the DOM-test item from v0.1 still applies.
 
 ## Tasks & Acceptance
 

@@ -3,8 +3,8 @@
 # Workflow customization surface for bmad-deep-recon.
 #
 # Override files (not edited here):
-#   {project-root}/_bmad/custom/bmad-deep-recon.toml         (team)
-#   {project-root}/_bmad/custom/bmad-deep-recon.user.toml    (personal)
+#   {project-root}/01. Admin/_bmad/custom/bmad-deep-recon.toml         (team)
+#   {project-root}/01. Admin/_bmad/custom/bmad-deep-recon.user.toml    (personal)
 
 [workflow]
 
@@ -172,7 +172,7 @@ on_complete = ""
 #   code = "regulatory"
 #   name = "Regulatory Research"
 #   when = "Compliance posture, licensing, or regulatory exposure for a product or market."
-#   pack = "file:{project-root}/_bmad/custom/packs/regulatory.md"
+#   pack = "file:{project-root}/01. Admin/_bmad/custom/packs/regulatory.md"
 # ---------------------------------------------------------------------------
 
 [[workflow.research_types]]

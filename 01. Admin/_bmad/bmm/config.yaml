@@ -4,8 +4,8 @@
 # Date: 2026-10-02T11:00:41.203Z
 
 user_skill_level: intermediate
-planning_artifacts: "{project-root}/.docs/planning-artifacts"
-implementation_artifacts: "{project-root}/.docs/implementation-artifacts"
+planning_artifacts: "{project-root}/ByggAPP/.docs/planning-artifacts"
+implementation_artifacts: "{project-root}/ByggAPP/.docs/implementation-artifacts"
 project_knowledge: "{project-root}/docs"
 
 # Core Configuration Values

@@ -2,6 +2,19 @@
 
 The choices the AI (Claude Code) put to the group, with the group's reply word for word, one section per simulator version (newest first). Each entry has at most four lines: the prompt, the reply, and what came of it.
 
+## Repo structure – 2026-10-29
+
+1. **The folder structure.** Prompt: none (the group's own request).
+   Reply: "Vi må oppdatere mappestrukturen. Alt som har med spillet og gjøre skal inn i en mappe som heter ByggAPP. G115 filene skal ligge som de er. Oppgavetekst, tilbakemeldinger, BMAD rammeverkt og lignende skal inn i 01. Admin mappe. Logs skal ligge som den er."
+2. **Moving BMAD.** Prompt: Claude Code only finds skills in `.claude/skills` at the root, and 73 skill files call `{project-root}/_bmad/...`. Keep BMAD at the root, move `_bmad` and rewrite the paths, or move both and accept that BMAD breaks?
+   Reply: "Move _bmad, rewrite paths"
+   Result: `_bmad/` is in `01. Admin/`, and every path to it is rewritten (paths in commands are quoted because of the space). `.claude/` stays at the root.
+3. **The specs.** Prompt: should `.docs/implementation-artifacts` go to 01. Admin or ByggAPP?
+   Reply: "ByggAPP"
+4. **The G115 files.** Prompt: none (the group's own request).
+   Reply: "put G115 filene inn i ByggAPP også"
+   Result: the four G115 files are in `ByggAPP/`.
+
 ## v0.5 – 2026-10-27
 
 **Open:** Ask bipa or TesAgi-HiMolde to turn on GitHub Pages (Source: GitHub Actions); until then the Artifact is the test link and has to be republished by hand after each change. The group's prompt names the player both «Statnet» and «Statsbygg»; the game uses Statsbygg (the owner in the scenario). The HMS checks, the walking and the meetings are presentation only and do not change cost or time: should a missing piece of gear (or a reply that earns a telling-off) have a cost in the simulation? The foremen's titles (e.g. «Formann Betong» for E Kjeller råbygg, «Formann Prosjektering» for A) were chosen by the AI; check them.

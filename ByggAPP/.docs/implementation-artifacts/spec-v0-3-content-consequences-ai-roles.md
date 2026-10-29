@@ -8,7 +8,7 @@ review_loop_iteration: 0
 baseline_commit: '69f3ac808b8b96cda339928898330a39c2b853fe'
 context:
   - '{project-root}/brief-G115-AI-prosjektledelse-simulering.md'
-  - '{project-root}/.docs/implementation-artifacts/spec-v0-2-interactive-simulator.md'
+  - '{project-root}/ByggAPP/.docs/implementation-artifacts/spec-v0-2-interactive-simulator.md'
 ---
 
 <frozen-after-approval reason="human-owned intent — do not modify unless human renegotiates">

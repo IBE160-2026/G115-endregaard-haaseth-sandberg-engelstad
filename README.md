@@ -101,18 +101,26 @@ When a repo admin has turned on GitHub Pages (Settings → Pages → Source: Git
 Requires [Node.js](https://nodejs.org/) 22.12 or newer. No API keys or accounts are needed.
 
 ```bash
+cd ByggAPP
 npm install
 npm run dev     # serves the simulator at http://localhost:5173
 npm test        # runs the simulation engine's tests
 npm run build   # type-checks and builds to dist/
 ```
 
-The simulator runs the fixed scenario *Regjeringskvartalet Light* (Appendix A of the product brief). The simulation engine is in `src/engine/` and has no UI code. The icons are generated with `npm run icons` from `assets/icons/generate.mjs`.
+The simulator runs the fixed scenario *Regjeringskvartalet Light* (Appendix A of the product brief). The simulation engine is in `ByggAPP/src/engine/` and has no UI code. The icons are generated with `npm run icons` from `ByggAPP/assets/icons/generate.mjs`.
 
 ## Documentation and way of working
 
-- [Product brief](brief-G115-AI-prosjektledelse-simulering.md) — full description of the problem, solution and scope (status: draft)
-- Development follows the [BMAD framework](https://bmadcode.com/), which lives in `_bmad/` with its skills for Claude Code in `.claude/skills/`
+Folder structure:
+
+- `ByggAPP/` — the game: source code (`src/`), icons (`assets/`), build setup, the G115 files and the BMAD specs for each version (`.docs/`)
+- `01. Admin/` — assignment material: the product brief, the instructor's feedback and the BMAD framework (`_bmad/`)
+- `ByggAPP/G115_*.md` — the group's changelog, dilemmas, recommendations and the full game description
+- `.logs/` — session logs
+
+- [Product brief](01.%20Admin/brief-G115-AI-prosjektledelse-simulering.md) — full description of the problem, solution and scope (status: draft)
+- Development follows the [BMAD framework](https://bmadcode.com/), which lives in `01. Admin/_bmad/` with its skills for Claude Code in `.claude/skills/`
 
 ## Members
 

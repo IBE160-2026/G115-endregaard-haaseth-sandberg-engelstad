@@ -3,8 +3,8 @@
 # Workflow customization surface for bmad-forge-idea.
 #
 # Override files (not edited here):
-#   {project-root}/_bmad/custom/bmad-forge-idea.toml        (team)
-#   {project-root}/_bmad/custom/bmad-forge-idea.user.toml   (personal)
+#   {project-root}/01. Admin/_bmad/custom/bmad-forge-idea.toml        (team)
+#   {project-root}/01. Admin/_bmad/custom/bmad-forge-idea.user.toml   (personal)
 
 [workflow]
 

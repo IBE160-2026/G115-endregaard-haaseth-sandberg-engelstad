@@ -5,8 +5,8 @@
 # To change an install answer durably, re-run the installer (your prior
 # answers are remembered as defaults). To pin a value regardless of
 # install answers, or to add custom agents / override descriptors, use:
-#   _bmad/custom/config.toml       (team, committed)
-#   _bmad/custom/config.user.toml  (personal, gitignored)
+#   01. Admin/_bmad/custom/config.toml       (team, committed)
+#   01. Admin/_bmad/custom/config.user.toml  (personal, gitignored)
 # Those files are never touched by the installer.
 # ─────────────────────────────────────────────────────────────────
 
@@ -16,8 +16,8 @@ document_output_language = "English"
 output_folder = ".docs"
 
 [modules.bmm]
-planning_artifacts = "{project-root}/.docs/planning-artifacts"
-implementation_artifacts = "{project-root}/.docs/implementation-artifacts"
+planning_artifacts = "{project-root}/01. Admin/planning-artifacts"
+implementation_artifacts = "{project-root}/ByggAPP/.docs/implementation-artifacts"
 project_knowledge = "{project-root}/docs"
 
 [modules.cis]

@@ -3,8 +3,8 @@
 # Workflow customization surface for bmad-prd.
 #
 # Override files (not edited here):
-#   {project-root}/_bmad/custom/bmad-prd.toml         (team)
-#   {project-root}/_bmad/custom/bmad-prd.user.toml    (personal)
+#   {project-root}/01. Admin/_bmad/custom/bmad-prd.toml         (team)
+#   {project-root}/01. Admin/_bmad/custom/bmad-prd.user.toml    (personal)
 
 [workflow]
 
@@ -71,7 +71,7 @@ run_folder_pattern = "prd-{project_name}-{date}"
 #
 # Examples:
 #   "skill:bmad-review lenses=structure,prose"
-#   "file:{project-root}/_bmad/style-guides/company-voice.md"
+#   "file:{project-root}/01. Admin/_bmad/style-guides/company-voice.md"
 #   "Convert all dates to ISO 8601 format."
 #
 # Suggested order (broader passes first, narrower last):

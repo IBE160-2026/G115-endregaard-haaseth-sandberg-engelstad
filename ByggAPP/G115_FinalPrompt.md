@@ -136,12 +136,12 @@ Follow-ups only come after certain choices: the hired pump fails, a leak through
 
 - **Stack:** TypeScript, Vite, Three.js 0.186 (OrbitControls, EffectComposer with UnrealBloom, RoomEnvironment) and Vitest. No backend, no API key.
 - **Structure:**
-  - `src/engine/`: the pure simulation (scenario, game, events, advisor, chapters, simulate). It never knows about the UI.
-  - `src/ui/story.ts`: the story layer (objectives, meeting scripts, HMS checks, Oskar's rounds, start-up meeting, staffing reviews). Pure and tested.
-  - `src/ui/scene/`: walking and routes round the pit (`walk.ts`), people (`cast.ts`), challenge models (`challenge.ts`), site details (`props.ts`), the city (`world.ts`), and the scene state (`visuals.ts`). The 3D only reads the game and never changes it.
-  - `src/ui/view3d.ts`: the scene and the camera. `src/ui/play.ts`, `scenes.ts`, `hud.ts` and `tabs/`: HTML. `src/main.ts`: directs the clock, the scenes and the input.
+  - `ByggAPP/src/engine/`: the pure simulation (scenario, game, events, advisor, chapters, simulate). It never knows about the UI.
+  - `ByggAPP/src/ui/story.ts`: the story layer (objectives, meeting scripts, HMS checks, Oskar's rounds, start-up meeting, staffing reviews). Pure and tested.
+  - `ByggAPP/src/ui/scene/`: walking and routes round the pit (`walk.ts`), people (`cast.ts`), challenge models (`challenge.ts`), site details (`props.ts`), the city (`world.ts`), and the scene state (`visuals.ts`). The 3D only reads the game and never changes it.
+  - `ByggAPP/src/ui/view3d.ts`: the scene and the camera. `ByggAPP/src/ui/play.ts`, `scenes.ts`, `hud.ts` and `tabs/`: HTML. `ByggAPP/src/main.ts`: directs the clock, the scenes and the input.
 - **Tests:** 186 Vitest tests (the engine, the brief's worked examples as expected answers, the story layer, walking, the renderers).
-- **Run locally:** `npm install`, then `npm run dev` (http://localhost:5173). `npm test` and `npm run build`.
+- **Run locally:** in `ByggAPP/`, `npm install`, then `npm run dev` (http://localhost:5173). `npm test` and `npm run build`.
 - **Demo links:** `?scene=hms`, `?scene=kickoff&steg=9`, `?uke=60&hendelse=change-security&steg=9`.
 - **Published:** as a Claude Artifact (https://claude.ai/artifact/Nh9p4q3T5mbQaphKD9iSdY). GitHub Pages is ready in `.github/workflows/deploy.yml` and waits for a repo admin to turn on Pages.
 

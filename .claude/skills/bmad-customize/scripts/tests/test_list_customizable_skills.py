@@ -9,7 +9,7 @@ Exercises the scanner against a synthesized install tree:
 - a workflow-only customize.toml
 - a customize.toml that exposes both surfaces
 - a skill directory with no customize.toml (ignored)
-- a pre-existing team override in _bmad/custom/
+- a pre-existing team override in 01. Admin/_bmad/custom/
 - malformed TOML (surfaces as an error without aborting)
 - multiple skills roots (e.g. project-local + user-global mix)
 
@@ -54,7 +54,7 @@ class ScannerTest(unittest.TestCase):
         self.root = Path(self.tmp.name)
         self.skills = self.root / "skills"
         self.skills.mkdir(parents=True)
-        self.custom = self.root / "_bmad" / "custom"
+        self.custom = self.root / "01. Admin" / "_bmad" / "custom"
         self.custom.mkdir(parents=True)
 
     def tearDown(self):

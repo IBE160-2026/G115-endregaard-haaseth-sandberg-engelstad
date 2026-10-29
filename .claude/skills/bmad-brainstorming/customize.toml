@@ -3,8 +3,8 @@
 # Workflow customization surface for bmad-brainstorming.
 #
 # Override files (not edited here):
-#   {project-root}/_bmad/custom/bmad-brainstorming.toml         (team)
-#   {project-root}/_bmad/custom/bmad-brainstorming.user.toml    (personal)
+#   {project-root}/01. Admin/_bmad/custom/bmad-brainstorming.toml         (team)
+#   {project-root}/01. Admin/_bmad/custom/bmad-brainstorming.user.toml    (personal)
 
 [workflow]
 

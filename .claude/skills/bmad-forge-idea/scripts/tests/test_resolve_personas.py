@@ -122,7 +122,7 @@ class TestOverrideMergeFallback(unittest.TestCase):
     def test_arrays_append_scalars_override(self):
         import tempfile, os
         with tempfile.TemporaryDirectory() as d:
-            custom = Path(d) / "_bmad" / "custom"
+            custom = Path(d) / "01. Admin" / "_bmad" / "custom"
             custom.mkdir(parents=True)
             (custom / "bmad-party-mode.toml").write_text(
                 '[workflow]\ndefault_party = "a"\n'

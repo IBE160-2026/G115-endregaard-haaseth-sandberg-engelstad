@@ -1,6 +1,6 @@
 # Recommendations – G115 simulator
 
-An assessment of how well the simulator meets its goals, measured against the instructor's feedback (`tilbakemelding-product-brief.md`, the part 1 criteria of the grading guide) and the brief's success criteria, with recommended next steps. One section per simulator version (newest first). Each entry has at most four lines.
+An assessment of how well the simulator meets its goals, measured against the instructor's feedback (`01. Admin/tilbakemelding-product-brief.md`, the part 1 criteria of the grading guide) and the brief's success criteria, with recommended next steps. One section per simulator version (newest first). Each entry has at most four lines.
 
 ## v0.5 – 2026-10-27
 

@@ -3,8 +3,8 @@
 # Workflow customization surface for bmad-architecture.
 #
 # Override files (not edited here):
-#   {project-root}/_bmad/custom/bmad-architecture.toml         (team)
-#   {project-root}/_bmad/custom/bmad-architecture.user.toml    (personal)
+#   {project-root}/01. Admin/_bmad/custom/bmad-architecture.toml         (team)
+#   {project-root}/01. Admin/_bmad/custom/bmad-architecture.user.toml    (personal)
 
 [workflow]
 

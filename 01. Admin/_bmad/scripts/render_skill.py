@@ -322,8 +322,8 @@ def _publish(destination: Path, outputs: dict[str, bytes], manifest: dict[str, A
 def render(project_root: Path, skill_dir: Path) -> Path:
     project_root = project_root.resolve(strict=True)
     skill_dir = skill_dir.resolve(strict=True)
-    if not (project_root / "_bmad").is_dir():
-        raise RenderError(f"project root does not contain _bmad/: {project_root}")
+    if not (project_root / "01. Admin" / "_bmad").is_dir():
+        raise RenderError(f"project root does not contain 01. Admin/_bmad/: {project_root}")
 
     sources = _load_sources(skill_dir)
     central = load_central_config(project_root)
@@ -357,7 +357,7 @@ def render(project_root: Path, skill_dir: Path) -> Path:
     generation_hash = _hash_bytes(_canonical_json(identity))[:20]
     destination = (
         project_root
-        / "_bmad"
+        / "01. Admin" / "_bmad"
         / "render"
         / skill_dir.name
         / f"{slug}-{root_hash}"

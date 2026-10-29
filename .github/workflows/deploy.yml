@@ -18,12 +18,17 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # The game lives in ByggAPP/; the rest of the repo is documentation.
+    defaults:
+      run:
+        working-directory: ByggAPP
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
+          cache-dependency-path: ByggAPP/package-lock.json
       - run: npm ci
       - run: npm test
       - run: npm run build
@@ -31,7 +36,7 @@ jobs:
           BASE_PATH: /${{ github.event.repository.name }}/
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: ByggAPP/dist
 
   deploy:
     needs: build

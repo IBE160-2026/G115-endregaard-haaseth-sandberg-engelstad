@@ -50,7 +50,7 @@ def main() -> int:
         "--project-root",
         "-p",
         required=True,
-        help="Absolute project root containing _bmad/",
+        help="Absolute project root containing 01. Admin/_bmad/",
     )
     parser.add_argument(
         "--key",

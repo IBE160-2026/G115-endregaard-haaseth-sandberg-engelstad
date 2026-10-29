@@ -2,8 +2,8 @@
 #
 # Workflow customization surface for bmad-ux.
 # Overrides:
-#   {project-root}/_bmad/custom/bmad-ux.toml         (team)
-#   {project-root}/_bmad/custom/bmad-ux.user.toml    (personal)
+#   {project-root}/01. Admin/_bmad/custom/bmad-ux.toml         (team)
+#   {project-root}/01. Admin/_bmad/custom/bmad-ux.user.toml    (personal)
 # Merge rules: scalars override, arrays append.
 
 [workflow]

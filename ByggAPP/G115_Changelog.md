@@ -2,6 +2,11 @@
 
 Major iterations of the *Regjeringskvartalet Light* project management simulator. Each entry has a summary of at most four lines.
 
+## Repo structure – 2026-10-29
+
+The repo is split into folders: everything for the game (source code, icons, build setup, the BMAD specs) is in `ByggAPP/`, and the brief, the instructor's feedback and the BMAD framework are in `01. Admin/`. The G115 files are in `ByggAPP/` too. `.logs/`, `README.md` and `CLAUDE.md` stay at the root, as do `.github/` and `.claude/` because GitHub and Claude Code require them there.
+The deploy workflow builds from `ByggAPP/`, and all BMAD paths (skills, scripts, config) now point to `01. Admin/_bmad/`. Run the game locally with `cd ByggAPP`, then `npm install` and `npm run dev`. 187 tests pass.
+
 ## v0.5 – 2026-10-27
 
 You walk the site: the player (Statsbygg) moves with WASD, the arrow keys or a click on the ground, with Elisabeth (prosjektleder) and Hedda (site manager) following. A foreman with a challenge stands with a «!» over their head; you walk there (or press G), and the camera cuts to a meeting of the four round a table with a 3D model of the challenge.

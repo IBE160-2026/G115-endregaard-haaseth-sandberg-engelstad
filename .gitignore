@@ -46,9 +46,9 @@ playwright-report/
 *.log
 
 # BMAD: keep shared framework, skills, plans and documentation
-_bmad/config.user.toml
-_bmad/custom/*.user.toml
-_bmad/render/
+01. Admin/_bmad/config.user.toml
+01. Admin/_bmad/custom/*.user.toml
+01. Admin/_bmad/render/
 .claude/settings.local.json
 
 # Operating system / editors

@@ -1,8 +1,8 @@
 # DO NOT EDIT -- overwritten on every update.
 #
 # Workflow customization surface for bmad-project-context.
-# Team overrides:     {project-root}/_bmad/custom/bmad-project-context.toml
-# Personal overrides: {project-root}/_bmad/custom/bmad-project-context.user.toml
+# Team overrides:     {project-root}/01. Admin/_bmad/custom/bmad-project-context.toml
+# Personal overrides: {project-root}/01. Admin/_bmad/custom/bmad-project-context.user.toml
 #
 # Merge rules: scalars override (last layer wins); arrays append.
 

@@ -3,8 +3,8 @@
 # Workflow customization surface for bmad-review.
 #
 # Override files (not edited here):
-#   {project-root}/_bmad/custom/bmad-review.toml         (team)
-#   {project-root}/_bmad/custom/bmad-review.user.toml    (personal)
+#   {project-root}/01. Admin/_bmad/custom/bmad-review.toml         (team)
+#   {project-root}/01. Admin/_bmad/custom/bmad-review.user.toml    (personal)
 
 [workflow]
 
@@ -74,7 +74,7 @@ reader_type = "humans"
 # guide wins — except content is sacrosanct.
 #
 # Examples (set in team/user override TOML):
-#   style_guide = "file:{project-root}/_bmad/style-guides/company-voice.md"
+#   style_guide = "file:{project-root}/01. Admin/_bmad/style-guides/company-voice.md"
 #   style_guide = "Sentence-case headings. No Oxford comma. Address the reader as 'you'."
 style_guide = "Microsoft Writing Style Guide"
 

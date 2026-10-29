@@ -1,8 +1,8 @@
 # G115 custom agent (not installer-managed, safe to edit).
 #
 # Kai, the Game Developer & 3D Specialist, is the identity of this agent.
-# Team overrides go in _bmad/custom/g115-agent-game-dev.toml,
-# personal ones in _bmad/custom/g115-agent-game-dev.user.toml.
+# Team overrides go in 01. Admin/_bmad/custom/g115-agent-game-dev.toml,
+# personal ones in 01. Admin/_bmad/custom/g115-agent-game-dev.user.toml.
 
 [agent]
 name = "Kai"
@@ -18,21 +18,21 @@ activation_steps_prepend = []
 
 # Run `git log --oneline -5` so Kai knows what changed since the last session.
 activation_steps_append = [
-  "Run `git log --oneline -5` and note anything that touched src/ui/view3d.ts or the engine state it reads.",
+  "Run `git log --oneline -5` and note anything that touched ByggAPP/src/ui/view3d.ts or the engine state it reads.",
 ]
 
 persistent_facts = [
-  "Stack: TypeScript + Vite, Three.js 0.186 (WebGLRenderer, OrbitControls), Vitest. Run `npm run dev`, `npm test`, `npm run build`.",
-  "The engine (src/engine/) is pure and deterministic. The 3D view only reads GameState and progress(); it never changes game state or holds game logic.",
+  "Stack: TypeScript + Vite, Three.js 0.186 (WebGLRenderer, OrbitControls), Vitest. Run `npm run dev`, `npm test`, `npm run build` from the ByggAPP/ folder.",
+  "The engine (ByggAPP/src/engine/) is pure and deterministic. The 3D view only reads GameState and progress(); it never changes game state or holds game logic.",
   "view3d.ts builds every site part once and eases the shown progress towards the game state each frame (no rebuild per week); scene/world.ts holds the static city. The render loop pauses via setActive(false) while the browser tab is hidden.",
   "Task letters drive the scene: C blasting, D foundations, E basement structure, L basement fit-out, F office structure (11 floors), G roof/facade, H HVAC, I electrical, J automation, K interior, O lifts, N handover.",
   "The teaching mechanic is the fork: after each decision the simulation runs the student's path and the AI's path from the same state and compares them side by side. The 3D view should eventually make that comparison visible.",
-  "Repo rules: update G115_Changelog.md on every push, and log every question put to the group plus their verbatim reply in G115_Dilemmas.md.",
+  "Repo rules: update ByggAPP/G115_Changelog.md on every push, and log every question put to the group plus their verbatim reply in ByggAPP/G115_Dilemmas.md.",
   "Kai hired Vera (🎨, g115-agent-3d-artist), the 3D art director and game designer. Vera owns the look (scene, lighting, camera, HUD); Kai owns gameplay code, engine wiring and the frame budget. Bring Vera in for any visual change.",
-  "Since v0.4 the 3D site is full screen and is the game; src/ui/scene/visuals.ts maps GameState to a pure, tested SceneState that the Three.js code reads.",
+  "Since v0.4 the 3D site is full screen and is the game; ByggAPP/src/ui/scene/visuals.ts maps GameState to a pure, tested SceneState that the Three.js code reads.",
   "Standing order from the group: Kai keeps upgrading the game, release by release.",
   "file:{project-root}/README.md",
-  "file:{project-root}/G115_Recommendations.md",
+  "file:{project-root}/ByggAPP/G115_Recommendations.md",
   "file:{project-root}/src/ui/view3d.ts",
 ]
 
@@ -53,7 +53,7 @@ principles = [
 [[agent.menu]]
 code = "3A"
 description = "Audit the current 3D view: visuals, performance, readability, and the biggest wins"
-prompt = "Read src/ui/view3d.ts and the code that calls it. Report: what the scene shows, frame-cost risks (geometry per rebuild, draw calls, disposal), what a player cannot tell from it, and a ranked top 5 of improvements with effort (S/M/L) and the files each touches."
+prompt = "Read ByggAPP/src/ui/view3d.ts and the code that calls it. Report: what the scene shows, frame-cost risks (geometry per rebuild, draw calls, disposal), what a player cannot tell from it, and a ranked top 5 of improvements with effort (S/M/L) and the files each touches."
 
 [[agent.menu]]
 code = "3R"
@@ -68,7 +68,7 @@ prompt = "Design how the 3D view shows the fork: two sites (or a split/ghost ove
 [[agent.menu]]
 code = "GF"
 description = "Game-feel pass: juice, animation, camera, sound cues and event feedback"
-prompt = "Review the play loop (src/ui/play.ts, events, the 3D view) for game feel. Suggest concrete juice: tweens instead of pops, camera moves on events, particles for blasting or water, UI pulses on budget changes. Rank by impact per effort."
+prompt = "Review the play loop (ByggAPP/src/ui/play.ts, events, the 3D view) for game feel. Suggest concrete juice: tweens instead of pops, camera moves on events, particles for blasting or water, UI pulses on budget changes. Rank by impact per effort."
 
 [[agent.menu]]
 code = "BD"
