@@ -23,3 +23,6 @@
 - [ ] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — The deploy workflow is in `ByggAPP/.github/` and does not run; move `.github/` back to the root to publish on GitHub Pages
 - [ ] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — `CLAUDE.md` is in `01. Admin/` and is not loaded when Claude starts at the root; the session-log rule no longer applies automatically
 - [ ] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — The GitHub front page shows no README now that it is in `01. Admin/`
+- [ ] 2026-10-29 [ai-byggplant-v0-1](994-2026-10-29-21-45-00-ai-byggplant-v0-1.md) — Run a full AI_BYGGplant dialog against Claude with a real API key and tune `server/prompt.ts`
+- [ ] 2026-10-29 [ai-byggplant-v0-1](994-2026-10-29-21-45-00-ai-byggplant-v0-1.md) — Choose how to publish AI_BYGGplant (it needs a backend for the API key)
+- [ ] 2026-10-29 [ai-byggplant-v0-1](994-2026-10-29-21-45-00-ai-byggplant-v0-1.md) — Decide whether the Bygget tab should become 3D like ByggAPP

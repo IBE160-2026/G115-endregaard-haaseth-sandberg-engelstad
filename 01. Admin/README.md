@@ -110,6 +110,20 @@ npm run build   # type-checks and builds to dist/
 
 The simulator runs the fixed scenario *Regjeringskvartalet Light* (Appendix A of the product brief). The simulation engine is in `ByggAPP/src/engine/` and has no UI code. The icons are generated with `npm run icons` from `ByggAPP/assets/icons/generate.mjs`.
 
+## AI_BYGGplant (draft)
+
+A second app in `AI_BYGGplant/`. It opens with «Hei, hva skal bygges?», and Claude asks the questions a builder would ask, narrow first (site, size, floors, doors, windows, gates) and broader later, then makes a budget and a Gantt schedule. The dialog is always open for changes, and the tabs Oversikt, Bygget, Budsjett and Fremdrift show the project.
+
+```bash
+cd AI_BYGGplant
+npm install
+cp .env.example .env   # then fill in ANTHROPIC_API_KEY
+npm run dev            # http://localhost:5173
+npm test
+```
+
+The key stays on the Vite dev server; the browser only calls `/api/turn`.
+
 ## Documentation and way of working
 
 Folder structure:
@@ -118,6 +132,7 @@ Folder structure:
 - `01. Admin/` — assignment material: this README, `CLAUDE.md`, the product brief and the instructor's feedback
 - `_bmad/` — the BMAD framework (with its Claude Code skills in `.claude/skills/`)
 - `ByggAPP/G115_*.md` — the group's changelog, dilemmas, recommendations and the full game description
+- `AI_BYGGplant/` — the second app (draft): an AI dialog that plans a building project, with its own G115 files and BMAD spec
 - `.logs/` — session logs
 
 - [Product brief](brief-G115-AI-prosjektledelse-simulering.md) — full description of the problem, solution and scope (status: draft)
