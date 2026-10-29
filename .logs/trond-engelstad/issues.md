@@ -17,3 +17,6 @@
 - [ ] 2026-10-27 [v0-5-walkable-site](996-2026-10-27-20-47-30-v0-5-walkable-site.md) — Until then: republish the Claude Artifact by hand after each change
 - [ ] 2026-10-27 [v0-5-walkable-site](996-2026-10-27-20-47-30-v0-5-walkable-site.md) — A PRD, architecture and epics/stories written after the fact (input: G115_FinalPrompt.md), and an updated brief
 - [ ] 2026-10-27 [v0-5-walkable-site](996-2026-10-27-20-47-30-v0-5-walkable-site.md) — Check the automatic low-quality mode (below about 32 fps) and the frame rate on a real student PC
+- [ ] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — Test a BMAD skill that runs the scripts on a PC with Python/uv, to confirm the paths under `01. Admin/_bmad` work
+- [ ] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — A BMAD update/reinstall writes `_bmad/` to the root and resets the skill paths; move and rewrite again after an update
+- [ ] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — Add the assignment text (oppgavetekst) to `01. Admin/` if the group has it
