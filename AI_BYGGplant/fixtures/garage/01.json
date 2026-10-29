@@ -1,0 +1,37 @@
+{
+  "user": "Dobbelgarasje med loft",
+  "turn": {
+    "reply": "En dobbelgarasje med loft – flott prosjekt! Jeg starter med tomta, for den avgjør grunnarbeidet og hvor porten kan stå.",
+    "questions": [
+      { "text": "Hvordan er tomta der garasjen skal stå?", "options": ["Flat", "Svak helning", "Bratt", "Vet ikke"] },
+      { "text": "Fra hvilken side kjører du inn?", "options": ["Langsiden", "Kortsiden", "Vet ikke ennå"] }
+    ],
+    "phase": "tomt",
+    "changes": [
+      { "section": "annet", "text": "Nytt prosjekt: dobbelgarasje med loft", "ref_id": null }
+    ],
+    "project": {
+      "name": "Dobbelgarasje med loft",
+      "type": "Garasje",
+      "summary": "Frittstående dobbelgarasje for to biler, med loft til lagring.",
+      "facts": [
+        { "category": "Bygg", "label": "Type", "value": "Dobbelgarasje" },
+        { "category": "Bygg", "label": "Bruk", "value": "To biler, lagring på loftet" }
+      ],
+      "building": {
+        "length_m": null,
+        "width_m": null,
+        "floors": null,
+        "floor_height_m": null,
+        "roof": null,
+        "exterior": null,
+        "terrain_slope_pct": null,
+        "openings": []
+      },
+      "budget": [],
+      "schedule": [],
+      "risks": [],
+      "assumptions": ["Garasjen er frittstående og står på egen tomt."]
+    }
+  }
+}

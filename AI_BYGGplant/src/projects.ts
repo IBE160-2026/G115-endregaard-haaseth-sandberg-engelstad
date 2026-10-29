@@ -61,7 +61,7 @@ export function loadStore(raw: string | null, legacySession: string | null): Sto
   return addProject({ active: '', projects: [] });
 }
 
-export const exportProject = (s: Session) => JSON.stringify({ app: FILE_TAG, version: 2, session: s }, null, 2);
+export const exportProject = (s: Session) => JSON.stringify({ app: FILE_TAG, version: 3, session: s }, null, 2);
 
 export function importProject(text: string): Session {
   const data = JSON.parse(text) as { app?: string; session?: unknown };
