@@ -17,7 +17,9 @@
 - [ ] 2026-10-27 [v0-5-walkable-site](996-2026-10-27-20-47-30-v0-5-walkable-site.md) — Until then: republish the Claude Artifact by hand after each change
 - [ ] 2026-10-27 [v0-5-walkable-site](996-2026-10-27-20-47-30-v0-5-walkable-site.md) — A PRD, architecture and epics/stories written after the fact (input: G115_FinalPrompt.md), and an updated brief
 - [ ] 2026-10-27 [v0-5-walkable-site](996-2026-10-27-20-47-30-v0-5-walkable-site.md) — Check the automatic low-quality mode (below about 32 fps) and the frame rate on a real student PC
-- [ ] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — Test a BMAD skill that runs the scripts on a PC with Python/uv, to confirm the paths under `01. Admin/_bmad` work
-- [ ] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — A BMAD update/reinstall writes `_bmad/` to the root and resets the skill paths; move and rewrite again after an update
+- [x] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — Test a BMAD skill that runs the scripts on a PC with Python/uv, to confirm the paths under `01. Admin/_bmad` work (løst 2026-10-29: `_bmad/` is back at the root with its original paths)
+- [x] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — A BMAD update/reinstall writes `_bmad/` to the root and resets the skill paths; move and rewrite again after an update (løst 2026-10-29: `_bmad/` is back at the root with its original paths)
 - [ ] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — Add the assignment text (oppgavetekst) to `01. Admin/` if the group has it
 - [ ] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — The deploy workflow is in `ByggAPP/.github/` and does not run; move `.github/` back to the root to publish on GitHub Pages
+- [ ] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — `CLAUDE.md` is in `01. Admin/` and is not loaded when Claude starts at the root; the session-log rule no longer applies automatically
+- [ ] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — The GitHub front page shows no README now that it is in `01. Admin/`
