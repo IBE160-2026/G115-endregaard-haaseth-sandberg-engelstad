@@ -9,7 +9,7 @@ lives in, derived from __file__), finds every sibling directory containing a
 `customize.toml`, classifies each as agent and/or workflow based on its
 top-level blocks, reads the skill's SKILL.md frontmatter description for a
 one-liner, and checks whether override files already exist in
-`{project-root}/01. Admin/_bmad/custom/`.
+`{project-root}/_bmad/custom/`.
 
 Skills in BMad are loaded either from a project-local location (e.g. the
 project's `.claude/skills/` or `.cursor/skills/`) or from a user-global
@@ -98,7 +98,7 @@ def scan_skills(
     errors: list[str] = []
     scanned_roots: list[str] = []
     seen_names: set[str] = set()
-    custom_dir = project_root / "01. Admin" / "_bmad" / "custom"
+    custom_dir = project_root / "_bmad" / "custom"
 
     for root in skills_roots:
         if not root.is_dir():
@@ -170,13 +170,13 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         description=(
             "List customizable BMad skills installed alongside this one, "
             "grouped by surface (agent vs workflow), with override status "
-            "looked up against {project-root}/01. Admin/_bmad/custom/."
+            "looked up against {project-root}/_bmad/custom/."
         )
     )
     parser.add_argument(
         "--project-root",
         required=True,
-        help="Absolute path to the project root (the folder containing 01. Admin/_bmad/).",
+        help="Absolute path to the project root (the folder containing _bmad/).",
     )
     parser.add_argument(
         "--skills-root",

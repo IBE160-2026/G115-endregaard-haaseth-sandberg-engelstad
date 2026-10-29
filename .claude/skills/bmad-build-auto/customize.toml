@@ -1,8 +1,8 @@
 # DO NOT EDIT -- overwritten on every update.
 #
 # Default customization values for bmad-build-auto.
-# Override in 01. Admin/_bmad/custom/bmad-build-auto.toml or
-# 01. Admin/_bmad/custom/bmad-build-auto.user.toml.
+# Override in _bmad/custom/bmad-build-auto.toml or
+# _bmad/custom/bmad-build-auto.user.toml.
 #
 # Merge rules:
 # - Strings replace the default.

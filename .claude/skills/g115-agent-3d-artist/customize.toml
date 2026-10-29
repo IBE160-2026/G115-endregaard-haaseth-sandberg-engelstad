@@ -1,8 +1,8 @@
 # G115 custom agent (not installer-managed, safe to edit).
 #
 # Vera, the 3D Art Director & Game Designer, was hired by Kai (g115-agent-game-dev).
-# Team overrides go in 01. Admin/_bmad/custom/g115-agent-3d-artist.toml,
-# personal ones in 01. Admin/_bmad/custom/g115-agent-3d-artist.user.toml.
+# Team overrides go in _bmad/custom/g115-agent-3d-artist.toml,
+# personal ones in _bmad/custom/g115-agent-3d-artist.user.toml.
 
 [agent]
 name = "Vera"

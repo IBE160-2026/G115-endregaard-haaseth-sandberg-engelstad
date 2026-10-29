@@ -61,7 +61,7 @@ def _run_json(cmd):
 
 def load_agents(project_root: Path):
     """Installed agents as {code: entry}. Empty dict (with a flag) on failure."""
-    script = project_root / "01. Admin" / "_bmad" / "scripts" / "resolve_config.py"
+    script = project_root / "_bmad" / "scripts" / "resolve_config.py"
     data = _run_json([sys.executable, str(script), "--project-root", str(project_root), "--key", "agents"])
     if data is None:
         return {}, False
@@ -70,7 +70,7 @@ def load_agents(project_root: Path):
 
 def load_workflow(project_root: Path, skill_root: Path):
     """Merged [workflow] table. Falls back to the skill's base customize.toml."""
-    script = project_root / "01. Admin" / "_bmad" / "scripts" / "resolve_customization.py"
+    script = project_root / "_bmad" / "scripts" / "resolve_customization.py"
     data = _run_json(
         [sys.executable, str(script), "--skill", str(skill_root), "--project-root", str(project_root), "--key", "workflow"]
     )

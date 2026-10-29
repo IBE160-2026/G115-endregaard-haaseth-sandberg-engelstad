@@ -5,21 +5,21 @@ description: Authors and updates customization overrides for installed BMad skil
 
 # BMad Customize
 
-Translate the user's intent into a correctly-placed TOML override file under `{project-root}/01. Admin/_bmad/custom/` for a customizable agent or workflow skill. Discover, route, author, write, verify.
+Translate the user's intent into a correctly-placed TOML override file under `{project-root}/_bmad/custom/` for a customizable agent or workflow skill. Discover, route, author, write, verify.
 
-Scope v1: per-skill `[agent]` overrides (`bmad-agent-<role>.toml` / `.user.toml`) and per-skill `[workflow]` overrides (`bmad-<workflow>.toml` / `.user.toml`). Central config (`{project-root}/01. Admin/_bmad/custom/config.toml`) is out of scope — point users at the [How to Customize BMad guide](https://docs.bmad-method.org/how-to/customize-bmad/).
+Scope v1: per-skill `[agent]` overrides (`bmad-agent-<role>.toml` / `.user.toml`) and per-skill `[workflow]` overrides (`bmad-<workflow>.toml` / `.user.toml`). Central config (`{project-root}/_bmad/custom/config.toml`) is out of scope — point users at the [How to Customize BMad guide](https://docs.bmad-method.org/how-to/customize-bmad/).
 
 When the target's `customize.toml` doesn't expose what the user wants, say so plainly. Don't invent fields.
 
 ## Preflight
 
-- No `{project-root}/01. Admin/_bmad/` → BMad isn't installed. Say so, stop.
-- `{project-root}/01. Admin/_bmad/scripts/resolve_customization.py` missing → continue, but Step 6 verify falls back to manual merge.
+- No `{project-root}/_bmad/` → BMad isn't installed. Say so, stop.
+- `{project-root}/_bmad/scripts/resolve_customization.py` missing → continue, but Step 6 verify falls back to manual merge.
 - Both present → proceed.
 
 ## Activation
 
-Load `01. Admin/_bmad/config.toml` and `01. Admin/_bmad/config.user.toml` from `{project-root}` for `user_name` (default `BMad`) and `communication_language` (default `English`). Greet. If the user's invocation already names a target skill AND a specific change, jump to Step 3.
+Load `_bmad/config.toml` and `_bmad/config.user.toml` from `{project-root}` for `user_name` (default `BMad`) and `communication_language` (default `English`). Greet. If the user's invocation already names a target skill AND a specific change, jump to Step 3.
 
 ## Step 1: Classify intent
 
@@ -70,11 +70,11 @@ Merge semantics:
 
 Overrides are sparse: only the fields being changed. Never copy the whole `customize.toml`.
 
-**Template swap** (`*_template` scalar): offer to copy the default template to `{project-root}/01. Admin/_bmad/custom/{skill-name}-{purpose}-template.md`, point the override at the new path, offer to help edit it.
+**Template swap** (`*_template` scalar): offer to copy the default template to `{project-root}/_bmad/custom/{skill-name}-{purpose}-template.md`, point the override at the new path, offer to help edit it.
 
 ## Step 5: Team or user placement
 
-Under `{project-root}/01. Admin/_bmad/custom/`:
+Under `{project-root}/_bmad/custom/`:
 - `{skill-name}.toml` — team, committed. Policies, org conventions, compliance.
 - `{skill-name}.user.toml` — user, gitignored. Personal tone, private facts, shortcuts.
 
@@ -84,14 +84,14 @@ Default by character (policy → team, personal → user), confirm before writin
 
 1. Show the full TOML. If the file exists, show a diff. Never silently overwrite.
 2. Wait for explicit yes.
-3. Write. Create `{project-root}/01. Admin/_bmad/custom/` if needed.
+3. Write. Create `{project-root}/_bmad/custom/` if needed.
 4. Verify:
    ```
-   uv run "{project-root}/01. Admin/_bmad/scripts/resolve_customization.py" --skill <install-path> --project-root {project-root} --key <agent-or-workflow>
+   uv run {project-root}/_bmad/scripts/resolve_customization.py --skill <install-path> --project-root {project-root} --key <agent-or-workflow>
    ```
    Show the merged output, point out the changed fields.
 
-   **Resolver missing or fails:** read whichever layers exist — `<install-path>/customize.toml` (base), `{project-root}/01. Admin/_bmad/custom/{skill-name}.toml` (team), `{project-root}/01. Admin/_bmad/custom/{skill-name}.user.toml` (user) — apply base → team → user with the same merge rules (scalars override, tables deep-merge, `code`/`id`-keyed arrays merge by key, all other arrays append), describe how the changed fields resolve.
+   **Resolver missing or fails:** read whichever layers exist — `<install-path>/customize.toml` (base), `{project-root}/_bmad/custom/{skill-name}.toml` (team), `{project-root}/_bmad/custom/{skill-name}.user.toml` (user) — apply base → team → user with the same merge rules (scalars override, tables deep-merge, `code`/`id`-keyed arrays merge by key, all other arrays append), describe how the changed fields resolve.
 
    **Verify shows override didn't land** (field unchanged, merge conflict, file not picked up): re-enter Step 4 with the verify output as context. Usually wrong field name, wrong merge mode (scalar vs array), or wrong scope.
 5. Summarize what changed, where the file lives, how to iterate. Remind the user to commit team overrides.
@@ -106,6 +106,6 @@ Otherwise the skill isn't done — finish or tell the user they're exiting incom
 
 ## When this skill can't help
 
-- **Central config** (`{project-root}/01. Admin/_bmad/custom/config.toml`) — see the [How to Customize BMad guide](https://docs.bmad-method.org/how-to/customize-bmad/).
+- **Central config** (`{project-root}/_bmad/custom/config.toml`) — see the [How to Customize BMad guide](https://docs.bmad-method.org/how-to/customize-bmad/).
 - **Step logic, ordering, behavior not in `customize.toml`** — open a feature request, or use `bmad-builder` to create a custom skill. Offer to help with either.
 - **Skills without a `customize.toml`** — not customizable.

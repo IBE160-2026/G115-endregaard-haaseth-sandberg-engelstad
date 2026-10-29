@@ -5,8 +5,8 @@
 # To change an install answer durably, re-run the installer (your prior
 # answers are remembered as defaults). To pin a value regardless of
 # install answers, or to add custom agents / override descriptors, use:
-#   01. Admin/_bmad/custom/config.toml       (team, committed)
-#   01. Admin/_bmad/custom/config.user.toml  (personal, gitignored)
+#   _bmad/custom/config.toml       (team, committed)
+#   _bmad/custom/config.user.toml  (personal, gitignored)
 # Those files are never touched by the installer.
 # ─────────────────────────────────────────────────────────────────
 

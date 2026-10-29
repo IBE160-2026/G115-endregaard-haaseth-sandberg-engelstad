@@ -4,7 +4,7 @@
 # Date: 2026-10-02T11:00:41.203Z
 
 user_skill_level: intermediate
-planning_artifacts: "{project-root}/ByggAPP/.docs/planning-artifacts"
+planning_artifacts: "{project-root}/01. Admin/planning-artifacts"
 implementation_artifacts: "{project-root}/ByggAPP/.docs/implementation-artifacts"
 project_knowledge: "{project-root}/docs"
 

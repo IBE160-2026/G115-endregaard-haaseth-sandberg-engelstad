@@ -1,8 +1,8 @@
 # G115 custom agent (not installer-managed, safe to edit).
 #
 # Kai, the Game Developer & 3D Specialist, is the identity of this agent.
-# Team overrides go in 01. Admin/_bmad/custom/g115-agent-game-dev.toml,
-# personal ones in 01. Admin/_bmad/custom/g115-agent-game-dev.user.toml.
+# Team overrides go in _bmad/custom/g115-agent-game-dev.toml,
+# personal ones in _bmad/custom/g115-agent-game-dev.user.toml.
 
 [agent]
 name = "Kai"

@@ -25,16 +25,16 @@ _MISSING = object()
 
 
 def find_project_root(start: Path) -> Path | None:
-    """Nearest ancestor holding `01. Admin/_bmad/`, falling back to the nearest holding `.git`.
+    """Nearest ancestor holding `_bmad/`, falling back to the nearest holding `.git`.
 
-    `01. Admin/_bmad/` outranks `.git` at every depth: a submodule or nested repo carries
+    `_bmad/` outranks `.git` at every depth: a submodule or nested repo carries
     `.git` without being the BMad project, so treating the two as equal stops the
-    walk short of the root that owns `01. Admin/_bmad/custom/`.
+    walk short of the root that owns `_bmad/custom/`.
     """
     git_root: Path | None = None
     current = start.resolve()
     while True:
-        if (current / "01. Admin" / "_bmad").is_dir():
+        if (current / "_bmad").is_dir():
             return current
         if git_root is None and (current / ".git").exists():
             git_root = current
@@ -46,18 +46,13 @@ def find_project_root(start: Path) -> Path | None:
 def script_project_root() -> Path | None:
     """Project root implied by this script's own install path.
 
-    Skills invoke `{project-root}/01. Admin/_bmad/scripts/resolve_customization.py`, so when
-    this file sits at that path the folder above `01. Admin` is a project root the caller already
+    Skills invoke `{project-root}/_bmad/scripts/resolve_customization.py`, so when
+    this file sits at that path its grandparent is a project root the caller already
     resolved.
     """
     parents = Path(__file__).resolve().parents
-    if (
-        len(parents) >= 4
-        and parents[0].name == "scripts"
-        and parents[1].name == "_bmad"
-        and parents[2].name == "01. Admin"
-    ):
-        return parents[3]
+    if len(parents) >= 3 and parents[0].name == "scripts" and parents[1].name == "_bmad":
+        return parents[2]
     return None
 
 
@@ -80,7 +75,7 @@ def candidate_project_roots(skill_dir: Path) -> list[Path]:
 
 
 def has_override(root: Path, skill_name: str) -> bool:
-    custom_dir = root / "01. Admin" / "_bmad" / "custom"
+    custom_dir = root / "_bmad" / "custom"
     return any(
         (custom_dir / name).is_file()
         for name in (f"{skill_name}.toml", f"{skill_name}.user.toml")
@@ -128,7 +123,7 @@ def main() -> int:
     parser.add_argument(
         "--project-root",
         "-p",
-        help="Explicit project root containing 01. Admin/_bmad/ (recommended)",
+        help="Explicit project root containing _bmad/ (recommended)",
     )
     parser.add_argument(
         "--key",

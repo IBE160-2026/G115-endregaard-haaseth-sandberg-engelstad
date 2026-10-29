@@ -3,8 +3,8 @@
 # Workflow customization surface for bmad-party-mode.
 #
 # Override files (not edited here):
-#   {project-root}/01. Admin/_bmad/custom/bmad-party-mode.toml         (team)
-#   {project-root}/01. Admin/_bmad/custom/bmad-party-mode.user.toml    (personal)
+#   {project-root}/_bmad/custom/bmad-party-mode.toml         (team)
+#   {project-root}/_bmad/custom/bmad-party-mode.user.toml    (personal)
 
 [workflow]
 

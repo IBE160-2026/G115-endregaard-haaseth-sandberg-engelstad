@@ -34,7 +34,7 @@ When a character shows up who isn't in the party's roster — cast from an open-
 ## Write it
 
 ```
-uv run "{project-root}/01. Admin/_bmad/scripts/memlog.py" append \
+uv run {project-root}/_bmad/scripts/memlog.py append \
   --workspace {workflow.memory_dir}/{active} \
   --type <dynamic|moment|callback|outcome> \
   --text "<one succinct line, in the room's own read of it>"

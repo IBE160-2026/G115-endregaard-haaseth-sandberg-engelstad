@@ -17,6 +17,9 @@ The choices the AI (Claude Code) put to the group, with the group's reply word f
 5. **Skills, workflows and .gitignore.** Prompt: GitHub only runs workflows from the root, Claude Code only loads skills from the root, and a .gitignore only covers its own folder. Move them anyway?
    Reply: "skills workflows og gitnore skal inn i byggAPP" / workflows: "Move it anyway" / skills: "Keep at root (Recommended)" / .gitignore: "la den stå."
    Result: `.github/` is in `ByggAPP/`, so the deploy does not run; `.claude/` and `.gitignore` stay at the root.
+6. **BMAD, README and CLAUDE.md.** Prompt: none (the group's own request).
+   Reply: "Flytt BMAD ut av 01.Admin til root. Legg Claude.md og Readmme.md i 01 Admin"
+   Result: `_bmad/` is back at the root with its original paths (entry 2 undone); `README.md` and `CLAUDE.md` are in `01. Admin/`.
 
 ## v0.5 – 2026-10-27
 
