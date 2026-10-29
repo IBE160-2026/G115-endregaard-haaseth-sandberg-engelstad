@@ -14,6 +14,9 @@ The choices the AI (Claude Code) put to the group, with the group's reply word f
 4. **The G115 files.** Prompt: none (the group's own request).
    Reply: "put G115 filene inn i ByggAPP også"
    Result: the four G115 files are in `ByggAPP/`.
+5. **Skills, workflows and .gitignore.** Prompt: GitHub only runs workflows from the root, Claude Code only loads skills from the root, and a .gitignore only covers its own folder. Move them anyway?
+   Reply: "skills workflows og gitnore skal inn i byggAPP" / workflows: "Move it anyway" / skills: "Keep at root (Recommended)" / .gitignore: "la den stå."
+   Result: `.github/` is in `ByggAPP/`, so the deploy does not run; `.claude/` and `.gitignore` stay at the root.
 
 ## v0.5 – 2026-10-27
 

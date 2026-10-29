@@ -94,7 +94,7 @@ These criteria are the group's own reading of "done"; there is no formal grading
 
 Test version: **https://claude.ai/artifact/Nh9p4q3T5mbQaphKD9iSdY** (a Claude Artifact; testers need access through its Share menu). Only a browser is needed, and a desktop with a keyboard is best.
 
-When a repo admin has turned on GitHub Pages (Settings → Pages → Source: GitHub Actions), `.github/workflows/deploy.yml` publishes `main` on every push to **https://ibe160-2026.github.io/G115-endregaard-haaseth-sandberg-engelstad/**.
+The GitHub Pages workflow is stored in `ByggAPP/.github/workflows/deploy.yml`. GitHub only runs workflows from `.github/` at the repo root, so it does not run from there. To publish, move `.github/` back to the root and have a repo admin turn on Pages (Settings → Pages → Source: GitHub Actions). It then publishes `main` on every push to **https://ibe160-2026.github.io/G115-endregaard-haaseth-sandberg-engelstad/**.
 
 ## Kjør lokalt
 

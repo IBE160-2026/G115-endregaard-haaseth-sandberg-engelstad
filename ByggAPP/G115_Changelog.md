@@ -4,8 +4,8 @@ Major iterations of the *Regjeringskvartalet Light* project management simulator
 
 ## Repo structure – 2026-10-29
 
-The repo is split into folders: everything for the game (source code, icons, build setup, the BMAD specs) is in `ByggAPP/`, and the brief, the instructor's feedback and the BMAD framework are in `01. Admin/`. The G115 files are in `ByggAPP/` too. `.logs/`, `README.md` and `CLAUDE.md` stay at the root, as do `.github/` and `.claude/` because GitHub and Claude Code require them there.
-The deploy workflow builds from `ByggAPP/`, and all BMAD paths (skills, scripts, config) now point to `01. Admin/_bmad/`. Run the game locally with `cd ByggAPP`, then `npm install` and `npm run dev`. 187 tests pass.
+The repo is split into folders: everything for the game (source code, icons, build setup, the BMAD specs) is in `ByggAPP/`, and the brief, the instructor's feedback and the BMAD framework are in `01. Admin/`. The G115 files are in `ByggAPP/` too. `.logs/`, `README.md` and `CLAUDE.md` stay at the root, as do `.claude/` (Claude Code requires it there) and `.gitignore`. The deploy workflow is in `ByggAPP/.github/`, where GitHub does not run it.
+The deploy workflow builds from `ByggAPP/` once `.github/` is back at the root, and all BMAD paths (skills, scripts, config) now point to `01. Admin/_bmad/`. Run the game locally with `cd ByggAPP`, then `npm install` and `npm run dev`. 187 tests pass.
 
 ## v0.5 – 2026-10-27
 
