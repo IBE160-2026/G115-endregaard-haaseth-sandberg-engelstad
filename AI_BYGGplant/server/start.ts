@@ -1,11 +1,11 @@
-// The production server: serves the built app from dist/ and POST /api/turn.
+// The production server: serves the built app from dist/ and the API (server/http.ts).
 // Run `npm run build`, then `npm start` (PORT defaults to 8080). Node runs this .ts file directly.
+// Without ANTHROPIC_API_KEY (or with DEMO=1) it serves the scripted, clearly labelled demo dialog.
 import { existsSync, readFileSync } from 'node:fs';
 import { createServer } from 'node:http';
-import { extname, join, normalize, resolve } from 'node:path';
-import { createHandler } from './claude.ts';
+import { extname, join, normalize } from 'node:path';
+import { handlerFromEnv, ROOT } from './http.ts';
 
-const ROOT = resolve(import.meta.dirname, '..');
 const DIST = join(ROOT, 'dist');
 const TYPES: Record<string, string> = {
   '.html': 'text/html; charset=utf-8',
@@ -15,6 +15,7 @@ const TYPES: Record<string, string> = {
   '.json': 'application/json',
   '.png': 'image/png',
   '.ico': 'image/x-icon',
+  '.woff2': 'font/woff2',
 };
 
 if (existsSync(join(ROOT, '.env'))) process.loadEnvFile(join(ROOT, '.env'));
@@ -31,8 +32,9 @@ function staticFile(urlPath: string): string {
   return file;
 }
 
-const api = createHandler(process.env.ANTHROPIC_API_KEY);
-const port = Number(process.env.PORT ?? 8080);
+const api = handlerFromEnv(process.env);
+const port = Number(process.env.PORT || 8080);
+const mode = process.env.ANTHROPIC_API_KEY && process.env.DEMO !== '1' ? 'Claude' : 'demo (forhåndsskrevet dialog, ikke live AI)';
 
 createServer((req, res) => {
   void api(req, res, () => {
@@ -45,4 +47,4 @@ createServer((req, res) => {
       res.end();
     }
   });
-}).listen(port, () => console.log(`AI Byggplan kjører på http://localhost:${port}`));
+}).listen(port, () => console.log(`AI Byggplan kjører på http://localhost:${port} – ${mode}`));

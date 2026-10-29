@@ -7,7 +7,7 @@
 //
 // GET /api/config   → AppConfig
 // POST /api/lead    body: Lead (see src/handoff, WS4)  → { delivered: boolean, note: string }
-import type { AiTurn } from './types';
+import type { AiTurn } from './types.ts';
 
 export type StreamEvent =
   | { event: 'reply'; data: { delta: string } }

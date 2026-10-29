@@ -9,7 +9,7 @@
     "phase": "bygg",
     "changes": [
       { "section": "tomt", "text": "Flat tomt, innkjøring fra langsiden", "ref_id": null },
-      { "section": "bygg", "text": "Størrelse 8 × 7 m, én etasje pluss loft", "ref_id": null },
+      { "section": "bygg", "text": "Størrelse 8 × 7 m, én etasje med loft i takrommet", "ref_id": null },
       { "section": "bygg", "text": "Saltak 35° med møne langs lengden", "ref_id": null },
       { "section": "apninger", "text": "Garasjeport 5,0 × 2,25 m på langsiden (forslag)", "ref_id": "port-1" }
     ],
@@ -22,14 +22,14 @@
         { "category": "Tomt", "label": "Adkomst", "value": "Fra langsiden" },
         { "category": "Bygg", "label": "Type", "value": "Dobbelgarasje" },
         { "category": "Bygg", "label": "Størrelse", "value": "8 × 7 m (56 m²)" },
-        { "category": "Bygg", "label": "Etasjer", "value": "Garasje + loft" },
+        { "category": "Bygg", "label": "Etasjer", "value": "1 etasje + loft i takrommet" },
         { "category": "Bygg", "label": "Tak", "value": "Saltak 35°" }
       ],
       "building": {
         "length_m": 8,
         "width_m": 7,
-        "floors": 2,
-        "floor_height_m": 2.5,
+        "floors": 1,
+        "floor_height_m": 2.7,
         "roof": { "kind": "saltak", "pitch_deg": 35, "ridge_along": "lengde", "overhang_m": 0.4 },
         "exterior": null,
         "terrain_slope_pct": 0,

@@ -66,14 +66,15 @@ export function normalizeSession(raw: unknown): Session {
     const n = Math.max(1, Math.min(count ?? 1, 40));
     // Copies of one v0.2 entry must not share its id.
     return Array.from({ length: n }, (_, i) =>
-      withId({ offset_m: null, sill_m: null, ...rest, wall, ...(i > 0 ? { id: undefined } : {}) } as Opening, 'apning'),
+      // Defaults first: the spread keeps any value the saved data already has.
+      withId({ ...({ offset_m: null, sill_m: null } as Partial<Opening>), ...rest, wall, ...(i > 0 ? { id: undefined } : {}) } as Opening, 'apning'),
     );
   });
   const project: Project = {
     ...emptyProject(),
     ...old,
     building: { ...b, roof, openings },
-    budget: (old.budget ?? []).map((l) => withId({ sku: null, ...l, uncertainty_pct: l.uncertainty_pct ?? 0 }, 'post')),
+    budget: (old.budget ?? []).map((l) => withId({ ...({ sku: null } as Partial<typeof l>), ...l, uncertainty_pct: l.uncertainty_pct ?? 0 }, 'post')),
     risks: (old.risks ?? []).map((r) => withId(r, 'risiko')),
   } as Project;
   const log = (Array.isArray(s.log) ? s.log : []).map((e) => ({

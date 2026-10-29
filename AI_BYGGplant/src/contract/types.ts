@@ -65,7 +65,11 @@ export interface Opening {
   width_m: number | null;
   height_m: number | null;
   wall: Wall;
-  /** 1 = ground floor. */
+  /**
+   * 1 = ground floor. floors + 1 = the loft/roof level (a loft is NOT counted in `floors`): on a gable
+   * wall the opening sits in the gable triangle, on an eave wall it is a roof window in the roof plane.
+   * offset_m is then measured along the wall as usual; sill_m from the top of the wall (the eave).
+   */
   floor: number;
   /** From the wall's left corner (seen from outside) to the opening's left edge. Null = not decided. */
   offset_m: number | null;

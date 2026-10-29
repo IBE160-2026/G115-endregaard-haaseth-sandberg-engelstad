@@ -1,0 +1,190 @@
+{
+  "user": "To porter på 2,5 m, 35° er fint. Et vindu på hver kortside og en dør på baksiden.",
+  "turn": {
+    "reply": "Da har garasjen to porter på 2,5 meter med en meter vegg mellom, et vindu på hver kortside og en sidedør på baksiden. To smale porter gir en stivere vegg enn én bred, og du kan åpne bare den ene om vinteren. Nå kan vi se på utseendet.",
+    "questions": [
+      {
+        "text": "Hvilken kledning ønsker du?",
+        "options": [
+          "Stående kledning",
+          "Liggende kledning",
+          "Vet ikke"
+        ]
+      },
+      {
+        "text": "Hvilke farger tenker du på vegger, lister og tak?",
+        "options": [
+          "Rødt med hvite lister",
+          "Hvitt med sort tak",
+          "Grått",
+          "Som huset"
+        ]
+      }
+    ],
+    "phase": "apninger",
+    "changes": [
+      {
+        "section": "apninger",
+        "text": "Garasjeport 5,0 → 2,5 m",
+        "ref_id": "port-1"
+      },
+      {
+        "section": "apninger",
+        "text": "Ny garasjeport 2,5 × 2,25 m",
+        "ref_id": "port-2"
+      },
+      {
+        "section": "apninger",
+        "text": "Vindu 100 × 60 cm på venstre kortside",
+        "ref_id": "vindu-1"
+      },
+      {
+        "section": "apninger",
+        "text": "Vindu 100 × 60 cm på høyre kortside",
+        "ref_id": "vindu-2"
+      },
+      {
+        "section": "apninger",
+        "text": "Sidedør 9×21 på baksiden",
+        "ref_id": "dor-1"
+      },
+      {
+        "section": "bygg",
+        "text": "Takvinkel 35° bekreftet",
+        "ref_id": null
+      }
+    ],
+    "project": {
+      "name": "Dobbelgarasje med loft",
+      "type": "Garasje",
+      "summary": "Frittstående dobbelgarasje på 8 × 7 m med saltak 35° og loft, to porter på 2,5 m mot innkjøringen, et vindu på hver kortside og sidedør bak.",
+      "facts": [
+        {
+          "category": "Tomt",
+          "label": "Terreng",
+          "value": "Flat"
+        },
+        {
+          "category": "Tomt",
+          "label": "Adkomst",
+          "value": "Fra langsiden"
+        },
+        {
+          "category": "Bygg",
+          "label": "Type",
+          "value": "Dobbelgarasje"
+        },
+        {
+          "category": "Bygg",
+          "label": "Størrelse",
+          "value": "8 × 7 m (56 m²)"
+        },
+        {
+          "category": "Bygg",
+          "label": "Etasjer",
+          "value": "1 etasje + loft i takrommet"
+        },
+        {
+          "category": "Bygg",
+          "label": "Tak",
+          "value": "Saltak 35°, møne langs lengden"
+        },
+        {
+          "category": "Åpninger",
+          "label": "Porter",
+          "value": "2 leddporter 2,5 × 2,25 m på langsiden"
+        },
+        {
+          "category": "Åpninger",
+          "label": "Vinduer",
+          "value": "1 vindu 100 × 60 cm på hver kortside"
+        },
+        {
+          "category": "Åpninger",
+          "label": "Dør",
+          "value": "Sidedør 9×21 på baksiden"
+        }
+      ],
+      "building": {
+        "length_m": 8,
+        "width_m": 7,
+        "floors": 1,
+        "floor_height_m": 2.7,
+        "roof": {
+          "kind": "saltak",
+          "pitch_deg": 35,
+          "ridge_along": "lengde",
+          "overhang_m": 0.4
+        },
+        "exterior": null,
+        "terrain_slope_pct": 0,
+        "openings": [
+          {
+            "id": "port-1",
+            "kind": "port",
+            "label": "Garasjeport venstre",
+            "width_m": 2.5,
+            "height_m": 2.25,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 1,
+            "sill_m": 0
+          },
+          {
+            "id": "port-2",
+            "kind": "port",
+            "label": "Garasjeport høyre",
+            "width_m": 2.5,
+            "height_m": 2.25,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 4.5,
+            "sill_m": 0
+          },
+          {
+            "id": "vindu-1",
+            "kind": "vindu",
+            "label": "Vindu venstre kortside",
+            "width_m": 1,
+            "height_m": 0.6,
+            "wall": "venstre",
+            "floor": 1,
+            "offset_m": 3,
+            "sill_m": 1.4
+          },
+          {
+            "id": "vindu-2",
+            "kind": "vindu",
+            "label": "Vindu høyre kortside",
+            "width_m": 1,
+            "height_m": 0.6,
+            "wall": "hoyre",
+            "floor": 1,
+            "offset_m": 3,
+            "sill_m": 1.4
+          },
+          {
+            "id": "dor-1",
+            "kind": "dor",
+            "label": "Sidedør bak",
+            "width_m": 0.9,
+            "height_m": 2.1,
+            "wall": "bak",
+            "floor": 1,
+            "offset_m": 1,
+            "sill_m": 0
+          }
+        ]
+      },
+      "budget": [],
+      "schedule": [],
+      "risks": [],
+      "assumptions": [
+        "Garasjen er frittstående og står på egen tomt.",
+        "Loftet har lav knevegg og brukes til lagring, ikke opphold.",
+        "Over 50 m² bebygd areal kan gi søknadsplikt; det sjekkes senere.",
+        "Portene er isolerte leddporter; vinduene sitter i brysthøyde (1,4 m) så hyller kan stå under."
+      ]
+    }
+  }
+}

@@ -2,6 +2,12 @@
 
 Major iterations of *AI Byggplan*, the AI dialog that plans a building project. Each entry has a summary of at most four lines.
 
+## v0.3 – 2026-10-30
+
+"Start again and make something fantastic": team meeting 2 was run with Ingrid, Jonas and Mats as three separate agents (positions, replies, Ingrid's decision), then built by four parallel agents against a frozen contract (`src/contract/`).
+New: a split screen with a live 3D model of the AI's building (Three.js, lazy-loaded; rises, eases on change, and changed openings glow), a streamed reply (SSE), a 7-step garage demo dialog that runs without an API key (labelled «Demo – forhåndsskrevet dialog, ikke live AI»), white-label for the fictional «Nordlys Hus og Garasje» (logo, colours, a 32-product catalogue in the prompt), «Send til forhandler» (lead.json, a webhook, the dealer's inbox), a new report, a schema validator, and a rate limit.
+272 tests, tsc, `npm run build` and `npm run smoke` pass. NOT yet checked in a real browser (the 3D look, the glow and the full click-through are unverified), and still never run against Claude.
+
 ## v0.2 – 2026-10-29
 
 The team revision. Three AI agents (📋 Ingrid prosjektleder, 💻 Jonas utvikler, 💼 Mats selger) got the mandate to make AI_BYGGplant software worth 250 000 USD. They met, agreed a roadmap (a white-label licence for a prefab or building-supply company) and decided what this revision contains.

@@ -1,13 +1,19 @@
 <!doctype html>
-<html lang="no">
+<html lang="nb">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="%BASE_URL%icons/buildings.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#1f5e45" />
+    <meta name="color-scheme" content="light dark" />
+    <!-- Title, favicon and colours are replaced from brand.json at start (src/brand/brand.ts). -->
+    <link rel="icon" type="image/svg+xml" href="%BASE_URL%brand/logo.svg" />
     <title>AI Byggplan</title>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app" class="app">
+      <p class="boot" role="status">Starter …</p>
+    </div>
+    <noscript>AI Byggplan trenger JavaScript.</noscript>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

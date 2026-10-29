@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="t">
+  <title id="t">Nordlys Hus og Garasje (fiktivt demoselskap)</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2A7A5A"/>
+      <stop offset="1" stop-color="#143F2E"/>
+    </linearGradient>
+    <linearGradient id="aurora" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#8FF0C2" stop-opacity="0"/>
+      <stop offset="0.35" stop-color="#8FF0C2"/>
+      <stop offset="0.75" stop-color="#7FD8F0"/>
+      <stop offset="1" stop-color="#B9A6FF" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="url(#bg)"/>
+  <!-- the northern lights: two soft ribbons over the roof -->
+  <path d="M7 24 C 18 9, 34 21, 57 10" fill="none" stroke="url(#aurora)" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M11 30 C 22 19, 36 27, 54 18" fill="none" stroke="url(#aurora)" stroke-width="2.2" stroke-linecap="round" opacity="0.65"/>
+  <!-- the building: a gable with a garage port -->
+  <path d="M14 53 V37 L32 25 L50 37 V53 Z" fill="#F4F1EA"/>
+  <path d="M22 53 V42.5 H42 V53" fill="#1F5E45"/>
+  <path d="M22 46 H42 M22 49.5 H42" stroke="#F4F1EA" stroke-width="1.2" opacity="0.55"/>
+  <circle cx="32" cy="34.5" r="2.4" fill="#1F5E45"/>
+</svg>

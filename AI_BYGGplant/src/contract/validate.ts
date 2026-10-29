@@ -1,7 +1,7 @@
 // A small validator for the JSON-schema subset TURN_SCHEMA uses (type, enum, anyOf, properties,
 // required, additionalProperties: false, items). Used by the server on every AI turn and by the tests.
-import { projectIds, type AiTurn, type Project } from './types';
-import { TURN_SCHEMA } from './schema';
+import { projectIds, type AiTurn, type Project } from './types.ts';
+import { TURN_SCHEMA } from './schema.ts';
 
 type Schema = Record<string, unknown>;
 

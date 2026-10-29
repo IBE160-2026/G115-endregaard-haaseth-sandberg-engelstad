@@ -1,0 +1,420 @@
+{
+  "user": "Ser bra ut! Send det til forhandleren.",
+  "turn": {
+    "reply": "Så bra! Trykk på «Send til forhandler», så får forhandleren hele prosjektet med tegning, budsjett og fremdriftsplan, og tar kontakt for et endelig tilbud. Du kan fortsatt endre ting her etterpå.",
+    "questions": [],
+    "phase": "detaljer",
+    "changes": [],
+    "project": {
+      "name": "Dobbelgarasje med loft",
+      "type": "Garasje",
+      "summary": "Frittstående dobbelgarasje på 9 × 7 m med saltak 35° og loft med takvindu, rødmalt stående kledning og sort tak, støpt plate og strøm til lys og stikk.",
+      "facts": [
+        {
+          "category": "Tomt",
+          "label": "Terreng",
+          "value": "Flat"
+        },
+        {
+          "category": "Tomt",
+          "label": "Adkomst",
+          "value": "Fra langsiden"
+        },
+        {
+          "category": "Bygg",
+          "label": "Type",
+          "value": "Dobbelgarasje"
+        },
+        {
+          "category": "Bygg",
+          "label": "Størrelse",
+          "value": "9 × 7 m (63 m²)"
+        },
+        {
+          "category": "Bygg",
+          "label": "Etasjer",
+          "value": "1 etasje + loft i takrommet"
+        },
+        {
+          "category": "Bygg",
+          "label": "Tak",
+          "value": "Saltak 35°, møne langs lengden"
+        },
+        {
+          "category": "Åpninger",
+          "label": "Porter",
+          "value": "2 leddporter 2,5 × 2,25 m på langsiden"
+        },
+        {
+          "category": "Åpninger",
+          "label": "Vinduer",
+          "value": "1 vindu 100 × 60 cm på hver kortside"
+        },
+        {
+          "category": "Åpninger",
+          "label": "Dør",
+          "value": "Sidedør 9×21 på baksiden"
+        },
+        {
+          "category": "Materialer",
+          "label": "Kledning",
+          "value": "Stående tømmermannskledning"
+        },
+        {
+          "category": "Materialer",
+          "label": "Farger",
+          "value": "Rød vegg, hvite lister, sort tak"
+        },
+        {
+          "category": "Materialer",
+          "label": "Taktekking",
+          "value": "Sort takstål (foreløpig)"
+        },
+        {
+          "category": "Teknikk",
+          "label": "Fundament",
+          "value": "Støpt plate på mark"
+        },
+        {
+          "category": "Teknikk",
+          "label": "Elektro",
+          "value": "Lys og to stikkontakter"
+        },
+        {
+          "category": "Økonomi",
+          "label": "Budsjett",
+          "value": "ca. 721 810 kr inkl. mva"
+        },
+        {
+          "category": "Økonomi",
+          "label": "Byggetid",
+          "value": "14 uker inkl. søknad"
+        },
+        {
+          "category": "Åpninger",
+          "label": "Takvindu",
+          "value": "78 × 118 cm over portene"
+        }
+      ],
+      "building": {
+        "length_m": 9,
+        "width_m": 7,
+        "floors": 1,
+        "floor_height_m": 2.7,
+        "roof": {
+          "kind": "saltak",
+          "pitch_deg": 35,
+          "ridge_along": "lengde",
+          "overhang_m": 0.4
+        },
+        "exterior": {
+          "cladding": "Stående kledning (tømmermannskledning)",
+          "wall_color": "#8B2318",
+          "roof_color": "#1C1C1C",
+          "trim_color": "#F4F2EC"
+        },
+        "terrain_slope_pct": 0,
+        "openings": [
+          {
+            "id": "port-1",
+            "kind": "port",
+            "label": "Garasjeport venstre",
+            "width_m": 2.5,
+            "height_m": 2.25,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 1.5,
+            "sill_m": 0
+          },
+          {
+            "id": "port-2",
+            "kind": "port",
+            "label": "Garasjeport høyre",
+            "width_m": 2.5,
+            "height_m": 2.25,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 5,
+            "sill_m": 0
+          },
+          {
+            "id": "vindu-1",
+            "kind": "vindu",
+            "label": "Vindu venstre kortside",
+            "width_m": 1,
+            "height_m": 0.6,
+            "wall": "venstre",
+            "floor": 1,
+            "offset_m": 3,
+            "sill_m": 1.4
+          },
+          {
+            "id": "vindu-2",
+            "kind": "vindu",
+            "label": "Vindu høyre kortside",
+            "width_m": 1,
+            "height_m": 0.6,
+            "wall": "hoyre",
+            "floor": 1,
+            "offset_m": 3,
+            "sill_m": 1.4
+          },
+          {
+            "id": "dor-1",
+            "kind": "dor",
+            "label": "Sidedør bak",
+            "width_m": 0.9,
+            "height_m": 2.1,
+            "wall": "bak",
+            "floor": 1,
+            "offset_m": 1,
+            "sill_m": 0
+          },
+          {
+            "id": "takvindu-1",
+            "kind": "vindu",
+            "label": "Takvindu",
+            "width_m": 0.78,
+            "height_m": 1.18,
+            "wall": "front",
+            "floor": 2,
+            "offset_m": 4.11,
+            "sill_m": 0.3
+          }
+        ]
+      },
+      "budget": [
+        {
+          "id": "b-grunn",
+          "post": "Grunnarbeid",
+          "description": "Masseutskifting og drenering, 63 m² à 650 kr",
+          "amount_nok": 40950,
+          "uncertainty_pct": 25,
+          "sku": "NL-GRN-M2"
+        },
+        {
+          "id": "b-plate",
+          "post": "Fundament",
+          "description": "Støpt plate på mark med isolasjon og armering, 63 m² à 1 850 kr",
+          "amount_nok": 116550,
+          "uncertainty_pct": 15,
+          "sku": "NL-BET-PLT"
+        },
+        {
+          "id": "b-byggesett",
+          "post": "Byggesett",
+          "description": "Byggesett dobbelgarasje med loft 7,0 × 9,0 m: bindingsverk, takstoler, loftsbjelkelag og trapp",
+          "amount_nok": 209000,
+          "uncertainty_pct": 5,
+          "sku": "NL-GAR-7090"
+        },
+        {
+          "id": "b-kledning",
+          "post": "Kledning",
+          "description": "Stående tømmermannskledning, grunnet, ca. 85 m² à 289 kr",
+          "amount_nok": 24565,
+          "uncertainty_pct": 10,
+          "sku": "NL-KLE-STA"
+        },
+        {
+          "id": "b-maling",
+          "post": "Maling og lister",
+          "description": "Rød maling to strøk ca. 85 m² à 145 kr (12 325 kr) og hvit listepakke (6 900 kr)",
+          "amount_nok": 19225,
+          "uncertainty_pct": 15,
+          "sku": "NL-MAL-2"
+        },
+        {
+          "id": "b-tak",
+          "post": "Tak",
+          "description": "Sort takstål ca. 93 m² à 239 kr og takrenner (7 900 kr)",
+          "amount_nok": 30100,
+          "uncertainty_pct": 10,
+          "sku": "NL-TAK-STL"
+        },
+        {
+          "id": "b-porter",
+          "post": "Porter",
+          "description": "2 isolerte leddporter 2,5 × 2,25 m à 23 900 kr",
+          "amount_nok": 47800,
+          "uncertainty_pct": 5,
+          "sku": "NL-PORT-2522"
+        },
+        {
+          "id": "b-vindu-dor",
+          "post": "Vinduer, dør og takvindu",
+          "description": "2 garasjevinduer 100 × 60 cm à 3 490 kr, sidedør 9×21 til 8 990 kr og takvindu 78 × 118 cm til 8 900 kr",
+          "amount_nok": 24870,
+          "uncertainty_pct": 10,
+          "sku": null
+        },
+        {
+          "id": "b-el",
+          "post": "Elektro",
+          "description": "Elpakke garasje: lys, to stikk og egen kurs fra hovedtavlen",
+          "amount_nok": 24900,
+          "uncertainty_pct": 15,
+          "sku": "NL-EL-GAR"
+        },
+        {
+          "id": "b-montering",
+          "post": "Montering",
+          "description": "Tømrer ca. 130 timer à 795 kr",
+          "amount_nok": 103350,
+          "uncertainty_pct": 25,
+          "sku": "NL-MON-T"
+        },
+        {
+          "id": "b-frakt",
+          "post": "Frakt",
+          "description": "Levering av byggesettet med kranbil",
+          "amount_nok": 14900,
+          "uncertainty_pct": 5,
+          "sku": "NL-FRAKT"
+        },
+        {
+          "id": "b-uforutsett",
+          "post": "Uforutsett",
+          "description": "Ca. 10 % av summen over, til det ingen ser før byggingen starter",
+          "amount_nok": 65600,
+          "uncertainty_pct": 50,
+          "sku": null
+        }
+      ],
+      "schedule": [
+        {
+          "id": "t-sok",
+          "name": "Byggesøknad og nabovarsel",
+          "start_week": 0,
+          "duration_weeks": 4,
+          "depends_on": []
+        },
+        {
+          "id": "t-bestill",
+          "name": "Bestilling og levering av byggesett og porter",
+          "start_week": 4,
+          "duration_weeks": 4,
+          "depends_on": [
+            "t-sok"
+          ]
+        },
+        {
+          "id": "t-grunn",
+          "name": "Grunnarbeid og drenering",
+          "start_week": 4,
+          "duration_weeks": 1,
+          "depends_on": [
+            "t-sok"
+          ]
+        },
+        {
+          "id": "t-plate",
+          "name": "Støping og herding av plate",
+          "start_week": 5,
+          "duration_weeks": 2,
+          "depends_on": [
+            "t-grunn"
+          ]
+        },
+        {
+          "id": "t-reis",
+          "name": "Reisverk, takstoler og loftsbjelkelag",
+          "start_week": 8,
+          "duration_weeks": 2,
+          "depends_on": [
+            "t-plate",
+            "t-bestill"
+          ]
+        },
+        {
+          "id": "t-tak",
+          "name": "Tekking og takrenner",
+          "start_week": 10,
+          "duration_weeks": 1,
+          "depends_on": [
+            "t-reis"
+          ]
+        },
+        {
+          "id": "t-kledning",
+          "name": "Kledning, vinduer og dør",
+          "start_week": 10,
+          "duration_weeks": 2,
+          "depends_on": [
+            "t-reis"
+          ]
+        },
+        {
+          "id": "t-porter-el",
+          "name": "Porter og elektro",
+          "start_week": 12,
+          "duration_weeks": 1,
+          "depends_on": [
+            "t-kledning"
+          ]
+        },
+        {
+          "id": "t-maling",
+          "name": "Maling og lister",
+          "start_week": 13,
+          "duration_weeks": 1,
+          "depends_on": [
+            "t-kledning"
+          ]
+        }
+      ],
+      "risks": [
+        {
+          "id": "r-sok",
+          "title": "Søknadsplikt (63 m² er over 50 m²)",
+          "probability": "hoy",
+          "consequence": "Garasjen må byggemeldes; saksbehandling kan ta 3–12 uker",
+          "measure": "Under 70 m² kan dere søke selv uten ansvarsrett. Send søknad og nabovarsel tidlig, gjerne med søknadshjelp.",
+          "cost_nok": 14900
+        },
+        {
+          "id": "r-frost",
+          "title": "Frost under støping",
+          "probability": "middels",
+          "consequence": "Platen kan sprekke eller herde dårlig hvis den støpes i kulde",
+          "measure": "Støp før frosten eller bruk varmekabler og isolasjonsmatter",
+          "cost_nok": 18000
+        },
+        {
+          "id": "r-grunn",
+          "title": "Dårlige grunnforhold",
+          "probability": "lav",
+          "consequence": "Leire eller fjell gir mer graving, sprengning eller masseutskifting",
+          "measure": "Prøvegrav før bestilling; tomta er flat, som trekker ned",
+          "cost_nok": 45000
+        },
+        {
+          "id": "r-port",
+          "title": "Lang leveringstid på porter",
+          "probability": "middels",
+          "consequence": "Portene kan komme 6–8 uker etter bestilling og forsinke ferdigstillelsen",
+          "measure": "Bestill portene sammen med byggesettet",
+          "cost_nok": 12000
+        },
+        {
+          "id": "r-pris",
+          "title": "Prisøkning på trelast og stål",
+          "probability": "lav",
+          "consequence": "Materialer som ikke er bestilt kan bli dyrere",
+          "measure": "Lås prisen ved å bestille byggesettet når søknaden er godkjent",
+          "cost_nok": 15000
+        }
+      ],
+      "assumptions": [
+        "Garasjen er frittstående og står på egen tomt.",
+        "Loftet har lav knevegg og brukes til lagring, ikke opphold.",
+        "Over 50 m² bebygd areal kan gi søknadsplikt; det sjekkes senere.",
+        "Portene er isolerte leddporter; vinduene sitter i brysthøyde (1,4 m) så hyller kan stå under.",
+        "Sort tak regnes som sort takstål med takstein-profil; shingel er et alternativ.",
+        "Prisene er i NOK inkl. mva og bygger på produktkatalogen til Nordlys Hus og Garasje der det passer.",
+        "Montering er anslått til 130 tømrertimer inkl. takvinduet, inkludert maling.",
+        "Tomta har adkomst for betongbil og kranbil."
+      ]
+    }
+  }
+}
