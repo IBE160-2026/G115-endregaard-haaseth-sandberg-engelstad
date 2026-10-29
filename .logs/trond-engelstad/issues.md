@@ -20,3 +20,4 @@
 - [ ] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — Test a BMAD skill that runs the scripts on a PC with Python/uv, to confirm the paths under `01. Admin/_bmad` work
 - [ ] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — A BMAD update/reinstall writes `_bmad/` to the root and resets the skill paths; move and rewrite again after an update
 - [ ] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — Add the assignment text (oppgavetekst) to `01. Admin/` if the group has it
+- [ ] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — The deploy workflow is in `ByggAPP/.github/` and does not run; move `.github/` back to the root to publish on GitHub Pages
