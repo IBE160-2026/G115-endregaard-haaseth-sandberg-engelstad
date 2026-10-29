@@ -2,6 +2,14 @@
 
 The choices the AI (Claude Code) put to the group, with the group's reply word for word, one section per version (newest first). Each entry has at most four lines: the prompt, the reply, and what came of it.
 
+## v0.2 – 2026-10-29
+
+**Open:** The team picked the buyer itself: a prefab garage, cabin or house supplier (or a builders' merchant) buying a white-label licence, about 150 000 USD for the licence and setup plus 100 000 USD for the first year. Is that the buyer the group wants? Who pays for the Claude API key while testing, and with what budget? Accounts were left out on purpose (Ingrid's decision 7, against Mats's wish) and come in v0.5. The meeting was run by Claude Code playing all three roles in one session, not as three separate AI runs.
+
+1. **Three AI bots and a 250 000 USD mandate.** Prompt: none (the group's own request).
+   Reply: "Nå. legg inn 3 AI boter. En prosjektleder, en utvikler og en selger. Sett alle disse sammen og gi dem oppdrag om å utvikle dette til en software som skal koste 250 000 dollar! la alle rollene diskutere sammen også lager dere et ny revisjon. Bruk 50% kapasitet på denne prompten!"
+   Result: the agent skills g115-agent-pm (Ingrid), g115-agent-dev (Jonas) and g115-agent-sales (Mats); team meeting 1 with seven decisions and a roadmap to v1.0; v0.2 built from decisions 1–5. "50 % kapasitet" was read as a medium-sized revision: five features and no new architecture.
+
 ## v0.1 – 2026-10-29
 
 **Open:** The draft has not yet been run against Claude (no API key on the development PC); try a full dialog for a garage and a house and tune `server/prompt.ts`. Choices the AI made without asking: the model is claude-opus-5-5 at medium effort; the API key lives on the Vite dev server, so the app runs locally but not as a static page (a published version needs a small backend or a Claude Artifact); the AI returns the whole project every turn; the building tab is 2D (elevations and a plan), not 3D.

@@ -15,8 +15,10 @@ Prosjektet du returnerer:
 - Returner alltid hele prosjektet slik det står etter denne runden, ikke bare endringene.
 - facts: det som er avklart, gruppert i kategorier (Tomt, Bygg, Åpninger, Materialer, Teknikk, Økonomi, Annet).
 - building: mål i meter, antall etasjer, takform og alle åpninger (dører, vinduer, porter) med antall, mål, vegg og etasje. Bruk null for det som ikke er kjent ennå.
-- budget og schedule: la dem være tomme til størrelse, etasjer og åpninger er avklart. Fra da av lager du et grovt budsjett i NOK inkl. mva (poster som Grunnarbeid, Fundament, Råbygg, Tak, Vinduer og dører, Port, Kledning, El, VVS, Innvendig, Uforutsett) og en fremdriftsplan i uker fra uke 0 med avhengigheter. Oppdater begge ved hver endring. Bruk realistiske norske priser og si i assumptions hva tallene bygger på.
+- budget og schedule: la dem være tomme til størrelse, etasjer og åpninger er avklart. Fra da av lager du et grovt budsjett i NOK inkl. mva (poster som Grunnarbeid, Fundament, Råbygg, Tak, Vinduer og dører, Port, Kledning, El, VVS, Innvendig, Uforutsett) og en fremdriftsplan i uker fra uke 0 med avhengigheter. Oppdater begge ved hver endring. Bruk realistiske norske priser og si i assumptions hva tallene bygger på. Gi hver budsjettpost en usikkerhet i prosent (uncertainty_pct, f.eks. 10 for godt avklart, 30 for grovt anslått), og legg inn en post for uforutsett.
+- risks: fra budsjettet finnes, list de 3 til 8 viktigste risikoene for akkurat dette prosjektet (f.eks. fjell i grunnen, frost, leveranse av port, søknadsplikt), med sannsynlighet (lav, middels, hoy), konsekvens, tiltak og hva det koster i NOK hvis det skjer. Oppdater listen når prosjektet endres.
 - phase: fasen dialogen er i nå.
+- changes: hva denne runden endret i prosjektet, én kort linje per endring (f.eks. «Lengde 7 → 8 m», «Budsjett +45 000 kr for større port»). Tom liste hvis ingenting ble endret.
 - reply: kort og vennlig, maks 3 setninger, på norsk. Ikke gjenta alle tallene; de vises i fanene.
 
 Skriv alt på norsk bokmål.`;
@@ -28,9 +30,10 @@ const nullableNum = { type: ['number', 'null'] } as const;
 export const TURN_SCHEMA = {
   type: 'object',
   additionalProperties: false,
-  required: ['reply', 'phase', 'questions', 'project'],
+  required: ['reply', 'phase', 'changes', 'questions', 'project'],
   properties: {
     reply: str,
+    changes: { type: 'array', items: str },
     phase: { type: 'string', enum: ['oppstart', 'tomt', 'bygg', 'apninger', 'materialer', 'budsjett', 'detaljer'] },
     questions: {
       type: 'array',
@@ -44,7 +47,7 @@ export const TURN_SCHEMA = {
     project: {
       type: 'object',
       additionalProperties: false,
-      required: ['name', 'type', 'summary', 'facts', 'building', 'budget', 'schedule', 'assumptions'],
+      required: ['name', 'type', 'summary', 'facts', 'building', 'budget', 'schedule', 'risks', 'assumptions'],
       properties: {
         name: str,
         type: str,
@@ -92,8 +95,8 @@ export const TURN_SCHEMA = {
           items: {
             type: 'object',
             additionalProperties: false,
-            required: ['post', 'description', 'amount_nok'],
-            properties: { post: str, description: str, amount_nok: num },
+            required: ['post', 'description', 'amount_nok', 'uncertainty_pct'],
+            properties: { post: str, description: str, amount_nok: num, uncertainty_pct: num },
           },
         },
         schedule: {
@@ -108,6 +111,21 @@ export const TURN_SCHEMA = {
               start_week: num,
               duration_weeks: num,
               depends_on: { type: 'array', items: str },
+            },
+          },
+        },
+        risks: {
+          type: 'array',
+          items: {
+            type: 'object',
+            additionalProperties: false,
+            required: ['title', 'probability', 'consequence', 'measure', 'cost_nok'],
+            properties: {
+              title: str,
+              probability: { type: 'string', enum: ['lav', 'middels', 'hoy'] },
+              consequence: str,
+              measure: str,
+              cost_nok: num,
             },
           },
         },

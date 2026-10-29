@@ -52,6 +52,19 @@ export interface BudgetLine {
   post: string;
   description: string;
   amount_nok: number;
+  /** How sure the AI is, as ± % of the amount. */
+  uncertainty_pct: number;
+}
+
+export type Level = 'lav' | 'middels' | 'hoy';
+
+export interface Risk {
+  title: string;
+  probability: Level;
+  consequence: string;
+  measure: string;
+  /** What it costs if it happens. */
+  cost_nok: number;
 }
 
 export interface Task {
@@ -70,6 +83,7 @@ export interface Project {
   building: Building;
   budget: BudgetLine[];
   schedule: Task[];
+  risks: Risk[];
   assumptions: string[];
 }
 
@@ -77,6 +91,8 @@ export interface AiTurn {
   /** Short reply to what the user just said. */
   reply: string;
   phase: Phase;
+  /** What this turn changed in the project, one short line each (empty when nothing changed). */
+  changes: string[];
   questions: Question[];
   /** The whole project as it stands after this turn (replaces the previous one). */
   project: Project;
@@ -96,5 +112,6 @@ export const emptyProject = (): Project => ({
   building: { length_m: null, width_m: null, floors: null, floor_height_m: null, roof: null, openings: [] },
   budget: [],
   schedule: [],
+  risks: [],
   assumptions: [],
 });

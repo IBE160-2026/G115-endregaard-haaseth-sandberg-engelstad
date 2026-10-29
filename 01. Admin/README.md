@@ -122,7 +122,9 @@ npm run dev            # http://localhost:5173
 npm test
 ```
 
-The key stays on the Vite dev server; the browser only calls `/api/turn`.
+The key stays on the server; the browser only calls `/api/turn`. For production, run `npm run build` and then `npm start` (one Node server for the app and the AI, `PORT` defaults to 8080).
+
+Since v0.2 the app has a development team of three agents in `.claude/skills/`: 📋 Ingrid (prosjektleder, `g115-agent-pm`), 💻 Jonas (utvikler, `g115-agent-dev`) and 💼 Mats (selger, `g115-agent-sales`). Their mandate is to make AI_BYGGplant software worth 250 000 USD; their meeting notes and roadmap are in `AI_BYGGplant/.docs/planning-artifacts/`.
 
 ## Documentation and way of working
 

@@ -1,15 +1,19 @@
 import { describe, expect, it } from 'vitest';
 import { cleanMessages } from '../server/claude';
 import { TURN_SCHEMA } from '../server/prompt';
+import { budgetRange, riskTotal } from './budget';
 import { esc, formatNok } from './format';
-import { addUser, applyTurn, GREETING, newSession, toApiMessages } from './session';
+import { activeProject, addProject, exportProject, fileName, importProject, loadStore, projectTitle, removeActive } from './projects';
+import { addUser, applyTurn, GREETING, newSession, toApiMessages, type Session } from './session';
 import { emptyProject, type AiTurn } from './types';
 import { placeOpenings, renderBuilding } from './ui/building';
 import { ganttSvg, projectWeeks } from './ui/gantt';
+import { renderReport, renderTab, TABS } from './ui/tabs';
 
 const garage: AiTurn = {
   reply: 'En dobbel garasje, flott.',
   phase: 'apninger',
+  changes: ['Porten satt til 5 m'],
   questions: [{ text: 'Hvor bred skal porten være?', options: ['2,5 m', '5 m'] }],
   project: {
     ...emptyProject(),
@@ -26,7 +30,11 @@ const garage: AiTurn = {
         { kind: 'vindu', label: 'Vindu', count: 2, width_m: null, height_m: null, wall: 'venstre', floor: 1 },
       ],
     },
-    budget: [{ post: 'Grunnarbeid', description: 'Graving og drenering', amount_nok: 85000 }],
+    budget: [{ post: 'Grunnarbeid', description: 'Graving og drenering', amount_nok: 85000, uncertainty_pct: 20 }],
+    risks: [
+      { title: 'Fjell i grunnen', probability: 'middels', consequence: 'Sprengning', measure: 'Prøvegrav', cost_nok: 40000 },
+      { title: 'Sen port', probability: 'hoy', consequence: 'To uker forsinkelse', measure: 'Bestill tidlig', cost_nok: 10000 },
+    ],
     schedule: [
       { id: 'a', name: 'Grunnarbeid', start_week: 0, duration_weeks: 2, depends_on: [] },
       { id: 'b', name: 'Råbygg', start_week: 2, duration_weeks: 3, depends_on: ['a'] },
@@ -108,5 +116,61 @@ describe('format', () => {
   it('formats money and escapes text', () => {
     expect(formatNok(1234567)).toBe('1 234 567 kr');
     expect(esc('<a href="x">')).toBe('&lt;a href=&quot;x&quot;&gt;');
+  });
+});
+
+describe('v0.2: change log, budget range, risks and report', () => {
+  const s = applyTurn(addUser(newSession(), 'En garasje'), garage);
+
+  it('logs what each turn changed, with the budget before and after', () => {
+    expect(s.log).toEqual([{ turn: 1, request: 'En garasje', changes: ['Porten satt til 5 m'], totalBefore: 0, totalAfter: 85000 }]);
+    const quiet = applyTurn(addUser(s, 'Takk'), { ...garage, changes: [] });
+    expect(quiet.log).toHaveLength(1);
+  });
+
+  it('turns each line uncertainty into a range for the total', () => {
+    expect(budgetRange(s.project)).toEqual([68000, 102000]);
+    expect(riskTotal(s.project)).toBe(50000);
+  });
+
+  it('lists risks with the likely ones first, and shows the change log', () => {
+    const risk = renderTab('risiko', s);
+    expect(risk.indexOf('Sen port')).toBeLessThan(risk.indexOf('Fjell i grunnen'));
+    expect(renderTab('endringer', s)).toContain('Porten satt til 5 m');
+    expect(renderTab('budsjett', s)).toContain('± 20 %');
+  });
+
+  it('puts every tab in the report', () => {
+    const html = renderReport(s);
+    for (const t of TABS) expect(html).toContain(`<h2>${t.label}</h2>`);
+  });
+});
+
+describe('v0.2: projects', () => {
+  it('migrates the v0.1 session and fills in what it lacks', () => {
+    const v01 = { ...newSession(), project: { ...emptyProject(), name: 'Gammel', budget: [{ post: 'A', description: '', amount_nok: 1 }] } } as unknown as Session;
+    delete (v01 as Partial<Session>).log;
+    delete (v01.project as Partial<Session['project']>).risks;
+    const store = loadStore(null, JSON.stringify(v01));
+    const p = activeProject(store).session;
+    expect(projectTitle(p)).toBe('Gammel');
+    expect(p.project.risks).toEqual([]);
+    expect(p.project.budget[0].uncertainty_pct).toBe(0);
+    expect(p.log).toEqual([]);
+  });
+
+  it('starts fresh on broken data, and always keeps one project', () => {
+    const store = loadStore('{broken', null);
+    expect(store.projects).toHaveLength(1);
+    expect(removeActive(store).projects).toHaveLength(1);
+    const two = addProject(store);
+    expect(removeActive(two).projects).toHaveLength(1);
+  });
+
+  it('exports and imports a project file, and rejects other files', () => {
+    const s = applyTurn(addUser(newSession(), 'En garasje'), garage);
+    expect(importProject(exportProject(s))).toEqual(s);
+    expect(() => importProject('{"app":"other"}')).toThrow('ikke et AI Byggplan-prosjekt');
+    expect(fileName(s)).toBe('garasje.byggplan.json');
   });
 });
