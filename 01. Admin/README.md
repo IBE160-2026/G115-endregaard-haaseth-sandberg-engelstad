@@ -120,7 +120,7 @@ Folder structure:
 - `ByggAPP/G115_*.md` — the group's changelog, dilemmas, recommendations and the full game description
 - `.logs/` — session logs
 
-- [Product brief](brief-G115-AI-prosjektledelse-simulering.md) — full description of the problem, solution and scope (status: draft)
+- [Product brief](planning-artifacts/briefs/brief-G115-2026-10-29/brief.md) — full description of the problem, solution and scope (status: draft)
 - Development follows the [BMAD framework](https://bmadcode.com/), which lives in `_bmad/` at the repo root with its skills for Claude Code in `.claude/skills/`
 
 ## Members
