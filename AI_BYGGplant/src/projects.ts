@@ -5,6 +5,8 @@ export interface StoredProject {
   id: string;
   updated: string;
   session: Session;
+  /** The scripted demo dialog this project plays (an AppConfig.demoDialogs id); unset = not chosen yet. */
+  demo?: string;
 }
 
 export interface Store {

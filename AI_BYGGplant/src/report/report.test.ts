@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { Brand } from '../contract/brand';
 import { DIALOGS } from '../contract/fixtures';
 import { addUser, applyTurn, newSession, type Session } from '../session';
+import { isSized } from '../types';
 import { DISCLAIMER, renderReport, REPORT_CSS } from './report';
 
 const XSS = '<script>alert(1)</script>';
@@ -51,7 +52,7 @@ describe('renderReport', () => {
     expect(renderReport(s, brand, png)).toContain(`<img class="rp-hero" src="${png}"`);
     const plain = renderReport(s, brand);
     expect(plain).not.toContain('rp-hero" src');
-    if (s.project.building.length_m && s.project.building.width_m) expect(plain).toContain('rp-hero-svg');
+    if (s.project.building.volumes.some(isSized)) expect(plain).toContain('rp-hero-svg');
   });
 
   it('lists the budget development per turn, the range and the task table', () => {
@@ -83,6 +84,26 @@ describe('renderReport', () => {
     const html = renderReport(s, { ...brand, name: XSS, company: XSS, dealer: { name: XSS, email: XSS, phone: XSS } }, `x" onerror="alert(1)`);
     expect(html).not.toContain('<script');
     expect(html).not.toContain('" onerror="');
+  });
+
+  it('draws several volumes and escapes their names', () => {
+    const s: Session = structuredClone(sessions().at(-1)![1]);
+    const roof = { kind: 'flatt' as const, pitch_deg: null, ridge_along: 'lengde' as const, overhang_m: null };
+    const v = { x_m: 0, y_m: 0, floor_height_m: 3, basement_floors: 1, roof, exterior: null };
+    s.project.building = {
+      ...s.project.building,
+      volumes: [
+        { ...v, id: 'blokk', name: `Blokk${XSS}`, length_m: 24, width_m: 12, floors: 6 },
+        { ...v, id: 'trapp', name: `Trapp${XSS}`, x_m: 24, y_m: 3, length_m: 4, width_m: 6, floors: 7 },
+      ],
+      openings: [],
+    };
+    const html = renderReport(s, brand);
+    expect(html).not.toContain('<script');
+    expect(html).not.toMatch(BAD);
+    expect(html).toContain('Situasjonsplan');
+    expect(html).toContain('2 bygningskropper');
+    expect(html).toContain('rp-hero-svg');
   });
 
   it('ships print CSS for A4 with page breaks and no dark backgrounds', () => {

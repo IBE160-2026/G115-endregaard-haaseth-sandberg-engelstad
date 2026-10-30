@@ -44,7 +44,11 @@ function card(l: Lead): string {
   const c = l.customer ?? { name: null, email: null, phone: null, note: null };
   const p = l.project;
   const known = p.length_m != null && p.width_m != null;
-  const size = known ? `${formatM(p.length_m)} × ${formatM(p.width_m)} · ${formatNum(Math.round(p.length_m! * p.width_m! * 10) / 10)} m²` : 'Størrelse ikke avklart';
+  // The overall extent (siteBounds); with several volumes the footprint is less than L × B, so no m².
+  // Lead/1 has no volume count; a lead that carries `project.volumes` (a number) shows it.
+  const count = (p as { volumes?: unknown }).volumes;
+  const volumes = typeof count === 'number' && Number.isFinite(count) && count > 1 ? ` · ${formatNum(count)} bygningskropper` : '';
+  const size = known ? `${formatM(p.length_m)} × ${formatM(p.width_m)}${volumes}` : 'Størrelse ikke avklart';
   const contact = [c.phone, c.email].filter((v): v is string => !!v).map((v) => esc(v)).join(' · ');
   const total = l.budget.total_nok > 0;
   return `<article class="ib-card" data-lead-id="${esc(l.id)}">

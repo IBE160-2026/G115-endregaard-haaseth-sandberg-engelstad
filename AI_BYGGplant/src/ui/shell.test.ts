@@ -1,12 +1,82 @@
 import { describe, expect, it } from 'vitest';
 import { FALLBACK_BRAND } from '../brand/brand';
 import { DEMO_LABEL, type AppConfig } from '../contract/stream';
-import { addProject, type Store } from '../projects';
+import { addProject, loadStore, type Store } from '../projects';
+import { DIALOGS } from '../contract/fixtures';
+import { emptyProject, type Volume } from '../contract/types';
 import { addUser, newSession } from '../session';
-import { clampDialogWidth, customerFrom, fallbackTab, glowSet, setSession, sessionOf, shellHtml, tabsHtml, toastText } from './shell';
+import {
+  clampDialogWidth,
+  customerFrom,
+  demoChoices,
+  demoDialogFor,
+  demoScriptFor,
+  fallbackTab,
+  glowSet,
+  hasFootprint,
+  setDemo,
+  setSession,
+  sessionOf,
+  shellHtml,
+  tabsHtml,
+  toastText,
+} from './shell';
 
-const demo: AppConfig = { provider: 'demo', demoLabel: DEMO_LABEL, demoScript: ['a'] };
-const live: AppConfig = { provider: 'claude', demoLabel: DEMO_LABEL, demoScript: [] };
+const dialogs = [
+  { id: 'garage', title: 'Dobbelgarasje med loft', script: ['g1', 'g2'] },
+  { id: 'enebolig', title: 'Enebolig med dobbelgarasje', script: ['e1', 'e2', 'e3'] },
+];
+const demo: AppConfig = { provider: 'demo', demoLabel: DEMO_LABEL, demoScript: ['g1', 'g2'], demoDialogs: dialogs };
+const live: AppConfig = { provider: 'claude', demoLabel: DEMO_LABEL, demoScript: [], demoDialogs: [] };
+
+describe('the 3D placeholder', () => {
+  const vol = (v: Partial<Volume>): Volume => ({
+    id: 'v', name: 'V', x_m: 0, y_m: 0, length_m: null, width_m: null, floors: null, floor_height_m: null, basement_floors: 0, roof: null, exterior: null, ...v,
+  });
+  const withVolumes = (volumes: Volume[]) => ({ ...emptyProject(), building: { ...emptyProject().building, volumes } });
+  it('stays until a volume is sized (length, width and floors)', () => {
+    expect(hasFootprint(emptyProject())).toBe(false);
+    expect(hasFootprint(withVolumes([vol({ length_m: 8, width_m: 7 })]))).toBe(false);
+    expect(hasFootprint(withVolumes([vol({ length_m: 8, width_m: 7, floors: 1 })]))).toBe(true);
+  });
+  it('goes away for every sized demo dialog step', () => {
+    for (const [name, steps] of Object.entries(DIALOGS)) {
+      const sized = steps.map((s) => hasFootprint({ ...emptyProject(), ...s.turn.project } as never));
+      expect(sized.at(-1), name).toBe(true);
+    }
+  });
+});
+
+describe('the demo chooser', () => {
+  const fresh = { session: newSession() };
+  it('offers every dialog under the greeting of a new project in demo mode', () => {
+    expect(demoChoices(demo, fresh).map((d) => d.id)).toEqual(['garage', 'enebolig']);
+    expect(demoChoices(live, fresh)).toEqual([]);
+  });
+  it('hides the chips once a dialog is chosen or the first line is sent', () => {
+    expect(demoChoices(demo, { ...fresh, demo: 'enebolig' })).toEqual([]);
+    expect(demoChoices(demo, { session: addUser(newSession(), 'Hei') })).toEqual([]);
+  });
+  it('plays the chosen dialog, or the first one by default', () => {
+    expect(demoDialogFor(demo, 'enebolig')?.id).toBe('enebolig');
+    expect(demoDialogFor(demo, undefined)?.id).toBe('garage');
+    expect(demoDialogFor(demo, 'borte')?.id).toBe('garage');
+    expect(demoDialogFor(live, 'garage')).toBeNull();
+    expect(demoScriptFor(demo, 'enebolig')).toEqual(['e1', 'e2', 'e3']);
+    expect(demoScriptFor(demo, undefined)).toEqual(['g1', 'g2']);
+    expect(demoScriptFor({ ...demo, demoDialogs: [] }, 'x')).toEqual(['g1', 'g2']);
+  });
+  it('stores the choice with that project only, and it survives a save', () => {
+    let store: Store = addProject({ active: '', projects: [] });
+    const first = store.active;
+    store = addProject(store);
+    store = setDemo(store, first, 'enebolig');
+    expect(store.projects.find((p) => p.id === first)?.demo).toBe('enebolig');
+    expect(store.projects.find((p) => p.id === store.active)?.demo).toBeUndefined();
+    const again = loadStore(JSON.stringify(store), null);
+    expect(again.projects.find((p) => p.id === first)?.demo).toBe('enebolig');
+  });
+});
 
 describe('toastText', () => {
   const c = (text: string) => ({ section: 'bygg' as const, text, ref_id: null });

@@ -3,7 +3,10 @@
 import { budgetRange, budgetTotal } from '../budget';
 import { LEAD_SCHEMA_ID, type Brand, type Lead } from '../contract/brand';
 import type { Session } from '../session';
+import { isSized, siteBounds } from '../types';
 import { roofText } from '../ui/building';
+
+const round2 = (n: number) => Math.round(n * 100) / 100;
 import { projectWeeks } from '../ui/gantt';
 
 export const OFFLINE_NOTE = 'Kunne ikke nå serveren – leadet er lagret lokalt';
@@ -20,6 +23,10 @@ export function buildLead(s: Session, brand: Brand, customer?: Partial<Lead['cus
   const p = s.project;
   const b = p.building;
   const [low, high] = budgetRange(p);
+  const sized = b.volumes.filter((v) => isSized(v) && Number.isFinite(v.x_m) && Number.isFinite(v.y_m));
+  const bounds = siteBounds({ ...b, volumes: sized });
+  const floors = b.volumes.flatMap((v) => (typeof v.floors === 'number' && Number.isFinite(v.floors) && v.floors > 0 ? [v.floors] : []));
+  const main = b.volumes[0];
   return {
     schema: LEAD_SCHEMA_ID,
     id: newId(),
@@ -35,10 +42,11 @@ export function buildLead(s: Session, brand: Brand, customer?: Partial<Lead['cus
       name: p.name,
       type: p.type,
       summary: p.summary,
-      length_m: b.length_m,
-      width_m: b.width_m,
-      floors: b.floors,
-      roof: b.roof ? roofText(b.roof) : null,
+      // Overall extent of the sized volumes, the tallest volume's storeys, the main (first) volume's roof.
+      length_m: bounds ? round2(bounds.x1 - bounds.x0) : null,
+      width_m: bounds ? round2(bounds.y1 - bounds.y0) : null,
+      floors: floors.length ? Math.max(...floors) : null,
+      roof: main?.roof ? roofText(main.roof) : null,
     },
     budget: {
       total_nok: Math.round(budgetTotal(p)),

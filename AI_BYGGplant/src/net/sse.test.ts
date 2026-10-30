@@ -126,6 +126,17 @@ describe('streamTurn', () => {
     expect(JSON.parse(String(sent?.body))).toEqual({ messages: [{ role: 'user', content: 'Garasje' }] });
     expect(log.turns).toHaveLength(1);
   });
+  it('sends the chosen demo dialog as body.demo', async () => {
+    const bodies: unknown[] = [];
+    const fake = (async (_url: string, init?: RequestInit) => {
+      bodies.push(JSON.parse(String(init?.body)));
+      return new Response(body([full]), { headers: { 'Content-Type': 'text/event-stream' } });
+    }) as typeof fetch;
+    const { cb } = recorder();
+    await streamTurn([{ role: 'user', content: 'Enebolig' }], cb, undefined, fake, 'enebolig');
+    await streamTurn([{ role: 'user', content: 'Enebolig' }], cb, undefined, fake, '');
+    expect(bodies).toEqual([{ messages: [{ role: 'user', content: 'Enebolig' }], demo: 'enebolig' }, { messages: [{ role: 'user', content: 'Enebolig' }] }]);
+  });
   it('shows the JSON error of a failed response', async () => {
     const fake = (async () => new Response(JSON.stringify({ error: 'Vent litt.' }), { status: 429 })) as typeof fetch;
     const { log, cb } = recorder();
@@ -155,7 +166,20 @@ describe('streamTurn', () => {
 describe('fetchConfig', () => {
   it('reads the demo config', async () => {
     const fake = (async () => new Response(JSON.stringify({ provider: 'demo', demoLabel: 'Demo', demoScript: ['a', 'b'] }))) as typeof fetch;
-    expect(await fetchConfig(fake)).toEqual({ provider: 'demo', demoLabel: 'Demo', demoScript: ['a', 'b'] });
+    expect(await fetchConfig(fake)).toEqual({ provider: 'demo', demoLabel: 'Demo', demoScript: ['a', 'b'], demoDialogs: [] });
+  });
+  it('reads the demo dialogs and drops broken ones', async () => {
+    const dialogs = [
+      { id: 'garage', title: 'Dobbelgarasje med loft', script: ['a', 1, 'b'] },
+      { id: 'enebolig', script: 'nei' },
+      { title: 'uten id' },
+      null,
+    ];
+    const fake = (async () => new Response(JSON.stringify({ provider: 'demo', demoLabel: 'Demo', demoScript: ['a'], demoDialogs: dialogs }))) as typeof fetch;
+    expect((await fetchConfig(fake)).demoDialogs).toEqual([
+      { id: 'garage', title: 'Dobbelgarasje med loft', script: ['a', 'b'] },
+      { id: 'enebolig', title: 'enebolig', script: [] },
+    ]);
   });
   it('falls back when the server is missing', async () => {
     const fake = (async () => new Response('nope', { status: 404 })) as typeof fetch;

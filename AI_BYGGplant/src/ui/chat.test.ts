@@ -9,6 +9,7 @@ import {
   isSendKey,
   MSG_ABORTED,
   nextDemoLine,
+  renderDemoChoices,
   renderDemoNext,
   renderLog,
   type ChatAction,
@@ -64,6 +65,29 @@ describe('demo script', () => {
     expect(renderDemoNext('Hei "du"', false)).toContain('title="Hei &quot;du&quot;"');
     expect(renderDemoNext('x', true)).toContain('disabled');
     expect(renderDemoNext(null, false)).toContain('Demoen er ferdig');
+  });
+});
+
+describe('demo chooser', () => {
+  const dialogs = [
+    { id: 'garage', title: 'Dobbelgarasje med loft', script: ['Dobbelgarasje med loft'] },
+    { id: 'enebolig', title: 'Enebolig <med> garasje', script: [] },
+  ];
+  it('renders one «Demo: …» chip per dialog, escaped', () => {
+    const html = renderDemoChoices(dialogs);
+    expect(html).toContain('data-action="demo-choose" data-demo="garage"');
+    expect(html).toContain('Demo: Dobbelgarasje med loft');
+    expect(html).toContain('Demo: Enebolig &lt;med&gt; garasje');
+    expect(renderDemoChoices([])).toBe('');
+  });
+  it('sits under the greeting of a new project, and not while a turn runs', () => {
+    const html = renderLog(newSession(), idleChat(), { mine: true, demo: true, choices: dialogs });
+    expect(html.indexOf('Hei, hva skal bygges?')).toBeLessThan(html.indexOf('demo-choose'));
+    expect(renderLog(newSession(), idleChat(), { mine: true, demo: true })).not.toContain('demo-choose');
+    expect(renderLog(newSession(), run({ type: 'send', projectId: 'p' }), { mine: true, demo: true, choices: dialogs })).not.toContain('demo-choose');
+  });
+  it('the next line follows the chosen script', () => {
+    expect(nextDemoLine(newSession(), ['Enebolig med dobbelgarasje', 'Flat tomt'])).toBe('Enebolig med dobbelgarasje');
   });
 });
 

@@ -4,7 +4,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
-import type { Opening, Project } from '../contract/types';
+import type { Opening, Project, Volume } from '../contract/types';
 import { GLASS, POLY_DEPTH, buildModel, polyNormal, type BuildingModel, type Part } from './model';
 
 export interface View {
@@ -280,7 +280,7 @@ export function createView(container: HTMLElement): View {
   let lastKey = '';
   let lastHighlight = '';
   let anim: { start: number; dur: number; from: V3 } | null = null;
-  const glows: { mat: THREE.MeshStandardMaterial; outline: THREE.Box3Helper; start: number }[] = [];
+  const glows: { mats: THREE.MeshStandardMaterial[]; outline: THREE.Box3Helper; start: number }[] = [];
   let frameAnim: { start: number; fromT: THREE.Vector3; toT: THREE.Vector3; fromP: THREE.Vector3; toP: THREE.Vector3 } | null = null;
   let lastInteraction = 0;
   const now = () => performance.now() / 1000;
@@ -316,7 +316,8 @@ export function createView(container: HTMLElement): View {
   }
   function fitLights() {
     const b = model && !model.empty ? model.bounds : { w: 8, h: 3, d: 7 };
-    const r = Math.hypot(b.w, b.d) / 2 + 7; // the drive reaches 6 m out
+    // The drive reaches 6 m out; a tall building's shadow reaches ~0.85 × its height (sun at ~50°).
+    const r = Math.hypot(b.w, b.d) / 2 + Math.max(7, b.h * 0.85 + 2);
     sun.target.position.set(0, 0, 0);
     sun.position.set(-0.55 * r * 2.2, 1.1 * r * 2.2, 0.75 * r * 2.2);
     Object.assign(sun.shadow.camera, { left: -r, right: r, top: r, bottom: -r, near: 0.5, far: r * 6 });
@@ -324,6 +325,13 @@ export function createView(container: HTMLElement): View {
     const fogBase = Math.max(30, r * 4);
     (scene.fog as THREE.Fog).near = fogBase;
     (scene.fog as THREE.Fog).far = fogBase * 4;
+    // Sky, lawn and the far plane grow with big sites so the camera never leaves the sky dome.
+    const s = Math.max(1, (fogBase * 4 + 60) / 400);
+    sky.scale.setScalar(s);
+    ground.scale.setScalar(s);
+    grass.repeat.set(30 * s, 30 * s);
+    camera.far = 1200 * s;
+    camera.updateProjectionMatrix();
   }
 
   function buildDims(m: BuildingModel) {
@@ -349,78 +357,112 @@ export function createView(container: HTMLElement): View {
       dimsRes.push(tex);
       const mat = keep2(new THREE.SpriteMaterial({ map: tex, depthTest: false, transparent: true }), dimsRes);
       const s = new THREE.Sprite(mat);
-      const size = Math.max(0.55, Math.min(1.2, Math.max(L, W) * 0.09));
+      const size = Math.max(0.55, Math.min(2.4, Math.max(L, W) * 0.09));
       s.scale.set(size * aspect, size, 1);
       s.position.set(x, 0.45, z);
       s.renderOrder = 10;
       dims!.add(s);
     };
     const nf = (v: number) => `${(Math.round(v * 10) / 10).toFixed(1).replace('.', ',')} m`;
+    // Overall site length (along the main front) and width (front to back) of all volumes together.
     label(nf(L), 0, zf + 0.5);
-    label(nf(W), -L / 2 - 1.4, 0);
+    label(nf(W), -L / 2 - 1.4 - Math.max(0, Math.min(2.4, Math.max(L, W) * 0.09) - 1.2), 0);
     scene.add(dims);
   }
   function keep2<T extends { dispose(): void }>(d: T, list: { dispose(): void }[]) { list.push(d); return d; }
 
-  function buildMeshes(project: Project, m: BuildingModel) {
+  /**
+   * Parts are merged into ONE mesh per material key across all volumes (wall colour + cladding, roof
+   * colour, trim colour, slab, drive gravel, glass, door colour, port colour). Only the parts of a
+   * highlighted ref (a volume id or an opening id from this turn's changes) get their own meshes with
+   * their own material clones, so they can glow without lighting up everything that shares a colour.
+   *
+   * Draw calls (measured by counting groups; shadow pass adds one per shadow-casting mesh):
+   *  - garage fixture 07 (1 volume, 2 ports, 2 windows, 1 door, 1 roof window): 8 building meshes
+   *    (wall, trim, roof, slab, gravel, glass, door, port) → ~15 with shadows, ~20 incl. sky/lawn/dims.
+   *  - a 6-storey block 30 × 14 m with a stair tower and ~100 windows: still ~8–9 building meshes
+   *    (window count no longer matters) → ~22 incl. shadows and the scene; v0.3 would have had 100+
+   *    meshes (one per opening) and 200+ draw calls with shadows.
+   */
+  function buildMeshes(project: Project, m: BuildingModel, highlight: Set<string>) {
     clearGroup(building, buildingRes);
     glows.length = 0;
     building = new THREE.Group();
     const b = project.building;
-    // Cosmetic hint read from the AI's text (the only one): «stående»/«liggende» board direction.
-    const cladding = (b.exterior?.cladding ?? '').toLowerCase();
-    M.wall.map = cladding.includes('stående') ? boardsV : cladding.includes('liggende') ? boardsH : null;
-    M.wall.needsUpdate = true;
-    const roofAlongX = b.roof?.ridge_along !== 'bredde';
-    const groups = new Map<string, { mat: THREE.Material; arrays: Arrays; shadow: boolean }>();
-    const openings = new Map<string, Opening>(b.openings.map((o) => [o.id, o]));
+    const volumes = new Map<string, Volume>((b.volumes ?? []).map((v) => [v.id, v]));
+    const openings = new Map<string, Opening>((b.openings ?? []).map((o) => [o.id, o]));
+    // Cosmetic hint read from the AI's text (the only one): «stående»/«liggende» board direction, per volume.
+    const clad = (refId: string | null) => {
+      const v = refId ? volumes.get(refId) : undefined;
+      const c = ((v?.exterior?.cladding ?? b.exterior?.cladding) ?? '').toLowerCase();
+      return c.includes('stående') ? 'v' : c.includes('liggende') ? 'h' : '';
+    };
+    const roofAlongX = (refId: string | null) => (refId ? volumes.get(refId)?.roof?.ridge_along !== 'bredde' : true);
+
+    const groups = new Map<string, { make: () => THREE.Material; arrays: Arrays; shadow: boolean; refId: string | null }>();
     for (const p of m.parts) {
-      if (p.refId) {
-        const op = openings.get(p.refId);
-        const a: Arrays = { pos: [], nor: [], uv: [] };
-        partInto(a, p, null);
-        const geo = keep2(geometry(a), buildingRes);
-        let mat: THREE.MeshStandardMaterial;
-        if (op?.kind === 'vindu') mat = glassBase.clone();
-        else mat = new THREE.MeshStandardMaterial({ color: p.color, roughness: 0.5, metalness: 0.1, map: op?.kind === 'port' ? sectional : null });
-        buildingRes.push(mat);
-        const mesh = new THREE.Mesh(geo, mat);
-        mesh.castShadow = mesh.receiveShadow = !low;
-        mesh.userData.refId = p.refId;
-        building.add(mesh);
-        continue;
+      const hl = !!p.refId && highlight.has(p.refId);
+      let matKey: string;
+      let make: () => THREE.Material;
+      if (p.kind === 'opening') {
+        const op = p.refId ? openings.get(p.refId) : undefined;
+        if (op?.kind === 'vindu') { matKey = 'glass'; make = () => (hl ? glassBase.clone() : glassBase); }
+        else {
+          const port = op?.kind === 'port';
+          matKey = `${port ? 'port' : 'door'}|${p.color}`;
+          make = () => new THREE.MeshStandardMaterial({ color: p.color, roughness: 0.5, metalness: 0.1, map: port ? sectional : null });
+        }
+      } else {
+        const kind = p.kind === 'gable' ? 'wall' : p.kind === 'frame' ? 'trim' : p.kind;
+        const c = kind === 'wall' ? clad(p.refId) : '';
+        matKey = `${kind}|${p.color}|${c}`;
+        make = () => {
+          const base = M[kind as keyof typeof M] ?? M.trim;
+          const mat = base.clone();
+          mat.color.set(kind === 'ground' ? '#ffffff' : p.color);
+          if (kind === 'wall') mat.map = c === 'v' ? boardsV : c === 'h' ? boardsH : null;
+          return mat;
+        };
       }
-      const key = `${p.kind === 'gable' ? 'wall' : p.kind === 'frame' ? 'trim' : p.kind}|${p.color}`;
+      const key = `${matKey}#${hl ? p.refId : ''}`;
       let g = groups.get(key);
       if (!g) {
-        const base = p.kind === 'gable' ? M.wall : p.kind === 'frame' ? M.trim : M[p.kind as keyof typeof M] ?? M.trim;
-        base.color.set(p.color);
-        if (p.kind === 'ground' || p.kind === 'slab') base.color.set(p.kind === 'ground' ? '#ffffff' : p.color);
-        g = { mat: base, arrays: { pos: [], nor: [], uv: [] }, shadow: p.kind !== 'ground' };
+        g = { make, arrays: { pos: [], nor: [], uv: [] }, shadow: p.kind !== 'ground', refId: hl ? p.refId : null };
         groups.set(key, g);
       }
-      partInto(g.arrays, p, p.kind === 'roof' ? roofAlongX : null);
+      partInto(g.arrays, p, p.kind === 'roof' ? roofAlongX(p.refId) : null);
     }
     for (const g of groups.values()) {
-      const mesh = new THREE.Mesh(keep2(geometry(g.arrays), buildingRes), g.mat);
+      const mat = g.make();
+      if (mat !== glassBase) buildingRes.push(mat);
+      const mesh = new THREE.Mesh(keep2(geometry(g.arrays), buildingRes), mat);
       mesh.castShadow = g.shadow && !low;
       mesh.receiveShadow = !low;
+      if (g.refId) mesh.userData.refId = g.refId;
       building.add(mesh);
     }
-    // The model's origin is the front-left corner; centre the building on the plot (world z is mirrored).
+    // The model's origin is the site's front-left corner; centre the site on the plot (world z is mirrored).
     building.position.set(-m.bounds.w / 2, 0, m.bounds.d / 2);
+    if (anim) tickAnim(now());
     scene.add(building);
   }
 
+  /** One outline per highlighted ref around all its meshes; every mesh of that ref glows. */
   function startGlow(highlight: Set<string>) {
     if (!building) return;
     readAccent();
     const t0 = now();
+    const byRef = new Map<string, THREE.Mesh[]>();
     for (const child of building.children) {
       const mesh = child as THREE.Mesh;
-      if (!mesh.userData.refId || !highlight.has(mesh.userData.refId)) continue;
-      const mat = mesh.material as THREE.MeshStandardMaterial;
-      const box = mesh.geometry.boundingBox!.clone().expandByScalar(0.1);
+      const ref = mesh.userData.refId as string | undefined;
+      if (!ref || !highlight.has(ref)) continue;
+      byRef.set(ref, [...(byRef.get(ref) ?? []), mesh]);
+    }
+    for (const meshes of byRef.values()) {
+      const box = new THREE.Box3();
+      for (const mesh of meshes) box.union(mesh.geometry.boundingBox!);
+      box.expandByScalar(0.1);
       const outline = new THREE.Box3Helper(box, accent);
       const lm = outline.material as THREE.LineBasicMaterial;
       lm.transparent = true;
@@ -428,7 +470,7 @@ export function createView(container: HTMLElement): View {
       outline.renderOrder = 5;
       buildingRes.push(outline.geometry, lm);
       building.add(outline);
-      glows.push({ mat, outline, start: t0 });
+      glows.push({ mats: meshes.map((x) => x.material as THREE.MeshStandardMaterial), outline, start: t0 });
     }
   }
 
@@ -438,8 +480,10 @@ export function createView(container: HTMLElement): View {
       let k: number;
       if (e < GLOW_S) k = 0.45 + 0.4 * Math.pow(Math.sin(e * Math.PI * 1.2), 2);
       else k = Math.max(0, 0.45 * (1 - (e - GLOW_S) / FADE_S));
-      g.mat.emissive.copy(accent);
-      g.mat.emissiveIntensity = k;
+      for (const mat of g.mats) {
+        mat.emissive.copy(accent);
+        mat.emissiveIntensity = k;
+      }
       (g.outline.material as THREE.LineBasicMaterial).opacity = Math.min(1, k * 2);
       g.outline.visible = k > 0.01;
     }
@@ -527,7 +571,7 @@ export function createView(container: HTMLElement): View {
           glows.length = 0;
           anim = null;
         } else {
-          buildMeshes(project, next);
+          buildMeshes(project, next, highlight);
           buildDims(next);
           if (!prev || prev.empty) {
             anim = { start: now(), dur: RISE_S, from: [1, 0.001, 1] }; // the building rises
@@ -545,6 +589,8 @@ export function createView(container: HTMLElement): View {
         }
       }
       if (changed || hKey !== lastHighlight) {
+        // A new highlight regroups the meshes (highlighted refs get their own meshes); cheap, once per turn.
+        if (!changed && model && !model.empty) buildMeshes(project, model, highlight);
         lastHighlight = hKey;
         if (highlight.size) startGlow(highlight);
       }

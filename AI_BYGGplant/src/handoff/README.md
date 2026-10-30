@@ -24,8 +24,9 @@ The PDF report (printed from the app) goes with the lead. It has the drawings, t
 | `brand` | string | The white-label product the customer used |
 | `customer.name/email/phone/note` | string or null | What the customer chose to give |
 | `project.name/type/summary` | string | The project as the AI described it |
-| `project.length_m/width_m/floors` | number or null | Main dimensions |
-| `project.roof` | string or null | For example «Saltak 35°, møne langs lengden» |
+| `project.length_m/width_m` | number or null | The overall extent of the building on the site (all bygningskropper together), along the main front and front to back |
+| `project.floors` | number or null | Storeys above ground of the tallest bygningskropp (a loft is not counted) |
+| `project.roof` | string or null | The main (first) bygningskropp's roof, for example «Saltak 35°, møne langs lengden» |
 | `budget.total_nok` | number | Sum of the budget lines |
 | `budget.low_nok/high_nok` | number | Range from each line's ± uncertainty |
 | `budget.lines[]` | `{id, post, amount_nok, sku}` | `sku` is your product number when the line came from your catalogue, else null |

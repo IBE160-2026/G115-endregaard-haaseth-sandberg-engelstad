@@ -27,10 +27,14 @@ import { addChip, chatReducer, idleChat, isBusy, isSendKey, nextDemoLine, patchD
 import {
   clampDialogWidth,
   customerFrom,
+  demoChoices,
+  demoDialogFor,
+  demoScriptFor,
   fallbackTab,
   glowSet,
   hasFootprint,
   sessionOf,
+  setDemo,
   setSession,
   shellHtml,
   tabsHtml,
@@ -129,7 +133,8 @@ function renderChat() {
   const log = $<HTMLDivElement>('#log');
   const s = session();
   const mine = chat.projectId === store.active;
-  log.innerHTML = renderLog(s, chat, { mine, demo: config.provider === 'demo' });
+  const entry = activeProject(store);
+  log.innerHTML = renderLog(s, chat, { mine, demo: config.provider === 'demo', choices: demoChoices(config, entry) });
   log.setAttribute('aria-busy', String(mine && isBusy(chat)));
   log.scrollTop = log.scrollHeight;
   const busy = isBusy(chat);
@@ -137,7 +142,8 @@ function renderChat() {
   $<HTMLButtonElement>('#send').disabled = busy;
   $<HTMLButtonElement>('#stop').hidden = !(mine && busy);
   const demo = document.querySelector<HTMLElement>('#demo-next');
-  if (demo) demo.innerHTML = renderDemoNext(nextDemoLine(s, config.demoScript), busy);
+  if (demo) demo.innerHTML = renderDemoNext(nextDemoLine(s, demoScriptFor(config, entry.demo)), busy);
+  for (const b of log.querySelectorAll<HTMLButtonElement>('.demo-choice')) b.disabled = busy;
 }
 
 function renderTabs() {
@@ -157,9 +163,9 @@ function renderView() {
     hint.textContent = 'Laster 3D …';
     placeholder.hidden = false;
   } else {
-    // Until the AI has given the footprint there is nothing to draw: say so instead of guessing a box.
+    // Until the AI has sized a volume there is nothing to draw: say so instead of guessing a box.
     placeholder.hidden = hasFootprint(p);
-    hint.textContent = 'Bygget reiser seg her når lengde og bredde er avklart.';
+    hint.textContent = 'Bygget reiser seg her når målene er avklart.';
   }
 }
 
@@ -229,6 +235,9 @@ async function send(text: string, retry = false) {
     s = addUser(s, text.trim());
   }
   store = setSession(store, projectId, s);
+  // In demo mode the project keeps playing one scripted dialog: the chosen one, or the default from the first line on.
+  const demo = config.provider === 'demo' ? demoDialogFor(config, activeProject(store).demo)?.id : undefined;
+  if (demo && activeProject(store).demo !== demo) store = setDemo(store, projectId, demo);
   save();
   dispatch({ type: 'send', projectId });
   abort = new AbortController();
@@ -266,6 +275,8 @@ async function send(text: string, retry = false) {
       },
     },
     abort.signal,
+    undefined,
+    demo,
   );
   if (outcome === 'aborted') dispatch({ type: 'abort' });
   abort = null;
@@ -349,14 +360,24 @@ function wire(app: HTMLElement) {
   log.addEventListener('click', (e) => {
     const t = e.target as HTMLElement;
     const chip = t.closest<HTMLButtonElement>('.chip-btn');
+    const choice = t.closest<HTMLButtonElement>('[data-action="demo-choose"]');
     if (chip) {
       input.value = addChip(input.value, chip.dataset.q ?? '', chip.dataset.a ?? '');
+      input.focus();
+    } else if (choice?.dataset.demo) {
+      // Picking a demo stores it with the project (the chips go away) and sends the dialog's first line.
+      if (isBusy(chat)) return;
+      store = setDemo(store, store.active, choice.dataset.demo);
+      save();
+      const first = demoScriptFor(config, choice.dataset.demo)[0];
+      if (first) void send(first);
+      else renderAll();
       input.focus();
     } else if (t.closest('[data-action="retry"]')) void send('', true);
   });
   document.querySelector('#demo-next')?.addEventListener('click', (e) => {
     if (!(e.target as HTMLElement).closest('[data-action="demo-next"]')) return;
-    const line = nextDemoLine(session(), config.demoScript);
+    const line = nextDemoLine(session(), demoScriptFor(config, activeProject(store).demo));
     if (line === null) return;
     input.value = line;
     input.focus();

@@ -1,0 +1,131 @@
+{
+  "user": "Flat industritomt med god adkomst for semitrailere. Hallen blir ca. 40 × 20 m med 7 m fri høyde, og kontordelen i to etasjer på 10 × 20 m inntil venstre gavl.",
+  "turn": {
+    "reply": "Da har jeg satt opp hallen på 40 × 20 m med 7 m fri høyde og lavt saltak, og kontordelen i to etasjer med flatt tak inntil venstre gavl. Nå tar vi porter, vinduer og fasader.",
+    "questions": [
+      {
+        "text": "Hvor mange porter trenger dere, og hvor store?",
+        "options": [
+          "2 porter 4,5 × 4,5 m",
+          "3 porter 4,5 × 4,5 m",
+          "Lastebrygge med 2 porter"
+        ]
+      },
+      {
+        "text": "Hvilken fasade ser du for deg?",
+        "options": [
+          "Platekledning",
+          "Sandwichpaneler",
+          "Betongelementer"
+        ]
+      }
+    ],
+    "phase": "bygg",
+    "changes": [
+      {
+        "section": "tomt",
+        "text": "Flat industritomt med adkomst for semitrailere",
+        "ref_id": null
+      },
+      {
+        "section": "bygg",
+        "text": "Lagerhall 40 × 20 m, 7 m fri høyde, saltak 10°",
+        "ref_id": "hall"
+      },
+      {
+        "section": "bygg",
+        "text": "Kontordel 10 × 20 m i 2 etasjer inntil venstre gavl",
+        "ref_id": "kontor"
+      }
+    ],
+    "project": {
+      "name": "Lagerhall med kontordel",
+      "type": "Lagerhall",
+      "summary": "Stålhall på 40 × 20 m med 7 m fri høyde og lavt saltak, og kontordel i to etasjer på 10 × 20 m inntil venstre gavl.",
+      "facts": [
+        {
+          "category": "Tomt",
+          "label": "Terreng",
+          "value": "Flat industritomt"
+        },
+        {
+          "category": "Tomt",
+          "label": "Adkomst",
+          "value": "Semitrailere fra gårdsplassen foran"
+        },
+        {
+          "category": "Bygg",
+          "label": "Type",
+          "value": "Lagerhall med kontordel"
+        },
+        {
+          "category": "Bygg",
+          "label": "Hall",
+          "value": "40 × 20 m (800 m²), 1 etasje, 7 m fri høyde"
+        },
+        {
+          "category": "Bygg",
+          "label": "Kontor",
+          "value": "10 × 20 m, 2 etasjer (400 m²), inntil venstre gavl"
+        },
+        {
+          "category": "Bygg",
+          "label": "Tak",
+          "value": "Hall: saltak 10°, møne langs lengden. Kontor: flatt tak"
+        }
+      ],
+      "building": {
+        "volumes": [
+          {
+            "id": "kontor",
+            "name": "Kontordel",
+            "x_m": 0,
+            "y_m": 0,
+            "length_m": 10,
+            "width_m": 20,
+            "floors": 2,
+            "floor_height_m": 3.5,
+            "basement_floors": 0,
+            "roof": {
+              "kind": "flatt",
+              "pitch_deg": null,
+              "ridge_along": "lengde",
+              "overhang_m": 0.2
+            },
+            "exterior": null
+          },
+          {
+            "id": "hall",
+            "name": "Lagerhall",
+            "x_m": 10,
+            "y_m": 0,
+            "length_m": 40,
+            "width_m": 20,
+            "floors": 1,
+            "floor_height_m": 7,
+            "basement_floors": 0,
+            "roof": {
+              "kind": "saltak",
+              "pitch_deg": 10,
+              "ridge_along": "lengde",
+              "overhang_m": 0.3
+            },
+            "exterior": null
+          }
+        ],
+        "exterior": null,
+        "terrain_slope_pct": 0,
+        "openings": []
+      },
+      "budget": [],
+      "schedule": [],
+      "risks": [],
+      "assumptions": [
+        "Hallen er en stålhall med søyler og takbjelker i stål.",
+        "Kontordelen står inntil hallens venstre gavl, med fronten i flukt med hallen.",
+        "Etasjehøyde 3,5 m i kontordelen.",
+        "Tomta er regulert til næring og har vei, vann og avløp fram til tomtegrensen."
+      ]
+    }
+  }
+}

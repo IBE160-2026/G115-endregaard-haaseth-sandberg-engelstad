@@ -1,3 +1,4 @@
+import { readdirSync } from 'node:fs';
 import { createServer, type Server } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import { afterEach, describe, expect, it } from 'vitest';
@@ -6,7 +7,7 @@ import { DEMO_LABEL, parseSse, type AppConfig, type StreamEvent } from '../src/c
 import { schemaErrors } from '../src/contract/validate.ts';
 import { loadBrand } from './brand.ts';
 import { cleanMessages, createHandler, FIXTURES_DIR, handlerFromEnv, leadErrors, MAX_BODY_BYTES, ROOT, type HandlerOptions } from './http.ts';
-import { createDemoProvider, NO_PACING } from './providers/demo.ts';
+import { createDemoProvider, loadDialog, NO_PACING } from './providers/demo.ts';
 import { TurnError, type Provider } from './providers/types.ts';
 
 const servers: Server[] = [];
@@ -195,5 +196,81 @@ describe('input checks', () => {
     const { budget: _b, ...noBudget } = lead();
     expect(leadErrors(noBudget)).toContain('budget mangler');
     expect(leadErrors(null)).not.toEqual([]);
+  });
+});
+
+describe('the demo dialogs', () => {
+  const ids = readdirSync(FIXTURES_DIR, { withFileTypes: true })
+    .filter((d) => d.isDirectory())
+    .map((d) => d.name);
+
+  /** Serves any handler (handlerFromEnv here) on a free port, like serve() does for createHandler. */
+  async function serveHandler(handler: ReturnType<typeof handlerFromEnv>): Promise<string> {
+    const server = createServer((req, res) => void handler(req, res, () => res.end()));
+    servers.push(server);
+    await new Promise<void>((r) => server.listen(0, '127.0.0.1', r));
+    return `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
+  }
+
+  /** Every fixtures dialog as HandlerOptions.demos, without pacing. */
+  const demos = () =>
+    ids.map((id) => {
+      const provider = createDemoProvider({ fixturesDir: FIXTURES_DIR, dialog: id, pacing: NO_PACING });
+      return { id, title: loadDialog(FIXTURES_DIR, id)[0].turn.project.name, script: provider.script, provider, plainProvider: provider };
+    });
+
+  it('has the garage and the three new dialogs', () => {
+    expect(ids).toEqual(expect.arrayContaining(['garage', 'enebolig', 'boligblokk', 'lagerhall']));
+  });
+
+  it('GET /api/config lists every fixtures dialog with its title and script, the default first', async () => {
+    const base = await serveHandler(handlerFromEnv({}));
+    const config = (await (await fetch(`${base}/api/config`)).json()) as AppConfig;
+    expect(config.provider).toBe('demo');
+    expect(config.demoDialogs.map((d) => d.id).sort()).toEqual([...ids].sort());
+    expect(config.demoDialogs[0].id).toBe('garage');
+    expect(config.demoScript).toEqual(config.demoDialogs[0].script);
+    for (const d of config.demoDialogs) {
+      const steps = loadDialog(FIXTURES_DIR, d.id);
+      expect(d.title).toBe(steps[0].turn.project.name);
+      expect(d.script).toEqual(steps.map((s) => s.user));
+    }
+    expect(config.demoDialogs.find((d) => d.id === 'enebolig')?.title).toBe('Enebolig med dobbelgarasje');
+  });
+
+  it('DEMO_DIALOG picks the default dialog', async () => {
+    const base = await serveHandler(handlerFromEnv({ DEMO_DIALOG: 'lagerhall' }));
+    const config = (await (await fetch(`${base}/api/config`)).json()) as AppConfig;
+    expect(config.demoDialogs[0].id).toBe('lagerhall');
+    expect(config.demoScript[0]).toBe('Lagerhall med kontordel');
+  });
+
+  it('body.demo plays that dialog\'s first turn (POST /api/turn)', async () => {
+    const base = await serveHandler(handlerFromEnv({}));
+    for (const id of ids) {
+      const steps = loadDialog(FIXTURES_DIR, id);
+      const res = await post(`${base}/api/turn`, { messages: [user(steps[0].user)], demo: id });
+      expect(res.status, id).toBe(200);
+      expect(await res.json(), id).toEqual(steps[0].turn);
+    }
+  });
+
+  it('body.demo follows that dialog turn by turn, and an unknown id falls back to the default', async () => {
+    const base = await serveHandler(handlerFromEnv({}));
+    const steps = loadDialog(FIXTURES_DIR, 'boligblokk');
+    const second = await post(`${base}/api/turn`, { messages: [user('a'), { role: 'assistant', content: 'b' }, user('c')], demo: 'boligblokk' });
+    expect(await second.json()).toEqual(steps[1].turn);
+    const unknown = await post(`${base}/api/turn`, { messages: [user('a')], demo: 'finnes-ikke' });
+    expect(((await unknown.json()) as { project: { name: string } }).project.name).toBe('Dobbelgarasje med loft');
+  });
+
+  it('body.demo picks the dialog for the stream too', async () => {
+    const base = await serve({ demos: demos() });
+    const steps = loadDialog(FIXTURES_DIR, 'enebolig');
+    const events = await readEvents(await post(`${base}/api/turn/stream`, { messages: [user(steps[0].user)], demo: 'enebolig' }));
+    const turn = events.find((e) => e.event === 'turn');
+    expect(turn?.data).toEqual(steps[0].turn);
+    const deltas = events.filter((e) => e.event === 'reply').map((e) => (e.data as { delta: string }).delta).join('');
+    expect(deltas).toBe(steps[0].turn.reply);
   });
 });

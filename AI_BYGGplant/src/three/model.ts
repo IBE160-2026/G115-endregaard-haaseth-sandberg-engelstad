@@ -1,18 +1,24 @@
 // The parametric 3D model: turns the AI's Building JSON into plain parts (boxes and flat polygons).
 // PURE: no three.js, no DOM. The app has no building rules; this draws exactly what the JSON says and
-// lists a warning for everything it cannot place (never invents a position).
+// lists a warning for everything it cannot place (never invents a position or a size).
 //
-// Frame: metres, Y up, origin at the building's front-left ground corner (seen from the front),
-// X along the length (front wall), Z into the depth. Boxes are axis-aligned: (x, y, z) is the MIN corner.
-// Polygons are planar and convex, wound counter-clockwise seen from outside (normal = outward/up); the
-// renderer gives each poly a thickness behind it (see POLY_DEPTH).
+// A building is a set of rectangular, axis-aligned volumes (bygningskropper) on the site. Each sized
+// volume gets its own walls (panels around its openings), corner trims, slab and roof.
+//
+// Frame: metres, Y up, origin at the front-left ground corner of the SITE rectangle (siteBounds),
+// X along the main front (site x), Z into the depth (site y). Boxes are axis-aligned: (x, y, z) is the
+// MIN corner. Polygons are planar and convex, wound counter-clockwise seen from outside (normal =
+// outward/up); the renderer gives each poly a thickness behind it (see POLY_DEPTH).
 //
 // Display-only assumptions (each one comments itself below): wall thickness, trims, a plinth, and
 // fallbacks that warn. A loft (opening floor = floors + 1) sits in the gable or lies in the roof plane.
-import { hexColor, type Building, type Opening, type Wall } from '../contract/types';
+// Where two volumes stand wall to wall, the shared wall is drawn once: each volume leaves out the part
+// of its wall that the neighbour's wall covers (up to the neighbour's wall height).
+import { hexColor, isSized, siteBounds, type Building, type Opening, type SizedVolume, type Wall } from '../contract/types';
 
 export interface Part {
   id: string;
+  /** The opening id for an opening; the volume id for every other part of a volume; null for site parts. */
   refId: string | null;
   kind: 'slab' | 'wall' | 'trim' | 'roof' | 'gable' | 'opening' | 'frame' | 'ground';
   box?: { x: number; y: number; z: number; w: number; h: number; d: number };
@@ -22,6 +28,7 @@ export interface Part {
 
 export interface BuildingModel {
   parts: Part[];
+  /** Site rectangle (w along x, d along z) and the highest point incl. roofs. */
   bounds: { w: number; h: number; d: number };
   warnings: string[];
   empty: boolean;
@@ -39,7 +46,9 @@ export const GREY = { wall: '#d9d6d0', roof: '#4a4d52', trim: '#f2f2f2' } as con
 export const GLASS = '#25313b';
 export const GRAVEL = '#9a958c';
 export const SLAB = '#b4b0a8';
-const DEFAULT_FH = 2.5;
+/** The plinth of a volume with a basement: a dark band (basement walls and windows are not drawn). */
+export const PLINTH = '#57544f';
+export const DEFAULT_FH = 2.5;
 const DEFAULT_PITCH = 30;
 const DEFAULT_OVERHANG = 0.3;
 const FRAME = 0.07;
@@ -50,6 +59,8 @@ const nb = (n: string) => n.replace('.', ',');
 const fmt = (n: number) => nb(String(Math.round(n * 10) / 10));
 const valid = (n: number | null | undefined): n is number => typeof n === 'number' && Number.isFinite(n);
 const positive = (n: number | null | undefined): n is number => valid(n) && n > 0;
+const nameOf = (v: { name?: string; id: string }) => v.name?.trim() || v.id;
+const labelOf = (o: Opening) => o.label?.trim() || o.id;
 
 /** #rrggbb scaled towards black (k < 1). */
 export function shade(hex: string, k: number): string {
@@ -84,33 +95,105 @@ const OUT: Record<Wall, V3> = { front: [0, 0, -1], bak: [0, 0, 1], hoyre: [1, 0,
 const WALLS: Wall[] = ['front', 'hoyre', 'bak', 'venstre'];
 
 interface Rect { u0: number; u1: number; y0: number; y1: number }
+/** Part of a volume's wall that a neighbour's wall stands against: u range on this wall, up to height h. */
+export interface Cover { u0: number; u1: number; h: number; name: string; id: string }
+
+/** Storeys drawn for a sized volume and its floor height (fallback 2.5 m, the caller warns). */
+const storeys = (v: SizedVolume) => Math.max(1, Math.round(v.floors));
+const floorH = (v: SizedVolume) => (positive(v.floor_height_m) ? v.floor_height_m : DEFAULT_FH);
+
+/**
+ * For each wall of `v`, the stretches where another sized volume's opposite wall lies on the same line
+ * (in u: metres from the wall's left corner seen from outside), with that neighbour's wall height.
+ */
+export function wallCovers(v: SizedVolume, all: SizedVolume[]): Record<Wall, Cover[]> {
+  const out: Record<Wall, Cover[]> = { front: [], bak: [], hoyre: [], venstre: [] };
+  const same = (a: number, b: number) => Math.abs(a - b) < 1e-3;
+  for (const n of all) {
+    if (n === v) continue;
+    const h = storeys(n) * floorH(n);
+    const add = (w: Wall, a0: number, a1: number, map: (a: number) => number) => {
+      const lo = Math.max(a0, w === 'front' || w === 'bak' ? v.x_m : v.y_m);
+      const hi = Math.min(a1, w === 'front' || w === 'bak' ? v.x_m + v.length_m : v.y_m + v.width_m);
+      if (hi - lo < 1e-3) return;
+      const u0 = map(lo), u1 = map(hi);
+      out[w].push({ u0: r3(Math.min(u0, u1)), u1: r3(Math.max(u0, u1)), h, name: nameOf(n), id: n.id });
+    };
+    if (same(n.y_m + n.width_m, v.y_m)) add('front', n.x_m, n.x_m + n.length_m, (x) => x - v.x_m);
+    if (same(n.y_m, v.y_m + v.width_m)) add('bak', n.x_m, n.x_m + n.length_m, (x) => v.x_m + v.length_m - x);
+    if (same(n.x_m, v.x_m + v.length_m)) add('hoyre', n.y_m, n.y_m + n.width_m, (y) => y - v.y_m);
+    if (same(n.x_m + n.length_m, v.x_m)) add('venstre', n.y_m, n.y_m + n.width_m, (y) => v.y_m + v.width_m - y);
+  }
+  return out;
+}
 
 export function buildModel(b: Building): BuildingModel {
   const warnings: string[] = [];
   const warn = (w: string) => { if (!warnings.includes(w)) warnings.push(w); };
   if (valid(b.terrain_slope_pct) && b.terrain_slope_pct > 0) warn('Terrenghelling vises ikke i 3D ennå');
 
-  const L = b.length_m, W = b.width_m, F = b.floors;
-  if (!positive(L) || !positive(W) || !positive(F)) {
-    return { parts: [], bounds: { w: 0, h: 0, d: 0 }, warnings, empty: true };
+  const volumes = b.volumes ?? [];
+  for (const v of volumes) if (!isSized(v)) warn(`Størrelsen på ${nameOf(v)} er ikke avklart`);
+  const ids = new Set(volumes.map((v) => v.id));
+  for (const o of b.openings ?? []) if (!ids.has(o.volume_id)) warn(`${labelOf(o)} hører ikke til noen bygningskropp`);
+
+  const sized = volumes.filter(isSized).filter((v) => valid(v.x_m) && valid(v.y_m));
+  const site = siteBounds({ ...b, volumes: sized });
+  if (!site) return { parts: [], bounds: { w: 0, h: 0, d: 0 }, warnings, empty: true };
+
+  for (let i = 0; i < sized.length; i++) {
+    for (let j = i + 1; j < sized.length; j++) {
+      const a = sized[i], c = sized[j];
+      const ox = Math.min(a.x_m + a.length_m, c.x_m + c.length_m) - Math.max(a.x_m, c.x_m);
+      const oy = Math.min(a.y_m + a.width_m, c.y_m + c.width_m) - Math.max(a.y_m, c.y_m);
+      if (ox > 1e-3 && oy > 1e-3) warn(`${nameOf(a)} og ${nameOf(c)} overlapper hverandre`);
+    }
   }
-  const floors = Math.max(1, Math.round(F));
-  let fh = DEFAULT_FH;
-  if (positive(b.floor_height_m)) fh = b.floor_height_m;
-  else warn(`Etasjehøyde ikke avklart – vist med ${fmt(DEFAULT_FH)} m`);
+
+  const parts: Part[] = [];
+  const used = new Set<string>();
+  for (const v of sized) {
+    // Volume ids should be unique; if not, keep part ids unique anyway (refId stays the volume id).
+    let key = v.id, k = 2;
+    while (used.has(key)) key = `${v.id}~${k++}`;
+    used.add(key);
+    buildVolume(b, v, key, sized, site.x0, site.y0, sized.length > 1, parts, warn);
+  }
+
+  let h = 0;
+  for (const p of parts) {
+    if (p.box) h = Math.max(h, p.box.y + p.box.h);
+    if (p.poly) for (const q of p.poly.points) h = Math.max(h, q[1]);
+  }
+  return { parts, bounds: { w: r3(site.x1 - site.x0), h: r3(h), d: r3(site.y1 - site.y0) }, warnings, empty: false };
+}
+
+function buildVolume(
+  b: Building, v: SizedVolume, key: string, all: SizedVolume[], sx: number, sy: number, multi: boolean,
+  parts: Part[], warn: (w: string) => void,
+) {
+  const vName = nameOf(v);
+  /** With several volumes, per-volume fallback warnings name the volume. */
+  const tag = (s: string) => (multi ? `${vName}: ${s}` : s);
+  const L = v.length_m, W = v.width_m;
+  const floors = storeys(v);
+  const fh = floorH(v);
+  if (!positive(v.floor_height_m)) warn(tag(`Etasjehøyde ikke avklart – vist med ${fmt(DEFAULT_FH)} m`));
+  const ox = v.x_m - sx, oz = v.y_m - sy;
+  const basements = valid(v.basement_floors) ? Math.max(0, Math.round(v.basement_floors)) : 0;
 
   // ---------- Roof parameters (display fallbacks warn, except the cosmetic overhang) ----------
-  const roof = b.roof;
+  const roof = v.roof;
   let kind: 'saltak' | 'pulttak' | 'valm' | 'flatt' | 'slab' = 'slab';
-  if (!roof || roof.kind === 'annet') warn('Takform ikke avklart');
+  if (!roof || roof.kind === 'annet') warn(tag('Takform ikke avklart'));
   else kind = roof.kind;
   const pitched = kind === 'saltak' || kind === 'pulttak' || kind === 'valm';
   let pitch = DEFAULT_PITCH;
   if (pitched) {
-    if (!valid(roof!.pitch_deg)) warn(`Takvinkel ikke avklart – vist med ${DEFAULT_PITCH}°`);
+    if (!valid(roof!.pitch_deg)) warn(tag(`Takvinkel ikke avklart – vist med ${DEFAULT_PITCH}°`));
     else if (roof!.pitch_deg < 3 || roof!.pitch_deg > 70) {
       pitch = Math.min(70, Math.max(3, roof!.pitch_deg));
-      warn(`Takvinkel ${fmt(roof!.pitch_deg)}° vises som ${fmt(pitch)}°`);
+      warn(tag(`Takvinkel ${fmt(roof!.pitch_deg)}° vises som ${fmt(pitch)}°`));
     } else pitch = roof!.pitch_deg;
   }
   const o = roof && valid(roof.overhang_m) ? Math.min(2, Math.max(0, roof.overhang_m)) : DEFAULT_OVERHANG;
@@ -126,22 +209,24 @@ export function buildModel(b: Building): BuildingModel {
   const eave = wallH - o * t;
   const ridgeTop = kind === 'pulttak' ? wallH + A * t : wallH + (S / 2) * t;
 
-  const ext = b.exterior;
-  const wallC = hexColor(ext?.wall_color) ?? GREY.wall;
-  const roofC = hexColor(ext?.roof_color) ?? GREY.roof;
-  const trimC = hexColor(ext?.trim_color) ?? GREY.trim;
+  // Colours: the volume's own exterior wins field by field, then the building's, then neutral greys.
+  const ve = v.exterior, be = b.exterior;
+  const wallC = hexColor(ve?.wall_color) ?? hexColor(be?.wall_color) ?? GREY.wall;
+  const roofC = hexColor(ve?.roof_color) ?? hexColor(be?.roof_color) ?? GREY.roof;
+  const trimC = hexColor(ve?.trim_color) ?? hexColor(be?.trim_color) ?? GREY.trim;
   const doorC = shade(wallC, 0.78);
 
-  const parts: Part[] = [];
-  const box = (id: string, kind: Part['kind'], color: string, x0: number, x1: number, y0: number, y1: number, z0: number, z1: number, refId: string | null = null) => {
+  const ref = v.id;
+  const pid = (s: string) => `${key}:${s}`;
+  const box = (id: string, kind: Part['kind'], color: string, x0: number, x1: number, y0: number, y1: number, z0: number, z1: number, refId: string | null = ref) => {
     parts.push({
-      id, refId, kind, color,
-      box: { x: r3(Math.min(x0, x1)), y: r3(Math.min(y0, y1)), z: r3(Math.min(z0, z1)), w: r3(Math.abs(x1 - x0)), h: r3(Math.abs(y1 - y0)), d: r3(Math.abs(z1 - z0)) },
+      id: pid(id), refId, kind, color,
+      box: { x: r3(Math.min(x0, x1) + ox), y: r3(Math.min(y0, y1)), z: r3(Math.min(z0, z1) + oz), w: r3(Math.abs(x1 - x0)), h: r3(Math.abs(y1 - y0)), d: r3(Math.abs(z1 - z0)) },
     });
   };
-  const poly = (id: string, kind: Part['kind'], color: string, pts: V3[], want: V3, refId: string | null = null) => {
+  const poly = (id: string, kind: Part['kind'], color: string, pts: V3[], want: V3, refId: string | null = ref) => {
     const p = orient(pts, want);
-    if (p.length >= 3) parts.push({ id, refId, kind, color, poly: { points: p.map((q) => [r3(q[0]), r3(q[1]), r3(q[2])] as V3) } });
+    if (p.length >= 3) parts.push({ id: pid(id), refId, kind, color, poly: { points: p.map((q) => [r3(q[0] + ox), r3(q[1]), r3(q[2] + oz)] as V3) } });
   };
 
   // ---------- Wall frames: u from the wall's left corner seen from outside, d inwards from the outer face ----------
@@ -154,7 +239,7 @@ export function buildModel(b: Building): BuildingModel {
       case 'venstre': return [d, W - u];
     }
   };
-  const wallBox = (id: string, kind: Part['kind'], color: string, w: Wall, u0: number, u1: number, y0: number, y1: number, d0: number, d1: number, refId: string | null = null) => {
+  const wallBox = (id: string, kind: Part['kind'], color: string, w: Wall, u0: number, u1: number, y0: number, y1: number, d0: number, d1: number, refId: string | null = ref) => {
     const [x0, z0] = toXZ(w, u0, d0), [x1, z1] = toXZ(w, u1, d1);
     box(id, kind, color, x0, x1, y0, y1, z0, z1, refId);
   };
@@ -180,6 +265,11 @@ export function buildModel(b: Building): BuildingModel {
   const fullWalls: Wall[] = kind === 'saltak' ? ends : kind === 'pulttak' ? sides : ['front', 'bak'];
   const range = (w: Wall): [number, number] => (fullWalls.includes(w) ? [0, wallLen(w)] : [WALL_T, wallLen(w) - WALL_T]);
 
+  // ---------- Neighbours: the stretches of each wall another volume's wall stands against ----------
+  const covers = wallCovers(v, all);
+  const coverAt = (w: Wall, u0: number, u1: number) =>
+    covers[w].reduce((h, c) => (c.u0 < u1 - 1e-3 && u0 < c.u1 - 1e-3 ? Math.max(h, c.h) : h), 0);
+
   // ---------- Openings ----------
   const holes: Record<Wall, (Rect & { op: Opening })[]> = { front: [], bak: [], hoyre: [], venstre: [] };
   const roofWins: (Rect & { op: Opening; wall: Wall })[] = [];
@@ -190,16 +280,18 @@ export function buildModel(b: Building): BuildingModel {
     return { s: t, top: ridgeTop };
   };
 
-  for (const op of b.openings ?? []) {
-    const label = op.label?.trim() || op.id;
+  for (const op of (b.openings ?? []).filter((q) => q.volume_id === v.id)) {
+    const label = labelOf(op);
     if (!valid(op.offset_m) || !valid(op.sill_m)) { warn(`Plassering av ${label} er ikke avklart`); continue; }
     if (!positive(op.width_m) || !positive(op.height_m)) { warn(`Størrelse på ${label} er ikke avklart`); continue; }
     const f = Math.round(op.floor);
+    // Basement levels (1 − basement_floors … 0) are below ground: never drawn.
+    if (f <= 0 && f >= 1 - basements && WALLS.includes(op.wall)) { warn('Kjelleråpninger vises ikke i 3D'); continue; }
     // Contract: the loft is not counted in `floors`; floor = floors + 1 is the loft/roof level, and only a
     // pitched roof has one. Anything higher (or a loft under a flat roof) is not drawn.
     const loft = f === floors + 1;
     if (!(f >= 1 && (f <= floors || (loft && pitched))) || !WALLS.includes(op.wall)) {
-      warn(`${label} ligger i etasje ${op.floor}, som bygget ikke har`);
+      warn(`${label} ligger i etasje ${op.floor}, som ${multi ? vName : 'bygget'} ikke har`);
       continue;
     }
     // Openings stay inside the wall's own extent (an inset wall stops at the corner walls' thickness).
@@ -225,25 +317,31 @@ export function buildModel(b: Building): BuildingModel {
       r.y1 = Math.min(r.y1, topAt(op.wall, r.u0) - 0.05, topAt(op.wall, r.u1) - 0.05);
     }
     if (r.u1 - r.u0 < 0.05 || r.y1 - r.y0 < 0.05) { warn(`${label} får ikke plass på veggen og er ikke tegnet`); continue; }
+    if (!inRoof) {
+      // A wall another volume stands against is inside the building: an opening there is not drawn.
+      const c = covers[op.wall].find((q) => q.u0 < r.u1 - 1e-3 && r.u0 < q.u1 - 1e-3 && r.y0 < q.h - 1e-3);
+      if (c) { warn(`${label} ligger i en vegg som står inntil ${c.name}`); continue; }
+    }
     if (r.u0 > want.u0 + EPS || r.u1 < want.u1 - EPS || r.y0 > want.y0 + EPS || r.y1 < want.y1 - EPS) {
       warn(`${label} går utenfor veggen og er tegnet avkortet`);
     }
     const list = inRoof ? roofWins.filter((q) => q.wall === op.wall) : holes[op.wall];
     for (const q of list) {
-      if (q.u0 < r.u1 - EPS && r.u0 < q.u1 - EPS && q.y0 < r.y1 - EPS && r.y0 < q.y1 - EPS) warn(`${label} overlapper ${q.op.label?.trim() || q.op.id}`);
+      if (q.u0 < r.u1 - EPS && r.u0 < q.u1 - EPS && q.y0 < r.y1 - EPS && r.y0 < q.y1 - EPS) warn(`${label} overlapper ${labelOf(q.op)}`);
     }
     if (inRoof) roofWins.push({ ...r, op, wall: op.wall });
     else holes[op.wall].push({ ...r, op });
   }
 
-  // ---------- Slab (a low plinth, display only) ----------
-  box('slab', 'slab', SLAB, -0.05, L + 0.05, -0.1, 0.05, -0.05, W + 0.05);
+  // ---------- Slab (a low plinth, display only; dark and wider when the volume has a basement) ----------
+  if (basements > 0) box('slab', 'slab', PLINTH, -0.08, L + 0.08, -0.1, 0.06, -0.08, W + 0.08);
+  else box('slab', 'slab', SLAB, -0.05, L + 0.05, -0.1, 0.05, -0.05, W + 0.05);
 
-  // ---------- Walls: panels around the holes, no CSG ----------
+  // ---------- Walls: panels around the holes, no CSG; covered stretches are left out up to the cover ----------
   for (const w of WALLS) {
     const [us, ue] = range(w);
     const hs = holes[w];
-    const bps = [us, ue, ...hs.flatMap((h) => [h.u0, h.u1])].map((u) => Math.min(ue, Math.max(us, u)));
+    const bps = [us, ue, ...hs.flatMap((h) => [h.u0, h.u1]), ...covers[w].flatMap((c) => [c.u0, c.u1])].map((u) => Math.min(ue, Math.max(us, u)));
     if (kind === 'saltak' && hasGable(w)) bps.push(wallLen(w) / 2);
     const cuts = [...new Set(bps.map(r3))].sort((p, q) => p - q);
     let n = 0;
@@ -251,25 +349,41 @@ export function buildModel(b: Building): BuildingModel {
       const a = cuts[i], c = cuts[i + 1];
       if (c - a < 1e-3) continue;
       const mid = (a + c) / 2;
+      const cover = coverAt(w, a, c);
+      const panel = (y0: number, y1: number) => {
+        const lo = Math.max(y0, cover);
+        if (y1 - lo > 1e-3) wallBox(`wall-${w}-${n++}`, 'wall', wallC, w, a, c, lo, y1, 0, WALL_T);
+      };
       const ys = hs.filter((h) => h.u0 <= mid && h.u1 >= mid).map((h) => [h.y0, h.y1]).sort((p, q) => p[0] - q[0]);
       let y = 0;
       for (const [h0, h1] of ys) {
-        if (h0 > y + 1e-3) wallBox(`wall-${w}-${n++}`, 'wall', wallC, w, a, c, y, h0, 0, WALL_T);
+        if (h0 > y + 1e-3) panel(y, h0);
         y = Math.max(y, h1);
       }
-      if (y < wallH - 1e-3) wallBox(`wall-${w}-${n++}`, 'wall', wallC, w, a, c, y, wallH, 0, WALL_T);
-      const yy = Math.max(y, wallH), ta = topAt(w, a), tc = topAt(w, c);
-      if (ta > yy + 1e-3 || tc > yy + 1e-3) {
-        poly(`gable-${w}-${n++}`, 'gable', wallC, [wallPt(w, a, yy), wallPt(w, c, yy), wallPt(w, c, Math.max(yy, tc)), wallPt(w, a, Math.max(yy, ta))], OUT[w]);
+      if (y < wallH - 1e-3) panel(y, wallH);
+      // Gable (or the high wall of a shed roof) above the wall top, clipped above a neighbour's wall.
+      const yb = Math.max(y, wallH, cover), ta = topAt(w, a), tc = topAt(w, c);
+      if (ta > yb + 1e-3 || tc > yb + 1e-3) {
+        let pts: V3[];
+        if (ta >= yb && tc >= yb) pts = [wallPt(w, a, yb), wallPt(w, c, yb), wallPt(w, c, tc), wallPt(w, a, ta)];
+        else if (ta < yb) { const ua = a + ((c - a) * (yb - ta)) / (tc - ta); pts = [wallPt(w, ua, yb), wallPt(w, c, yb), wallPt(w, c, tc)]; }
+        else { const uc = a + ((c - a) * (ta - yb)) / (ta - tc); pts = [wallPt(w, a, yb), wallPt(w, uc, yb), wallPt(w, a, ta)]; }
+        poly(`gable-${w}-${n++}`, 'gable', wallC, pts, OUT[w]);
       }
     }
   }
 
-  // ---------- Corner trims ----------
+  // ---------- Corner trims (from a neighbour's wall top up, where a neighbour stands at the corner) ----------
   const k = 0.1, out = 0.02;
-  ([[0, 0], [L, 0], [L, W], [0, W]] as const).forEach(([cx, cz], i) => {
+  /** Each corner and the two walls (with u) that meet there. */
+  const corners: [number, number, Wall, number, Wall, number][] = [
+    [0, 0, 'front', 0, 'venstre', W], [L, 0, 'front', L, 'hoyre', 0], [L, W, 'hoyre', W, 'bak', 0], [0, W, 'bak', L, 'venstre', 0],
+  ];
+  corners.forEach(([cx, cz, w1, u1, w2, u2], i) => {
+    const y0 = Math.max(0.05, coverAt(w1, u1 - 0.01, u1 + 0.01), coverAt(w2, u2 - 0.01, u2 + 0.01));
+    if (wallH - y0 < 0.05) return;
     const x0 = cx === 0 ? -out : L - k, z0 = cz === 0 ? -out : W - k;
-    box(`trim-corner-${i}`, 'trim', trimC, x0, x0 + k + out, 0.05, wallH, z0, z0 + k + out);
+    box(`trim-corner-${i}`, 'trim', trimC, x0, x0 + k + out, y0, wallH, z0, z0 + k + out);
   });
 
   // ---------- Wall openings: one part per opening (refId), frames around it ----------
@@ -287,7 +401,7 @@ export function buildModel(b: Building): BuildingModel {
       wallBox(`${fid}-t`, 'frame', trimC, w, h.u0, h.u1, h.y1, h.y1 + FRAME, -0.03, 0.06);
       if (glazed) wallBox(`${fid}-b`, 'frame', trimC, w, h.u0 - FRAME, h.u1 + FRAME, h.y0 - FRAME, h.y0, -0.07, 0.06);
       // Presentation tied to an opening the AI defined: a gravel drive in front of a ground-floor port.
-      if (op.kind === 'port' && op.floor === 1) wallBox(`drive-${op.id}`, 'ground', GRAVEL, w, h.u0 - 0.4, h.u1 + 0.4, 0, 0.015, -6, -0.06);
+      if (op.kind === 'port' && Math.round(op.floor) === 1) wallBox(`drive-${op.id}`, 'ground', GRAVEL, w, h.u0 - 0.4, h.u1 + 0.4, 0, 0.015, -6, -0.06, null);
     }
   }
 
@@ -332,11 +446,13 @@ export function buildModel(b: Building): BuildingModel {
     boxAC('fascia-3', 'trim', trimC, A + o, A + o + 0.03, -o, S + o, y0, y1);
   } else if (kind === 'flatt') {
     box('roof-0', 'roof', roofC, -0.05, L + 0.05, wallH, wallH + 0.25, -0.05, W + 0.05);
+    // Parapets, except along a side where a neighbour's wall rises at least to this roof (it would be inside).
     const p0 = wallH + 0.25, p1 = p0 + 0.3, pt = 0.12;
-    box('parapet-0', 'trim', trimC, -0.05, L + 0.05, p0, p1, -0.05, -0.05 + pt);
-    box('parapet-1', 'trim', trimC, -0.05, L + 0.05, p0, p1, W + 0.05 - pt, W + 0.05);
-    box('parapet-2', 'trim', trimC, -0.05, -0.05 + pt, p0, p1, -0.05 + pt, W + 0.05 - pt);
-    box('parapet-3', 'trim', trimC, L + 0.05 - pt, L + 0.05, p0, p1, -0.05 + pt, W + 0.05 - pt);
+    const full = (w: Wall) => covers[w].some((c) => c.u0 <= 1e-3 && c.u1 >= wallLen(w) - 1e-3 && c.h >= p1);
+    if (!full('front')) box('parapet-0', 'trim', trimC, -0.05, L + 0.05, p0, p1, -0.05, -0.05 + pt);
+    if (!full('bak')) box('parapet-1', 'trim', trimC, -0.05, L + 0.05, p0, p1, W + 0.05 - pt, W + 0.05);
+    if (!full('venstre')) box('parapet-2', 'trim', trimC, -0.05, -0.05 + pt, p0, p1, -0.05 + pt, W + 0.05 - pt);
+    if (!full('hoyre')) box('parapet-3', 'trim', trimC, L + 0.05 - pt, L + 0.05, p0, p1, -0.05 + pt, W + 0.05 - pt);
   } else {
     box('roof-0', 'roof', roofC, -o, L + o, wallH, wallH + 0.25, -o, W + o);
   }
@@ -353,11 +469,4 @@ export function buildModel(b: Building): BuildingModel {
     poly(`opening-${r.op.id}`, 'opening', glazed ? GLASS : doorC,
       [pt(r.u0, r.y0, 0.04), pt(r.u1, r.y0, 0.04), pt(r.u1, r.y1, 0.04), pt(r.u0, r.y1, 0.04)], want, r.op.id);
   }
-
-  let h = 0;
-  for (const p of parts) {
-    if (p.box) h = Math.max(h, p.box.y + p.box.h);
-    if (p.poly) for (const q of p.poly.points) h = Math.max(h, q[1]);
-  }
-  return { parts, bounds: { w: L, h: r3(h), d: W }, warnings, empty: false };
 }

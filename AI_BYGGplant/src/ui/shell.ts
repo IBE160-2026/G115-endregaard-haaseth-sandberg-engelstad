@@ -2,7 +2,7 @@
 // inbox drawer and print container. The markup and the small decisions are pure; main.ts wires them.
 import type { AppConfig } from '../contract/stream';
 import type { Brand } from '../contract/brand';
-import type { Change, Project } from '../contract/types';
+import { siteBounds, type Change, type Project } from '../contract/types';
 import { esc } from '../format';
 import type { Session } from '../session';
 import type { Store } from '../projects';
@@ -35,8 +35,32 @@ export const sessionOf = (store: Store, id: string): Session | undefined => stor
 /** What glows: a clicked reference wins over what the newest turn changed. */
 export const glowSet = (turnIds: Set<string>, focus: string | null): Set<string> => (focus ? new Set([focus]) : turnIds);
 
-/** The 3D view has something to draw once the AI has given the footprint. */
-export const hasFootprint = (p: Project) => p.building.length_m != null && p.building.width_m != null;
+/** The 3D view has something to draw once the AI has sized at least one volume (length, width and floors). */
+export const hasFootprint = (p: Project) => siteBounds(p.building) !== null;
+
+// ---- the demo chooser (demo mode only) ----
+
+export type DemoDialog = AppConfig['demoDialogs'][number];
+
+/** Remembers which scripted demo dialog a project plays. */
+export function setDemo(store: Store, id: string, demo: string): Store {
+  return { ...store, projects: store.projects.map((p) => (p.id === id ? { ...p, demo } : p)) };
+}
+
+/** The dialog a project plays: its chosen one if the server still offers it, otherwise the default (first). */
+export function demoDialogFor(config: AppConfig, chosen: string | undefined): DemoDialog | null {
+  return config.demoDialogs.find((d) => d.id === chosen) ?? config.demoDialogs[0] ?? null;
+}
+
+/** The user lines «Neste demo-replikk» offers for this project. */
+export const demoScriptFor = (config: AppConfig, chosen: string | undefined): string[] =>
+  demoDialogFor(config, chosen)?.script ?? config.demoScript;
+
+/** The chips under the greeting: in demo mode, for a new project nobody has chosen a dialog for yet. */
+export function demoChoices(config: AppConfig, project: { session: Session; demo?: string }): DemoDialog[] {
+  if (config.provider !== 'demo' || project.demo) return [];
+  return project.session.entries.some((e) => e.role === 'user') ? [] : config.demoDialogs;
+}
 
 /** The tab to fall back to when 3D cannot run (the 2D drawing), if the tab strip has it. */
 export const fallbackTab = (tabs: TabInfo[]) => (tabs.find((t) => t.id === 'tegning') ?? tabs.find((t) => t.id === 'bygget') ?? tabs[0])?.id;

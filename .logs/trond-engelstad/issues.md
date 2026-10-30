@@ -30,3 +30,4 @@
 - [ ] 2026-10-29 [ai-byggplant-v0-2-team](993-2026-10-29-22-15-00-ai-byggplant-v0-2-team.md) — Check with a real key that the AI fills in risks, changes and budget uncertainty sensibly
 - [x] 2026-10-30 [ai-byggplant-v0-3](992-2026-10-30-00-45-00-ai-byggplant-v0-3.md) — Click through the v0.3 garage demo in a browser (løst 2026-10-30: all steps work; Stopp bug fixed)
 - [ ] 2026-10-30 [ai-byggplant-v0-3](992-2026-10-30-00-45-00-ai-byggplant-v0-3.md) — Handle X-Forwarded-For in the rate limit before AI_BYGGplant gets a public URL
+- [ ] 2026-10-30 [ai-byggplant-v0-4](991-2026-10-30-02-00-00-ai-byggplant-v0-4.md) — Decide whether volumes need rotation, round shapes or joined roofs, and whether to draw terrain slope

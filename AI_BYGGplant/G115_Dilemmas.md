@@ -2,6 +2,14 @@
 
 The choices the AI (Claude Code) put to the group, with the group's reply word for word, one section per version (newest first). Each entry has at most four lines: the prompt, the reply, and what came of it.
 
+## v0.4 – 2026-10-30
+
+**Open:** Volumes are rectangular and axis-aligned (no rotated wings, round or curved buildings, and roofs of attached volumes do not join with valleys); terrain slope is still not drawn. The house dialog reads «1 meter bredere» as wider along the front. The brand's tagline still says garage and cabin; should the fictional supplier sell all building types?
+
+1. **Every building type.** Prompt: none (the group's own request).
+   Reply: "revider også push. Modellen skal kunne bygge ALLE typer bygg."
+   Result: v0.4 with buildings as volumes, a prompt for all building types, three new demo dialogs and a demo chooser; built by three parallel agents on a contract gate.
+
 ## v0.3 – 2026-10-30
 
 **Open:** Check the demo in a browser (`npm run build`, then `npm start`, open http://localhost:8080 and click «Neste demo-replikk» 7 times). The buyer the team chose (a builders' merchant or kit supplier, white-label) still needs the group's confirmation. The loft rule (a loft is not counted in `floors`) was decided by the integrator.

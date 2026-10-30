@@ -10,7 +10,7 @@ import { budgetRange, budgetTotal, riskTotal } from '../budget';
 import { esc, formatDelta, formatNok, formatNum } from '../format';
 import type { Session } from '../session';
 import { PHASES, type Level, type Phase, type Project, type Section } from '../types';
-import { renderBuilding, roofText } from './building';
+import { buildingFigures, renderBuilding, roofText, volumesCard } from './building';
 import { ganttSvg, projectWeeks } from './gantt';
 
 export type TabId = 'oversikt' | 'tegning' | 'budsjett' | 'fremdrift' | 'risiko' | 'endringer';
@@ -60,11 +60,16 @@ export function phaseStepper(current: Phase): string {
 /** The KPI row shared by Oversikt and the report. */
 export function projectKpis(p: Project): string {
   const b = p.building;
-  const size = b.length_m && b.width_m ? `${formatNum(b.length_m)} × ${formatNum(b.width_m)} m` : '–';
-  const area = b.length_m && b.width_m ? `${formatNum(Math.round(b.length_m * b.width_m * 10) / 10)} m²` : 'ikke avklart';
+  const fig = buildingFigures(b);
+  const m2 = (n: number) => `${formatNum(Math.round(n * 10) / 10)} m²`;
+  const size = fig.extent ? `${formatNum(fig.extent[0])} × ${formatNum(fig.extent[1])} m` : '–';
+  const area = fig.footprint > 0 ? `Grunnflate ${m2(fig.footprint)} · BRA ca. ${m2(fig.gross)}` : 'ikke avklart';
+  const volumes = fig.volumes === 1 ? '1 bygningskropp' : `${fig.volumes} bygningskropper`;
+  const main = b.volumes[0];
   const high = p.risks.filter((r) => r.probability === 'hoy').length;
   return `<div class="kpis">
-      <div class="kpi"><span>Størrelse</span><b>${size}</b><small>${area}${b.roof ? ` · ${roofText(b.roof)}` : ''}</small></div>
+      <div class="kpi"><span>Størrelse</span><b>${size}</b><small>${area}</small></div>
+      <div class="kpi"><span>Etasjer</span><b>${fig.floors ? `${formatNum(fig.floors)}${fig.basement ? ' + kjeller' : ''}` : '–'}</b><small>${fig.volumes ? `${volumes}${main?.roof ? ` · ${roofText(main.roof)}` : ''}` : 'ingen bygningskropp ennå'}</small></div>
       <div class="kpi"><span>Budsjett</span><b>${p.budget.length ? formatNok(budgetTotal(p)) : '–'}</b><small>${p.budget.length ? rangeText(p) : 'ikke laget ennå'}</small></div>
       <div class="kpi"><span>Byggetid</span><b>${p.schedule.length ? `${formatNum(projectWeeks(p.schedule))} uker` : '–'}</b><small>${p.schedule.length ? `${p.schedule.length} aktiviteter` : 'ikke planlagt ennå'}</small></div>
       <div class="kpi"><span>Risikoer</span><b>${p.risks.length || '–'}</b><small>${p.risks.length ? `${high} med høy sannsynlighet` : 'ikke vurdert ennå'}</small></div>
@@ -81,7 +86,7 @@ export function factCards(p: Project): string {
 
 export const assumptionsList = (p: Project) => `<ul class="tb-assumptions">${p.assumptions.map((a) => `<li>${esc(a)}</li>`).join('')}</ul>`;
 
-function overview(s: Session): string {
+function overview(s: Session, highlight: Set<string>): string {
   const p = s.project;
   return `${phaseStepper(s.phase)}
     <header class="project-head">
@@ -90,6 +95,7 @@ function overview(s: Session): string {
       ${p.summary ? `<p>${esc(p.summary)}</p>` : '<p class="empty">Fortell i dialogen hva som skal bygges, for eksempel «dobbelgarasje med loft».</p>'}
     </header>
     ${projectKpis(p)}
+    ${volumesCard(p.building, highlight)}
     ${p.facts.length ? factCards(p) : '<p class="empty">Det AI-en har avklart om tomt, bygg og materialer samles her.</p>'}
     ${p.assumptions.length ? `<section class="card"><h3>Antakelser</h3>${assumptionsList(p)}</section>` : ''}`;
 }
@@ -182,7 +188,7 @@ function changes(s: Session): string {
 export function renderTab(tab: TabId, s: Session, highlight: Set<string>): string {
   switch (tab) {
     case 'oversikt':
-      return overview(s);
+      return overview(s, highlight);
     case 'tegning':
       return renderBuilding(s.project.building, highlight);
     case 'budsjett':

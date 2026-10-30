@@ -71,6 +71,20 @@ export interface LogView {
   /** The chat state belongs to the project on screen. */
   mine: boolean;
   demo: boolean;
+  /** Demo dialogs to offer under the greeting (empty or missing = no chooser). */
+  choices?: { id: string; title: string; script: string[] }[];
+}
+
+/** «Demo: Dobbelgarasje med loft» chips; clicking one picks that scripted dialog and sends its first line. */
+export function renderDemoChoices(dialogs: { id: string; title: string; script: string[] }[]): string {
+  if (!dialogs.length) return '';
+  const chips = dialogs
+    .map(
+      (d) =>
+        `<button type="button" class="demo-choice" data-action="demo-choose" data-demo="${esc(d.id)}" title="${esc(d.script[0] ?? d.title)}">Demo: ${esc(d.title)}</button>`,
+    )
+    .join('');
+  return `<div class="demo-choices" role="group" aria-label="Velg en demodialog"><p class="demo-choices-note">Velg en forhåndsskrevet demo:</p><div class="options">${chips}</div></div>`;
 }
 
 const thinking = `<div class="msg ai thinking" role="status"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span>tenker…</span></div>`;
@@ -95,7 +109,9 @@ export function renderLog(session: Session, chat: ChatState, view: LogView): str
       )
       .join('');
     const greeting = i === 0 ? ' greeting' : '';
-    return `<div class="msg ai${greeting}"><p>${esc(e.text)}</p>${questions}</div>`;
+    // The demo chooser sits under the greeting of a new project, until a dialog is chosen or the first line is sent.
+    const choices = i === 0 && !busyHere ? renderDemoChoices(view.choices ?? []) : '';
+    return `<div class="msg ai${greeting}"><p>${esc(e.text)}</p>${questions}${choices}</div>`;
   });
   if (view.mine) {
     if (chat.status === 'waiting') html.push(thinking);

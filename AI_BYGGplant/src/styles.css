@@ -216,6 +216,16 @@ h1, h2, h3 { font-family: var(--font-display); }
   transition: background 0.15s var(--ease), border-color 0.15s var(--ease);
 }
 .chip-btn:hover { background: var(--accent-soft); border-color: var(--accent); }
+/* The demo chooser under the greeting (demo mode, new project). */
+.demo-choices { margin-top: 10px; padding-top: 8px; border-top: 1px dashed color-mix(in srgb, var(--warn) 50%, transparent); font: 400 14px/1.45 var(--font); }
+.demo-choices-note { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; color: var(--warn); }
+.demo-choice {
+  border: 1px dashed color-mix(in srgb, var(--warn) 60%, transparent); background: var(--warn-soft); color: var(--text);
+  border-radius: 999px; padding: 5px 12px; font-size: 13px; text-align: left;
+  transition: background 0.15s var(--ease), transform 0.1s var(--ease);
+}
+.demo-choice:hover:not(:disabled) { background: color-mix(in srgb, var(--warn) 18%, transparent); }
+.demo-choice:disabled { opacity: 0.55; cursor: default; }
 
 .thinking { display: flex; align-items: center; gap: 10px; color: var(--text-2); font-style: italic; }
 .dots { display: inline-flex; gap: 4px; }

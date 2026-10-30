@@ -2,6 +2,12 @@
 
 Major iterations of *AI Byggplan*, the AI dialog that plans a building project. Each entry has a summary of at most four lines.
 
+## v0.4 – 2026-10-30
+
+Every building type: a building is now one or more bygningskropper (volumes), each with a site position, size, floors, basement, roof and optional colours, and every opening names its volume. That covers L/T shapes, a house with an attached garage, blocks of flats with a stair tower, warehouses with an office part, extensions, barns and halls. The system prompt now covers all building types and the volume model.
+3D builds every volume (shared walls drawn once, a basement plinth, the whole volume glows when a change names it, ~22 draw calls even for a block with 120 windows); the Tegning tab has a site plan and whole-building elevations with basements; KPIs show footprint and gross area (BRA). Three new demo dialogs (Enebolig med dobbelgarasje, Leilighetsbygg med 12 leiligheter, Lagerhall med kontordel) and a demo chooser for new projects. Old projects are migrated.
+558 tests, tsc, build and smoke pass. All four demos were played to the end in Chrome with no console errors. Still never run against Claude.
+
 ## v0.3 – 2026-10-30
 
 "Start again and make something fantastic": team meeting 2 was run with Ingrid, Jonas and Mats as three separate agents (positions, replies, Ingrid's decision), then built by four parallel agents against a frozen contract (`src/contract/`).

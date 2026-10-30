@@ -1,0 +1,831 @@
+{
+  "user": "Stålkonstruksjon, isolert og oppvarmet hall uten kranbane. Lag budsjett, fremdriftsplan og risikoer.",
+  "turn": {
+    "reply": "Budsjettet er ca. 23,4 mill. kr inkl. mva, der stål, vegger og grunnarbeid er de største postene. Fremdriften er ca. 38 uker, og den største risikoen er om brannkravene utløser sprinkler i hallen.",
+    "questions": [
+      {
+        "text": "Vil du justere noe?",
+        "options": [
+          "Ser bra ut",
+          "Legg til sprinkler",
+          "Større kontordel",
+          "Billigere alternativer"
+        ]
+      }
+    ],
+    "phase": "budsjett",
+    "changes": [
+      {
+        "section": "materialer",
+        "text": "Isolert og oppvarmet stålhall",
+        "ref_id": "b-stal"
+      },
+      {
+        "section": "budsjett",
+        "text": "Budsjett laget: ca. 23 420 000 kr inkl. mva",
+        "ref_id": null
+      },
+      {
+        "section": "fremdrift",
+        "text": "Fremdriftsplan på 38 uker",
+        "ref_id": null
+      },
+      {
+        "section": "risiko",
+        "text": "Brannkrav for lager",
+        "ref_id": "r-brann"
+      },
+      {
+        "section": "risiko",
+        "text": "4 andre risikoer lagt inn",
+        "ref_id": null
+      }
+    ],
+    "project": {
+      "name": "Lagerhall med kontordel",
+      "type": "Lagerhall",
+      "summary": "Antrasittgrå, isolert stålhall på 40 × 20 m med tre porter og lysbånd, og lys grå kontordel i to etasjer på 10 × 20 m. Budsjett ca. 23,4 mill. kr inkl. mva og ca. 38 ukers fremdrift.",
+      "facts": [
+        {
+          "category": "Tomt",
+          "label": "Terreng",
+          "value": "Flat industritomt"
+        },
+        {
+          "category": "Tomt",
+          "label": "Adkomst",
+          "value": "Semitrailere fra gårdsplassen foran"
+        },
+        {
+          "category": "Bygg",
+          "label": "Type",
+          "value": "Lagerhall med kontordel"
+        },
+        {
+          "category": "Bygg",
+          "label": "Hall",
+          "value": "40 × 20 m (800 m²), 1 etasje, 7 m fri høyde"
+        },
+        {
+          "category": "Bygg",
+          "label": "Kontor",
+          "value": "10 × 20 m, 2 etasjer (400 m²), inntil venstre gavl"
+        },
+        {
+          "category": "Bygg",
+          "label": "Tak",
+          "value": "Hall: saltak 10°, møne langs lengden. Kontor: flatt tak"
+        },
+        {
+          "category": "Åpninger",
+          "label": "Porter",
+          "value": "3 leddporter 4,5 × 4,5 m på langsiden mot gårdsplassen"
+        },
+        {
+          "category": "Åpninger",
+          "label": "Lysbånd",
+          "value": "Lysbånd høyt oppe over portene, på baksiden og på høyre gavl"
+        },
+        {
+          "category": "Åpninger",
+          "label": "Dører",
+          "value": "Personaldør foran og to rømningsdører"
+        },
+        {
+          "category": "Åpninger",
+          "label": "Kontor",
+          "value": "Hovedinngang og 15 vinduer i to etasjer"
+        },
+        {
+          "category": "Materialer",
+          "label": "Hall",
+          "value": "Antrasitt platekledning i stål, mørkt tak"
+        },
+        {
+          "category": "Materialer",
+          "label": "Kontor",
+          "value": "Lys grå glatt platekledning med antrasitt detaljer"
+        },
+        {
+          "category": "Teknikk",
+          "label": "Bæresystem",
+          "value": "Stålsøyler og takbjelker, isolerte sandwichpaneler"
+        },
+        {
+          "category": "Teknikk",
+          "label": "Varme",
+          "value": "Isolert og oppvarmet hall, luft-til-vann-varmepumpe"
+        },
+        {
+          "category": "Økonomi",
+          "label": "Budsjett",
+          "value": "ca. 23 420 000 kr inkl. mva"
+        },
+        {
+          "category": "Økonomi",
+          "label": "Fremdrift",
+          "value": "38 uker fra prosjektering til overlevering"
+        }
+      ],
+      "building": {
+        "volumes": [
+          {
+            "id": "kontor",
+            "name": "Kontordel",
+            "x_m": 0,
+            "y_m": 0,
+            "length_m": 10,
+            "width_m": 20,
+            "floors": 2,
+            "floor_height_m": 3.5,
+            "basement_floors": 0,
+            "roof": {
+              "kind": "flatt",
+              "pitch_deg": null,
+              "ridge_along": "lengde",
+              "overhang_m": 0.2
+            },
+            "exterior": {
+              "cladding": "Glatt platekledning",
+              "wall_color": "#C9CDD1",
+              "roof_color": "#2B2E31",
+              "trim_color": "#3C4045"
+            }
+          },
+          {
+            "id": "hall",
+            "name": "Lagerhall",
+            "x_m": 10,
+            "y_m": 0,
+            "length_m": 40,
+            "width_m": 20,
+            "floors": 1,
+            "floor_height_m": 7,
+            "basement_floors": 0,
+            "roof": {
+              "kind": "saltak",
+              "pitch_deg": 10,
+              "ridge_along": "lengde",
+              "overhang_m": 0.3
+            },
+            "exterior": null
+          }
+        ],
+        "exterior": {
+          "cladding": "Platekledning i stål (trapesprofil)",
+          "wall_color": "#3C4045",
+          "roof_color": "#2B2E31",
+          "trim_color": "#C9CDD1"
+        },
+        "terrain_slope_pct": 0,
+        "openings": [
+          {
+            "id": "port-1",
+            "volume_id": "hall",
+            "kind": "port",
+            "label": "Leddport 1",
+            "width_m": 4.5,
+            "height_m": 4.5,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 6,
+            "sill_m": 0
+          },
+          {
+            "id": "port-2",
+            "volume_id": "hall",
+            "kind": "port",
+            "label": "Leddport 2",
+            "width_m": 4.5,
+            "height_m": 4.5,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 17.75,
+            "sill_m": 0
+          },
+          {
+            "id": "port-3",
+            "volume_id": "hall",
+            "kind": "port",
+            "label": "Leddport 3",
+            "width_m": 4.5,
+            "height_m": 4.5,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 29.5,
+            "sill_m": 0
+          },
+          {
+            "id": "lys-f-1",
+            "volume_id": "hall",
+            "kind": "vindu",
+            "label": "Lysbånd over port 1",
+            "width_m": 4.5,
+            "height_m": 1,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 6,
+            "sill_m": 5.4
+          },
+          {
+            "id": "lys-f-2",
+            "volume_id": "hall",
+            "kind": "vindu",
+            "label": "Lysbånd over port 2",
+            "width_m": 4.5,
+            "height_m": 1,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 17.75,
+            "sill_m": 5.4
+          },
+          {
+            "id": "lys-f-3",
+            "volume_id": "hall",
+            "kind": "vindu",
+            "label": "Lysbånd over port 3",
+            "width_m": 4.5,
+            "height_m": 1,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 29.5,
+            "sill_m": 5.4
+          },
+          {
+            "id": "dor-hall-1",
+            "volume_id": "hall",
+            "kind": "dor",
+            "label": "Personaldør",
+            "width_m": 1,
+            "height_m": 2.1,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 2,
+            "sill_m": 0
+          },
+          {
+            "id": "dor-hall-2",
+            "volume_id": "hall",
+            "kind": "dor",
+            "label": "Rømningsdør bak",
+            "width_m": 1,
+            "height_m": 2.1,
+            "wall": "bak",
+            "floor": 1,
+            "offset_m": 19.5,
+            "sill_m": 0
+          },
+          {
+            "id": "lys-b-1",
+            "volume_id": "hall",
+            "kind": "vindu",
+            "label": "Lysbånd bak",
+            "width_m": 3,
+            "height_m": 1,
+            "wall": "bak",
+            "floor": 1,
+            "offset_m": 3,
+            "sill_m": 5.4
+          },
+          {
+            "id": "lys-b-2",
+            "volume_id": "hall",
+            "kind": "vindu",
+            "label": "Lysbånd bak",
+            "width_m": 3,
+            "height_m": 1,
+            "wall": "bak",
+            "floor": 1,
+            "offset_m": 13,
+            "sill_m": 5.4
+          },
+          {
+            "id": "lys-b-3",
+            "volume_id": "hall",
+            "kind": "vindu",
+            "label": "Lysbånd bak",
+            "width_m": 3,
+            "height_m": 1,
+            "wall": "bak",
+            "floor": 1,
+            "offset_m": 25,
+            "sill_m": 5.4
+          },
+          {
+            "id": "lys-b-4",
+            "volume_id": "hall",
+            "kind": "vindu",
+            "label": "Lysbånd bak",
+            "width_m": 3,
+            "height_m": 1,
+            "wall": "bak",
+            "floor": 1,
+            "offset_m": 35,
+            "sill_m": 5.4
+          },
+          {
+            "id": "lys-h-1",
+            "volume_id": "hall",
+            "kind": "vindu",
+            "label": "Lysbånd høyre gavl",
+            "width_m": 14,
+            "height_m": 1,
+            "wall": "hoyre",
+            "floor": 1,
+            "offset_m": 3,
+            "sill_m": 5.4
+          },
+          {
+            "id": "dor-hall-3",
+            "volume_id": "hall",
+            "kind": "dor",
+            "label": "Rømningsdør høyre gavl",
+            "width_m": 1,
+            "height_m": 2.1,
+            "wall": "hoyre",
+            "floor": 1,
+            "offset_m": 9.5,
+            "sill_m": 0
+          },
+          {
+            "id": "dor-kontor",
+            "volume_id": "kontor",
+            "kind": "dor",
+            "label": "Hovedinngang kontor",
+            "width_m": 2,
+            "height_m": 2.4,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 4,
+            "sill_m": 0
+          },
+          {
+            "id": "k-f-1-1",
+            "volume_id": "kontor",
+            "kind": "vindu",
+            "label": "Vindu resepsjon",
+            "width_m": 2.4,
+            "height_m": 1.6,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 0.8,
+            "sill_m": 0.9
+          },
+          {
+            "id": "k-f-1-2",
+            "volume_id": "kontor",
+            "kind": "vindu",
+            "label": "Vindu møterom",
+            "width_m": 2.4,
+            "height_m": 1.6,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 6.8,
+            "sill_m": 0.9
+          },
+          {
+            "id": "k-f-2-1",
+            "volume_id": "kontor",
+            "kind": "vindu",
+            "label": "Vindu kontor 2. etasje",
+            "width_m": 2.4,
+            "height_m": 1.6,
+            "wall": "front",
+            "floor": 2,
+            "offset_m": 0.8,
+            "sill_m": 0.9
+          },
+          {
+            "id": "k-f-2-2",
+            "volume_id": "kontor",
+            "kind": "vindu",
+            "label": "Vindu kontor 2. etasje",
+            "width_m": 2.4,
+            "height_m": 1.6,
+            "wall": "front",
+            "floor": 2,
+            "offset_m": 3.8,
+            "sill_m": 0.9
+          },
+          {
+            "id": "k-f-2-3",
+            "volume_id": "kontor",
+            "kind": "vindu",
+            "label": "Vindu kontor 2. etasje",
+            "width_m": 2.4,
+            "height_m": 1.6,
+            "wall": "front",
+            "floor": 2,
+            "offset_m": 6.8,
+            "sill_m": 0.9
+          },
+          {
+            "id": "k-v-1-1",
+            "volume_id": "kontor",
+            "kind": "vindu",
+            "label": "Vindu kontor 1. etasje",
+            "width_m": 2,
+            "height_m": 1.6,
+            "wall": "venstre",
+            "floor": 1,
+            "offset_m": 1.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "k-v-1-2",
+            "volume_id": "kontor",
+            "kind": "vindu",
+            "label": "Vindu kontor 1. etasje",
+            "width_m": 2,
+            "height_m": 1.6,
+            "wall": "venstre",
+            "floor": 1,
+            "offset_m": 6.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "k-v-1-3",
+            "volume_id": "kontor",
+            "kind": "vindu",
+            "label": "Vindu kontor 1. etasje",
+            "width_m": 2,
+            "height_m": 1.6,
+            "wall": "venstre",
+            "floor": 1,
+            "offset_m": 11.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "k-v-1-4",
+            "volume_id": "kontor",
+            "kind": "vindu",
+            "label": "Vindu kontor 1. etasje",
+            "width_m": 2,
+            "height_m": 1.6,
+            "wall": "venstre",
+            "floor": 1,
+            "offset_m": 16.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "k-v-2-1",
+            "volume_id": "kontor",
+            "kind": "vindu",
+            "label": "Vindu kontor 2. etasje",
+            "width_m": 2,
+            "height_m": 1.6,
+            "wall": "venstre",
+            "floor": 2,
+            "offset_m": 1.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "k-v-2-2",
+            "volume_id": "kontor",
+            "kind": "vindu",
+            "label": "Vindu kontor 2. etasje",
+            "width_m": 2,
+            "height_m": 1.6,
+            "wall": "venstre",
+            "floor": 2,
+            "offset_m": 6.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "k-v-2-3",
+            "volume_id": "kontor",
+            "kind": "vindu",
+            "label": "Vindu kontor 2. etasje",
+            "width_m": 2,
+            "height_m": 1.6,
+            "wall": "venstre",
+            "floor": 2,
+            "offset_m": 11.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "k-v-2-4",
+            "volume_id": "kontor",
+            "kind": "vindu",
+            "label": "Vindu kontor 2. etasje",
+            "width_m": 2,
+            "height_m": 1.6,
+            "wall": "venstre",
+            "floor": 2,
+            "offset_m": 16.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "k-b-1-1",
+            "volume_id": "kontor",
+            "kind": "vindu",
+            "label": "Vindu bak 1. etasje",
+            "width_m": 2.4,
+            "height_m": 1.6,
+            "wall": "bak",
+            "floor": 1,
+            "offset_m": 3.8,
+            "sill_m": 0.9
+          },
+          {
+            "id": "k-b-2-1",
+            "volume_id": "kontor",
+            "kind": "vindu",
+            "label": "Vindu bak 2. etasje",
+            "width_m": 2.4,
+            "height_m": 1.6,
+            "wall": "bak",
+            "floor": 2,
+            "offset_m": 3.8,
+            "sill_m": 0.9
+          }
+        ]
+      },
+      "budget": [
+        {
+          "id": "b-prosj",
+          "post": "Prosjektering og søknad",
+          "description": "Arkitekt, RIB, RIBr, RIV og RIE, byggesøknad med ansvarsretter",
+          "amount_nok": 1100000,
+          "uncertainty_pct": 15,
+          "sku": null
+        },
+        {
+          "id": "b-rigg",
+          "post": "Rigg og drift",
+          "description": "Rigg, kran og lift, brakker, strøm og avfall",
+          "amount_nok": 950000,
+          "uncertainty_pct": 15,
+          "sku": null
+        },
+        {
+          "id": "b-grunn",
+          "post": "Grunnarbeid",
+          "description": "Opparbeiding av tomta, masseutskifting, fundamenter og VA-tilknytning",
+          "amount_nok": 2100000,
+          "uncertainty_pct": 25,
+          "sku": null
+        },
+        {
+          "id": "b-gulv",
+          "post": "Gulv på grunn",
+          "description": "Isolert og armert industrigulv 1 000 m², hallen dimensjonert for truck",
+          "amount_nok": 1950000,
+          "uncertainty_pct": 15,
+          "sku": null
+        },
+        {
+          "id": "b-stal",
+          "post": "Stålkonstruksjon",
+          "description": "Søyler, takbjelker og avstivning for hall og kontordel",
+          "amount_nok": 3400000,
+          "uncertainty_pct": 10,
+          "sku": null
+        },
+        {
+          "id": "b-tak",
+          "post": "Tak",
+          "description": "Isolert tak med sandwichplater og takrenner, ca. 1 050 m²",
+          "amount_nok": 1450000,
+          "uncertainty_pct": 10,
+          "sku": null
+        },
+        {
+          "id": "b-vegg",
+          "post": "Yttervegger",
+          "description": "Isolerte sandwichpaneler med platekledning, ca. 1 450 m²",
+          "amount_nok": 2300000,
+          "uncertainty_pct": 10,
+          "sku": null
+        },
+        {
+          "id": "b-porter",
+          "post": "Porter",
+          "description": "3 isolerte leddporter 4,5 × 4,5 m med motor og påkjøringsvern",
+          "amount_nok": 540000,
+          "uncertainty_pct": 10,
+          "sku": null
+        },
+        {
+          "id": "b-vindu",
+          "post": "Vinduer, dører og lysbånd",
+          "description": "15 kontorvinduer, lysbånd, inngangsparti og 3 ståldører",
+          "amount_nok": 620000,
+          "uncertainty_pct": 10,
+          "sku": null
+        },
+        {
+          "id": "b-kontor",
+          "post": "Innredning kontor",
+          "description": "400 m² kontor: lettvegger, himling, gulv, kjøkken og toaletter",
+          "amount_nok": 2600000,
+          "uncertainty_pct": 20,
+          "sku": null
+        },
+        {
+          "id": "b-vvs",
+          "post": "VVS og varme",
+          "description": "Rør, sanitær og luft-til-vann-varmepumpe med takvifter i hallen",
+          "amount_nok": 1300000,
+          "uncertainty_pct": 15,
+          "sku": null
+        },
+        {
+          "id": "b-el",
+          "post": "Elektro",
+          "description": "Elanlegg, LED-belysning i hallen og forberedelse for ladepunkter",
+          "amount_nok": 1350000,
+          "uncertainty_pct": 15,
+          "sku": null
+        },
+        {
+          "id": "b-vent",
+          "post": "Ventilasjon",
+          "description": "Balansert ventilasjon i kontordelen, avtrekk i hallen",
+          "amount_nok": 750000,
+          "uncertainty_pct": 15,
+          "sku": null
+        },
+        {
+          "id": "b-brann",
+          "post": "Brannsikring",
+          "description": "Brannalarm, ledesystem og brannvegg mot kontordelen",
+          "amount_nok": 380000,
+          "uncertainty_pct": 15,
+          "sku": null
+        },
+        {
+          "id": "b-utomhus",
+          "post": "Utomhus",
+          "description": "Asfaltert gårdsplass for semitrailere, parkering og gjerde",
+          "amount_nok": 1100000,
+          "uncertainty_pct": 25,
+          "sku": null
+        },
+        {
+          "id": "b-uforutsett",
+          "post": "Uforutsett",
+          "description": "Ca. 7 % av summen over, for grunnforhold, stålpris og avklaringer i byggesaken",
+          "amount_nok": 1530000,
+          "uncertainty_pct": 50,
+          "sku": null
+        }
+      ],
+      "schedule": [
+        {
+          "id": "t-prosj",
+          "name": "Prosjektering og byggesøknad",
+          "start_week": 0,
+          "duration_weeks": 10,
+          "depends_on": []
+        },
+        {
+          "id": "t-stal-bestill",
+          "name": "Bestilling og produksjon av stål og paneler",
+          "start_week": 10,
+          "duration_weeks": 8,
+          "depends_on": [
+            "t-prosj"
+          ]
+        },
+        {
+          "id": "t-grunn",
+          "name": "Grunnarbeid og fundamenter",
+          "start_week": 10,
+          "duration_weeks": 5,
+          "depends_on": [
+            "t-prosj"
+          ]
+        },
+        {
+          "id": "t-gulv",
+          "name": "Støping av gulv på grunn",
+          "start_week": 15,
+          "duration_weeks": 3,
+          "depends_on": [
+            "t-grunn"
+          ]
+        },
+        {
+          "id": "t-stal",
+          "name": "Montering av stålkonstruksjon",
+          "start_week": 18,
+          "duration_weeks": 4,
+          "depends_on": [
+            "t-gulv",
+            "t-stal-bestill"
+          ]
+        },
+        {
+          "id": "t-tak",
+          "name": "Tak",
+          "start_week": 22,
+          "duration_weeks": 3,
+          "depends_on": [
+            "t-stal"
+          ]
+        },
+        {
+          "id": "t-vegg",
+          "name": "Veggpaneler, porter og vinduer – tett bygg",
+          "start_week": 22,
+          "duration_weeks": 5,
+          "depends_on": [
+            "t-stal"
+          ]
+        },
+        {
+          "id": "t-tekn",
+          "name": "VVS, el og ventilasjon",
+          "start_week": 27,
+          "duration_weeks": 6,
+          "depends_on": [
+            "t-tak",
+            "t-vegg"
+          ]
+        },
+        {
+          "id": "t-kontor",
+          "name": "Innredning av kontordelen",
+          "start_week": 30,
+          "duration_weeks": 7,
+          "depends_on": [
+            "t-vegg"
+          ]
+        },
+        {
+          "id": "t-utomhus",
+          "name": "Asfalt, parkering og gjerde",
+          "start_week": 27,
+          "duration_weeks": 4,
+          "depends_on": [
+            "t-vegg"
+          ]
+        },
+        {
+          "id": "t-ferdig",
+          "name": "Ferdigattest og overlevering",
+          "start_week": 37,
+          "duration_weeks": 1,
+          "depends_on": [
+            "t-tekn",
+            "t-kontor",
+            "t-utomhus"
+          ]
+        }
+      ],
+      "risks": [
+        {
+          "id": "r-grunn",
+          "title": "Bløt grunn og setninger",
+          "probability": "middels",
+          "consequence": "Leire eller fyllmasser krever peling eller mer masseutskifting under gulv og søyler",
+          "measure": "Geoteknisk undersøkelse før fundamentene prosjekteres",
+          "cost_nok": 900000
+        },
+        {
+          "id": "r-stal",
+          "title": "Leveringstid og pris på stål",
+          "probability": "middels",
+          "consequence": "Stål og sandwichpaneler kan komme 4–6 uker sent eller bli dyrere",
+          "measure": "Bestill straks rammetillatelsen foreligger, med fastpris",
+          "cost_nok": 600000
+        },
+        {
+          "id": "r-brann",
+          "title": "Brannkrav for lager",
+          "probability": "middels",
+          "consequence": "Høy brannbelastning kan gi krav om sprinkler i hallen",
+          "measure": "Avklar brannklasse og lagringshøyde med RIBr tidlig",
+          "cost_nok": 1200000
+        },
+        {
+          "id": "r-vinter",
+          "title": "Vinterarbeid",
+          "probability": "lav",
+          "consequence": "Frost under gulvstøp og montering gir vintertiltak",
+          "measure": "Planlegg grunnarbeid og gulv før frosten",
+          "cost_nok": 300000
+        },
+        {
+          "id": "r-sok",
+          "title": "Byggesak og regulering",
+          "probability": "lav",
+          "consequence": "Krav til utnyttelse, parkering eller trafikk kan forsinke tillatelsen",
+          "measure": "Forhåndskonferanse med kommunen",
+          "cost_nok": 250000
+        }
+      ],
+      "assumptions": [
+        "Hallen er en stålhall med søyler og takbjelker i stål.",
+        "Kontordelen står inntil hallens venstre gavl, med fronten i flukt med hallen.",
+        "Etasjehøyde 3,5 m i kontordelen.",
+        "Tomta er regulert til næring og har vei, vann og avløp fram til tomtegrensen.",
+        "Lysbåndene sitter 5,4 m over gulvet, over reolene.",
+        "Veggen mellom hall og kontor er brannvegg uten åpninger i fasaden.",
+        "Prisene er i NOK inkl. mva for en totalentreprise; tomt og reoler er ikke med.",
+        "Hallen har ikke sprinkler eller kranbane; sprinkler kan bli et krav (se risiko)."
+      ]
+    }
+  }
+}

@@ -105,19 +105,20 @@ export async function httpError(res: Response): Promise<string> {
   return `Serveren svarte med feil (${res.status}). Prøv igjen.`;
 }
 
-/** Sends the dialog and streams the answer. */
+/** Sends the dialog and streams the answer. `demo` names the scripted dialog to play (an AppConfig.demoDialogs id). */
 export async function streamTurn(
   messages: ChatMessage[],
   cb: TurnCallbacks,
   signal?: AbortSignal,
   fetchImpl: typeof fetch = fetch,
+  demo?: string,
 ): Promise<StreamOutcome> {
   let res: Response;
   try {
     res = await fetchImpl(`${import.meta.env?.BASE_URL ?? '/'}api/turn/stream`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'text/event-stream' },
-      body: JSON.stringify({ messages }),
+      body: JSON.stringify(demo ? { messages, demo } : { messages }),
       signal,
     });
   } catch (e) {
@@ -133,7 +134,17 @@ export async function streamTurn(
 }
 
 /** Used when /api/config cannot be read (e.g. a static build without the server). */
-export const FALLBACK_CONFIG: AppConfig = { provider: 'claude', demoLabel: DEMO_LABEL, demoScript: [] };
+export const FALLBACK_CONFIG: AppConfig = { provider: 'claude', demoLabel: DEMO_LABEL, demoScript: [], demoDialogs: [] };
+
+const strings = (x: unknown): string[] => (Array.isArray(x) ? x.filter((l): l is string => typeof l === 'string') : []);
+
+/** The demo dialogs from /api/config, keeping only well-formed ones (id required, title falls back to the id). */
+function demoDialogs(x: unknown): AppConfig['demoDialogs'] {
+  if (!Array.isArray(x)) return [];
+  return x
+    .filter((d): d is { id: string; title?: unknown; script?: unknown } => !!d && typeof d.id === 'string' && d.id !== '')
+    .map((d) => ({ id: d.id, title: typeof d.title === 'string' && d.title ? d.title : d.id, script: strings(d.script) }));
+}
 
 export async function fetchConfig(fetchImpl: typeof fetch = fetch): Promise<AppConfig> {
   try {
@@ -143,7 +154,8 @@ export async function fetchConfig(fetchImpl: typeof fetch = fetch): Promise<AppC
     return {
       provider: c.provider === 'demo' ? 'demo' : 'claude',
       demoLabel: typeof c.demoLabel === 'string' && c.demoLabel ? c.demoLabel : DEMO_LABEL,
-      demoScript: Array.isArray(c.demoScript) ? c.demoScript.filter((l): l is string => typeof l === 'string') : [],
+      demoScript: strings(c.demoScript),
+      demoDialogs: demoDialogs(c.demoDialogs),
     };
   } catch {
     return FALLBACK_CONFIG;
