@@ -6,7 +6,7 @@ Major iterations of *AI Byggplan*, the AI dialog that plans a building project. 
 
 "Start again and make something fantastic": team meeting 2 was run with Ingrid, Jonas and Mats as three separate agents (positions, replies, Ingrid's decision), then built by four parallel agents against a frozen contract (`src/contract/`).
 New: a split screen with a live 3D model of the AI's building (Three.js, lazy-loaded; rises, eases on change, and changed openings glow), a streamed reply (SSE), a 7-step garage demo dialog that runs without an API key (labelled «Demo – forhåndsskrevet dialog, ikke live AI»), white-label for the fictional «Nordlys Hus og Garasje» (logo, colours, a 32-product catalogue in the prompt), «Send til forhandler» (lead.json, a webhook, the dealer's inbox), a new report, a schema validator, and a rate limit.
-272 tests, tsc, `npm run build` and `npm run smoke` pass. NOT yet checked in a real browser (the 3D look, the glow and the full click-through are unverified), and still never run against Claude.
+272 tests, tsc, `npm run build` and `npm run smoke` pass. Checked in Chrome (headless, driven over DevTools): all 7 demo steps, the 3D garage rising and changing colour, the glow on step 6, every tab, the report with the 3D snapshot, and the lead in the dealer's inbox, with no console errors. One bug fixed (Stopp showed while idle). Still never run against Claude.
 
 ## v0.2 – 2026-10-29
 

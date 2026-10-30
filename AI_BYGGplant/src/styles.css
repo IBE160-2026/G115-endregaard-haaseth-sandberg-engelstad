@@ -132,6 +132,8 @@ h1, h2, h3 { font-family: var(--font-display); }
 .ghost:hover:not(:disabled) { background: var(--layer-alt); border-color: var(--accent-line); }
 .ghost.small { min-height: 28px; padding: 3px 10px; font-size: 13px; }
 .danger { background: var(--bad); color: #fff; border: 0; font-weight: 600; }
+/* The display above would otherwise beat the hidden attribute (e.g. Stopp showing while idle). */
+.accent[hidden], .ghost[hidden], .danger[hidden], .glass-btn[hidden] { display: none; }
 .icon-btn { padding: 6px 9px; position: relative; }
 .icon-btn .count {
   position: absolute; top: -6px; right: -6px; min-width: 18px; height: 18px; padding: 0 5px;
