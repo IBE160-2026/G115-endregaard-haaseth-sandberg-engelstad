@@ -28,5 +28,5 @@
 - [ ] 2026-10-29 [ai-byggplant-v0-1](994-2026-10-29-21-45-00-ai-byggplant-v0-1.md) — Decide whether the Bygget tab should become 3D like ByggAPP
 - [ ] 2026-10-29 [ai-byggplant-v0-2-team](993-2026-10-29-22-15-00-ai-byggplant-v0-2-team.md) — Confirm the buyer the team chose for AI_BYGGplant (a white-label licence for a prefab or building-supply company) and the Claude API budget
 - [ ] 2026-10-29 [ai-byggplant-v0-2-team](993-2026-10-29-22-15-00-ai-byggplant-v0-2-team.md) — Check with a real key that the AI fills in risks, changes and budget uncertainty sensibly
-- [ ] 2026-10-30 [ai-byggplant-v0-3](992-2026-10-30-00-45-00-ai-byggplant-v0-3.md) — Click through the v0.3 garage demo in a browser (`npm run build`, `npm start`, «Neste demo-replikk» × 7) and fix what turns up
+- [x] 2026-10-30 [ai-byggplant-v0-3](992-2026-10-30-00-45-00-ai-byggplant-v0-3.md) — Click through the v0.3 garage demo in a browser (løst 2026-10-30: all steps work; Stopp bug fixed)
 - [ ] 2026-10-30 [ai-byggplant-v0-3](992-2026-10-30-00-45-00-ai-byggplant-v0-3.md) — Handle X-Forwarded-For in the rate limit before AI_BYGGplant gets a public URL
