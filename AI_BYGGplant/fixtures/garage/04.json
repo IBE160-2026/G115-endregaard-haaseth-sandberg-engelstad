@@ -105,16 +105,26 @@
         }
       ],
       "building": {
-        "length_m": 8,
-        "width_m": 7,
-        "floors": 1,
-        "floor_height_m": 2.7,
-        "roof": {
-          "kind": "saltak",
-          "pitch_deg": 35,
-          "ridge_along": "lengde",
-          "overhang_m": 0.4
-        },
+        "volumes": [
+          {
+            "id": "garasje",
+            "name": "Garasje",
+            "x_m": 0,
+            "y_m": 0,
+            "length_m": 8,
+            "width_m": 7,
+            "floors": 1,
+            "floor_height_m": 2.7,
+            "basement_floors": 0,
+            "roof": {
+              "kind": "saltak",
+              "pitch_deg": 35,
+              "ridge_along": "lengde",
+              "overhang_m": 0.4
+            },
+            "exterior": null
+          }
+        ],
         "exterior": {
           "cladding": "Stående kledning (tømmermannskledning)",
           "wall_color": "#8B2318",
@@ -125,6 +135,7 @@
         "openings": [
           {
             "id": "port-1",
+            "volume_id": "garasje",
             "kind": "port",
             "label": "Garasjeport venstre",
             "width_m": 2.5,
@@ -136,6 +147,7 @@
           },
           {
             "id": "port-2",
+            "volume_id": "garasje",
             "kind": "port",
             "label": "Garasjeport høyre",
             "width_m": 2.5,
@@ -147,6 +159,7 @@
           },
           {
             "id": "vindu-1",
+            "volume_id": "garasje",
             "kind": "vindu",
             "label": "Vindu venstre kortside",
             "width_m": 1,
@@ -158,6 +171,7 @@
           },
           {
             "id": "vindu-2",
+            "volume_id": "garasje",
             "kind": "vindu",
             "label": "Vindu høyre kortside",
             "width_m": 1,
@@ -169,6 +183,7 @@
           },
           {
             "id": "dor-1",
+            "volume_id": "garasje",
             "kind": "dor",
             "label": "Sidedør bak",
             "width_m": 0.9,

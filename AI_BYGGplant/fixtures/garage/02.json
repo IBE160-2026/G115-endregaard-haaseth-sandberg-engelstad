@@ -3,39 +3,109 @@
   "turn": {
     "reply": "Da tegner jeg 8 × 7 meter med saltak og møne langs lengden, slik at loftet får god takhøyde. Jeg har lagt inn en dobbel port på langsiden som utgangspunkt.",
     "questions": [
-      { "text": "Hvor bred skal porten være?", "options": ["Én port på 5 m", "To porter på 2,5 m", "Én port på 4,5 m"] },
-      { "text": "Hvor bratt tak ønsker du?", "options": ["27°", "35°", "45° (mer loft)"] }
+      {
+        "text": "Hvor bred skal porten være?",
+        "options": [
+          "Én port på 5 m",
+          "To porter på 2,5 m",
+          "Én port på 4,5 m"
+        ]
+      },
+      {
+        "text": "Hvor bratt tak ønsker du?",
+        "options": [
+          "27°",
+          "35°",
+          "45° (mer loft)"
+        ]
+      }
     ],
     "phase": "bygg",
     "changes": [
-      { "section": "tomt", "text": "Flat tomt, innkjøring fra langsiden", "ref_id": null },
-      { "section": "bygg", "text": "Størrelse 8 × 7 m, én etasje med loft i takrommet", "ref_id": null },
-      { "section": "bygg", "text": "Saltak 35° med møne langs lengden", "ref_id": null },
-      { "section": "apninger", "text": "Garasjeport 5,0 × 2,25 m på langsiden (forslag)", "ref_id": "port-1" }
+      {
+        "section": "tomt",
+        "text": "Flat tomt, innkjøring fra langsiden",
+        "ref_id": null
+      },
+      {
+        "section": "bygg",
+        "text": "Størrelse 8 × 7 m, én etasje med loft i takrommet",
+        "ref_id": null
+      },
+      {
+        "section": "bygg",
+        "text": "Saltak 35° med møne langs lengden",
+        "ref_id": null
+      },
+      {
+        "section": "apninger",
+        "text": "Garasjeport 5,0 × 2,25 m på langsiden (forslag)",
+        "ref_id": "port-1"
+      }
     ],
     "project": {
       "name": "Dobbelgarasje med loft",
       "type": "Garasje",
       "summary": "Frittstående dobbelgarasje på 8 × 7 m med saltak og loft til lagring, innkjøring fra langsiden.",
       "facts": [
-        { "category": "Tomt", "label": "Terreng", "value": "Flat" },
-        { "category": "Tomt", "label": "Adkomst", "value": "Fra langsiden" },
-        { "category": "Bygg", "label": "Type", "value": "Dobbelgarasje" },
-        { "category": "Bygg", "label": "Størrelse", "value": "8 × 7 m (56 m²)" },
-        { "category": "Bygg", "label": "Etasjer", "value": "1 etasje + loft i takrommet" },
-        { "category": "Bygg", "label": "Tak", "value": "Saltak 35°" }
+        {
+          "category": "Tomt",
+          "label": "Terreng",
+          "value": "Flat"
+        },
+        {
+          "category": "Tomt",
+          "label": "Adkomst",
+          "value": "Fra langsiden"
+        },
+        {
+          "category": "Bygg",
+          "label": "Type",
+          "value": "Dobbelgarasje"
+        },
+        {
+          "category": "Bygg",
+          "label": "Størrelse",
+          "value": "8 × 7 m (56 m²)"
+        },
+        {
+          "category": "Bygg",
+          "label": "Etasjer",
+          "value": "1 etasje + loft i takrommet"
+        },
+        {
+          "category": "Bygg",
+          "label": "Tak",
+          "value": "Saltak 35°"
+        }
       ],
       "building": {
-        "length_m": 8,
-        "width_m": 7,
-        "floors": 1,
-        "floor_height_m": 2.7,
-        "roof": { "kind": "saltak", "pitch_deg": 35, "ridge_along": "lengde", "overhang_m": 0.4 },
+        "volumes": [
+          {
+            "id": "garasje",
+            "name": "Garasje",
+            "x_m": 0,
+            "y_m": 0,
+            "length_m": 8,
+            "width_m": 7,
+            "floors": 1,
+            "floor_height_m": 2.7,
+            "basement_floors": 0,
+            "roof": {
+              "kind": "saltak",
+              "pitch_deg": 35,
+              "ridge_along": "lengde",
+              "overhang_m": 0.4
+            },
+            "exterior": null
+          }
+        ],
         "exterior": null,
         "terrain_slope_pct": 0,
         "openings": [
           {
             "id": "port-1",
+            "volume_id": "garasje",
             "kind": "port",
             "label": "Garasjeport",
             "width_m": 5,

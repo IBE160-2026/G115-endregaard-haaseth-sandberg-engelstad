@@ -55,25 +55,40 @@ export function normalizeSession(raw: unknown): Session {
   const s = raw as Partial<Session> | null;
   if (!s || !Array.isArray(s.entries) || !s.project) throw new Error('Ikke en gyldig prosjektfil.');
   const old = s.project as Partial<Project> & { building?: Record<string, unknown> };
-  const b = { ...emptyBuilding(), ...(old.building ?? {}) } as Project['building'] & { roof: unknown };
+  type Building = Project['building'];
+  type Opening = Building['openings'][number];
+  const raw0 = (old.building ?? {}) as Record<string, unknown>;
+  // v0.4 data already has volumes; older data (v0.1–v0.3) had one box on the building itself.
+  if (Array.isArray(raw0.volumes)) {
+    const b = { ...emptyBuilding(), ...raw0 } as Building;
+    return finish(s, old, b);
+  }
+  const ob = raw0 as { length_m?: number | null; width_m?: number | null; floors?: number | null; floor_height_m?: number | null; roof?: unknown; exterior?: Building['exterior']; terrain_slope_pct?: number | null; openings?: unknown[] };
   // v0.2 kept the roof as free text; it becomes 'annet' rather than a guess.
-  const roof = b.roof && typeof b.roof === 'object' ? (b.roof as Project['building']['roof']) : b.roof ? { kind: 'annet' as const, pitch_deg: null, ridge_along: 'lengde' as const, overhang_m: null } : null;
+  const roof = ob.roof && typeof ob.roof === 'object' ? (ob.roof as Building['volumes'][number]['roof']) : ob.roof ? { kind: 'annet' as const, pitch_deg: null, ridge_along: 'lengde' as const, overhang_m: null } : null;
+  const hasBox = [ob.length_m, ob.width_m, ob.floors].some((n) => n != null);
+  const volumes: Building['volumes'] = hasBox
+    ? [{ id: 'hoved', name: 'Hovedbygg', x_m: 0, y_m: 0, length_m: ob.length_m ?? null, width_m: ob.width_m ?? null, floors: ob.floors ?? null, floor_height_m: ob.floor_height_m ?? null, basement_floors: 0, roof, exterior: null }]
+    : [];
   // v0.2 openings had a count; each physical opening becomes its own entry.
-  type Opening = Project['building']['openings'][number];
-  const openings = (b.openings ?? []).flatMap((o) => {
+  const openings = (ob.openings ?? []).flatMap((o) => {
     const { count, ...rest } = o as Opening & { count?: number };
     const wall = (rest.wall as string) === 'ukjent' ? 'front' : rest.wall;
     const n = Math.max(1, Math.min(count ?? 1, 40));
     // Copies of one v0.2 entry must not share its id.
     return Array.from({ length: n }, (_, i) =>
       // Defaults first: the spread keeps any value the saved data already has.
-      withId({ ...({ offset_m: null, sill_m: null } as Partial<Opening>), ...rest, wall, ...(i > 0 ? { id: undefined } : {}) } as Opening, 'apning'),
+      withId({ ...({ offset_m: null, sill_m: null } as Partial<Opening>), ...rest, wall, volume_id: 'hoved', ...(i > 0 ? { id: undefined } : {}) } as Opening, 'apning'),
     );
   });
+  return finish(s, old, { volumes, exterior: ob.exterior ?? null, terrain_slope_pct: ob.terrain_slope_pct ?? null, openings });
+}
+
+function finish(s: Partial<Session>, old: Partial<Project>, building: Project['building']): Session {
   const project: Project = {
     ...emptyProject(),
     ...old,
-    building: { ...b, roof, openings },
+    building,
     budget: (old.budget ?? []).map((l) => withId({ ...({ sku: null } as Partial<typeof l>), ...l, uncertainty_pct: l.uncertainty_pct ?? 0 }, 'post')),
     risks: (old.risks ?? []).map((r) => withId(r, 'risiko')),
   } as Project;
@@ -81,7 +96,7 @@ export function normalizeSession(raw: unknown): Session {
     ...e,
     changes: e.changes.map((c) => (typeof c === 'string' ? { section: 'annet' as const, text: c, ref_id: null } : c)),
   }));
-  return { entries: s.entries, project, phase: s.phase ?? 'oppstart', log };
+  return { entries: s.entries ?? [], project, phase: s.phase ?? 'oppstart', log };
 }
 
 /** An assistant turn as the AI will read it back: the reply and the questions it asked. */

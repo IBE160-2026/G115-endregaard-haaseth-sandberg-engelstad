@@ -55,7 +55,10 @@ describe('migrating saved data', () => {
       },
     };
     const s = normalizeSession(v02);
-    expect(s.project.building.roof).toEqual({ kind: 'annet', pitch_deg: null, ridge_along: 'lengde', overhang_m: null });
+    expect(s.project.building.volumes).toHaveLength(1);
+    expect(s.project.building.volumes[0]).toMatchObject({ id: 'hoved', x_m: 0, y_m: 0, length_m: 7, width_m: 6, floors: 1, basement_floors: 0 });
+    expect(s.project.building.volumes[0].roof).toEqual({ kind: 'annet', pitch_deg: null, ridge_along: 'lengde', overhang_m: null });
+    expect(s.project.building.openings.every((o) => o.volume_id === 'hoved')).toBe(true);
     expect(s.project.building.openings).toHaveLength(2);
     expect(new Set(s.project.building.openings.map((o) => o.id)).size).toBe(2);
     expect(s.project.building.openings[0]).toMatchObject({ wall: 'front', offset_m: null, sill_m: null });

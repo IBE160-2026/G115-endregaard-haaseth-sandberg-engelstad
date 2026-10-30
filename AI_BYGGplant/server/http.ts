@@ -5,6 +5,7 @@
 //   POST /api/lead         a Lead; forwarded to LEAD_WEBHOOK_URL when it is set
 // Errors before the stream starts are JSON { error } with a status (400, 405, 413, 429, 503).
 import type { IncomingMessage, ServerResponse } from 'node:http';
+import { readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import type { Plugin } from 'vite';
 import { LEAD_SCHEMA_ID, type Brand } from '../src/contract/brand.ts';
@@ -12,7 +13,7 @@ import { DEMO_LABEL, sseFrame, type AppConfig } from '../src/contract/stream.ts'
 import type { ChatMessage } from '../src/contract/types.ts';
 import { loadBrand } from './brand.ts';
 import { createClaudeProvider } from './providers/claude.ts';
-import { createDemoProvider, NO_PACING } from './providers/demo.ts';
+import { createDemoProvider, loadDialog, NO_PACING } from './providers/demo.ts';
 import { TurnError, type Provider } from './providers/types.ts';
 import { createRateLimiter, type RateLimiter } from './ratelimit.ts';
 
@@ -92,6 +93,8 @@ export interface HandlerOptions {
   brand: Brand | null;
   /** The user lines of the demo dialog (AppConfig.demoScript). */
   demoScript?: string[];
+  /** Every scripted demo dialog the browser may pick (body.demo), with its own providers. */
+  demos?: { id: string; title: string; script: string[]; provider: Provider; plainProvider: Provider }[];
   /** A faster provider for the non-streaming /api/turn (the demo without pacing). */
   plainProvider?: Provider;
   env?: Record<string, string | undefined>;
@@ -114,6 +117,13 @@ export function createHandler(opts: HandlerOptions): Handler {
     provider: opts.provider.name,
     demoLabel: DEMO_LABEL,
     demoScript: opts.provider.name === 'demo' ? (opts.demoScript ?? []) : [],
+    demoDialogs: opts.provider.name === 'demo' ? (opts.demos ?? []).map(({ id, title, script }) => ({ id, title, script })) : [],
+  };
+  /** The demo dialog the request names (body.demo), or the default provider. */
+  const pick = (body: unknown, plain: boolean): Provider => {
+    const id = (body as { demo?: unknown } | null)?.demo;
+    const d = typeof id === 'string' ? opts.demos?.find((x) => x.id === id) : undefined;
+    return d ? (plain ? d.plainProvider : d.provider) : plain ? (opts.plainProvider ?? opts.provider) : opts.provider;
   };
 
   /** False (and a 429 sent) when this IP has used up its bucket. */
@@ -162,7 +172,7 @@ export function createHandler(opts: HandlerOptions): Handler {
       if (!res.writableEnded && !signal.aborted) res.write(frame);
     };
     try {
-      const turn = await opts.provider.turn(messages, (delta) => write(sseFrame({ event: 'reply', data: { delta } })), signal);
+      const turn = await pick(body, false).turn(messages, (delta) => write(sseFrame({ event: 'reply', data: { delta } })), signal);
       write(sseFrame({ event: 'turn', data: turn }));
     } catch (error) {
       if (!signal.aborted) write(sseFrame({ event: 'error', data: { error: errorText(error) } }));
@@ -177,7 +187,7 @@ export function createHandler(opts: HandlerOptions): Handler {
     if (!messages) return send(res, 400, { error: BAD_DIALOG });
     const signal = clientSignal(res);
     try {
-      const turn = await (opts.plainProvider ?? opts.provider).turn(messages, () => {}, signal);
+      const turn = await pick(body, true).turn(messages, () => {}, signal);
       if (!signal.aborted) send(res, 200, turn);
     } catch (error) {
       if (!signal.aborted) send(res, error instanceof TurnError ? error.status : 500, { error: errorText(error) });
@@ -242,9 +252,17 @@ export function handlerFromEnv(env: Record<string, string | undefined>, root = R
   if (env.ANTHROPIC_API_KEY && env.DEMO !== '1') {
     return createHandler({ provider: createClaudeProvider({ apiKey: env.ANTHROPIC_API_KEY, brand }), brand, env });
   }
-  const provider = createDemoProvider({ fixturesDir, dialog });
-  const plainProvider = createDemoProvider({ fixturesDir, dialog, pacing: NO_PACING });
-  return createHandler({ provider, plainProvider, demoScript: provider.script, brand, env });
+  const demos = readdirSync(fixturesDir, { withFileTypes: true })
+    .filter((d) => d.isDirectory())
+    .map((d) => {
+      const provider = createDemoProvider({ fixturesDir, dialog: d.name });
+      const title = loadDialog(fixturesDir, d.name)[0].turn.project.name || d.name;
+      return { id: d.name, title, script: provider.script, provider, plainProvider: createDemoProvider({ fixturesDir, dialog: d.name, pacing: NO_PACING }) };
+    })
+    // The default dialog first, the rest by name.
+    .sort((a, b) => (a.id === dialog ? -1 : b.id === dialog ? 1 : a.id.localeCompare(b.id)));
+  const first = demos.find((d) => d.id === dialog) ?? demos[0];
+  return createHandler({ provider: first.provider, plainProvider: first.plainProvider, demoScript: first.script, demos, brand, env });
 }
 
 /** The API in the Vite dev server and `vite preview`. */

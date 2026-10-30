@@ -22,6 +22,7 @@ export const SECTIONS = ['tomt', 'bygg', 'apninger', 'materialer', 'budsjett', '
 
 const opening = obj({
   id: str,
+  volume_id: str,
   kind: enumOf('dor', 'vindu', 'port', 'annet'),
   label: str,
   width_m: nullable('number'),
@@ -32,22 +33,32 @@ const opening = obj({
   sill_m: nullable('number'),
 });
 
-const building = obj({
+const roof = obj({
+  kind: enumOf('saltak', 'pulttak', 'valm', 'flatt', 'annet'),
+  pitch_deg: nullable('number'),
+  ridge_along: enumOf('lengde', 'bredde'),
+  overhang_m: nullable('number'),
+});
+
+const exterior = obj({ cladding: nullable('string'), wall_color: nullable('string'), roof_color: nullable('string'), trim_color: nullable('string') });
+
+const volume = obj({
+  id: str,
+  name: str,
+  x_m: num,
+  y_m: num,
   length_m: nullable('number'),
   width_m: nullable('number'),
   floors: nullable('integer'),
   floor_height_m: nullable('number'),
-  roof: orNull(
-    obj({
-      kind: enumOf('saltak', 'pulttak', 'valm', 'flatt', 'annet'),
-      pitch_deg: nullable('number'),
-      ridge_along: enumOf('lengde', 'bredde'),
-      overhang_m: nullable('number'),
-    }),
-  ),
-  exterior: orNull(
-    obj({ cladding: nullable('string'), wall_color: nullable('string'), roof_color: nullable('string'), trim_color: nullable('string') }),
-  ),
+  basement_floors: int,
+  roof: orNull(roof),
+  exterior: orNull(exterior),
+});
+
+const building = obj({
+  volumes: arrayOf(volume),
+  exterior: orNull(exterior),
   terrain_slope_pct: nullable('number'),
   openings: arrayOf(opening),
 });

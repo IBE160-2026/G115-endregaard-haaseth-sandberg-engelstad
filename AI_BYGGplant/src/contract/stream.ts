@@ -1,6 +1,6 @@
 // The streaming protocol between the server (WS1) and the browser (WS3). Frozen with the contract.
 //
-// POST /api/turn/stream   body: { messages: ChatMessage[] }   response: text/event-stream
+// POST /api/turn/stream   body: { messages: ChatMessage[], demo?: string }  (demo = a demoDialogs id)   response: text/event-stream
 //   event: reply   data: { "delta": "..." }        the reply text as it is written (only `reply` streams)
 //   event: turn    data: AiTurn                    the whole turn, validated, sent once at the end
 //   event: error   data: { "error": "..." }        a Norwegian message for the user; the stream then ends
@@ -19,8 +19,10 @@ export interface AppConfig {
   provider: 'claude' | 'demo';
   /** Shown on screen the whole time in demo mode. */
   demoLabel: string;
-  /** In demo mode: the user lines of the scripted dialog, so the UI can offer the next one. */
+  /** In demo mode: the user lines of the default scripted dialog, so the UI can offer the next one. */
   demoScript: string[];
+  /** In demo mode: every scripted dialog (garage, house, block of flats …); the browser sends the chosen id as body.demo. */
+  demoDialogs: { id: string; title: string; script: string[] }[];
 }
 
 export const DEMO_LABEL = 'Demo – forhåndsskrevet dialog, ikke live AI';

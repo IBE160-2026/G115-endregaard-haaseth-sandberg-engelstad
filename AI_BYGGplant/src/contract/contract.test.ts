@@ -75,7 +75,7 @@ describe('merging and colours', () => {
     const prev = { ...emptyProject(), budget: [{ id: 'a', post: 'A', description: '', amount_nok: 1, uncertainty_pct: 0, sku: null }] };
     const next = mergeProject(prev, { ...DIALOGS.garage[1].turn.project, budget: null });
     expect(next.budget).toBe(prev.budget);
-    expect(next.building.length_m).toBe(8);
+    expect(next.building.volumes[0].length_m).toBe(8);
   });
 
   it('only accepts #rrggbb colours', () => {

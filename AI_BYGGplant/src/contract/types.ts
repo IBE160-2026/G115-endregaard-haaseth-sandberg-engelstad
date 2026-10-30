@@ -31,7 +31,7 @@ export interface Change {
   section: Section;
   /** One short line, e.g. «Lengde 7 → 8 m». */
   text: string;
-  /** The id of the opening, budget line, risk or task this change is about, or null. */
+  /** The id of the volume, opening, budget line, risk or task this change is about, or null. */
   ref_id: string | null;
 }
 
@@ -60,15 +60,19 @@ export interface Exterior {
 /** One physical opening (two windows are two entries). */
 export interface Opening {
   id: string;
+  /** The volume (bygningskropp) whose wall the opening is in. */
+  volume_id: string;
   kind: OpeningKind;
   label: string;
   width_m: number | null;
   height_m: number | null;
+  /** A wall of that volume, seen from outside. */
   wall: Wall;
   /**
-   * 1 = ground floor. floors + 1 = the loft/roof level (a loft is NOT counted in `floors`): on a gable
-   * wall the opening sits in the gable triangle, on an eave wall it is a roof window in the roof plane.
-   * offset_m is then measured along the wall as usual; sill_m from the top of the wall (the eave).
+   * 1 = ground floor; 0, −1 … = basement levels (kjeller/underetasje).
+   * floors + 1 = the loft/roof level (a loft is NOT counted in `floors`): on a gable wall the opening
+   * sits in the gable triangle, on an eave wall it is a roof window in the roof plane; sill_m is then
+   * measured from the top of the wall (the eave).
    */
   floor: number;
   /** From the wall's left corner (seen from outside) to the opening's left edge. Null = not decided. */
@@ -77,12 +81,36 @@ export interface Opening {
   sill_m: number | null;
 }
 
-export interface Building {
+/**
+ * One rectangular, axis-aligned body of the building (bygningskropp): a house, a wing, an attached
+ * garage, a tower, a block. Several volumes make L, T and U shapes, a house with a garage, a barn with
+ * a lean-to, an office with a stair tower. Site coordinates in metres: x runs to the right along the
+ * main front, y runs from the front towards the back; (x_m, y_m) is the volume's front-left corner.
+ * Every volume's front faces the same way as the building's main front.
+ */
+export interface Volume {
+  id: string;
+  /** «Hovedhus», «Garasje», «Fløy B», «Trappetårn». */
+  name: string;
+  x_m: number;
+  y_m: number;
+  /** Along x (the front wall). */
   length_m: number | null;
+  /** Along y (the side walls). */
   width_m: number | null;
+  /** Storeys above ground (a loft is not counted). */
   floors: number | null;
   floor_height_m: number | null;
+  /** Storeys below ground (0 = none). */
+  basement_floors: number;
   roof: Roof | null;
+  /** Colours for this volume when they differ from the building's (null = the building's). */
+  exterior: Exterior | null;
+}
+
+export interface Building {
+  volumes: Volume[];
+  /** The building's colours and cladding (a volume may override them). */
   exterior: Exterior | null;
   /** Terrain slope across the plot in %, if known. */
   terrain_slope_pct: number | null;
@@ -163,16 +191,37 @@ export interface ChatMessage {
   content: string;
 }
 
-export const emptyBuilding = (): Building => ({
-  length_m: null,
-  width_m: null,
-  floors: null,
-  floor_height_m: null,
-  roof: null,
-  exterior: null,
-  terrain_slope_pct: null,
-  openings: [],
-});
+export const emptyBuilding = (): Building => ({ volumes: [], exterior: null, terrain_slope_pct: null, openings: [] });
+
+/** A volume whose size is known well enough to draw. */
+export type SizedVolume = Volume & { length_m: number; width_m: number; floors: number };
+
+export const isSized = (v: Volume): v is SizedVolume =>
+  [v.length_m, v.width_m, v.floors].every((n) => typeof n === 'number' && Number.isFinite(n) && n > 0);
+
+/** The site rectangle the sized volumes cover (null when none is sized). */
+export function siteBounds(b: Building): { x0: number; y0: number; x1: number; y1: number } | null {
+  const sized = b.volumes.filter(isSized);
+  if (!sized.length) return null;
+  return {
+    x0: Math.min(...sized.map((v) => v.x_m)),
+    y0: Math.min(...sized.map((v) => v.y_m)),
+    x1: Math.max(...sized.map((v) => v.x_m + v.length_m)),
+    y1: Math.max(...sized.map((v) => v.y_m + v.width_m)),
+  };
+}
+
+/** Gross floor area above ground (sum of length × width × floors over sized volumes). */
+export const grossArea = (b: Building) => b.volumes.filter(isSized).reduce((s, v) => s + v.length_m * v.width_m * v.floors, 0);
+
+/** Built-up footprint (sum of length × width; volumes are not expected to overlap). */
+export const footprintArea = (b: Building) => b.volumes.filter(isSized).reduce((s, v) => s + v.length_m * v.width_m, 0);
+
+/** The volume an opening belongs to (undefined if its volume_id points at nothing). */
+export const volumeOf = (b: Building, o: Opening) => b.volumes.find((v) => v.id === o.volume_id);
+
+/** Wall length of a volume's wall: front/bak run along length_m, venstre/høyre along width_m. */
+export const wallLength = (v: Volume, wall: Wall) => (wall === 'front' || wall === 'bak' ? v.length_m : v.width_m);
 
 export const emptyProject = (): Project => ({
   name: '',
@@ -203,6 +252,7 @@ export function mergeProject(prev: Project, patch: ProjectPatch): Project {
 /** Every id a change's ref_id may point at. */
 export function projectIds(p: Project): Set<string> {
   return new Set([
+    ...p.building.volumes.map((v) => v.id),
     ...p.building.openings.map((o) => o.id),
     ...p.budget.map((l) => l.id),
     ...p.risks.map((r) => r.id),

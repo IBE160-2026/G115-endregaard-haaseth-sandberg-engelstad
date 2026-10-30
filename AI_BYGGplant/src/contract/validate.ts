@@ -44,6 +44,7 @@ export function schemaErrors(value: unknown, schema: Schema = TURN_SCHEMA, path 
 export function consistencyErrors(turn: AiTurn, merged: Project): string[] {
   const errors: string[] = [];
   const all = [
+    ...merged.building.volumes.map((v) => v.id),
     ...merged.building.openings.map((o) => o.id),
     ...merged.budget.map((l) => l.id),
     ...merged.risks.map((r) => r.id),
@@ -58,6 +59,13 @@ export function consistencyErrors(turn: AiTurn, merged: Project): string[] {
   for (const c of turn.changes) if (c.ref_id !== null && !ids.has(c.ref_id)) errors.push(`ref_id ${c.ref_id} points at nothing`);
   const tasks = new Set(merged.schedule.map((t) => t.id));
   for (const t of merged.schedule) for (const d of t.depends_on) if (!tasks.has(d)) errors.push(`task ${t.id} depends on unknown ${d}`);
+  const volumes = new Map(merged.building.volumes.map((v) => [v.id, v]));
+  for (const o of merged.building.openings) {
+    const v = volumes.get(o.volume_id);
+    if (!v) errors.push(`opening ${o.id} is in unknown volume ${o.volume_id}`);
+    else if (v.floors !== null && (o.floor > v.floors + 1 || o.floor < 1 - v.basement_floors))
+      errors.push(`opening ${o.id} is on floor ${o.floor}, which ${v.id} does not have`);
+  }
   return errors;
 }
 
