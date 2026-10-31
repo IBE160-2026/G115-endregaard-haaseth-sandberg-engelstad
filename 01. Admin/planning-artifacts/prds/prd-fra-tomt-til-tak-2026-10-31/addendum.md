@@ -31,7 +31,7 @@ How the adviser phrases a citation: project name, the figure, and the year of th
 | Valle Wood | Oslo | 6,700 m², 7 floors | Timber (CLT) | 2017 to summer 2019, a few months late (the crane had to hold beams until bolted) | Timber frame; estimate overrun |
 | HasleTre | Oslo | 2,655 m², 5 floors | Timber (CLT) | completed 2023, duration not published | Size and system only |
 | Lumber 5 | Kristiansand | about 6,600 m², 7 floors | Timber (CLT) | about 16 months planned (March 2025 to summer 2026) | Timber, total time (planned) |
-| Youngs gate 2–4 | Oslo | about 2,700 m² | not stated | about 21 months planned | Upper anchor for a central plot (planned, not actual) |
+| Youngs gate 2–4 | Oslo | about 2,700 m² | not stated | about 21 months planned | Upper anchor for the central site (planned, not actual) |
 
 Full details and sources are in [R2] §A. No completed cast-in-place concrete office of this size with a published construction time was found.
 
@@ -55,10 +55,10 @@ Each playthrough draws 3–4 events (FR-19): one estimate overrun, one or two ex
 | ID | Event | Triggered by the student's choice | Decision type (assignment) | Learning goal | Evidence |
 |---|---|---|---|---|---|
 | E1 | A main part takes longer than estimated | The schedule estimate | Resource allocation: accept, overtime, hire | Time costs money; resources have limits | Mean overrun 32 % (V11); Valle Wood frame [SOURCED] |
-| E2 | Wind stops a crane lift, HMS reacts | Many floors, tall building | Risk response: wait, change lift plan, mobile crane | Risk | Crane out of service at about 20 m/s [partly sourced] |
+| E2 | Wind stops a crane lift, HMS reacts | Probability grows with the number of floors | Risk response: wait, change lift plan, mobile crane | Risk | Crane out of service at about 20 m/s [partly sourced] |
 | E3 | Strike at a foreign supplier delays materials | Steel or precast from abroad | Risk response: wait, or a dearer local supplier | Risk; time costs money | Finnish port strikes Feb–Apr 2024 [partly sourced] |
-| E4 | Archaeological find in the excavation | Central plot (medieval town) | Risk response | Risk and reserve | Oslo requires monitoring of all digging in the medieval town; a Bjørvika dig took about 6 months [SOURCED] |
-| E5 | Contaminated ground | Central or former industrial plot | Risk response | Risk and reserve | Oslo PBE [partly sourced] |
+| E4 | Archaeological find in the excavation | Always possible on the central site (medieval town) | Risk response | Risk and reserve | Oslo requires monitoring of all digging in the medieval town; a Bjørvika dig took about 6 months [SOURCED] |
+| E5 | Contaminated ground | Always possible on the central site | Risk response | Risk and reserve | Oslo PBE [partly sourced] |
 | E6 | Material price rise | Structural system | Risk response: lock the price now or take the chance | Risk | SSB 2021: materials +9.5 %; steel +40–44 % [SOURCED / excerpt] |
 | E7 | Subcontractor bankruptcy | Any | Resource allocation | Resources; reserve | 29 % of bankruptcies Q2 2024 in construction; Kirkenes hospital about 8 months late [SOURCED] |
 | E8 | Client change request | Any | Change approval: now, or later at a higher cost | Late changes cost more | Changes about 14 % of contract cost, two thirds from the client (V12) [SOURCED, thesis abstract] |

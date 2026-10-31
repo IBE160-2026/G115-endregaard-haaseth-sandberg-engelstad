@@ -16,7 +16,7 @@ This PRD turns the product brief `../../briefs/brief-G115-tre-stadier-2026-10-29
 
 *Fra tomt til tak* is a 20-minute web simulator in which a newcomer runs a construction project as its project manager: an office building for 100 employees in Oslo, for a fictional client. The student plans the project with an AI adviser, sees the plan tested by unforeseen events, and ends with a debrief that explains why things turned out as they did.
 
-The simulator answers a question many people ask when they read the news: why do building projects so often run late and over budget? The student finds out by doing it. Their own optimistic estimates, their choice of plot and structure, and their responses to events add up to a result they own. The AI adviser draws on what comparable projects actually took, warns when the student is far off, and is compared with the student's choices throughout, so the student also learns when AI advice is worth following.
+The simulator answers a question many people ask when they read the news: why do building projects so often run late and over budget? The student finds out by doing it. Their own optimistic estimates, their choice of height and structure, and their responses to events add up to a result they own. The AI adviser draws on what comparable projects actually took, warns when the student is far off, and is compared with the student's choices throughout, so the student also learns when AI advice is worth following.
 
 ## 2. Target User
 
@@ -39,7 +39,7 @@ The simulator answers a question many people ask when they read the news: why do
   - **Entry state:** opens the simulator in a desktop browser. No account.
   - **Path:**
     1. A meeting in the site office, with the 3D view beside it. The client presents the order: offices for 100 employees in Oslo, a deadline and a budget.
-    2. She chooses a plot, the number of floors and a structural system, and watches the building take shape in the 3D view while cost and time update.
+    2. She chooses the number of floors (and so how much of the central site to buy) and a structural system, and watches the building take shape in the 3D view while cost and time update.
     3. She estimates how long each main part takes. This is the hardest step. The adviser suggests shares of the total from historical figures. When her estimate for the frame is far below comparable projects, it steps in: "Comparable projects took about X weeks for the frame", and gives her reference values. She adjusts, but not all the way.
     4. She chooses responses to the known risks, sets a reserve and presents the plan to the client.
     5. The project runs. The frame takes longer than she estimated, and she chooses between accepting the delay, overtime or hiring more workers. Wind stops a crane lift and HMS reacts. A strike at a foreign logistics firm delays steel, and she weighs a more expensive local supplier. After each choice she sees her path next to the AI's.
@@ -54,9 +54,9 @@ The simulator answers a question many people ask when they read the news: why do
 - **Client** — the fictional owner who sets the order and the targets.
 - **Order** — the client's requirements: 100 workplaces in Oslo, a deadline (target week) and a budget (target cost).
 - **Targets** — the deadline and budget from the order.
-- **Plot** — one of three sites in Oslo, each with a price per m² of plot area and zoning limits. The plot area the building needs depends on its footprint.
-- **Zoning limits** — the plot's maximum footprint as a share of plot area (%BYA) and maximum height in metres.
-- **Concept** — the combination of plot, number of floors and structural system.
+- **Plot** — the building site, near the centre of Oslo. It has one price per m² of plot area and zoning limits. The student buys as much plot area as the footprint needs.
+- **Zoning limits** — the site's maximum footprint as a share of plot area (%BYA) and maximum height in metres.
+- **Concept** — the combination of number of floors and structural system, which together set the footprint, the plot area bought and the frame time.
 - **Structural system** — the load-bearing system: cast-in-place concrete, precast concrete, steel or timber (CLT).
 - **Building-block model** — the rules that turn a concept into main parts, durations and cost.
 - **Main part** — one of six top-level parts of the WBS: design and building permit, groundworks, frame, weathertight envelope, technical installations and interior, handover.
@@ -104,28 +104,30 @@ The client presents the order in a short meeting in the site office, with the 3D
 
 **Consequences (testable):**
 - The meeting can be skipped.
-- After the meeting, the planning view opens at the plot and concept step.
+- After the meeting, the planning view opens at the concept step.
 
-### 4.2 Plot and concept
+### 4.2 Concept: floors, plot area and structure
 
-**Description:** The student chooses a plot, the number of floors and a structural system. The required gross area follows from the order (P1: 23 m² BTA per workplace, about 2,300 m²). Fewer floors give a larger footprint, which needs more plot area and so costs more in land; more floors need more lift capacity and a longer frame phase; the structural system mainly changes the frame time. The 3D view and the consequences update with every choice. Realizes UJ-1.
+**Description:** The building stands on a site near the centre of Oslo, with one land price per m². The student chooses the number of floors and a structural system. The required gross area follows from the order (P1: 23 m² BTA per workplace, about 2,300 m²). The trade-off is plot area against what each floor costs: fewer floors give a larger footprint, which needs more plot area and costs more in land; more floors save land but each floor adds frame weeks and site overhead, a fire-class cost step applies from a certain height, and the risk of crane stops in wind grows. With a tight deadline, the cheapest height only meets it with a faster, dearer structural system. The 3D view and the consequences update with every choice. Realizes UJ-1.
 
-#### FR-3: Choose a plot
+#### FR-3: Plot area and plot cost
 
-The student can choose one of three plots in Oslo, each with a price per m² of plot area and zoning limits. Realizes UJ-1.
+The plot area the student must buy follows from the concept, at the site's single price per m² of plot area. Realizes UJ-1.
 
 **Consequences (testable):**
-- Each plot shows its price per m² of plot area, its maximum footprint (%BYA) and its maximum height in metres.
-- Plot area needed = footprint ÷ maximum %BYA. Plot cost = plot area needed × price per m² of plot area. The price per m² of plot area is derived from the research's price per m² BRA and the plot's utilisation, and the derivation is shown in the simulation rules.
-- With the same plot, fewer floors always give a higher plot cost than more floors.
+- The site shows its price per m² of plot area, its maximum footprint (%BYA) and its maximum height in metres.
+- Plot area needed = footprint ÷ maximum %BYA. Plot cost = plot area needed × price per m² of plot area. The price and its derivation from the research are shown in the simulation rules.
+- Fewer floors always give a higher plot cost than more floors.
 
 #### FR-4: Choose floors and footprint
 
 The student can choose the number of floors from a fixed set; the footprint follows from gross area divided by floors. Realizes UJ-1.
 
 **Consequences (testable):**
-- Building height = floors × floor height (from the research). A concept whose height or footprint breaks the plot's zoning limits cannot be approved, and the adviser gives a warning that names the limit.
+- Building height = floors × floor height (from the research). A concept whose height breaks the zoning limit cannot be approved, and the adviser gives a warning that names the limit.
 - Lifts are always included (required from two floors, TEK17), and lift cost grows with the number of floors.
+- From the height where TEK17 requires a stricter fire class, building cost steps up, as set in the simulation rules.
+- Each extra floor adds frame weeks according to the structural system.
 
 #### FR-5: Choose a structural system
 
@@ -137,12 +139,12 @@ The student can choose cast-in-place concrete, precast concrete, steel or timber
 
 #### FR-6: See consequences at once
 
-After every choice the student sees plot cost, building cost and expected duration against the targets, and the 3D view shows the concept. Realizes UJ-1.
+After every choice the student sees plot area and plot cost, building cost and expected duration against the targets, and the 3D view shows the concept. Realizes UJ-1.
 
 **Consequences (testable):**
 - The figures shown equal the building-block model's output for the current concept.
 - The site overhead per week is shown next to the expected duration, so the cost of time is visible.
-- The 3D view shows the chosen number of floors and footprint on the chosen plot.
+- The 3D view shows the chosen number of floors and footprint on the site.
 
 ### 4.3 Schedule estimate
 
@@ -181,7 +183,7 @@ The adviser can suggest a duration for each main part as a share of the total, b
 The student sees 3–4 known risks for the chosen concept, each with probability and impact. Realizes UJ-1.
 
 **Consequences (testable):**
-- Which risks are listed depends on the plot and structural system.
+- Which risks are listed depends on the number of floors and the structural system; risks tied to the central site (for example archaeological finds and contaminated ground) are always listed.
 
 #### FR-11: Choose a response
 
@@ -276,7 +278,7 @@ Each playthrough has 3–4 events, decided by the seed: one estimate overrun, on
 - Every main part's actual duration = reference duration × (1 + deviation), where the seed sets the deviation within a fixed range given in the simulation rules.
 - The estimate overrun hits the main part with the largest gap between actual duration and the student's schedule estimate. Its size is that gap in weeks.
 - If no main part's actual duration exceeds the student's estimate, there is no estimate overrun, and one more external risk or opportunity takes its place.
-- External risks are drawn only from those possible for the chosen plot and structural system.
+- External risks are drawn only from those possible for the central site, the number of floors and the structural system.
 - The same seed and plan always give the same events.
 
 #### FR-20: Decide on an event
@@ -390,7 +392,7 @@ Each learning goal is made visible by specific FRs and has a condition that deci
 |---|---|---|
 | **Time costs money** | FR-6 (site overhead per week shown), FR-20, FR-24 | The student accepted a delay whose site overhead cost more than the cheapest acceleration option offered for that event. |
 | **Resources have limits** | FR-20 (overtime premium, caps, crowding) | The student hired workers where overtime would have saved the same weeks for less, or went beyond the overtime caps after a warning. |
-| **Risk is managed, not just suffered** | FR-10 to FR-12, FR-21, FR-25 | A known risk the student accepted occurred, and reducing or avoiding it would have cost less in total; or the reserve ran out before completion. |
+| **Risk is managed, not just suffered** | FR-10 to FR-12, FR-21, FR-25 | At the time of the choice, the student accepted a known risk whose expected cost (probability × impact, including delay as site overhead) was higher than the cost of reducing or avoiding it; or the reserve ran out before completion. Judged on expected cost, not on whether the risk occurred, so bad luck is not punished. |
 | **AI advice is worth weighing** | FR-14, FR-15, FR-22, FR-28 | In at least half of the decisions with a recommendation, the student either followed a recommendation that was not right or ignored one that was (as defined in FR-28). |
 
 ### 4.11 Additions from the assignment review
@@ -403,7 +405,7 @@ In the schedule step, the student can set two or three milestones (for example "
 
 #### FR-33: Site capacity
 
-Each plot has a maximum number of workers on site at once (smaller on a tight central plot). Hiring beyond it is not possible, and the adviser explains why. *Covers "resource capacity" in the assignment's data in, and strengthens the resources goal.*
+The central site has a maximum number of workers at once. Hiring beyond it is not possible, and the adviser explains why. *Covers "resource capacity" in the assignment's data in, and strengthens the resources goal.*
 
 #### FR-34: Cost forecast during execution
 
@@ -497,7 +499,7 @@ The flows that are hard to test automatically (the 3D view, the adviser's free-t
 ## 11. Open Questions
 
 1. **Target values.** The exact target week and target cost, derived from the building-block model once its rules are written.
-2. **Options per choice.** How many floor counts and which plots (price tier and zoning) does the model offer?
+2. **Options per choice.** Which floor counts and which structural systems does the model offer, and where does the fire-class step fall?
 3. **Language model.** Which provider and model, the cost per playthrough, and when the Vercel connection is set up (FR-17 is must-have).
 4. **Phase shares.** The shares of total duration come from one project (Elvebredden); can a better source be found?
 5. **Weak figures.** Land prices and structural-system factors are estimates; can the group find better sources (a current Norsk Prisbok or a broker report)?

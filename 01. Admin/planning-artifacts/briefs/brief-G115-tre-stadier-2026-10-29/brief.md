@@ -15,7 +15,7 @@ A web-based simulator, built for the IBE160 course at Høgskolen i Molde, that l
 
 One playthrough takes about 20 minutes and runs in three stages:
 
-1. **Plan (the main part).** The student shapes the project with an AI adviser: plot, number of floors, structural system, schedule estimate, risks and reserve. The adviser suggests, explains and warns, but the student has the final say.
+1. **Plan (the main part).** The student shapes the project with an AI adviser: number of floors and how much plot to buy, structural system, schedule estimate, risks and reserve. The adviser suggests, explains and warns, but the student has the final say.
 2. **Execute (shorter).** The plan is put to the test. A few unforeseen events hit, and the student has to choose a response to each and answer for it.
 3. **Debrief (short).** The student sees where the plan held and where it broke, compared with the AI's path, and ends with a conclusion tied to the learning goals.
 
@@ -37,9 +37,9 @@ At the same time, AI is becoming part of how project managers work. Learners hav
 
 The playthrough opens in the site office, where the client presents the order: offices for 100 employees in Oslo, with a deadline and a budget. Then the planning view opens, with four steps:
 
-1. **Plot and concept.** Choose one of three plots in Oslo, each with its own price per m² and zoning limits. The floor area needed is given by the 100 workplaces, so the student weighs footprint against floors: fewer floors need a larger, more expensive plot, while more floors need more structure, lifts and a longer frame phase. The student also chooses the structural system (for example cast-in-place concrete, precast concrete, steel or timber), which changes cost and time.
+1. **Concept.** The building stands near the centre of Oslo, where land has one price per m². The floor area needed is given by the 100 workplaces, so the student weighs plot area against what each floor costs: fewer floors need a larger footprint and more expensive land, while more floors save land but add frame weeks, site overhead, a stricter fire class from a certain height and more risk of crane stops in wind. With a tight deadline, the cheapest height only works with a faster, dearer structural system (for example steel or timber instead of cast-in-place concrete).
 2. **Schedule estimate.** The project is split into six main parts, and the student estimates how long each takes. This is the hardest step. The adviser suggests shares of the total from historical figures, and the Gantt chart updates as the student estimates. Crew decisions come later, in stage 2, as responses to delays.
-3. **Risk and reserve.** A few known risks that depend on the plot and concept (for example contaminated ground on a central plot, or crane stops in wind on a tall building). The student chooses how to meet each one and sets a reserve in time and budget.
+3. **Risk and reserve.** A few known risks that depend on the site and concept (for example contaminated ground or archaeological finds on the central site, or crane stops in wind on a tall building). The student chooses how to meet each one and sets a reserve in time and budget.
 4. **Present the plan.** Back in the site office, the student presents the plan to the client against the targets, sees the adviser's overall assessment, and approves it. The plan becomes the baseline for stage 2.
 
 The planning view always shows the targets (budget, completion week, risk exposure). Every choice updates the consequences at once, calculated by the same engine that runs stage 2. A **3D view on part of the screen** shows the building taking shape on the chosen plot as the student changes floors, footprint and structure. In stage 2 the same view shows the construction progressing. There is no walking around the site; the 3D view is something to look at, not to move through.
@@ -94,7 +94,7 @@ The group has about 120 hours in total over about 1.5 months, with Claude Code a
 
 **Must have:**
 
-- Stage 1 with the four steps, using discrete options (three plots, a few floor counts, three or four structural systems).
+- Stage 1 with the four steps, using discrete options (one central site, a few floor counts, three or four structural systems).
 - A building-block model that turns the concept into WBS, quantities, durations and cost, with simple rules the group owns and worked examples with answers.
 - The adviser's rule-based suggestions and warnings, and suggested-question buttons with prepared answers.
 - Free-text conversation with a guardrailed language model, with the offline fallback.

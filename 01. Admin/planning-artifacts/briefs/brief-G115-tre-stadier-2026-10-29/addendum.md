@@ -14,7 +14,7 @@ Detail from the brief conversation that belongs in later documents (PRD, UX, arc
 | Step | Content | Time |
 |---|---|---|
 | 0. Site office | The fictional client presents the order (100 workplaces in Oslo, deadline, budget) | about 1 min |
-| 1. Plot and concept | Three plots with price per m² and zoning limits; floors against footprint; structural system | about 3 min |
+| 1. Concept | One central site with one price per m²; floors against plot area; structural system against time | about 3 min |
 | 2. Schedule estimate | Six main parts; the student estimates durations, the adviser gives reference shares; Gantt updates | 2–3 min |
 | 3. Risk and reserve | 3–4 known risks that depend on plot and concept; responses; time and cost reserve | about 2 min |
 | 4. Present the plan | Plan against the targets, the adviser's assessment, approval | about 1 min |
@@ -31,7 +31,7 @@ Example risks tied to the concept: contaminated ground on a central plot; crane 
 │                                          Risk exposure: medium   ⚠ 1 warning │
 ├────────────┬──────────────────────────────┬──────────────┬───────────────────┤
 │ STEPS      │ 1. PLOT AND CONCEPT          │ 3D VIEW      │ ADVISER           │
-│ ✓ Order    │ Plot ○ A ● B ○ C (NOK/m²)    │ building on  │ suggestions,      │
+│ ✓ Order    │ Site: central Oslo, 1 price  │ building on  │ suggestions,      │
 │ ● Plot and │ Floors [──●──] 4             │ the chosen   │ warnings,         │
 │   concept  │ Footprint 600 m²             │ plot, updates│ suggested-question│
 │ ○ Schedule │ Structure ○ concrete ● steel │ with every   │ buttons and a     │
