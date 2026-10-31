@@ -8,6 +8,7 @@ updated: 2026-10-31
 # Addendum: PRD Fra tomt til tak
 
 Detail that supports the PRD but does not belong in its requirements. Sources are the IDs in the two research reports:
+
 - **[R1]** `../../research/research-fra-tomt-til-tak-2026-10-31/research.md` (parameters P1–P17)
 - **[R2]** `../../research/research-referanseprosjekter-2026-10-31/research.md` (reference values V1–V12, events E1–E10)
 
@@ -16,9 +17,10 @@ Detail that supports the PRD but does not belong in its requirements. Sources ar
 The adviser judges the student's schedule estimate the way experienced planners do: by what comparable projects actually took, not by how the plan looks on paper. This is known as reference class forecasting, described by Bent Flyvbjerg as the remedy for optimism bias in project estimates.
 
 Why it fits the product:
+
 - It answers Sara's question directly. Buildings run on average 32 % over schedule and 62 % over cost, and 7 of 10 overrun (V11, [R2]).
 - It is real Oslo practice. Oslobygg's 2025 form for documenting enough construction time asks the client to list comparable projects ([R2]).
-- It keeps the adviser honest. It can only cite what is listed with a source.
+- It keeps the adviser honest: the adviser can cite only what is listed with a source.
 
 How the adviser phrases a citation: project name, the figure, and the year of the source (see [R2] §D). For example: "Statens hus Nordfjordeid (1,880 m², steel and hollow-core slabs) took about 11 months to build." When no real project exists for the chosen structural system (cast-in-place concrete), the adviser describes the reference generically and gives the source of the figure.
 
@@ -56,7 +58,7 @@ Each playthrough draws 3–4 events (FR-19): one estimate overrun, one or two ex
 |---|---|---|---|---|---|
 | E1 | A main part takes longer than estimated | The schedule estimate | Resource allocation: accept, overtime, hire | Time costs money; resources have limits | Mean overrun 32 % (V11); Valle Wood frame [SOURCED] |
 | E2 | Wind stops a crane lift, HMS reacts | Probability grows with the number of floors | Risk response: wait, change lift plan, mobile crane | Risk | Crane out of service at about 20 m/s [partly sourced] |
-| E3 | Strike at a foreign supplier delays materials | Steel or precast from abroad | Risk response: wait, or a dearer local supplier | Risk; time costs money | Finnish port strikes Feb–Apr 2024 [partly sourced] |
+| E3 | Strike at a foreign supplier delays materials | Steel or precast from abroad | Risk response: wait, or a more expensive local supplier | Risk; time costs money | Finnish port strikes Feb–Apr 2024 [partly sourced] |
 | E4 | Archaeological find in the excavation | Always possible on the central site (medieval town) | Risk response | Risk and reserve | Oslo requires monitoring of all digging in the medieval town; a Bjørvika dig took about 6 months [SOURCED] |
 | E5 | Contaminated ground | Always possible on the central site | Risk response | Risk and reserve | Oslo PBE [partly sourced] |
 | E6 | Material price rise | Structural system | Risk response: lock the price now or take the chance | Risk | SSB 2021: materials +9.5 %; steel +40–44 % [SOURCED / excerpt] |

@@ -15,19 +15,21 @@ This document holds the rules of the building-block model and the stage 2 engine
 Simplicity beats precision (PRD SM-C3). Every value is either sourced or marked as an estimate, and every estimate can be changed in one data file without code changes.
 
 **Revision 2 (group decisions, 2026-10-31):**
+
 - **One central Oslo site.** There is no choice between plots.
 - **Time is the counterweight to cheap land.** More floors save land but cost frame weeks, a fire-class step and more wind risk, and the target week is tight.
 - **The risk learning goal is judged on expected cost**, not on whether a risk occurred.
 - **The risk catalogue uses the event IDs E1–E10** from `addendum.md`.
 
 Sources:
+
 - **P1–P17**: parameter table in `../../research/research-fra-tomt-til-tak-2026-10-31/research.md`.
 - **V1–V12**: reference values in `../../research/research-referanseprosjekter-2026-10-31/research.md`.
 - **E1–E10**: event catalogue in `addendum.md` §4, with evidence in the reference research §C.
 - **TEK17**: DiBK's guidance pages for §§ 11-2, 11-3 and 11-4 (dibk.no, read 2026-10-31). These were read directly for this revision and are not in the research reports.
 - **v0.5**: the group's earlier game (`ByggAPP/G115_FinalPrompt.md` §4), reused for work modes, crowding, site overhead per week, forecast and seeds.
 
-Flags: **[SOURCED]** means the value comes directly from a source. **[ESTIMATE]** means the group or the research chose it, anchored on sources where possible. Every [ESTIMATE] is listed in §5 for the group's approval.
+Flags: **[SOURCED]** means the value comes directly from a source. **[ESTIMATE]** means the group or the research chose it, anchored on sources where possible. Every [ESTIMATE] is listed in §5 for the group's approval. **[ASSUMPTION]** marks a value proposed in this document that the group has not yet approved; **[partly sourced]** means the event itself is sourced but its size is estimated.
 
 ---
 
@@ -76,6 +78,7 @@ FR-3 (choose a plot) becomes a fixed site in v1. The PRD needs a matching edit (
 ### 1.4 State during stage 2
 
 For each main part, the engine keeps:
+
 - the start week;
 - **work weeks**: work that overtime or hiring can compress;
 - **idle weeks**: waiting that nothing compresses, such as a risk delay;
@@ -155,6 +158,7 @@ The options are **3, 4, 5, 6, 7 or 8 floors**:
 | 8 | 32 m | 288 m² | 479 m² | 67.060 | BKL 3 | ✗ 32 m > 28 m |
 
 Each extra floor saves 13–45 MNOK of land. The counterweights are all time and risk:
+
 - frame weeks (R6), each charged with 0.300 MNOK of site overhead (R7);
 - the fire-class step at 5 floors (R5);
 - more lifts (R5);
@@ -180,21 +184,25 @@ Each extra floor saves 13–45 MNOK of land. The counterweights are all time and
 `BTA = 23 × 100 = 2,300 m²`. `BRA = 0.9 × 2,300 = 2,070 m²`. BRA is used only in R3.
 
 **R2. Footprint and plot area bought** (FR-3, FR-4)
+
 - `footprint = BTA ÷ floors` (shown rounded to whole m²).
 - `plotArea = BTA ÷ (floors × 0.60)`, rounded to whole m².
 
 **R3. Plot cost** (FR-3)
-- `pricePerM2Plot = 35,000 × 4.00 = 140,000 NOK` (0.140 MNOK). One m² of plot in a 400 % zone carries 4 m² of floor area, so it costs 4 × the price per m² BRA.
+
+- `pricePerM2Plot = 35,000 × 4.00 = 140,000 NOK` (0.140 MNOK). One m² of plot in a 400 % zone carries 4 m² of floor area, so it costs 4 times the price per m² BRA.
 - `plotCost = plotArea × 0.140`. Fewer floors always mean a larger footprint, more plot area and a higher plot cost.
 
 **R4. Zoning check** (FR-4, FR-13, FR-15)
 A concept is allowed only if:
+
 1. **Height:** `floors × 4.0 m ≤ 28 m`.
 2. **Footprint:** `plotArea ≤ 2,000 m²`. No option breaks this in v1; the rule stays so the group can shrink the site.
 
 A concept that breaks a limit cannot be approved. The adviser warns and names the limit: "8 floors make the building 32 m tall; the zoning plan allows at most 28 m."
 
 **R5. Building cost** (FR-4, FR-5, FR-6)
+
 - `workCost = 29,000 × 2,300 × systemFactor` (S12, S13).
 - `lifts = 1 if floors ≤ 4, else 2`. `liftCost = lifts × 0.300 × floors`. That is 0.900 / 1.200 / 3.000 / 3.600 / 4.200 MNOK for 3 / 4 / 5 / 6 / 7 floors.
 - `fireCost = 0` for 3–4 floors (BKL 2). For 5 floors or more (BKL 3), `fireCost = 1.500`, or `3.500` for CLT (S18, S19).
@@ -218,11 +226,13 @@ The six main parts always run in this order, one after the other, so the critica
 - The adviser's duration suggestion for each part (FR-9) is its reference duration.
 
 **R7. Site overhead** (FR-6)
+
 - 0.300 MNOK per week, charged for every construction week (parts 2 to 6), idle weeks included. The permit phase has none.
 - *Derivation:* common costs are 12.6 % of contract cost (P6s). Half of the 16 % general costs is added as running costs during construction. That gives 20.6 % × (35,000 ÷ 1.16) × 2,300 = 14.3 MNOK over 44–48 weeks, or 0.30–0.33 per week. Rounded to **0.300**.
 
 **R8. Cost and completion of a plan** (FR-6, FR-8, FR-13)
-- `baseCost = plotCost + buildingCost + 0.300 × construction weeks`. On the concept step (FR-6) it uses reference durations; in the plan it uses the student's estimates.
+
+- `baseCost = plotCost + buildingCost + 0.300 × construction weeks`. On the concept step (FR-6), construction weeks come from the reference durations; in the plan, from the student's estimates.
 - `planCostExclReserve = baseCost + Σ upfront cost of the chosen responses (R11)`.
 - `planCost = planCostExclReserve + reserveCost`.
 - `planWeek = Σ estimate[1..6] + reserveWeeks`.
@@ -240,7 +250,7 @@ Each concept has four known risks: two ground risks that always apply on the cen
 | E5 | Contaminated ground | Always (central site) | 40 % | 2 Groundworks | 4 wk | 2.000 | On-site sorting, second excavator: delay halved, +0.500 | Oslo PBE; +2–6 weeks, +1–5 % [partly sourced]. Values [ESTIMATE] |
 | E2 | Wind stops crane lifts, HMS reacts | All; **p = 5 % × floors** (15 % at 3 floors, 35 % at 7) | see left | 3 Frame | 1 wk | 0.200 | Mobile crane / new lift plan: delay 0, +0.400 | Crane out of service at ~20 m/s [partly sourced]. Growth with floors [ESTIMATE] |
 | E9 | Frost and winter concreting | Cast-in-place only | 40 % | 3 Frame | 2 wk | 0.800 | Heating and covers: delay halved, +0.300 | No Norwegian figure found [ESTIMATE, weak] |
-| E3 | Strike at a foreign supplier | Precast, steel | 25 % | 3 Frame | 4 wk | 0.000 | Dearer local supplier: delay halved, +1.200 | Finnish port strikes Feb–Apr 2024 [partly sourced]. Values [ESTIMATE] |
+| E3 | Strike at a foreign supplier | Precast, steel | 25 % | 3 Frame | 4 wk | 0.000 | More expensive local supplier: delay halved, +1.200 | Finnish port strikes Feb–Apr 2024 [partly sourced]. Values [ESTIMATE] |
 | E10 | Moisture in timber | CLT only | 40 % | 3 Frame | 3 wk | 0.500 | Weather tent: delay halved, +0.600 | NTNU ZEB lab; Danish damage fund [SOURCED]. Values [ESTIMATE] |
 
 **R11. Responses and risk exposure** (FR-11, FR-21)
@@ -258,6 +268,7 @@ For a risk with probability p, delay d weeks and cost c, the **full impact** is 
 - When a risk occurs in stage 2, the impact of the chosen response applies (FR-21). Its delay counts as **idle weeks** on the part it hits.
 
 **R12. Adviser suggestions in stage 1** (FR-9, FR-14)
+
 - **Durations:** the reference durations (R6).
 - **Response:** the one with the lowest expected total. On a tie, the one with the lower expected delay; if still tied, the first of accept, reduce, transfer, avoid.
 - **Reserve:**
@@ -265,11 +276,13 @@ For a risk with probability p, delay d weeks and cost c, the **full impact** is 
   - `reserveCost = 0.300 × reserveWeeks + expected cost excl. site overhead`.
 
 **R13. Reserve during stage 2** (FR-12)
+
 - Cost reserve used = `min(reserveCost, max(0, forecastCost − planCostExclReserve))`.
 - Time reserve used = `min(reserveWeeks, max(0, forecastWeek − Σ estimates))`.
 - The reserve **runs out** when either overrun is larger than its reserve. Unused reserve is not spent: the final cost is what was actually spent.
 
 **R14. Targets** (FR-1)
+
 - **The reference plan:** 7 floors, steel, reference durations, the suggested responses and the suggested reserve (R12).
 - `target week = reference plan's planWeek`.
 - `target cost = reference plan's planCost`, rounded **up** to whole MNOK.
@@ -286,6 +299,7 @@ For a risk with probability p, delay d weeks and cost c, the **full impact** is 
 | 7 | 73 ✗ · 166.667 ✓ | 70 ✗ · 167.995 ✓ | **67 ✓ · 168.429 ✓** | 65 ✓ · 172.210 ✗ |
 
 How to read it:
+
 - **7 floors are the cheapest height**, but only steel (week 67) and CLT (week 65) meet the target week there. Cast-in-place (73) and precast (70) are cheaper but too slow.
 - **Cast-in-place meets the target week only at 3 or 4 floors**, and there the land costs 57.400 (4 floors) or 102.200 (3 floors) more than at 7 floors. Precast needs 5 floors or fewer.
 - **CLT at 7 floors** is fastest but misses the budget by 3.210 MNOK, because of its +5 % work cost and the CLT fire-class step.
@@ -295,31 +309,37 @@ How to read it:
 
 **R15. Seed stream** (FR-19, FR-30)
 One pseudo-random stream gives numbers u in [0, 1); the architecture picks the generator (v0.5 has one). Numbers are drawn in this fixed order, which never depends on the student's choices:
+
 1. Five draws, one each for main parts 2 to 6, for the deviation (R16).
 2. One draw per known risk, in R10's table order, for occurrence (R17). An avoided risk still uses its draw, so the rest of the stream does not shift.
 3. One draw per event, in event order, for the AI's reliability (R25).
 
 **R16. Actual durations** (FR-19)
+
 - For parts 2 to 6: `actual[i] = round(reference[i] × (1 + deviation[i]))`, with `deviation[i] = list[floor(u × 5)]` from S24.
 - The permit (part 1) always takes 12 weeks (statutory processing time).
 - Actual durations do not depend on the estimates. The estimates only set the plan and decide which part overruns.
 
 **R17. External risk events** (FR-19, FR-21)
+
 - A known risk occurs if `u < p` and the student did not avoid it. At most two occur; if more qualify, the two with the lowest u are kept.
 - If none qualifies, the non-avoided risk with the lowest `u ÷ p` occurs, so there is always at least one external event while one is possible.
-- If every risk is avoided, there is no external event, or an opportunity if FR-35 is approved.
+- If every risk is avoided, there is no external event; if FR-35 is approved, an opportunity takes its place.
 
 **R18. Estimate overrun (E1)** (FR-19)
+
 - `gap[i] = actual[i] − estimate[i]` for parts 2 to 6. Part 1 is left out because a permit cannot be sped up; an underestimated permit still shows in bridge step 2.
 - The event hits the part with the largest positive gap; on a tie, the earlier part. Its size is the gap in weeks.
 - If no gap is positive, one more external risk takes its place (the eligible risk with the next-lowest `u ÷ p`). If there is none, an opportunity (FR-35) or nothing.
 
 **R19. Event timing and idle weeks** (FR-18)
+
 - Every event fires at the **start** of the main part it concerns. The change request fires at the start of part 5.
 - Within one part the order is: estimate overrun, then external risks, then the change request.
 - A part's duration = work weeks + idle weeks. Overtime and hiring compress only work weeks. Risk delays and the change request's weeks are idle weeks.
 
 **R20. Overtime** (FR-20)
+
 - **Overtime:** 37.5 + 6.25 = 43.75 h a week, so output is ×7/6. `D = round(W × 6 ÷ 7)`, where W is the part's work weeks.
 - Its extra cost is the premium only: `24 × 6.25 h × 650 × 0.4 = 39,000 NOK` = **0.039 MNOK per overtime week**, times D. The normal pay for the hours is already in the work cost, because the amount of work does not change.
 - 6.25 h a week is exactly 25 h per 4 weeks, so this level stays within all caps for up to 32 weeks.
@@ -327,11 +347,13 @@ One pseudo-random stream gives numbers u in [0, 1); the architecture picks the g
 - Caps are checked per main part. Overtime and hiring cannot be combined on one part in v1.
 
 **R21. Hiring with crowding** (FR-20)
+
 - +12 hired workers at 0.5 output each: the effective crew is 30, output ×1.25, `D = round(W × 0.8)`.
 - Extra cost = the unproductive half of the hired hours: `12 × 37.5 × 650 × 0.5 = 146,250 NOK` = **0.14625 MNOK per week**, times D (rounded at the end).
 - Overtime costs about 6 × 0.039 = 0.234 MNOK per week saved, less than the site overhead of 0.300, so it usually pays off. Hiring costs about 4 × 0.14625 = 0.585 MNOK per week saved: it is faster, but rarely pays off.
 
 **R22. External risk event options** (FR-20, FR-21)
+
 1. **Take the impact** under the chosen response (R11).
 2. **The alternative** from R10, applied to the delay after the response. "Delay halved" means ⌊delay ÷ 2⌋, at the extra cost listed.
 3. **Overtime on the affected part** (R20), if it is part 2 to 6. It compresses only the work weeks.
@@ -340,6 +362,7 @@ An avoided risk never fires (FR-21).
 
 **R23. Change request (E8)** (FR-20)
 One per playthrough, at the start of part 5:
+
 - **Approve now:** +2.000 MNOK and +2 idle weeks on part 5.
 - **Approve later** (a separate job after handover): +3.000 MNOK, no delay.
 
@@ -349,6 +372,7 @@ Approving now is usually cheaper (2.600 incl. site overhead against 3.000), but 
 The engine runs on from the current state with no new events (v0.5). Forecast final cost = cost so far + the remaining parts at their actual durations and current work modes + site overhead for every remaining construction week.
 
 **R25. AI recommendation and difficulty** (FR-1, FR-22)
+
 - The **best option** has the lowest forecast final cost. On a tie, the earlier forecast completion week wins; if still tied, the option listed first.
 - The AI recommends the best option if `u < reliability` (easy 1.0, medium 0.8, hard 0.6). Otherwise it recommends the option with the second-lowest forecast final cost.
 - The **AI path** after each decision (FR-22) is the forecast with the AI's option, from the same state.
@@ -368,11 +392,12 @@ The engine runs on from the current state with no new events (v0.5). Forecast fi
 - The reserve is a separate line showing how much of it was used (R13), not a cause.
 
 **R27. "Right" recommendations** (FR-28)
+
 - **Stage 2:** a recommendation is right when the final cost with it is **equal to or lower than** with the student's option. Only that one decision is swapped; the student's other decisions and all future events stay the same.
 - **Stage 1:** a duration suggestion is right when `|actual − suggestion| ≤ 0.20 × suggestion`. It counts as followed when the estimate equals the suggestion.
 - The debrief shows: the number of recommendations, the number followed, the number right, and the number of right ones not followed.
 
-**R28. Missed learning goals** (§4.10, FR-27)
+**R28. Missed learning goals** (PRD §4.10, FR-27)
 
 | Goal | Missed when (formal) |
 |---|---|
@@ -387,16 +412,17 @@ The targets are a frame, not an exact answer. The final cost and the final week 
 
 | Band | Cost | Week |
 |---|---|---|
-| Within the frame | final cost ≤ target cost | final week ≤ target week |
+| On target | final cost ≤ target cost | final week ≤ target week |
 | Slightly over | up to 5 % over the target cost | up to 5 % over the target week (rounded up to whole weeks) |
 | Clearly over | more than 5 % over | more than 5 % over |
 
 The debrief shows the band, not a pass or fail on the exact figure. [ASSUMPTION: the 5 % band is a first proposal for the group to approve.]
 
 **R30. Decision impact ranking** (FR-38, FR-14)
+
 - For each of the student's decisions (floors, structural system, each main part's estimate, each risk response, the reserve, each stage 2 event), the impact is the change in final cost and final week if that one decision is replaced by the reference plan's choice (stage 1) or by the AI's recommendation (stage 2), with everything else unchanged.
 - The debrief lists decisions from the largest to the smallest absolute cost impact, with the week impact beside it, and shows the top three. A decision whose impact is under 2 % of the target cost is labelled "small".
-- In stage 1, when two options for a choice differ by less than 2 % of the target cost and the same week band, the adviser says so ("both work; the difference is about X MNOK") instead of recommending one firmly.
+- In stage 1, when two options for a choice differ by less than 2 % of the target cost and fall in the same week band, the adviser says so ("both work; the difference is about X MNOK") instead of recommending one firmly.
 
 ---
 
@@ -409,21 +435,25 @@ All amounts are in MNOK and all durations in weeks, rounded as in §0. Each exam
 **Concept:** 7 floors, steel.
 
 **Step 1. Area and plot (R1–R4)**
+
 - Height = 7 × 4.0 = **28 m** ≤ 28 ✓. Footprint = 2,300 ÷ 7 = 328.57 → **329 m²**.
 - Plot area = 2,300 ÷ (7 × 0.60) = 2,300 ÷ 4.2 = 547.62 → **548 m²** ≤ 2,000 ✓.
 - Plot cost = 548 × 0.140 = **76.720**.
 
 **Step 2. Building cost (R5)**
+
 - Work cost = 66.700 × 1.02 = **68.034**.
 - Lifts: 7 floors → 2 lifts. Lift cost = 2 × 0.300 × 7 = **4.200**.
 - Fire class: 7 floors ≥ 5 → BKL 3 → **1.500** (steel).
 - Building cost = 68.034 + 4.200 + 1.500 = **73.734**.
 
 **Step 3. Reference durations (R6)**
+
 - Frame = round(7 × 1.2) = round(8.4) = **8**.
 - Construction weeks = 13 + 8 + 10 + 10 + 5 = **46**. Total = 12 + 46 = **58**.
 
 **Step 4. Base cost (R7, R8)**
+
 - Site overhead = 0.300 × 46 = **13.800**.
 - Base cost = 76.720 + 73.734 + 13.800 = **164.254**.
 
@@ -442,10 +472,12 @@ The risks are E4 (p 30 %), E5 (40 %), E2 (5 % × 7 = 35 %) and E3 (25 %). Each c
 - Expected cost excl. site overhead = E4 0.3 × 1.000 + E5 0.4 × 1.000 + E2 0.35 × 0.100 + E3 0 = 0.300 + 0.400 + 0.035 = **0.735**.
 
 **Step 6. Suggested reserve (R12)**
+
 - Reserve weeks = round(0.10 × 46 + 4.2) = round(4.6 + 4.2) = round(8.8) = **9**.
 - Reserve cost = 0.300 × 9 + 0.735 = 2.700 + 0.735 = **3.435**.
 
 **Step 7. Plan and targets (R8, R14)**
+
 - Plan week = 58 + 9 = **67**.
 - Plan cost = 164.254 + 0.740 + 3.435 = **168.429**.
 - **Target week = 67. Target cost = 168.429 rounded up = 169 MNOK.**
@@ -469,6 +501,7 @@ Steel. Compare 4 floors with 7, then try 8.
 | Total weeks | 12 + 43 = **55** | 12 + 46 = **58** |
 
 **Answer:**
+
 - 4 floors cost 216.254 − 164.254 = **52.000 MNOK more**. The land costs 57.400 more. Against that, 4 floors save 3.000 on lifts, 1.500 on fire class and 0.900 of site overhead.
 - 7 floors take **3 weeks longer**. That is the time the target week has to absorb (R14).
 - **8 floors:** 8 × 4.0 = 32 m > 28 m → **not allowed**. The adviser names the height limit.
@@ -476,18 +509,21 @@ Steel. Compare 4 floors with 7, then try 8.
 ### Example (c): an estimate overrun with three options
 
 **The student's plan.**
+
 - Concept: 7 floors, steel.
 - Estimates: permit 12, groundworks 10, frame 7, envelope 8, technical and interior 8, handover 4 (total 49).
 - Responses: all four risks accepted (upfront 0).
 - Reserve: 4 weeks and 3.000.
 
 **Stage 1 warnings (R9):**
+
 - Groundworks: |10 − 13| = 3 > 2.6 → **warning** ("comparable projects: about 13 weeks").
 - Frame: |7 − 8| = 1, not > 1.6 → no warning.
 - Envelope and technical/interior: |8 − 10| = 2, not > 2.0 → no warning.
 - Handover: |4 − 5| = 1, not > 1.0 → no warning.
 
 **Plan (R8):**
+
 - Estimated construction weeks = 10 + 7 + 8 + 8 + 4 = 37.
 - Plan cost excl. reserve = 76.720 + 73.734 + 0.300 × 37 = 150.454 + 11.100 = **161.554**.
 - Plan cost = 161.554 + 3.000 = **164.554** ≤ 169 ✓. Plan week = 49 + 4 = **53** ≤ 67 ✓. The plan looks comfortable.
@@ -514,6 +550,7 @@ Steel. Compare 4 floors with 7, then try 8.
 | Hire 12 | round(16 × 0.8) = round(12.8) = **13** | 13 × 0.14625 = 1.90125 → **1.901** | 50 | 15.000 | 150.454 + 15.000 + 1.901 = **167.355** | **62** |
 
 **Answer:**
+
 - **The AI recommends overtime** (166.300, the lowest). It saves 2 weeks, worth 0.600 in site overhead, for 0.546.
 - Hiring is fastest (week 62) but costs 1.001 more than taking the delay.
 - Overtime is 6.25 h a week, within the caps → no warning.
@@ -522,6 +559,7 @@ Steel. Compare 4 floors with 7, then try 8.
 ### Example (d): the budget bridge for the same playthrough
 
 **Events (R17–R19):**
+
 1. The estimate overrun on groundworks.
 2. **E5 contaminated ground** occurs. It was accepted, so the impact is 4 idle weeks and 2.000. It fires at the start of groundworks, after the overrun. E4, E2 and E3 do not occur.
 3. **E8 change request** at the start of technical and interior.
@@ -555,6 +593,7 @@ Difficulty: easy.
 | Check: final − target | 172.554 − 169.000 | **+3.554** ✓ |
 
 **Reserve line (R13):**
+
 - Cost: 172.554 − 161.554 = 11.000 > 3.000, so all **3.000** is used.
 - Time: 69 − 49 = 20 weeks > 4 weeks of reserve.
 - The reserve ran out.
@@ -562,6 +601,7 @@ Difficulty: easy.
 **Final result:** week 69 against target 67, and 172.554 against target 169. The AI path (FR-26) ends at week 67 and 172.000.
 
 **AI trust (R27):**
+
 - **Stage 2** (one decision swapped at a time in the student's playthrough):
   - Overtime: 0.054 lower → right.
   - E5 alternative: 0.100 lower → right.
@@ -578,6 +618,7 @@ Difficulty: easy.
 - **Totals:** 9 recommendations, 1 followed, 7 right, 6 right ones not followed.
 
 **Missed learning goals (R28):**
+
 - **Time costs money:** missed. At the overrun, 0.546 < 0.600. At E5, 0.500 < 0.300 × 2.
 - **Resources have limits:** not missed.
 - **Risk is managed:** missed, judged on expected cost at the time of the choice.
@@ -592,6 +633,7 @@ Difficulty: easy.
 ## 5. Open points for the group
 
 **Values to approve** (all [ESTIMATE]):
+
 1. **The site:** 140,000 NOK/m² plot (P4a × P5a), 60 % BYA (lowered from P5a's 80 %), 28 m, 2,000 m² available. Land dominates the budget: 77–179 MNOK against about 74 for the building.
 2. **Fire-class cost step:** +1.500 at BKL 3, +2.000 more for CLT. The rule itself (offices are risk class 2, 5+ floors are BKL 3, with R 90 non-combustible as the preaccepted main system) is **verified on dibk.no**, but it is not in the research reports. Add it to the research appendix. No source gives the cost.
 3. **E2 wind: p = 5 % × floors.** The growth with floors is a design choice. Impact is 1 week and 0.200.
@@ -612,7 +654,7 @@ Difficulty: easy.
     - FR-10 ("risks depend on the plot") becomes "depend on floors and structural system".
     - FR-4 should mention the fire-class step.
     - §4.10's risk condition should say "expected cost at the time of the choice".
-14. **The risk goal compares only accept with reduce/avoid**, following §4.10's wording. A stricter version would also flag over-paying (avoiding a risk whose expected cost is lower than the avoid price, as FR-36 proposes). Ties do not count as missed (E5 in example (d)).
+14. **The risk goal compares only accept with reduce/avoid**, following the wording of PRD §4.10. A stricter version would also flag overpaying (avoiding a risk whose expected cost is lower than the avoid price, as FR-36 proposes). Ties do not count as missed (E5 in example (d)).
 15. **Known risks per concept are fixed at four** (E4, E5, E2 and one system risk). E6 (price rise) and E7 (bankruptcy) from the addendum are not used. They could come back as fallback events (R18) or with FR-35.
 16. **V2** (central infill sites take 18–21 months, planned) is not modelled. Adding it would lengthen every concept equally and does not change the puzzle.
 17. The warning threshold is 20 % (±30 % is the alternative). Target cost is rounded up to whole MNOK.
@@ -636,6 +678,7 @@ Base cost (R8) with reference durations, before responses and reserve. Total wee
 | 8 | 479 | 67.060 | — | — | not allowed (32 m > 28 m) | | | |
 
 The suggested responses (R12) are the same in every concept:
+
 - **E4 accept** and **E5 reduce** (a tie, broken by lower expected delay).
 - **E2:** reduce at 5 floors or more (p ≥ 25 %; at 25 % it is a tie broken by lower expected delay), accept at 3–4 floors.
 - **System risk:** E3 accept; E9 reduce (a tie broken by lower expected delay); E10 reduce.

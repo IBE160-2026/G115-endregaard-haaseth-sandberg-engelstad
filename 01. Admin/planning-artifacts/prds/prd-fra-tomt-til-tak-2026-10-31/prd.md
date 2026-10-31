@@ -1,6 +1,6 @@
 ---
 title: "PRD: Fra tomt til tak"
-status: draft
+status: final
 created: 2026-10-31
 updated: 2026-10-31
 ---
@@ -10,7 +10,7 @@ updated: 2026-10-31
 
 ## 0. Document Purpose
 
-This PRD turns the product brief `../../briefs/brief-G115-tre-stadier-2026-10-29/brief.md` into numbered requirements that UX, architecture, epics and stories can trace back to. It is written for the G115 group, for Claude Code as the implementing agent, and for the IBE160 examiner, who checks that code can be traced to requirements. Vocabulary is fixed in §3 Glossary. Features are grouped in §4 with globally numbered FRs. Inferred items are tagged `[ASSUMPTION]` inline and listed in §11. Figures for the simulation come from `../../research/research-fra-tomt-til-tak-2026-10-31/research.md` (parameter table P1–P17). §10 explains how this PRD departs from the brief and what it reuses from the group's v0.5 game.
+This PRD turns the product brief `../../briefs/brief-G115-tre-stadier-2026-10-29/brief.md` into numbered requirements that UX, architecture, epics and stories can trace back to. It is written for the G115 group, for Claude Code as the implementing agent, and for the IBE160 examiner, who checks that code can be traced to requirements. Vocabulary is fixed in §3 Glossary. Features are grouped in §4 with globally numbered FRs. Inferred items are tagged `[ASSUMPTION]` inline and listed in §12. Figures for the simulation come from `../../research/research-fra-tomt-til-tak-2026-10-31/research.md` (parameter table P1–P17). §10 explains how this PRD departs from the brief and what it reuses from the group's v0.5 game.
 
 ## 1. Vision
 
@@ -39,10 +39,10 @@ The simulator answers a question many people ask when they read the news: why do
   - **Entry state:** opens the simulator in a desktop browser. No account.
   - **Path:**
     1. A meeting in the site office, with the 3D view beside it. The client presents the order: offices for 100 employees in Oslo, a deadline and a budget.
-    2. She chooses the number of floors (and so how much of the central site to buy) and a structural system, and watches the building take shape in the 3D view while cost and time update.
+    2. She chooses the number of floors (and so how much plot area to buy) and a structural system, and watches the building take shape in the 3D view while cost and time update.
     3. She estimates how long each main part takes. This is the hardest step. The adviser suggests shares of the total from historical figures. When her estimate for the frame is far below comparable projects, it steps in: "Comparable projects took about X weeks for the frame", and gives her reference values. She adjusts, but not all the way.
     4. She chooses responses to the known risks, sets a reserve and presents the plan to the client.
-    5. The project runs. The frame takes longer than she estimated, and she chooses between accepting the delay, overtime or hiring more workers. Wind stops a crane lift and HMS reacts. A strike at a foreign logistics firm delays steel, and she weighs a more expensive local supplier. After each choice she sees her path next to the AI's.
+    5. The project runs. The frame takes longer than she estimated, and she chooses between accepting the delay, overtime or hiring more workers. Wind stops a crane lift and HMS (health, safety and environment) reacts. A strike at a foreign logistics firm delays steel, and she weighs a more expensive local supplier. After each choice she sees her path next to the AI's.
   - **Climax:** the debrief's budget bridge shows where the overrun came from: her optimistic estimate, the events, and her own choices.
   - **Resolution:** a short conclusion ties the result to the learning goals, with one "next time" piece of advice for each goal she missed. She can download her decision log.
   - **Edge case:** if she approves a plan the adviser has warned against, the warning is recorded in the decision log and shown again in the debrief next to what actually happened.
@@ -54,7 +54,7 @@ The simulator answers a question many people ask when they read the news: why do
 - **Client** — the fictional owner who sets the order and the targets.
 - **Order** — the client's requirements: 100 workplaces in Oslo, a deadline (target week) and a budget (target cost).
 - **Targets** — the deadline and budget from the order.
-- **Plot** — the building site, near the centre of Oslo. It has one price per m² of plot area and zoning limits. The student buys as much plot area as the footprint needs.
+- **Plot** — the building site near the centre of Oslo (also called the central site). It has one price per m² of plot area and zoning limits. The student buys as much plot area as the footprint needs.
 - **Zoning limits** — the site's maximum footprint as a share of plot area (%BYA) and maximum height in metres.
 - **Concept** — the combination of number of floors and structural system, which together set the footprint, the plot area bought and the frame time.
 - **Structural system** — the load-bearing system: cast-in-place concrete, precast concrete, steel or timber (CLT).
@@ -95,7 +95,7 @@ The student can start a new playthrough. Realizes UJ-1.
 **Consequences (testable):**
 - A new playthrough gets a seed; starting with the same seed and making the same choices gives the same result (see FR-30).
 - The order shows 100 workplaces, Oslo, the target week and the target cost.
-- The targets are set from the building-block model so that a good plan just meets them. They are a frame, not an exact answer: results are judged in bands (FR-38).
+- The targets are set from the building-block model so that a good plan just meets them. They are a guide, not an exact answer: results are judged in bands (FR-38).
 - The student can choose a difficulty (easy, medium, hard) that sets how often the AI's stage 2 recommendation is the best option, as in v0.5. The best option is the one with the lowest forecast final cost, where every week of delay is priced in as site overhead; on a tie, the earlier completion wins.
 
 #### FR-2: Meeting in the site office
@@ -108,14 +108,14 @@ The client presents the order in a short meeting in the site office, with the 3D
 
 ### 4.2 Concept: floors, plot area and structure
 
-**Description:** The building stands on a site near the centre of Oslo, with one land price per m². The student chooses the number of floors and a structural system. The required gross area follows from the order (P1: 23 m² BTA per workplace, about 2,300 m²). The trade-off is plot area against what each floor costs: fewer floors give a larger footprint, which needs more plot area and costs more in land; more floors save land but each floor adds frame weeks and site overhead, a fire-class cost step applies from a certain height, and the risk of crane stops in wind grows. With a tight deadline, the cheapest height only meets it with a faster, dearer structural system. The 3D view and the consequences update with every choice. Realizes UJ-1.
+**Description:** The building stands on a plot near the centre of Oslo, with one price per m² of plot area. The student chooses the number of floors and a structural system. The required gross area follows from the order (P1: 23 m² BTA per workplace, about 2,300 m²). The trade-off is plot area against what each floor costs. Fewer floors give a larger footprint, which needs more plot area and so raises the plot cost. More floors save plot area, but each floor adds frame weeks and site overhead, a fire-class cost step applies from a certain height, and the risk of crane stops in wind grows. With a tight deadline, the cheapest height only meets it with a faster, dearer structural system. The 3D view and the consequences update with every choice. Realizes UJ-1.
 
 #### FR-3: Plot area and plot cost
 
-The plot area the student must buy follows from the concept, at the site's single price per m² of plot area. Realizes UJ-1.
+The plot area the student must buy follows from the concept, at the plot's single price per m² of plot area. Realizes UJ-1.
 
 **Consequences (testable):**
-- The site shows its price per m² of plot area, its maximum footprint (%BYA) and its maximum height in metres.
+- The plot shows its price per m² of plot area, its maximum footprint (%BYA) and its maximum height in metres.
 - Plot area needed = footprint ÷ maximum %BYA. Plot cost = plot area needed × price per m² of plot area. The price and its derivation from the research are shown in the simulation rules.
 - Fewer floors always give a higher plot cost than more floors.
 
@@ -125,7 +125,7 @@ The student can choose the number of floors from a fixed set; the footprint foll
 
 **Consequences (testable):**
 - Building height = floors × floor height (from the research). A concept whose height breaks the zoning limit cannot be approved, and the adviser gives a warning that names the limit.
-- Lifts are always included (required from two floors, TEK17), and lift cost grows with the number of floors.
+- Lifts are always included (required from two floors under TEK17, the Norwegian building regulations), and lift cost grows with the number of floors.
 - From the height where TEK17 requires a stricter fire class, building cost steps up, as set in the simulation rules.
 - Each extra floor adds frame weeks according to the structural system.
 
@@ -144,7 +144,7 @@ After every choice the student sees plot area and plot cost, building cost and e
 **Consequences (testable):**
 - The figures shown equal the building-block model's output for the current concept.
 - The site overhead per week is shown next to the expected duration, so the cost of time is visible.
-- The 3D view shows the chosen number of floors and footprint on the site.
+- The 3D view shows the chosen number of floors and footprint on the plot.
 
 ### 4.3 Schedule estimate
 
@@ -217,7 +217,7 @@ The student can review the whole plan (concept, Gantt chart, cost, risk exposure
 
 ### 4.6 AI adviser
 
-**Description:** The adviser is a window in the planning view. It acts as a coach the student can discuss with: it suggests, warns and answers questions, and always gives its reasons. Its suggestions and warnings are rule-based, drawn from the reference values and the building-block model, so they are correct and testable. Free-text questions go to a language model when a key is available; the model is given the scenario, the rules and a set of approved facts, and keeps its answers within them. The adviser never changes the student's choices. Realizes UJ-1.
+**Description:** The adviser is a window in the planning view. It acts as a coach the student can discuss with: it suggests, warns and answers questions, and always gives its reasons. Its suggestions and warnings are rule-based, drawn from the reference values and the building-block model, so they are correct and testable. Free-text questions go to a language model when a key is available; the language model is given the scenario, the rules and a set of approved facts, and keeps its answers within them. The adviser never changes the student's choices. Realizes UJ-1.
 
 #### FR-14: Suggestions
 
@@ -341,15 +341,6 @@ The student sees their final result next to the AI path through the same events.
 **Consequences (testable):**
 - Both show final week and final cost against the targets, from the same seed and plan.
 
-#### FR-38: What mattered most
-
-The debrief ranks the student's decisions by how much each one changed the final cost and completion week, so the student sees which choices weighed heavily and which mattered little. Realizes UJ-1.
-
-**Consequences (testable):**
-- The three decisions with the largest cost impact are shown first, each with its effect in MNOK and weeks (rule R30).
-- Decisions with an impact under the "small" threshold are labelled as small.
-- The final result is shown in bands against the targets (within the frame, slightly over, clearly over; rule R29), not as pass or fail on the exact figure.
-
 #### FR-27: Conclusion and next-time advice
 
 The debrief ends in a conclusion of 2–3 sentences that names the learning goals the student's choices touched, with one piece of next-time advice for each goal the student missed. Realizes UJ-1.
@@ -373,6 +364,15 @@ The student can view and download the decision log: every choice, with time, wha
 
 **Consequences (testable):**
 - The downloaded file contains one entry per decision in the playthrough.
+
+#### FR-38: What mattered most
+
+The debrief ranks the student's decisions by how much each one changed the final cost and completion week, so the student sees which choices weighed heavily and which mattered little. Realizes UJ-1.
+
+**Consequences (testable):**
+- The three decisions with the largest cost impact are shown first, each with its effect in MNOK and weeks (rule R30).
+- Decisions with an impact under the "small" threshold are labelled as small.
+- The final result is shown in bands against the targets (on target, slightly over, clearly over; rule R29), not as pass or fail on the exact figure.
 
 ### 4.9 Simulation model
 
@@ -419,7 +419,7 @@ The central site has a maximum number of workers at once. Hiring beyond it is no
 
 #### FR-34: Cost forecast during execution
 
-During stage 2 the student always sees the forecast final cost and completion week against the targets, updated every week and after every decision. *Covers "cost forecasts" in the assignment's data out continuously, not only in the debrief.*
+During stage 2 the student always sees the forecast final cost and completion week against the targets, updated every week and after every decision. *Covers "cost forecasts" in the assignment's data out, continuously rather than only in the debrief.*
 
 #### FR-35: Opportunities
 
@@ -451,7 +451,7 @@ The flows that are hard to test automatically (the 3D view, the adviser's free-t
 
 ## 6. Constraints and Guardrails
 
-- **AI safety.** The adviser cannot change the plan, cannot state figures that differ from the model, and steers off-topic questions back to the step.
+- **AI safety.** The adviser cannot change the plan, cannot state figures that differ from the building-block model, and steers off-topic questions back to the step.
 - **Cost.** With a key, language model calls are limited per playthrough. [ASSUMPTION: at most about 20 calls per playthrough.]
 - **Privacy.** No personal data is collected; the decision log stays in the browser unless the student downloads it.
 - **Openness.** The product is public on GitHub and uses only a fictional scenario.
@@ -502,14 +502,14 @@ The flows that are hard to test automatically (the 3D view, the adviser's free-t
 
 **Reused from v0.5:** the site office scene and figures, the week-by-week engine (work modes, crowding, cost factors, events, forecast), the Gantt view, the comparison with the AI path from the same state, the final report as a base for the debrief, and the 3D construction site shown in a smaller view.
 
-**Detail elsewhere:** the event catalogue and the adviser's method are in `addendum.md` in this folder; the simulation rules with worked examples are in `simulation-rules.md`; the layout principles for the planning view are in the brief's addendum.
-
 **New:** the planning view, the building-block model, the schedule estimate, the adviser window with prepared answers, event selection tied to the plan, and the debrief.
+
+**Detail elsewhere:** the event catalogue and the adviser's method are in `addendum.md` in this folder; the simulation rules with worked examples are in `simulation-rules.md`; the layout principles for the planning view are in the brief's addendum.
 
 ## 11. Open Questions
 
 1. **Target values.** The exact target week and target cost, derived from the building-block model once its rules are written.
-2. **Options per choice.** Which floor counts and which structural systems does the model offer, and where does the fire-class step fall?
+2. **Options per choice.** Which floor counts and which structural systems does the building-block model offer, and where does the fire-class step fall?
 3. **Language model.** Which provider and model, the cost per playthrough, and when the Vercel connection is set up (FR-17 is must-have).
 4. **Phase shares.** The shares of total duration come from one project (Elvebredden); can a better source be found?
 5. **Weak figures.** Land prices and structural-system factors are estimates; can the group find better sources (a current Norsk Prisbok or a broker report)?
@@ -533,7 +533,7 @@ Every item in the assignment text, and the FRs that cover it (FR-37).
 | **Data in:** milestones | FR-32 |
 | **Data in:** change requests | FR-19, FR-20 |
 | **Data out:** schedules (Gantt) | FR-8, FR-23 |
-| **Data out:** cost forecasts | FR-6, FR-34, FR-24 |
+| **Data out:** cost forecasts | FR-6, FR-24, FR-34 |
 | **Data out:** risk exposure | FR-11, FR-13, FR-25 |
 | **Data out:** scenario results | FR-22, FR-26, FR-38 |
 | **Data out:** recommended actions | FR-14, FR-15, FR-22, FR-27 |
