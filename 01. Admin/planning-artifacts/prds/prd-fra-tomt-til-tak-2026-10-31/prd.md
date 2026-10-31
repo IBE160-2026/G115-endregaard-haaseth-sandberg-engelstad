@@ -95,7 +95,7 @@ The student can start a new playthrough. Realizes UJ-1.
 **Consequences (testable):**
 - A new playthrough gets a seed; starting with the same seed and making the same choices gives the same result (see FR-30).
 - The order shows 100 workplaces, Oslo, the target week and the target cost.
-- The targets are set from the building-block model so that a good plan just meets them.
+- The targets are set from the building-block model so that a good plan just meets them. They are a frame, not an exact answer: results are judged in bands (FR-38).
 - The student can choose a difficulty (easy, medium, hard) that sets how often the AI's stage 2 recommendation is the best option, as in v0.5. The best option is the one with the lowest forecast final cost, where every week of delay is priced in as site overhead; on a tie, the earlier completion wins.
 
 #### FR-2: Meeting in the site office
@@ -225,6 +225,7 @@ At each step in stage 1, the adviser gives a suggestion with a short reason. Rea
 
 **Consequences (testable):**
 - Every suggestion is computed by rules from the building-block model and reference values.
+- When two options differ only a little in cost and time (rule R30 in the simulation rules), the adviser says that the choice matters little and why, instead of recommending one firmly. The adviser spends its warnings on the choices that weigh most.
 
 #### FR-15: Warnings with reference values
 
@@ -339,6 +340,15 @@ The student sees their final result next to the AI path through the same events.
 
 **Consequences (testable):**
 - Both show final week and final cost against the targets, from the same seed and plan.
+
+#### FR-38: What mattered most
+
+The debrief ranks the student's decisions by how much each one changed the final cost and completion week, so the student sees which choices weighed heavily and which mattered little. Realizes UJ-1.
+
+**Consequences (testable):**
+- The three decisions with the largest cost impact are shown first, each with its effect in MNOK and weeks (rule R30).
+- Decisions with an impact under the "small" threshold are labelled as small.
+- The final result is shown in bands against the targets (within the frame, slightly over, clearly over; rule R29), not as pass or fail on the exact figure.
 
 #### FR-27: Conclusion and next-time advice
 
@@ -460,7 +470,7 @@ The flows that are hard to test automatically (the 3D view, the adviser's free-t
 
 - FR-1 to FR-31, including FR-17 free-text conversation with the language model (must-have; prepared answers remain the fallback without a key).
 - NFR-1 to NFR-9.
-- FR-32 to FR-37 and NFR-10 (§4.11).
+- FR-32 to FR-38 and NFR-10 (§4.11, §4.8).
 
 ### 8.2 Out of Scope for MVP
 
@@ -525,7 +535,7 @@ Every item in the assignment text, and the FRs that cover it (FR-37).
 | **Data out:** schedules (Gantt) | FR-8, FR-23 |
 | **Data out:** cost forecasts | FR-6, FR-34, FR-24 |
 | **Data out:** risk exposure | FR-11, FR-13, FR-25 |
-| **Data out:** scenario results | FR-22, FR-26 |
+| **Data out:** scenario results | FR-22, FR-26, FR-38 |
 | **Data out:** recommended actions | FR-14, FR-15, FR-22, FR-27 |
 | **Decision point:** planning strategy | FR-3 to FR-5, FR-8, FR-12, FR-13 |
 | **Decision point:** risk response | FR-11, FR-20, FR-36 |

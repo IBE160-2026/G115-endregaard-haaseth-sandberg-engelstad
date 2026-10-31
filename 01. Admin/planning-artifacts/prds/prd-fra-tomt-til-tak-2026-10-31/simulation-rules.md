@@ -381,6 +381,23 @@ The engine runs on from the current state with no new events (v0.5). Forecast fi
 | Risk is managed | **At the time of the choice in stage 1**, the student accepted a known risk for which reduce or avoid had a strictly lower expected total (R11); or the cost or time reserve ran out (R13). Whether the risk occurred does not matter. |
 | AI advice is worth weighing | In at least half of all recommendations (stage 1 durations and stage 2 events), the student followed one that was not right or ignored one that was right. |
 
+**R29. Result bands** (FR-1, FR-26, FR-38)
+
+The targets are a frame, not an exact answer. The final cost and the final week are each judged in one of three bands:
+
+| Band | Cost | Week |
+|---|---|---|
+| Within the frame | final cost ≤ target cost | final week ≤ target week |
+| Slightly over | up to 5 % over the target cost | up to 5 % over the target week (rounded up to whole weeks) |
+| Clearly over | more than 5 % over | more than 5 % over |
+
+The debrief shows the band, not a pass or fail on the exact figure. [ASSUMPTION: the 5 % band is a first proposal for the group to approve.]
+
+**R30. Decision impact ranking** (FR-38, FR-14)
+- For each of the student's decisions (floors, structural system, each main part's estimate, each risk response, the reserve, each stage 2 event), the impact is the change in final cost and final week if that one decision is replaced by the reference plan's choice (stage 1) or by the AI's recommendation (stage 2), with everything else unchanged.
+- The debrief lists decisions from the largest to the smallest absolute cost impact, with the week impact beside it, and shows the top three. A decision whose impact is under 2 % of the target cost is labelled "small".
+- In stage 1, when two options for a choice differ by less than 2 % of the target cost and the same week band, the adviser says so ("both work; the difference is about X MNOK") instead of recommending one firmly.
+
 ---
 
 ## 4. Worked examples (with answers)
