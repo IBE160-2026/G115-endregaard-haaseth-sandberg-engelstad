@@ -8,3 +8,4 @@
 - [ ] 2026-10-31 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — gruppen godkjenner estimatene i simuleringsreglene §5, 5 %-båndet og brannkostnadsregelen
 - [ ] 2026-10-31 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — FR-32 til FR-37 mangler testbare konsekvenser; sjekk formuleringen i simuleringsreglene §5 punkt 5 (prefab mot stål)
 - [ ] 2026-10-31 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — gruppen bestemmer om «Fra tomt til tak» tas i bruk (PR fra `forslag/tre-stadier` til main)
+- [ ] 2026-10-31 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — bestem navnet på rådgiveren, og gå gjennom utkastene til DESIGN.md og EXPERIENCE.md
