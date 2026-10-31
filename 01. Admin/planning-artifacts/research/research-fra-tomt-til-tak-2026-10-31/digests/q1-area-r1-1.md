@@ -1,0 +1,7 @@
+# Digest Q1 area per workplace — round 1 (lead, inline)
+Accessed 2026-10-31 for all.
+- claim: State area norm 23 m2 BTA per employee for future state office premises; an upper limit; departmental offices excluded; exceeding needs justification. | source: https://www.regjeringen.no/no/dokumenter/rundskriv-om-normer-for-energi--og-arealbruk-for-statlige-bygg/id2474498/ | publisher: KMD (regjeringen.no), rundskriv H-2/16 | pub 2015-12-17 | confidence high (primary) | class regulatory
+- claim: Statsbygg target avg 18 m2/employee; state avg ~27.8 m2 (2023), down from 30 in 2019; new regjeringskvartal planned at 23 m2. Unit (BTA/BRA) not stated in article. | source: https://www.altinget.no/artikkel/statsbygg-vil-spare-milliarder-paa-mindre-lokaler-18-kvadratmeter-er-romslig | publisher: Altinget | pub 2024-05-08 | confidence medium | class quantitative
+- claim (search snippet only, not fetched): Norwegian average ~25 m2 per workplace (Thoeneie, quoted in TU); Statsbygg: cell offices with fixed desks need ~29 m2 BTA/employee. | source: https://www.tu.no/artikler/vi-skal-ned-i-15-kvadratmeter-per-arbeidplass-snittet-i-norge-er-pa-25-kvadratmeter-br/495155 | publisher: TU | pub unknown (~2020) | confidence low
+- Not found: Statens lokaler 2024 PDF numbers (could not parse PDF); official BRA/BTA conversion ratio.
+- Lead: H-2/16 norm assumes activity-based / free seating; under review by Statsbygg (due Oct 2025 per Statens lokaler 2024 search snippet) — not confirmed whether changed.
