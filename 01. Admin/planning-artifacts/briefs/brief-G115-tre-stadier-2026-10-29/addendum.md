@@ -15,7 +15,7 @@ Detail from the brief conversation that belongs in later documents (PRD, UX, arc
 |---|---|---|
 | 0. Site office | The fictional client presents the order (100 workplaces in Oslo, deadline, budget) | about 1 min |
 | 1. Plot and concept | Three plots with price per m² and zoning limits; floors against footprint; structural system | about 3 min |
-| 2. Schedule and resources | WBS and Gantt generated from the concept; crew and mode for key disciplines | 2–3 min |
+| 2. Schedule estimate | Six main parts; the student estimates durations, the adviser gives reference shares; Gantt updates | 2–3 min |
 | 3. Risk and reserve | 3–4 known risks that depend on plot and concept; responses; time and cost reserve | about 2 min |
 | 4. Present the plan | Plan against the targets, the adviser's assessment, approval | about 1 min |
 
@@ -50,7 +50,7 @@ The figures are placeholders. Principles: the targets are always visible at the 
 | B. Language model with guardrails | Model gets scenario data, rules and approved facts, and answers only within them | Real conversation | Needs a key, costs per call, must be tested for drift |
 | **C. Both (chosen)** | Buttons always work; free text goes to the model when a key exists, otherwise to the nearest prepared answer | Runs without a key, real AI when available | Somewhat more to build |
 
-Warnings and numbers are always rule-based; the language model only explains. Example warning rules: the plot does not allow the chosen number of floors; a task off the critical path is sped up; there is no reserve; more is paid to cover a risk than its expected cost.
+Warnings and numbers are always rule-based; the language model only explains. Example warning rules: the plot does not allow the chosen height or footprint; a schedule estimate is more than 20 % from the reference; there is no reserve; more is paid to cover a risk than its expected cost.
 
 ## 4. Login or decision log
 

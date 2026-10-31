@@ -15,7 +15,7 @@ A web-based simulator, built for the IBE160 course at Høgskolen i Molde, that l
 
 One playthrough takes about 20 minutes and runs in three stages:
 
-1. **Plan (the main part).** The student shapes the project with an AI adviser: plot, number of floors, structural system, schedule, crews, risks and reserve. The adviser suggests, explains and warns, but the student has the final say.
+1. **Plan (the main part).** The student shapes the project with an AI adviser: plot, number of floors, structural system, schedule estimate, risks and reserve. The adviser suggests, explains and warns, but the student has the final say.
 2. **Execute (shorter).** The plan is put to the test. A few unforeseen events hit, and the student has to choose a response to each and answer for it.
 3. **Debrief (short).** The student sees where the plan held and where it broke, compared with the AI's path, and ends with a conclusion tied to the learning goals.
 
@@ -38,7 +38,7 @@ At the same time, AI is becoming part of how project managers work. Learners hav
 The playthrough opens in the site office, where the client presents the order: offices for 100 employees in Oslo, with a deadline and a budget. Then the planning view opens, with four steps:
 
 1. **Plot and concept.** Choose one of three plots in Oslo, each with its own price per m² and zoning limits. The floor area needed is given by the 100 workplaces, so the student weighs footprint against floors: fewer floors need a larger, more expensive plot, while more floors need more structure, lifts and a longer frame phase. The student also chooses the structural system (for example cast-in-place concrete, precast concrete, steel or timber), which changes cost and time.
-2. **Schedule and resources.** The WBS and Gantt chart follow from the concept. The student sets crew and work mode for the key disciplines, with the critical path marked.
+2. **Schedule estimate.** The project is split into six main parts, and the student estimates how long each takes. This is the hardest step. The adviser suggests shares of the total from historical figures, and the Gantt chart updates as the student estimates. Crew decisions come later, in stage 2, as responses to delays.
 3. **Risk and reserve.** A few known risks that depend on the plot and concept (for example contaminated ground on a central plot, or crane stops in wind on a tall building). The student chooses how to meet each one and sets a reserve in time and budget.
 4. **Present the plan.** Back in the site office, the student presents the plan to the client against the targets, sees the adviser's overall assessment, and approves it. The plan becomes the baseline for stage 2.
 
@@ -49,8 +49,8 @@ The planning view always shows the targets (budget, completion week, risk exposu
 The adviser is a window in the planning view. It works in three ways:
 
 - **Suggestions.** At each step it proposes a concrete choice and explains why, so the student experiences what it is like to draw on the AI's knowledge.
-- **Warnings.** When the student makes a choice it judges to be poor, it warns and says why. Warnings are rule-based (for example "the plot does not allow eight floors" or "speeding up a task off the critical path gains no time"), so they are always correct and testable.
-- **Questions.** The student can ask. Suggested-question buttons always work and give prepared answers. Free-text questions go to a language model when a key is available; the model is given the scenario, the rules and a set of approved facts, and keeps its answers within them so the student does not go off track. Without a key, a free-text question gets the nearest prepared answer.
+- **Warnings.** When the student is far outside reasonable bounds (a schedule estimate more than 20 % from the reference) or breaks a limit, the adviser warns and says why. It opens with what real comparable projects did, for example "Statens hus Nordfjordeid took about 11 months to build". Warnings are rule-based, so they are always correct and testable.
+- **Conversation.** The student can discuss with the adviser in free text, and every answer gives its reasons. A language model answers; it is given the scenario, the rules and a set of approved facts, and keeps its answers within them so the student does not go off track. Suggested-question buttons with prepared answers always work, and without a key a free-text question gets the nearest prepared answer.
 
 The language model only explains; the numbers and the warnings come from the rules. The simulator therefore runs in full without a key.
 
@@ -97,6 +97,7 @@ The group has about 120 hours in total over about 1.5 months, with Claude Code a
 - Stage 1 with the four steps, using discrete options (three plots, a few floor counts, three or four structural systems).
 - A building-block model that turns the concept into WBS, quantities, durations and cost, with simple rules the group owns and worked examples with answers.
 - The adviser's rule-based suggestions and warnings, and suggested-question buttons with prepared answers.
+- Free-text conversation with a guardrailed language model, with the offline fallback.
 - A shortened stage 2 (three or four events), reusing the v0.5 engine and the comparison with the AI's path.
 - A short stage 3 debrief with a conclusion tied to the learning goals.
 - A decision log of every choice, with time and what the adviser recommended. It feeds the debrief and can be downloaded. This is how the simulator meets the assignment's recommendation of an audit log; see "Out" for why there is no login.
@@ -104,7 +105,6 @@ The group has about 120 hours in total over about 1.5 months, with Claude Code a
 
 **Should have:**
 
-- Free-text questions to a guardrailed language model, with the offline fallback.
 - The AI's own plan, run through the same events as the student's, in the debrief.
 
 **Could have:**
