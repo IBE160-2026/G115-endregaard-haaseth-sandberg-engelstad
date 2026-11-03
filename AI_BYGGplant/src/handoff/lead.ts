@@ -63,7 +63,7 @@ export function buildLead(s: Session, brand: Brand, customer?: Partial<Lead['cus
 /** POST /api/lead. Never throws: a network or server failure comes back as delivered:false. */
 export async function sendToDealer(lead: Lead): Promise<{ delivered: boolean; note: string }> {
   try {
-    const res = await fetch('/api/lead', {
+    const res = await fetch(`${import.meta.env?.BASE_URL ?? '/'}api/lead`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(lead),
