@@ -40,8 +40,27 @@ Notes for architecture and stories, from a read of `ByggAPP/src/engine/game.ts` 
 - **Already there:** `newGame(..., { randomEvents: false })` turns off the weekly draws. `triggerEvent` raises a given event. `EventOption.setMode` lets an option change a task's work mode (DP2, DP4). `EventOption.later` gives a consequence that lands some weeks later (cost and delay).
 - **Missing:** a trigger by week (DP1 week 16, DP2 week 50, DP3 week 70, DP4 week 84); a demo flag on the start screen; the four generic risk responses for R1 and R3 as events with Appendix A's prices.
 - **To check when the story is written:** that *transfer* (cost covered, delay not) and *mitigate* (half impact) can be expressed with `cost`, `delay` and `later`, given that the demo seed fixes whether the risk happens. And how the advisor scores "if the risk happens" (P-21), since today's `outcome()` runs without new events.
+- **Why the hybrid** (moved from PRD FR-5): Appendix A holds the group's own rules with hand-calculated answers, which is what the instructor asked for. v0.5 holds 27 tested events. The hybrid keeps both, without a second engine. The full reasoning, with the rejected alternatives, is in PRD §10 (P-18).
 - **Overtime 1.4 (P-2):** the factor is a constant in the scenario. The expected values in `simulate.test.ts` and `game.test.ts` (282.515, 283.748, 282.776, and the F overtime test via the game) must change with it.
 
 ## C. Instructor's assessment criteria (portfolio part 1), for traceability
 
 Process and AI steering 30 %, functionality and scope 20 %, QA and testing 15 %, design and UX 10 %, code quality and architecture 10 %, README and runnability 10 %, repo tidiness 5 %. The instructor also suggested moving planning documents into a dedicated folder and keeping keys in `.env` outside Git.
+
+## F. v0.5 evidence per FR (moved from the PRD)
+
+Where the ✅ marks in the PRD come from. Files are in `ByggAPP/src/engine/` unless another path is given. Checked 2026-11-03.
+
+| PRD | Evidence in v0.5 |
+|---|---|
+| §4 Rounding | `advisor.ts` (MNOK shown with 2 decimals, target met when rounded to 0.01); `simulate.test.ts` (full precision) |
+| FR-5 | `game.test.ts`: "is deterministic: same seed, difficulty and choices give the same game"; "the same seed gives the same events on every difficulty" |
+| FR-7 | `simulate.test.ts`: "critical overtime", "critical hire", "non-critical overtime", "non-critical hire", "I overtime", "critical-path shift"; `game.test.ts`: "modes via game: F overtime set before week 50" (all with factor 1.3) |
+| FR-12 | `game.test.ts`: water in the basement while E is active, option pump; `targetScore` and `bestOption` in `game.ts` |
+| FR-13 | `game.test.ts`: the three voices at «Vann i kjeller» (`voicesFor` in `game.ts`) |
+| FR-14 | `game.test.ts`: "easy: the AI always recommends the best option; hard: sometimes not"; `RELIABILITY` in `game.ts` |
+| FR-16 | `game.test.ts`: "records the fork: chosen and recommended outcome from the same state" |
+| FR-25 | Demo links in v0.5: `?scene=hms`, `?scene=kickoff&steg=9`, `?uke=60&hendelse=change-security&steg=9` (`ByggAPP/G115_FinalPrompt.md` §9) |
+| FR-28 | `story.test.ts` |
+| FR-29 | `game.test.ts`: "the pump failure only comes after «lei midlertidig pumpe»"; `MAX_CHALLENGES` in `game.ts` |
+| FR-10, FR-11, FR-29 | `events.test.ts`: event catalogue rules for strategies, change requests, follow-ups, risks and opportunities |

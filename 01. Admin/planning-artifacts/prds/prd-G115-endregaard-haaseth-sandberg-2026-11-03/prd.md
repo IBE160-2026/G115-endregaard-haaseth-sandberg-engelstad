@@ -7,7 +7,7 @@ updated: 2026-11-03
 
 # PRD: ByggAPP — AI-driven project management simulation
 
-*Working title. Draft for the group meeting on **Thursday 5 November 2026**. Every decision in this PRD has one of three statuses, listed in §10:*
+*Working title. Draft for group approval. Every decision in this PRD has one of three statuses, listed in §10:*
 
 - ***Provisional*** — *recommended solution written into the PRD, waiting for group approval;*
 - ***Confirm*** — *already decided by the group earlier (source given), to be confirmed as a PRD requirement;*
@@ -109,7 +109,7 @@ The version graded in this course is one domain (construction), one scenario (*R
 
 Release tags: **[R1]**, **[R2]**, **[R3]** (§7). Status against v0.5: ✅ / ◐ / ○.
 
-**Rounding (applies to all FRs).** The engine computes with full precision. The UI shows MNOK with 2 decimals and weeks as whole numbers. A target counts as met when the cost rounded to 0.01 MNOK is at or below the target. Tests compare the engine's values with the brief's answers with full precision. This is how v0.5 works (`simulate.test.ts`, `advisor.ts`).
+**Rounding (applies to all FRs).** The engine computes with full precision. The UI shows MNOK with 2 decimals and weeks as whole numbers. A target counts as met when the cost rounded to 0.01 MNOK is at or below the target. Tests compare the engine's values with the brief's answers with full precision. This is how v0.5 works.
 
 ### 4.1 Scenario and simulation engine
 
@@ -165,12 +165,12 @@ The student can set a crew from 50 % to 200 % of the base crew, in steps of 2. A
 - **Ordinary game (R2).** A new seed. Events are drawn week by week from the seed (a chance per week while the task is active), as in v0.5.
 
 **Consequences (testable):**
-- The same seed, difficulty and choices always give an identical game (identical forecasts at every week). *(✅ test: "is deterministic: same seed, difficulty and choices give the same game".)*
+- The same seed, difficulty and choices always give an identical game (identical forecasts at every week). *(✅ test.)*
 - The same seed gives the same events on every difficulty. *(✅ test.)*
 - In the demo game, the student's path and the AI path meet exactly the same events, whatever the choices.
 - In the demo game, no event outside DP1–DP4 and R1–R5 happens.
 
-**Notes:** ◐ because v0.5 has only the ordinary game. The engine already has what the demo game needs: games without random events (`randomEvents: false`), events triggered directly (`triggerEvent`), options that change the work mode (`setMode`), and consequences that land later. A trigger by week is missing. Why the hybrid: Appendix A holds the group's own rules with hand-calculated answers, which is what the instructor asked for. v0.5 holds 27 tested events. The hybrid keeps both, without a second engine.
+**Notes:** ◐ because v0.5 has only the ordinary game. The reasons for the two modes are in §10 (P-18); how the demo game fits v0.5's engine is in `addendum.md` §E.
 
 #### FR-6: Forecast [R1] ✅
 
@@ -199,13 +199,13 @@ The worked examples in Appendix A §6 are automated tests with the expected answ
 - How the 1.4 figures are worked out: F 15.30 × 16/15 = 16.320 (+1.020), and 283.1 + 1.020 − 3 × 0.45 = 282.770. H: 12.96 × 1/15 = +0.864 → 283.964. I: 11.52 × 1/15 = +0.768, and 283.1 + 0.768 − 2 × 0.45 = 282.968. *(Hand-calculated; to be confirmed by the tests.)*
 - The teaching points of Appendix A §6 still hold: overtime on the critical path pays for itself (−0.33 MNOK, −3 weeks); overtime on H costs money and gains no time.
 
-**Notes:** v0.5 tests examples 1 and 2 with factor 1.3 (`simulate.test.ts`, `game.test.ts`). Example 3 is not tested, because v0.5's weathered-rock event has other options (FR-8).
+**Notes:** v0.5 tests examples 1 and 2 with factor 1.3. Example 3 is not tested, because v0.5's weathered-rock event has other options (FR-8).
 
 ### 4.2 Decisions and the advisor
 
 **Description:** At each decision point the clock stops, the student sees the situation, the options and the advisor's recommendation with its reasoning, and chooses. The advisor picks from the same options as the student, so both choices can be simulated with the same rules (instructor's advice, point 2).
 
-**Where the rules live.** The instructor's main concern was that the rules must be written by the group, simple and explicit, with hand-calculated examples. Appendix A covers R1. The rules v0.5 added for R2 and R3 (crowding, strategy choices, change requests, opportunities, follow-up events, difficulty) are only in the code and the specs, and the event prices and delays in `events.ts` are marked there as proposals for the team to check. `[P-19 · provisional]` Write them as a new appendix to the brief (Appendix B: event library and R2 rules), with at least one hand-calculated example per event kind, and have the group review the event prices there.
+**Where the rules live.** The instructor's main concern was that the rules must be written by the group, simple and explicit, with hand-calculated examples. Appendix A covers R1. The rules v0.5 added for R2 and R3 (crowding, strategy choices, change requests, opportunities, follow-up events, difficulty) are only in the code and the specs, and the event prices and delays in the code are marked there as proposals for the team to check. `[P-19 · provisional]` Write them as a new appendix to the brief (Appendix B: event library and R2 rules), with at least one hand-calculated example per event kind, and have the group review the event prices there.
 
 #### FR-8: Risk response decisions [R1] ◐
 
@@ -217,7 +217,7 @@ In the demo game, at a risk decision point the student chooses one of four risk 
 - The totals equal example 3 (FR-7).
 - In ordinary games (R2), each risk keeps its own options from the event library. For example, weathered rock offers new foundations (6 MNOK, +4 weeks), grouting and bolting (3.5, +2) or redesign to piles (2, +3).
 
-**Notes:** ◐ because v0.5 has only the ordinary-game version. `[P-5 · open]` Prices for the four risk responses on R3 (needed for DP3), and on R2, R4 and R5.
+**Notes:** ◐ because v0.5 has only the ordinary-game version (FR-5). `[P-5 · open]` Prices for the four risk responses on R3 (needed for DP3), and on R2, R4 and R5.
 
 #### FR-9: Resource allocation decisions [R1] ◐
 
@@ -263,7 +263,7 @@ The advisor recommends one option at every decision point, with reasoning: what 
 - On easy, and always in the demo game, the recommendation is the option with the lowest target score.
 - The advisor does not know whether a future event will happen: it scores on the forecast, which assumes no new events, except for the reported risk at a risk decision point (P-21).
 - The same game state always gives the same recommendation.
-- Example (ordinary game): «Vann i kjeller» in week 40 while E is active → the advisor recommends «Installer fast pumpe» (+2 weeks, +0.80 + 2 × 0.45 = +1.70 MNOK). *(✅ test in `game.test.ts`.)*
+- Example (ordinary game): «Vann i kjeller» in week 40 while E is active → the advisor recommends «Installer fast pumpe» (+2 weeks, +0.80 + 2 × 0.45 = +1.70 MNOK). *(✅ test.)*
 - Example (demo game): DP1 → *avoid*; DP2 → overtime on F (lowest target score, cheaper than extra hire with 1.4). *(○ to be tested.)*
 
 **Notes:** In ordinary games, a decision on a risk that has already happened is scored on its known effect, as in v0.5. P-21 only concerns the demo game's risk decision points, where the risk is reported before it is known.
@@ -275,7 +275,7 @@ Besides the advisor, two more views are given at every decision point. Hedda (si
 **Consequences (testable):**
 - Hedda's option has the lowest forecast finish week; ties go to the lower total cost, then option order.
 - The foreman's option has the lowest upfront cost; ties go to the lower total cost, then option order.
-- Example: «Vann i kjeller» → Elisabeth «Installer fast pumpe», Hedda «Installer fast pumpe», foreman E «Lei midlertidig pumpe». *(✅ test in `game.test.ts`.)*
+- Example: «Vann i kjeller» → Elisabeth «Installer fast pumpe», Hedda «Installer fast pumpe», foreman E «Lei midlertidig pumpe». *(✅ test.)*
 
 #### FR-14: Difficulty [R2] ✅
 
@@ -312,7 +312,7 @@ After the student chooses, the engine forecasts from the same game state twice: 
 **Consequences (testable):**
 - Both forecasts start from an identical game state and see the same events.
 - If the student chose the advisor's option, the two forecasts are identical, and the comparison says so.
-- Every fork is recorded for the final report. *(✅ test "records the fork: chosen and recommended outcome from the same state".)*
+- Every fork is recorded for the final report. *(✅ test.)*
 - At a risk decision point in the demo game, the comparison shows both forecasts for both cases (the risk happens / does not happen), as in Appendix A example 3. When the risk's week comes, the game shows which case came true. `[P-21 · provisional]`
 
 #### FR-17: Side-by-side comparison [R1] ✅
@@ -373,7 +373,7 @@ At the end of a game, the final report shows the result against both targets, th
 - The final report shows the seed, the game mode and the difficulty.
 - Every recorded fork (FR-16) appears once, in order.
 
-**Notes:** In ordinary games, the AI path can meet other events than the student, because events are drawn week by week and depend on earlier choices. The final report should say so.
+**Notes:** In ordinary games, the AI path can meet other events than the student (FR-5). The final report should say so.
 
 #### FR-23: Risk exposure [R2] ○
 
@@ -404,7 +404,7 @@ The start screen offers the demo game (FR-5) as its own choice. The README docum
 - Played with the advisor's recommendation at every decision point, the outcomes at DP1 and DP2 equal Appendix A examples 3 and 1.
 - Two runs of the demo game with the same choices give identical final reports.
 
-**Notes:** v0.5 has demo links (`?scene=…`, `?uke=…&hendelse=…`) that open a given event in a given week, but no demo game. `[P-10 · open]` Which of R1–R5 happen in the demo seed (Appendix A §7.5). UJ-1 assumes that R1 happens.
+**Notes:** v0.5 has demo links that open a given event in a given week (`addendum.md` §F), but no demo game. `[P-10 · open]` Which of R1–R5 happen in the demo seed (Appendix A §7.5). UJ-1 assumes that R1 happens.
 
 ### 4.6 Game experience (3D site and story)
 
@@ -502,7 +502,7 @@ Each new ordinary game uses a new seed, so two games on the same difficulty meet
 
 `[P-20 · provisional]` The order below. Items 1–5 are needed before submission, because they decide whether R1 is correct and traceable.
 
-1. **Group meeting, Thursday 5 November:** approve, change or reject the decisions in §10, starting with the phase-blocking ones.
+1. **Group decision:** approve, change or reject the decisions in §10, starting with the phase-blocking ones.
 2. **Update the brief** as the instructor asked (§7.2).
 3. **Write Appendix B** with the v0.5 rules and event prices (P-19).
 4. **Build R1:** overtime 1.4 (FR-3), demo game mode with DP1–DP4 (FR-5, FR-8, FR-9, FR-25), the P-21 rule for risk decision points (FR-12, FR-16), and all rows of FR-7 as tests.
@@ -510,7 +510,7 @@ Each new ordinary game uses a new seed, so two games on the same difficulty meet
 6. **R2 gap:** risk exposure (FR-23).
 7. **R3 gaps:** replay a seed (FR-30); save and resume only if P-11 is rejected.
 
-### 7.2 Changes to the brief after the meeting
+### 7.2 Changes to the brief after the group's decisions
 
 Once the decisions are approved, the brief should be updated in these places, so the history shows how the plan changed:
 
@@ -547,9 +547,9 @@ These are the remaining questions from Appendix A §7 that no decision in this P
 4. Fixed +50 % extra hire, or the student chooses how many? (§7.8). v0.5 has both: work mode +50 %, and crew 50–200 %.
 5. Crew sizes and hourly rates in Appendix A §3b are unchecked estimates (§7.9).
 
-## 10. Decisions for the Group Meeting (Thursday 5 November 2026)
+## 10. Decisions for Group Approval
 
-Tick each decision as **approved**, **changed** or **rejected** at the meeting. Start with the phase-blocking ones: they must be settled before architecture and stories.
+Tick each decision as **approved**, **changed** or **rejected** when the group reviews them. Start with the phase-blocking ones: they must be settled before architecture and stories.
 
 ### 10.1 Phase-blocking
 
