@@ -17,7 +17,7 @@
       "entrypoint": "server/vercel.ts",
       "functions": {
         "server/vercel.ts": {
-          "includeFiles": "{brand.json,fixtures/**}",
+          "includeFiles": "{AI_BYGGplant/brand.json,AI_BYGGplant/fixtures/**,brand.json,fixtures/**}",
           "maxDuration": 60
         }
       }
