@@ -9,5 +9,5 @@
 - [ ] 2026-10-31 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — FR-32 til FR-37 mangler testbare konsekvenser; sjekk formuleringen i simuleringsreglene §5 punkt 5 (prefab mot stål)
 - [x] 2026-10-31 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — gruppen bestemmer om «Fra tomt til tak» tas i bruk (PR fra `forslag/tre-stadier` til main) (løst 2026-11-05: gruppen valgte forslaget)
 - [ ] 2026-10-31 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — bestem navnet på rådgiveren, og gå gjennom utkastene til DESIGN.md og EXPERIENCE.md
-- [ ] 2026-11-05 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — legg `osk7199@himolde.no` til på GitHub-kontoen, så commitene teller på profilen og i Insights
+- [x] 2026-11-05 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — legg `osk7199@himolde.no` til på GitHub-kontoen, så commitene teller på profilen og i Insights (løst 2026-11-05)
 - [ ] 2026-11-05 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — bekreft hvem som eier API-nøkkelen og forbruksgrensen
