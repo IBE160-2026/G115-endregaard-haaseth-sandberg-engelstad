@@ -1,10 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "services": {
-    "byggapp": {
-      "root": "ByggAPP",
-      "framework": "vite"
-    },
     "ai_byggplant": {
       "root": "AI_BYGGplant",
       "framework": "vite",
@@ -23,10 +19,12 @@
       }
     }
   },
+  "redirects": [
+    { "source": "/", "destination": "/ai-byggplant/", "permanent": false }
+  ],
   "rewrites": [
     { "source": "/ai-byggplant/api/(.*)", "destination": { "service": "ai_byggplant_api" } },
     { "source": "/ai-byggplant", "destination": { "service": "ai_byggplant" } },
-    { "source": "/ai-byggplant/(.*)", "destination": { "service": "ai_byggplant" } },
-    { "source": "/(.*)", "destination": { "service": "byggapp" } }
+    { "source": "/ai-byggplant/(.*)", "destination": { "service": "ai_byggplant" } }
   ]
 }
