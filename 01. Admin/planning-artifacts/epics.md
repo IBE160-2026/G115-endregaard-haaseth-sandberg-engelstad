@@ -14,6 +14,8 @@ inputDocuments:
 
 ## Overview
 
+> **Figures in stories 1.1–1.5.** The worked examples in these stories were written before the fire rule changed on 2026-11-05 (targets are now week 67 and 171 MNOK). `simulation-rules.md` holds the current figures. Story 1.5 recomputes these examples.
+
 This document breaks the PRD, the UX contract and the architecture spine for *Fra tomt til tak* into epics and stories. Each story is meant to fit one branch and one pull request.
 
 **How this was made.** The BMAD skill ran non-interactively, so no menu or approval step reached the group. Choices made on the group's behalf are marked:

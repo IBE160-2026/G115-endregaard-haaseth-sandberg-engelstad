@@ -80,7 +80,7 @@ Microcopy. Brand voice lives in `DESIGN.md` Brand & Style. Address the student a
 | "Over høydegrensen. 8 etasjer gir 32 m; tomta tillater maks 28 m." | "Ugyldig verdi!" |
 | "Rammen tok 4 uker lenger enn du anslo." | "Du tok feil om rammen." |
 | "Sammenlignbare prosjekter brukte rundt 14 uker på råbygget." | "Anslaget ditt er urealistisk." |
-| "Litt over målet: 172,1 av 169 MNOK." | "STRYK" / "Du tapte" |
+| "Litt over målet: 172,1 av 171 MNOK." | "STRYK" / "Du tapte" |
 | "Stål og massivtre gir nesten samme resultat – forskjellen er rundt 1 MNOK." | Firm recommendations where the choice barely matters |
 | "Rigg og drift (kostnaden ved å ha byggeplassen i gang) koster 0,3 MNOK per uke." | Unexplained "BTA", "%BYA", "CLT", "MNOK" |
 | "Jeg foreslår 22 % av tiden til råbygg. Grunnlag: sammenlignbare kontorbygg." | Rådgiver speaking without a basis |
@@ -177,7 +177,7 @@ Desktop only (NFR-7). Minimum 1280 × 720; below that width a notice says "Fra t
 *Sara, 22, economics and management student, little construction experience, desktop browser, no account. All figures below are placeholders until the building-block model sets them (PRD open questions 1–2). [ASSUMPTION]*
 
 1. **Start.** Sara opens the simulator, keeps difficulty *middels* and presses "Start ny gjennomspilling" (FR-1).
-2. **Site office (stage 0).** The client presents the order in short lines: "Vi trenger kontorer til 100 ansatte i Oslo sentrum. Ferdig innen uke 67, innenfor 169 MNOK." The 3D card shows the empty plot. Rådgiver greets her. The targets settle into the top bar, where they stay (FR-2).
+2. **Site office (stage 0).** The client presents the order in short lines: "Vi trenger kontorer til 100 ansatte i Oslo sentrum. Ferdig innen uke 67, innenfor 171 MNOK." The 3D card shows the empty plot. Rådgiver greets her. The targets settle into the top bar, where they stay (FR-2).
 3. **Konsept.** She drags the floors slider to 8; the 3D building grows past the dashed limit line and the top floor turns red. The InfoBar reads "Over høydegrensen. 8 etasjer gir 32 m; tomta tillater maks 28 m." and "Neste: Tidsplan" is disabled with its reason. She moves to 7, picks steel; the plot cost and building cost update, and Rådgiver notes that steel and CLT differ by about 1 MNOK (FR-3–FR-6, R30).
 4. **Tidsplan.** She types her estimates. For the frame she enters 9 weeks; Rådgiver posts a *Varsel*: "Sammenlignbare prosjekter brukte rundt 14 uker på råbygget. Grunnlag: Statens hus Nordfjordeid (år fra kilden)." She raises it to 11, not all the way, and sets two milestones (FR-8, FR-15, FR-32).
 5. **Risiko og reserve.** She reduces the crane-wind risk, accepts contaminated ground and sets a 2-week, 4 MNOK reserve; risk exposure updates in the top bar (FR-10–FR-12).

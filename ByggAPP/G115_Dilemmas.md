@@ -17,7 +17,7 @@ The planning of the new project, on the branch `forslag/tre-stadier`. The AI's p
    Result: the AI's proposal was dropped. Results are shown in bands and the debrief ranks decisions by how much they mattered (FR-38, R29, R30).
 4. **Challenging the fire rule.** Prompt: the draft rules charged timber 2 MNOK extra for fire.
    Reply: "Sjekk ut en ting først. Er ikke massift tre bedre enn stål ifht bærende evne ved brannkrav?"
-   Result: the AI confirmed that timber holds its load better than unprotected steel, while the regulation favours steel. The rule was left as it is for now, and the correction is an open point for the group.
+   Result: a source check showed the group was partly right. Steel had no fire protection cost, and timber's extra is documentation, not worse performance. The rule was corrected (steel 3.3, timber 2.5 MNOK from 5 floors), and the gap between them fell to about 1 MNOK.
 5. **One plot instead of three.** Prompt: with three plots, the outer plot was always cheapest. Give it a time penalty?
    Reply: "Jeg tror vi må snevre inn. Vi sier at bygget skal stå sentrumsnært i oslo, derav er det bare en tomtepris per kvm, derfor blir regnetykket mellom hvor mange kvm tomt mot hvor mye hver etasje koster."
    Result: one central plot. The AI then showed that building as tall as allowed always wins on cost, and the group chose time as the counterweight.

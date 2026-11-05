@@ -86,7 +86,7 @@ svg text{font:12px var(--font);fill:var(--fg)}
 </div>
 
 <script id="engine">
-const T_WEEK=67,T_COST=169,PART=['Prosjektering og byggesøknad','Grunnarbeid','Råbygg','Tett bygg','Tekniske anlegg og innredning','Overlevering'];
+const T_WEEK=67,T_COST=171,PART=['Prosjektering og byggesøknad','Grunnarbeid','Råbygg','Tett bygg','Tekniske anlegg og innredning','Overlevering'];
 const SYS={cast:{n:'Plasstøpt betong',f:.96,w:2,r:'E9'},pre:{n:'Prefab betong',f:1,w:1.5,r:'E3'},steel:{n:'Stål og hulldekker',f:1.02,w:1.2,r:'E3'},clt:{n:'Massivtre',f:1.05,w:1,r:'E10'}};
 const RISK={
 E4:{n:'Arkeologiske funn',p:()=>.3,part:1,d:8,c:1,alt:'Ekstra arkeologer',half:1,x:1},
@@ -99,7 +99,7 @@ const OH=.3,RESP=['accept','reduce','transfer','avoid'],RN={accept:'Akseptere',r
 const r3=x=>Math.round(x*1000)/1000;
 const plotArea=f=>Math.round(2300/(f*.6)),plotCost=f=>r3(plotArea(f)*.14);
 const allowed=f=>f*4<=28;
-function buildCost(f,s){const lifts=f<=4?1:2,fire=f<5?0:(s==='clt'?3.5:1.5);return r3(66.7*SYS[s].f+lifts*.3*f+fire)}
+function buildCost(f,s){const lifts=f<=4?1:2,fire=f<5?0:({steel:3.3,clt:2.5}[s]||1.5);return r3(66.7*SYS[s].f+lifts*.3*f+fire)}
 const refDur=(f,s)=>[12,13,Math.round(f*SYS[s].w+1e-9),10,10,5];
 const risksFor=(f,s)=>['E4','E5','E2','E9','E3','E10'].filter(k=>k==='E4'||k==='E5'||k==='E2'||k===SYS[s].r);
 function out(k,resp,f){const R=RISK[k],I=R.c+OH*R.d,p=R.p(f);

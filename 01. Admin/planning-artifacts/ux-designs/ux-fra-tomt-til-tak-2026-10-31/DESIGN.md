@@ -310,7 +310,7 @@ Small, tool-like corners: `{rounded.sm}` (4 px) for anything you press or type i
 
 ## Components
 
-- **Key-figure card** — label (caption, secondary), value in `{typography.key-figure}` with the target in smaller secondary text ("150,4 / 169 MNOK"), a 4 px meter, and a band badge when a result exists. The meter fill takes the band colour when the value is past the target.
+- **Key-figure card** — label (caption, secondary), value in `{typography.key-figure}` with the target in smaller secondary text ("150,4 / 171 MNOK"), a 4 px meter, and a band badge when a result exists. The meter fill takes the band colour when the value is past the target.
 - **Step-rail item** — numbered circle + label + optional caption ("Pågår · ca. 3 min"). Current: `{colors.accent-subtle}` fill, 3 px accent bar on the left, filled accent number. Done: green number with a check. Upcoming: outlined number.
 - **Form controls** — Fluent-style slider with tick labels under it (current tick bold in `{colors.accent-strong}`), number field with an accent underline (red underline in error), radio list with row rules and an optional right-aligned note.
 - **Consequence table** — two columns (post, value), right-aligned tabular values, an inline band badge after a value that is compared with a target. An offending row turns `{colors.bad-text}`.

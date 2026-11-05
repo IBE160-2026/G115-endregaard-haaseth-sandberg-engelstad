@@ -2,7 +2,7 @@
 title: "Simulation rules: Fra tomt til tak"
 status: draft
 created: 2026-10-31
-updated: 2026-10-31
+updated: 2026-11-05
 ---
 
 # Simulation rules: Fra tomt til tak
@@ -21,12 +21,15 @@ Simplicity beats precision (PRD SM-C3). Every value is either sourced or marked 
 - **The risk learning goal is judged on expected cost**, not on whether a risk occurred.
 - **The risk catalogue uses the event IDs E1–E10** from `addendum.md`.
 
+**Revision 3 (fire rule approved by Oskar, 2026-11-05):** the fire-class cost now differs by structural system (S19, R5). Steel pays for protection and CLT for documentation. Target cost rises to 171 MNOK; target week stays 67.
+
 Sources:
 
 - **P1–P17**: parameter table in `../../research/research-fra-tomt-til-tak-2026-10-31/research.md`.
 - **V1–V12**: reference values in `../../research/research-referanseprosjekter-2026-10-31/research.md`.
 - **E1–E10**: event catalogue in `addendum.md` §4, with evidence in the reference research §C.
-- **TEK17**: DiBK's guidance pages for §§ 11-2, 11-3 and 11-4 (dibk.no, read 2026-10-31). These were read directly for this revision and are not in the research reports.
+- **TEK17**: DiBK's guidance pages for §§ 11-2, 11-3 and 11-4 (dibk.no, read 2026-10-31 and 2026-11-05).
+- **Fire rule**: `../../research/research-brannregel-2026-11-05/research.md`, the source check behind S18 and S19. Variant C in its §6.3 is the approved rule, without the optional BKL 2 step for steel.
 - **v0.5**: the group's earlier game (`ByggAPP/G115_FinalPrompt.md` §4), reused for work modes, crowding, site overhead per week, forecast and seeds.
 
 Flags: **[SOURCED]** means the value comes directly from a source. **[ESTIMATE]** means the group or the research chose it, anchored on sources where possible. Every [ESTIMATE] is listed in §5 for the group's approval. **[ASSUMPTION]** marks a value proposed in this document that the group has not yet approved; **[partly sourced]** means the event itself is sourced but its size is estimated.
@@ -69,7 +72,7 @@ FR-3 (choose a plot) becomes a fixed site in v1. The PRD needs a matching edit (
 |---|---|---|
 | Workplaces | 100 | PRD Glossary |
 | Site | One central Oslo plot (Bjørvika type), §2.2 | Group decision |
-| Target week, target cost | Derived by R14: **67 weeks, 169 MNOK** with the current parameters | FR-1 |
+| Target week, target cost | Derived by R14: **67 weeks, 171 MNOK** with the current parameters | FR-1 |
 
 ### 1.3 Seed
 
@@ -112,8 +115,8 @@ For the project it keeps the current week, the cost so far, the reserve used, th
 | S15 | Lift requirement | Lifts always included (required from 2 floors) | P9 / TEK17 [30] | [SOURCED] |
 | S16 | Number of lifts | 1 for ≤ 4 floors, 2 for ≥ 5 floors | none | [ESTIMATE] |
 | S17 | Lift cost | 0.300 MNOK per lift per floor served | Anchored on P9 (~1.5 MNOK per lift at 5 floors) | [ESTIMATE] |
-| S18 | Fire class (brannklasse) by floors | Offices are risk class 2. Risk class 2 gives BKL 1 for 1–2 floors, **BKL 2 for 3–4 floors** and **BKL 3 for 5 or more**. The preaccepted main load-bearing system is R 60 in BKL 2 and **R 90 A2-s1,d0 (non-combustible)** in BKL 3 | TEK17 § 11-2 Table 1 ("Kontor: 2"); § 11-3 Table 1; § 11-4 Table 1 (dibk.no, read 2026-10-31) | [SOURCED] (rule) |
-| S19 | Fire-class cost step | BKL 3: **+1.500 MNOK** (all systems). CLT in BKL 3: **+2.000 MNOK more**, because a combustible main system is not preaccepted and needs a fire analysis plus encapsulation | none | [ESTIMATE] |
+| S18 | Fire class (brannklasse) by floors | Offices are risk class 2. Risk class 2 gives BKL 1 for 1–2 floors, **BKL 2 for 3–4 floors** and **BKL 3 for 5 or more**. The preaccepted main load-bearing system is R 60 in BKL 2 and **R 90 A2-s1,d0 (non-combustible)** in BKL 3. In BKL 3 up to 8 storeys, floors may be R 60 A2-s1,d0; this matters only for how hollow-core floors are designed and does not change any value in the model | TEK17 § 11-2 Table 1 ("Kontor: 2"); § 11-3 Table 1; § 11-4 Table 1 and guidance (dibk.no); fire research §1 and §5 | [SOURCED] (rule) |
+| S19 | Fire-class cost (`fireCost`) | 3–4 floors: 0. From 5 floors (BKL 3): **cast-in-place 1.500 · precast 1.500 · steel 3.300 · CLT 2.500 MNOK**. Shared step 1.500 for all systems. Steel adds 1.800 for fire protection, because steel is non-combustible but must be protected to reach R 90. CLT adds 1.000 for fire analysis and documentation. This pays for documenting a combustible main system outside the preaccepted solution, and it does not mean worse fire performance; encapsulation is a common outcome of that analysis, not a requirement. The CLT extra is lowered from 2.000 because S13's +5 % comes from a whole-building figure and likely already holds part of it | Fire research §3 (Aecom/BCSA 90-minute rate), §1.2, §6.3 | Shared step [ESTIMATE]; steel 1.800 [SOURCED, UK rate, not adjusted to Oslo]; CLT 1.000 [ESTIMATE] |
 | S20 | Permit (rammetillatelse) processing time | 12 weeks | V8 / [14] | [SOURCED] |
 | S21 | Reference construction period for phase shares | 52 weeks (12 months) | P11, V1 | [ESTIMATE] anchored |
 | S22 | Phase shares of S21 | groundworks 25 % · envelope 20 % · technical and interior 20 % · handover 10 % | V3, V5, V6, V7 (Elvebredden [10]) | [ESTIMATE] (one project) |
@@ -167,12 +170,12 @@ Each extra floor saves 13–45 MNOK of land. The counterweights are all time and
 
 ### 2.4 Structural systems (FR-5)
 
-| System | Cost factor (S13) | Work cost | Frame weeks per floor (S23) | Extra in BKL 3 (S19) | System-specific known risk |
+| System | Cost factor (S13) | Work cost | Frame weeks per floor (S23) | `fireCost` from 5 floors (S19) | System-specific known risk |
 |---|---|---|---|---|---|
 | Cast-in-place concrete | 0.96 | 64.032 MNOK | 2.0 | 1.500 | E9 frost |
 | Precast concrete | 1.00 | 66.700 MNOK | 1.5 | 1.500 | E3 foreign supplier strike |
-| Steel + hollow-core | 1.02 | 68.034 MNOK | 1.2 | 1.500 | E3 foreign supplier strike |
-| CLT (massivtre) | 1.05 | 70.035 MNOK | 1.0 | 3.500 | E10 moisture |
+| Steel + hollow-core | 1.02 | 68.034 MNOK | 1.2 | 3.300 | E3 foreign supplier strike |
+| CLT (massivtre) | 1.05 | 70.035 MNOK | 1.0 | 2.500 | E10 moisture |
 
 ---
 
@@ -205,7 +208,7 @@ A concept that breaks a limit cannot be approved. The adviser warns and names th
 
 - `workCost = 29,000 × 2,300 × systemFactor` (S12, S13).
 - `lifts = 1 if floors ≤ 4, else 2`. `liftCost = lifts × 0.300 × floors`. That is 0.900 / 1.200 / 3.000 / 3.600 / 4.200 MNOK for 3 / 4 / 5 / 6 / 7 floors.
-- `fireCost = 0` for 3–4 floors (BKL 2). For 5 floors or more (BKL 3), `fireCost = 1.500`, or `3.500` for CLT (S18, S19).
+- `fireCost = 0` for 3–4 floors (BKL 2). For 5 floors or more (BKL 3), `fireCost = 1.500 + extra`, where extra is cast-in-place 0, precast 0, steel 1.800 and CLT 1.000 (S18, S19).
 - `buildingCost = workCost + liftCost + fireCost`.
 - *Why 29,000:* the all-in 35,000 NOK/m² (P6) includes site overhead. We take the site overhead out and charge it per week instead (R7), so that time costs money. (35,000 × 2,300 − 0.300 × 44 weeks) ÷ 2,300 = (80.5 − 13.2) ÷ 2,300 ≈ 29,260, rounded to 29,000.
 
@@ -286,24 +289,24 @@ For a risk with probability p, delay d weeks and cost c, the **full impact** is 
 - **The reference plan:** 7 floors, steel, reference durations, the suggested responses and the suggested reserve (R12).
 - `target week = reference plan's planWeek`.
 - `target cost = reference plan's planCost`, rounded **up** to whole MNOK.
-- With the current parameters: **target week 67, target cost 169 MNOK** (worked example (a)). The engine derives them, so they follow any change in the parameters.
+- With the current parameters: **target week 67, target cost 171 MNOK** (worked example (a)). The engine derives them, so they follow any change in the parameters.
 
-**The puzzle the targets create.** Plan week and plan cost with the suggested responses and reserve, against week 67 and 169 MNOK:
+**The puzzle the targets create.** Plan week and plan cost with the suggested responses and reserve, against week 67 and 171 MNOK. ✓ is on target, ≈ slightly over and ✗ clearly over (R29: the limits are week 71 and 179.550 MNOK):
 
 | Floors | Cast-in-place | Precast | Steel | CLT |
 |---|---|---|---|---|
 | 3 | 64 ✓ · 261.262 ✗ | 64 ✓ · 263.490 ✗ | 63 ✓ · 264.524 ✗ | 61 ✓ · 266.305 ✗ |
 | 4 | 66 ✓ · 217.372 ✗ | 65 ✓ · 219.300 ✗ | 64 ✓ · 220.334 ✗ | 62 ✓ · 222.115 ✗ |
-| 5 | **68 ✗** · 194.617 ✗ | 67 ✓ · 196.545 ✗ | 65 ✓ · 197.279 ✗ | 63 ✓ · 201.060 ✗ |
-| 6 | 71 ✗ · 178.202 ✗ | **68 ✗** · 179.530 ✗ | 66 ✓ · 180.264 ✗ | 64 ✓ · 184.045 ✗ |
-| 7 | 73 ✗ · 166.667 ✓ | 70 ✗ · 167.995 ✓ | **67 ✓ · 168.429 ✓** | 65 ✓ · 172.210 ✗ |
+| 5 | 68 ≈ · 194.617 ✗ | 67 ✓ · 196.545 ✗ | 65 ✓ · 199.079 ✗ | 63 ✓ · 200.060 ✗ |
+| 6 | 71 ≈ · 178.202 ≈ | 68 ≈ · 179.530 ≈ | 66 ✓ · 182.064 ✗ | 64 ✓ · 183.045 ✗ |
+| 7 | 73 ✗ · 166.667 ✓ | 70 ≈ · 167.995 ✓ | **67 ✓ · 170.229 ✓** | 65 ✓ · 171.210 ≈ |
 
 How to read it:
 
-- **7 floors are the cheapest height**, but only steel (week 67) and CLT (week 65) meet the target week there. Cast-in-place (73) and precast (70) are cheaper but too slow.
+- **7 floors are the cheapest height**, but only steel (week 67) and CLT (week 65) meet the target week there. Cast-in-place (73, clearly over) and precast (70, slightly over) are cheaper but too slow.
 - **Cast-in-place meets the target week only at 3 or 4 floors**, and there the land costs 57.400 (4 floors) or 102.200 (3 floors) more than at 7 floors. Precast needs 5 floors or fewer.
-- **CLT at 7 floors** is fastest but misses the budget by 3.210 MNOK, because of its +5 % work cost and the CLT fire-class step.
-- So the only plan that meets both targets is the reference plan. Nearby plans each miss one target, and the student must judge which miss to accept, or squeeze the estimates and reserve and see what stage 2 makes of it.
+- **CLT at 7 floors** is fastest and lands 0.210 MNOK over the target cost, which is slightly over, mainly because of its +5 % work cost. It is 0.981 dearer than steel; that is under R30's 2 % of the target cost (3.420), and both are on target for the week, so the adviser says both work instead of recommending one firmly.
+- **Only the reference plan is on target for both**, with 0.771 MNOK to spare. At 6 floors, cast-in-place and precast are slightly over on both; steel and CLT are clearly over on cost. At 5 floors or fewer every plan is clearly over on cost. The student must judge which miss to accept, or squeeze the estimates and reserve and see what stage 2 makes of it.
 
 ### Stage 2: execution
 
@@ -416,7 +419,7 @@ The targets are a frame, not an exact answer. The final cost and the final week 
 | Slightly over | up to 5 % over the target cost | up to 5 % over the target week (rounded up to whole weeks) |
 | Clearly over | more than 5 % over | more than 5 % over |
 
-The debrief shows the band, not a pass or fail on the exact figure. [ASSUMPTION: the 5 % band is a first proposal for the group to approve.]
+With the current targets the slightly-over limits are 171 × 1.05 = **179.550 MNOK** and 67 × 1.05 = 70.35 → **week 71**. The debrief shows the band, not a pass or fail on the exact figure. [ASSUMPTION: the 5 % band is a first proposal for the group to approve.]
 
 **R30. Decision impact ranking** (FR-38, FR-14)
 
@@ -444,8 +447,8 @@ All amounts are in MNOK and all durations in weeks, rounded as in §0. Each exam
 
 - Work cost = 66.700 × 1.02 = **68.034**.
 - Lifts: 7 floors → 2 lifts. Lift cost = 2 × 0.300 × 7 = **4.200**.
-- Fire class: 7 floors ≥ 5 → BKL 3 → **1.500** (steel).
-- Building cost = 68.034 + 4.200 + 1.500 = **73.734**.
+- Fire class: 7 floors ≥ 5 → BKL 3 → 1.500 + 1.800 = **3.300** (steel).
+- Building cost = 68.034 + 4.200 + 3.300 = **75.534**.
 
 **Step 3. Reference durations (R6)**
 
@@ -455,7 +458,7 @@ All amounts are in MNOK and all durations in weeks, rounded as in §0. Each exam
 **Step 4. Base cost (R7, R8)**
 
 - Site overhead = 0.300 × 46 = **13.800**.
-- Base cost = 76.720 + 73.734 + 13.800 = **164.254**.
+- Base cost = 76.720 + 75.534 + 13.800 = **166.054**.
 
 **Step 5. Known risks and suggested responses (R10–R12)**
 The risks are E4 (p 30 %), E5 (40 %), E2 (5 % × 7 = 35 %) and E3 (25 %). Each cell shows the expected total = upfront + p × impact after the response.
@@ -479,8 +482,8 @@ The risks are E4 (p 30 %), E5 (40 %), E2 (5 % × 7 = 35 %) and E3 (25 %). Each c
 **Step 7. Plan and targets (R8, R14)**
 
 - Plan week = 58 + 9 = **67**.
-- Plan cost = 164.254 + 0.740 + 3.435 = **168.429**.
-- **Target week = 67. Target cost = 168.429 rounded up = 169 MNOK.**
+- Plan cost = 166.054 + 0.740 + 3.435 = **170.229**.
+- **Target week = 67. Target cost = 170.229 rounded up = 171 MNOK.**
 
 ### Example (b): fewer or more floors on the same site
 
@@ -493,16 +496,16 @@ Steel. Compare 4 floors with 7, then try 8.
 | **Plot cost** (R3) | 958 × 0.140 = **134.120** | 548 × 0.140 = **76.720** |
 | Work cost | 68.034 | 68.034 |
 | Lifts | 1 × 0.300 × 4 = **1.200** | 2 × 0.300 × 7 = **4.200** |
-| Fire class (S18, S19) | BKL 2 → **0** | BKL 3 → **1.500** |
+| Fire class (S18, S19) | BKL 2 → **0** | BKL 3 → 1.500 + 1.800 = **3.300** |
 | Frame | round(4 × 1.2) = round(4.8) = **5** | round(8.4) = **8** |
 | Construction weeks | 13 + 5 + 10 + 10 + 5 = **43** | 13 + 8 + 10 + 10 + 5 = **46** |
 | Site overhead | 0.300 × 43 = 12.900 | 0.300 × 46 = 13.800 |
-| **Base cost** | 134.120 + 68.034 + 1.200 + 0 + 12.900 = **216.254** | 76.720 + 68.034 + 4.200 + 1.500 + 13.800 = **164.254** |
+| **Base cost** | 134.120 + 68.034 + 1.200 + 0 + 12.900 = **216.254** | 76.720 + 68.034 + 4.200 + 3.300 + 13.800 = **166.054** |
 | Total weeks | 12 + 43 = **55** | 12 + 46 = **58** |
 
 **Answer:**
 
-- 4 floors cost 216.254 − 164.254 = **52.000 MNOK more**. The land costs 57.400 more. Against that, 4 floors save 3.000 on lifts, 1.500 on fire class and 0.900 of site overhead.
+- 4 floors cost 216.254 − 166.054 = **50.200 MNOK more**. The land costs 57.400 more. Against that, 4 floors save 3.000 on lifts, 3.300 on fire class and 0.900 of site overhead.
 - 7 floors take **3 weeks longer**. That is the time the target week has to absorb (R14).
 - **8 floors:** 8 × 4.0 = 32 m > 28 m → **not allowed**. The adviser names the height limit.
 
@@ -525,8 +528,8 @@ Steel. Compare 4 floors with 7, then try 8.
 **Plan (R8):**
 
 - Estimated construction weeks = 10 + 7 + 8 + 8 + 4 = 37.
-- Plan cost excl. reserve = 76.720 + 73.734 + 0.300 × 37 = 150.454 + 11.100 = **161.554**.
-- Plan cost = 161.554 + 3.000 = **164.554** ≤ 169 ✓. Plan week = 49 + 4 = **53** ≤ 67 ✓. The plan looks comfortable.
+- Plan cost excl. reserve = 76.720 + 75.534 + 0.300 × 37 = 152.254 + 11.100 = **163.354**.
+- Plan cost = 163.354 + 3.000 = **166.354** ≤ 171 ✓. Plan week = 49 + 4 = **53** ≤ 67 ✓. The plan looks comfortable.
 
 **Actual durations (R16).** The seed gives groundworks +20 %, frame +10 %, envelope 0 %, technical and interior +30 %, handover −10 %.
 
@@ -541,17 +544,17 @@ Steel. Compare 4 floors with 7, then try 8.
 
 **The event (R18, E1):** the largest gap is groundworks, 6 weeks. At its start the foreman reports 16 weeks instead of 10.
 
-**Options, forecast with no further events (R24).** Fixed costs = 76.720 + 73.734 = 150.454. The later parts take 9 + 10 + 13 + 5 = 37 weeks.
+**Options, forecast with no further events (R24).** Fixed costs = 76.720 + 75.534 = 152.254. The later parts take 9 + 10 + 13 + 5 = 37 weeks.
 
 | Option | Groundworks | Extra cost | Construction weeks | Site overhead | **Forecast final cost** | **Week** |
 |---|---|---|---|---|---|---|
-| Take the delay | 16 | 0 | 16 + 37 = 53 | 15.900 | 150.454 + 15.900 = **166.354** | 12 + 53 = **65** |
-| Overtime | round(16 × 6 ÷ 7) = round(13.71) = **14** | 14 × 0.039 = **0.546** | 51 | 15.300 | 150.454 + 15.300 + 0.546 = **166.300** | **63** |
-| Hire 12 | round(16 × 0.8) = round(12.8) = **13** | 13 × 0.14625 = 1.90125 → **1.901** | 50 | 15.000 | 150.454 + 15.000 + 1.901 = **167.355** | **62** |
+| Take the delay | 16 | 0 | 16 + 37 = 53 | 15.900 | 152.254 + 15.900 = **168.154** | 12 + 53 = **65** |
+| Overtime | round(16 × 6 ÷ 7) = round(13.71) = **14** | 14 × 0.039 = **0.546** | 51 | 15.300 | 152.254 + 15.300 + 0.546 = **168.100** | **63** |
+| Hire 12 | round(16 × 0.8) = round(12.8) = **13** | 13 × 0.14625 = 1.90125 → **1.901** | 50 | 15.000 | 152.254 + 15.000 + 1.901 = **169.155** | **62** |
 
 **Answer:**
 
-- **The AI recommends overtime** (166.300, the lowest). It saves 2 weeks, worth 0.600 in site overhead, for 0.546.
+- **The AI recommends overtime** (168.100, the lowest). It saves 2 weeks, worth 0.600 in site overhead, for 0.546.
 - Hiring is fastest (week 62) but costs 1.001 more than taking the delay.
 - Overtime is 6.25 h a week, within the caps → no warning.
 - If the student takes the delay, "time costs money" is missed: 0.546 < 0.300 × 2.
@@ -568,37 +571,37 @@ Difficulty: easy.
 
 | Decision | Student chose | AI recommended (forecast from the student's state) |
 |---|---|---|
-| E1 overrun | Take the delay (16 weeks) | Overtime: 166.300 vs 166.354 |
-| E5 occurs | Take the impact: +4 weeks, +2.000 | Alternative: ⌊4 ÷ 2⌋ = 2 weeks, 2.000 + 0.500 = 2.500. Forecast 169.454 (week 67) vs 169.554 (week 69) |
-| E8 change | Later: +3.000, 0 weeks | Now: +2.000, +2 weeks. Forecast 172.154 (week 71) vs 172.554 (week 69) |
+| E1 overrun | Take the delay (16 weeks) | Overtime: 168.100 vs 168.154 |
+| E5 occurs | Take the impact: +4 weeks, +2.000 | Alternative: ⌊4 ÷ 2⌋ = 2 weeks, 2.000 + 0.500 = 2.500. Forecast 171.254 (week 67) vs 171.354 (week 69) |
+| E8 change | Later: +3.000, 0 weeks | Now: +2.000, +2 weeks. Forecast 173.954 (week 71) vs 174.354 (week 69) |
 
-**The four runs (R26)**, with fixed costs 150.454 in every run:
+**The four runs (R26)**, with fixed costs 152.254 in every run:
 
 | Run | Construction weeks | Site overhead | Event costs | Final cost | Week |
 |---|---|---|---|---|---|
-| Plan excl. reserve | 37 (estimates) | 11.100 | 0 | **161.554** | 49 |
-| Run 2: actual durations, no events | 16 + 9 + 10 + 13 + 5 = 53 | 15.900 | 0 | **166.354** | 65 |
-| Run 3: events, AI choices | (14 + 2) + 9 + 10 + (13 + 2) + 5 = 55 | 16.500 | 0.546 + 2.500 + 2.000 = 5.046 | **172.000** | 67 |
-| Run 4: student's choices | (16 + 4) + 9 + 10 + 13 + 5 = 57 | 17.100 | 2.000 + 3.000 = 5.000 | **172.554** | 69 |
+| Plan excl. reserve | 37 (estimates) | 11.100 | 0 | **163.354** | 49 |
+| Run 2: actual durations, no events | 16 + 9 + 10 + 13 + 5 = 53 | 15.900 | 0 | **168.154** | 65 |
+| Run 3: events, AI choices | (14 + 2) + 9 + 10 + (13 + 2) + 5 = 55 | 16.500 | 0.546 + 2.500 + 2.000 = 5.046 | **173.800** | 67 |
+| Run 4: student's choices | (16 + 4) + 9 + 10 + 13 + 5 = 57 | 17.100 | 2.000 + 3.000 = 5.000 | **174.354** | 69 |
 
-**The bridge (target cost 169.000):**
+**The bridge (target cost 171.000):**
 
 | Cause | Calculation | MNOK |
 |---|---|---|
-| 1 The plan | 161.554 − 169.000 | **−7.446** |
-| 2 The schedule estimate | 166.354 − 161.554 | **+4.800** |
-| 3 Events | 172.000 − 166.354 | **+5.646** |
-| 4 The student's decisions | 172.554 − 172.000 | **+0.554** |
-| **Sum** | −7.446 + 4.800 + 5.646 + 0.554 | **+3.554** |
-| Check: final − target | 172.554 − 169.000 | **+3.554** ✓ |
+| 1 The plan | 163.354 − 171.000 | **−7.646** |
+| 2 The schedule estimate | 168.154 − 163.354 | **+4.800** |
+| 3 Events | 173.800 − 168.154 | **+5.646** |
+| 4 The student's decisions | 174.354 − 173.800 | **+0.554** |
+| **Sum** | −7.646 + 4.800 + 5.646 + 0.554 | **+3.354** |
+| Check: final − target | 174.354 − 171.000 | **+3.354** ✓ |
 
 **Reserve line (R13):**
 
-- Cost: 172.554 − 161.554 = 11.000 > 3.000, so all **3.000** is used.
+- Cost: 174.354 − 163.354 = 11.000 > 3.000, so all **3.000** is used.
 - Time: 69 − 49 = 20 weeks > 4 weeks of reserve.
 - The reserve ran out.
 
-**Final result:** week 69 against target 67, and 172.554 against target 169. The AI path (FR-26) ends at week 67 and 172.000.
+**Final result:** week 69 against target 67, and 174.354 against target 171. Both are slightly over (R29). The AI path (FR-26) ends at week 67 and 173.800: on target for the week, slightly over on cost.
 
 **AI trust (R27):**
 
@@ -634,8 +637,8 @@ Difficulty: easy.
 
 **Values to approve** (all [ESTIMATE]):
 
-1. **The site:** 140,000 NOK/m² plot (P4a × P5a), 60 % BYA (lowered from P5a's 80 %), 28 m, 2,000 m² available. Land dominates the budget: 77–179 MNOK against about 74 for the building.
-2. **Fire-class cost step:** +1.500 at BKL 3, +2.000 more for CLT. The rule itself (offices are risk class 2, 5+ floors are BKL 3, with R 90 non-combustible as the preaccepted main system) is **verified on dibk.no**, but it is not in the research reports. Add it to the research appendix. No source gives the cost.
+1. **The site:** 140,000 NOK/m² plot (P4a × P5a), 60 % BYA (lowered from P5a's 80 %), 28 m, 2,000 m² available. Land dominates the budget: 77–179 MNOK against about 76 for the building.
+2. **Fire costs have no Norwegian price.** No Norwegian price was found for any part of S19. The shared 1.500 and CLT's 1.000 are estimates, and steel's 1.800 is a UK rate not adjusted to Oslo. One Norwegian quote would improve them (fire research §7).
 3. **E2 wind: p = 5 % × floors.** The growth with floors is a design choice. Impact is 1 week and 0.200.
 4. **Site overhead 0.300 per week** and **work cost 29,000 NOK/m²** (R5, R7). These decide whether overtime pays off.
 5. **System factors** 0.96 / 1.00 / 1.02 (only CLT's 1.05 is sourced), and **precast frame 1.5 weeks per floor**. P12 said 1.0, which would make precast identical to steel in speed and cheaper.
@@ -648,7 +651,7 @@ Difficulty: easy.
 
 **Design decisions to confirm:**
 
-12. **The targets leave exactly one plan that meets both** (7 floors, steel, suggested reserve). Every nearby plan misses one target narrowly (R14 table). If the group wants CLT at 7 floors to meet the budget as well, round the target cost up to the nearest 5 MNOK (170), or lower CLT's fire-class step.
+12. **The targets leave exactly one plan on target for both** (7 floors, steel, suggested reserve). CLT at 7 floors is 0.210 over and counts as slightly over (R29); the adviser treats the two as equal (R30). A CLT extra of 0.790 or less would put CLT on target too, ending the single-solution puzzle (fire research §6.3). That is a design decision.
 13. **The PRD needs edits** to match the single site:
     - FR-3 ("choose one of three plots") becomes a fixed site that only shows its land price and limits.
     - FR-10 ("risks depend on the plot") becomes "depend on floors and structural system".
@@ -672,9 +675,9 @@ Base cost (R8) with reference durations, before responses and reserve. Total wee
 |---|---|---|---|---|---|---|---|---|
 | 3 | 1,278 | 178.920 | 0.900 | BKL 2: 0 | 257.052 (56) | 259.420 (55) | 260.454 (54) | 262.155 (53) |
 | 4 | 958 | 134.120 | 1.200 | BKL 2: 0 | 213.152 (58) | 215.220 (56) | 216.254 (55) | 217.955 (54) |
-| 5 | 767 | 107.380 | 3.000 | BKL 3: 1.5 / CLT 3.5 | 190.312 (60) | 192.380 (58) | 193.114 (56) | 196.815 (55) |
-| 6 | 639 | 89.460 | 3.600 | BKL 3: 1.5 / CLT 3.5 | 173.592 (62) | 175.360 (59) | 176.094 (57) | 179.795 (56) |
-| 7 | 548 | 76.720 | 4.200 | BKL 3: 1.5 / CLT 3.5 | 162.052 (64) | 163.820 (61) | **164.254 (58)** | 167.955 (57) |
+| 5 | 767 | 107.380 | 3.000 | BKL 3: 1.5 · steel 3.3 · CLT 2.5 | 190.312 (60) | 192.380 (58) | 194.914 (56) | 195.815 (55) |
+| 6 | 639 | 89.460 | 3.600 | BKL 3: 1.5 · steel 3.3 · CLT 2.5 | 173.592 (62) | 175.360 (59) | 177.894 (57) | 178.795 (56) |
+| 7 | 548 | 76.720 | 4.200 | BKL 3: 1.5 · steel 3.3 · CLT 2.5 | 162.052 (64) | 163.820 (61) | **166.054 (58)** | 166.955 (57) |
 | 8 | 479 | 67.060 | — | — | not allowed (32 m > 28 m) | | | |
 
 The suggested responses (R12) are the same in every concept:
