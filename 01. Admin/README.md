@@ -1,144 +1,57 @@
-# G115 — Studie v siden av jobb
+# G115 — Fra tomt til tak
 
 Group project in **IBE160 Programming with AI** at Molde University College, autumn 2026 (15 ECTS credits).
 
 This repository contains the group's application and the documentation of how it was developed, tested and quality-assured with AI.
 
-## The project: AI-driven project management simulation
+## The project
 
-We are building a web application that simulates the planning and execution of a construction project. The student is the project manager and makes the real decisions, while an AI advisor analyses each situation and recommends an action.
+*Fra tomt til tak* ("From plot to roof") is a 20-minute web simulator in which a newcomer runs a construction project as its project manager: an office building for 100 employees near the centre of Oslo, for a fictional client.
 
-After every decision the simulation runs forward along two paths from the same state: what happened with the student's choice, and what would have happened had the student followed the AI's recommendation. The two outcomes are shown side by side. That comparison is the teaching mechanic.
+1. **Plan (the main part).** The student chooses the number of floors and the structural system, estimates the schedule, and chooses how to meet the known risks, with an AI adviser beside them.
+2. **Execute.** The plan is put to the test. A few unforeseen events hit, and the student chooses a response. Each choice is compared with the AI's path from the same state.
+3. **Debrief.** A budget bridge shows where the deviation came from, the decisions are ranked by how much they mattered, and a short conclusion ties the result to the learning goals.
 
 ### Why
 
-Project management is often taught as static tools: Gantt charts, WBS and risk registers to be filled in correctly. Students learn what a plan looks like, but rarely how it actually breaks — how a resource conflict cascades into schedule slip, or how a minor risk grows into a missed milestone. That kind of judgement is built by making decisions, seeing the consequences and comparing them with a better-reasoned alternative.
+Building projects run on average 32 % over schedule and 62 % over cost. Project management is usually taught through static artefacts, so learners rarely see how a plan breaks. Here the student's own plan is tested, which makes the consequences theirs.
 
-### How it works
+## Status
 
-```mermaid
-flowchart LR
-    A[Situation] --> B[AI advisor recommends]
-    B --> C[Student decides]
-    C --> D[Student's path]
-    C --> E[AI's path]
-    D --> F[Side-by-side comparison]
-    E --> F
-    F --> A
-```
+The group chose this direction after comparing three proposals. **The planning is done; the new app is not built yet.** `ByggAPP/` still contains the previous game (v0.5, *Regjeringskvartalet Light*), which is the base for the new app: its simulation engine, 3D site and AI comparison are reused. The README will be updated as the stories are completed.
 
-1. The simulation presents a situation: a schedule state, a resource conflict, a change request or a risk event.
-2. The AI advisor analyses the situation and recommends an action, with its reasoning and the consequences it expects.
-3. The student makes their own decision, which may follow or diverge from the recommendation.
-4. The simulation runs forward twice from the same state, and the outcomes are shown side by side.
-
-The loop repeats at every decision point until the project is complete.
-
-### Four types of decision
-
-- Planning strategy
-- Risk response
-- Resource allocation
-- Change approval
-
-In the simulator (v0.5, a full-screen 3D building site you walk around as Statsbygg, with Elisabeth the project manager and Hedda the site manager at your side) all four are playable: strategy choices come when the key disciplines start, risks and opportunities come at random, crews and work modes are reviewed with the foremen at the start-up meeting and whenever a chapter opens, and change requests can be approved now or deferred at a higher cost later. A foreman with a challenge waits with a «!» over their head; the decision is made in a meeting on site, round a 3D model of the challenge.
-
-### Scenarios
-
-Scenarios are generated with a hybrid approach. A template and library layer builds a coherent skeleton (WBS, resources, cost and time baseline, milestones) from project size, budget and risk profile. A language model layer adds narrative and novel risk events, so that every playthrough is different without the structure falling apart.
-
-### What the application shows
-
-- Gantt schedule
-- Cost forecast
-- Risk exposure
-- Scenario results
-- Recommended actions
-
-### What is new
-
-Existing AI tools for project management recommend actions, but do not show a computed comparison of "what you chose" against "what the AI would have done". Academic construction simulators such as the Virtual Construction Simulator (VCS3) compare the actual outcome with a fixed plan. Our contribution is to replace the fixed plan with an AI-generated, reasoned recommendation as the point of comparison — like a flight simulator debrief against an expert benchmark.
-
-## Scope for the first version
-
-**In:**
-
-- Single-player web app without user accounts
-- One domain: construction projects
-- All four decision types and all five outputs
-- The full loop with two simulated outcomes and a comparison
-- One playthrough from start to project completion
-
-**Out:**
-
-- Multiplayer and negotiation between roles
-- Support for standard scheduling formats (MSPDI, XER, PMXML)
-- Analysis across multiple playthroughs
-
-**Open questions:**
-
-- Should a playthrough be possible to save and resume later?
-- Is construction confirmed as the only domain, or is a more general simulator expected?
-
-## Success criteria
-
-- A student can complete a full playthrough and meet all four decision types at least once.
-- At every decision point the AI advisor gives a legible recommendation with visible reasoning, and both outcomes are computed and shown automatically.
-- Two playthroughs with the same parameters produce recognisably different but coherent scenarios.
-- All outputs update correctly after every decision.
-- The instructor can open the application and play it through unassisted.
-
-These criteria are the group's own reading of "done"; there is no formal grading rubric from the instructor.
-
-## Spill det
-
-Test version: **https://claude.ai/artifact/Nh9p4q3T5mbQaphKD9iSdY** (a Claude Artifact; testers need access through its Share menu). Only a browser is needed, and a desktop with a keyboard is best.
-
-The GitHub Pages workflow is stored in `ByggAPP/.github/workflows/deploy.yml`. GitHub only runs workflows from `.github/` at the repo root, so it does not run from there. To publish, move `.github/` back to the root and have a repo admin turn on Pages (Settings → Pages → Source: GitHub Actions). It then publishes `main` on every push to **https://ibe160-2026.github.io/G115-endregaard-haaseth-sandberg-engelstad/**.
-
-## Kjør lokalt
+## Run locally
 
 Requires [Node.js](https://nodejs.org/) 22.12 or newer. No API keys or accounts are needed.
 
 ```bash
 cd ByggAPP
 npm install
-npm run dev     # serves the simulator at http://localhost:5173
-npm test        # runs the simulation engine's tests
+npm run dev     # serves the app at http://localhost:5173
+npm test        # runs the tests
 npm run build   # type-checks and builds to dist/
 ```
 
-The simulator runs the fixed scenario *Regjeringskvartalet Light* (Appendix A of the product brief). The simulation engine is in `ByggAPP/src/engine/` and has no UI code. The icons are generated with `npm run icons` from `ByggAPP/assets/icons/generate.mjs`.
+The simulation engine is in `ByggAPP/src/engine/` and has no UI code.
 
-## AI_BYGGplant (draft)
+## Folder structure
 
-A second app in `AI_BYGGplant/`. It opens with «Hei, hva skal bygges?», and Claude asks the questions a builder would ask, narrow first (site, size, floors, doors, windows, gates) and broader later, then makes a budget and a Gantt schedule. The dialog is always open for changes, and the tabs Oversikt, Bygget, Budsjett and Fremdrift show the project.
+- `ByggAPP/` — the application: source code (`src/`), icons (`assets/`), build setup, the group's G115 files and the BMAD specs for each version (`.docs/`)
+- `01. Admin/` — assignment material and planning: this README, `CLAUDE.md`, the instructor's feedback and `planning-artifacts/`
+- `02. Arkiv/` — what the group decided not to take forward, kept as history (see its README)
+- `_bmad/` — the BMAD framework, with its Claude Code skills in `.claude/skills/`
+- `.logs/` — session logs per group member
 
-```bash
-cd AI_BYGGplant
-npm install
-cp .env.example .env   # then fill in ANTHROPIC_API_KEY
-npm run dev            # http://localhost:5173
-npm test
-```
+## Planning documents
 
-The key stays on the server; the browser only calls `/api/turn`. For production, run `npm run build` and then `npm start` (one Node server for the app and the AI, `PORT` defaults to 8080).
+All in `01. Admin/planning-artifacts/`:
 
-Since v0.2 the app has a development team of three agents in `.claude/skills/`: 📋 Ingrid (prosjektleder, `g115-agent-pm`), 💻 Jonas (utvikler, `g115-agent-dev`) and 💼 Mats (selger, `g115-agent-sales`). Their mandate is to make AI_BYGGplant software worth 250 000 USD; their meeting notes and roadmap are in `AI_BYGGplant/.docs/planning-artifacts/`.
+- [Product brief](planning-artifacts/briefs/brief-G115-tre-stadier-2026-10-29/brief.md)
+- [PRD](planning-artifacts/prds/prd-fra-tomt-til-tak-2026-10-31/prd.md), with [simulation rules and worked examples](planning-artifacts/prds/prd-fra-tomt-til-tak-2026-10-31/simulation-rules.md)
+- [Research: figures](planning-artifacts/research/research-fra-tomt-til-tak-2026-10-31/research.md) and [research: reference projects](planning-artifacts/research/research-referanseprosjekter-2026-10-31/research.md)
+- [UX: EXPERIENCE.md](planning-artifacts/ux-designs/ux-fra-tomt-til-tak-2026-10-31/EXPERIENCE.md) and [DESIGN.md](planning-artifacts/ux-designs/ux-fra-tomt-til-tak-2026-10-31/DESIGN.md)
 
-## Documentation and way of working
-
-Folder structure:
-
-- `ByggAPP/` — the game: source code (`src/`), icons (`assets/`), build setup, the G115 files and the BMAD specs for each version (`.docs/`)
-- `01. Admin/` — assignment material: this README, `CLAUDE.md`, the product brief and the instructor's feedback
-- `_bmad/` — the BMAD framework (with its Claude Code skills in `.claude/skills/`)
-- `ByggAPP/G115_*.md` — the group's changelog, dilemmas, recommendations and the full game description
-- `AI_BYGGplant/` — the second app (draft): an AI dialog that plans a building project, with its own G115 files and BMAD spec
-- `.logs/` — session logs
-
-- [Product brief](planning-artifacts/briefs/brief-G115-2026-10-29/brief.md) — full description of the problem, solution and scope (status: draft)
-- Development follows the [BMAD framework](https://bmadcode.com/), which lives in `_bmad/` at the repo root with its skills for Claude Code in `.claude/skills/`
+Development follows the [BMAD framework](https://bmadcode.com/).
 
 ## Members
 
