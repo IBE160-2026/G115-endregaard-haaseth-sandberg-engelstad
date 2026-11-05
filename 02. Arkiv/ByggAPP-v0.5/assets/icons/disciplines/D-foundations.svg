@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <defs>
+    <linearGradient id="D-foundations-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFBE5C"/><stop offset="1" stop-color="#E36A00"/></linearGradient>
+    <linearGradient id="D-foundations-sheen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  </defs>
+  <rect x="3" y="4" width="42" height="42" rx="10" fill="#000" opacity=".18"/>
+  <rect x="3" y="2.5" width="42" height="42" rx="10" fill="url(#D-foundations-bg)"/>
+  <rect x="3" y="2.5" width="42" height="42" rx="10" fill="url(#D-foundations-sheen)"/>
+  <rect x="3.5" y="3" width="41" height="41" rx="9.5" fill="none" stroke="#fff" stroke-opacity=".22"/>
+  <g transform="translate(10 8.5) scale(1.1666666666666667)" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="4" rx=".8"/><path d="M6.5 8.5v9l1 2.5 1-2.5v-9M11 8.5v9l1 2.5 1-2.5v-9M15.5 8.5v9l1 2.5 1-2.5v-9"/></g>
+</svg>

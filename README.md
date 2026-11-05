@@ -51,6 +51,7 @@ All in `01. Admin/planning-artifacts/`:
 - [Research: figures](01.%20Admin/planning-artifacts/research/research-fra-tomt-til-tak-2026-10-31/research.md) and [research: reference projects](01.%20Admin/planning-artifacts/research/research-referanseprosjekter-2026-10-31/research.md)
 - [UX: EXPERIENCE.md](01.%20Admin/planning-artifacts/ux-designs/ux-fra-tomt-til-tak-2026-10-31/EXPERIENCE.md) and [DESIGN.md](01.%20Admin/planning-artifacts/ux-designs/ux-fra-tomt-til-tak-2026-10-31/DESIGN.md)
 - [Architecture](01.%20Admin/planning-artifacts/architecture/architecture-fra-tomt-til-tak-2026-11-05/ARCHITECTURE-SPINE.md)
+- [Clickable demo of the proposal](01.%20Admin/planning-artifacts/ux-designs/ux-fra-tomt-til-tak-2026-10-31/mockups/demo-fra-tomt-til-tak.html): download and open in a browser
 
 Development follows the [BMAD framework](https://bmadcode.com/).
 

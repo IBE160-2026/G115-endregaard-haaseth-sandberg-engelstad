@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="no">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head>
+<body>
+<title>Fra tomt til tak</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: fast toppfelt med målene, steg til venstre, skjema i midten, 3D og Rådgiver til høyre.
+   Bevisst kun lys modus (DESIGN.md, retning 2 Prosjektverktøy). */
+:root{--bg:#f3f3f3;--card:#fff;--line:#e5e5e5;--fg:#1b1b1b;--mut:#5f5f5f;--acc:#005fb8;--acc-d:#003e7a;--tint:#e8f1fb;
+--ok:#0f7b0f;--ok-b:#dff6dd;--warn:#7a4800;--warn-b:#fff4ce;--bad:#a52317;--bad-b:#fde7e9;--font:"Segoe UI Variable Text","Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.45 var(--font);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.app{max-width:1360px;margin:0 auto;display:grid;gap:12px}
+.demo{font-size:13px;color:var(--mut)}
+.top{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch}
+.brand{flex:1 1 200px;min-width:0;padding:4px 0}.brand b{display:block;font-size:18px;font-weight:600}.brand span{font-size:13px;color:var(--mut)}
+.kpi{flex:1 1 170px;min-width:0;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 12px}
+.kpi .l{font-size:12px;color:var(--mut)}.kpi .v{font-size:19px;font-weight:600;font-variant-numeric:tabular-nums}.kpi .v small{font-size:13px;font-weight:400;color:var(--mut)}
+.badge{display:inline-block;font-size:12px;font-weight:600;padding:1px 7px;border-radius:4px;margin-left:6px;vertical-align:middle}
+.b-ok{background:var(--ok-b);color:var(--ok)}.b-warn{background:var(--warn-b);color:var(--warn)}.b-bad{background:var(--bad-b);color:var(--bad)}.b-neu{background:var(--tint);color:var(--acc-d)}
+.grid{display:grid;grid-template-columns:190px minmax(0,1fr) 340px;gap:12px;align-items:start}
+.steps{display:grid;gap:2px;list-style:none;margin:0;padding:0}
+.steps button{width:100%;text-align:left;background:none;border:0;border-radius:4px;padding:8px 10px;display:flex;gap:8px;align-items:center;color:var(--fg)}
+.steps button:disabled{color:var(--mut);cursor:default}
+.steps .n{width:22px;height:22px;flex:none;border-radius:50%;border:1px solid #8a8a8a;display:grid;place-items:center;font-size:12px}
+.steps .done .n{background:var(--ok);border-color:var(--ok);color:#fff}
+.steps .now{background:var(--tint);color:var(--acc-d);font-weight:600}.steps .now .n{background:var(--acc);border-color:var(--acc);color:#fff}
+.steps .sep{font-size:12px;color:var(--mut);padding:10px 10px 2px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px;min-width:0}
+.main{display:grid;gap:12px;min-width:0}
+h1,h2,h3{font-weight:600;margin:0;text-wrap:balance}h1{font-size:22px}h2{font-size:15px;margin-bottom:8px}
+p{margin:0 0 8px;max-width:68ch}
+.hint{font-size:13px;color:var(--mut)}
+.seg{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.seg button{background:var(--card);border:1px solid #c8c8c8;border-radius:4px;padding:6px 12px}
+.seg button[aria-pressed=true]{background:var(--acc);border-color:var(--acc);color:#fff}
+.btn{background:var(--acc);color:#fff;border:0;border-radius:4px;padding:8px 16px;font-weight:600}
+.btn:hover{background:var(--acc-d)}.btn:disabled{background:#c8c8c8;color:#555;cursor:not-allowed}
+.btn2{background:var(--card);border:1px solid #c8c8c8;border-radius:4px;padding:7px 12px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.between{justify-content:space-between}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}th{font-size:12px;color:var(--mut);font-weight:600;text-align:left}
+th,td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.stp{display:inline-flex;align-items:center;gap:6px}.stp button{width:28px;height:28px;border:1px solid #c8c8c8;background:var(--card);border-radius:4px;padding:0}.stp b{min-width:58px;text-align:center;font-variant-numeric:tabular-nums}
+.banner{border-radius:6px;padding:9px 12px;font-size:14px}.banner.warn{background:var(--warn-b);color:var(--warn)}.banner.bad{background:var(--bad-b);color:var(--bad)}.banner.ok{background:var(--ok-b);color:var(--ok)}
+.opt{display:block;width:100%;text-align:left;background:var(--card);border:1px solid #c8c8c8;border-radius:6px;padding:10px 12px;margin-bottom:8px}
+.opt:hover{border-color:var(--acc);background:var(--tint)}.opt b{display:block}.opt span{font-size:13px;color:var(--mut)}
+.tag{display:inline-block;font-size:12px;font-weight:600;color:var(--acc-d);background:var(--tint);border-radius:4px;padding:0 6px;margin-left:6px}
+.side{display:grid;gap:12px;position:sticky;top:12px;min-width:0}
+canvas{width:100%;height:auto;display:block;border-radius:6px;background:#eaf2fa}
+.adv{display:grid;gap:8px}
+.who{display:flex;gap:8px;align-items:center}.who i{width:32px;height:32px;border-radius:50%;background:var(--acc);color:#fff;display:grid;place-items:center;font-style:normal;font-weight:600}
+.who span{font-size:12px;color:var(--mut);display:block}
+.chat{display:grid;gap:6px;max-height:230px;overflow-y:auto;font-size:14px}
+.msg{background:var(--bg);border-radius:6px;padding:7px 9px}.msg.me{background:var(--tint);justify-self:end}.msg.warn{background:var(--warn-b);color:var(--warn)}.msg.bad{background:var(--bad-b);color:var(--bad)}.msg small{display:block;color:var(--mut);font-size:11px}
+.chips{display:flex;flex-wrap:wrap;gap:4px}.chips button{font-size:12px;background:var(--card);border:1px solid var(--acc);color:var(--acc-d);border-radius:12px;padding:2px 9px}
+.ask{display:flex;gap:6px}.ask input{flex:1;min-width:0;border:1px solid #c8c8c8;border-radius:4px;padding:6px 8px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.fig{background:var(--bg);border-radius:6px;padding:10px}.fig b{display:block;font-size:18px;font-variant-numeric:tabular-nums}
+svg text{font:12px var(--font);fill:var(--fg)}
+@media (max-width:1080px){.grid{grid-template-columns:minmax(0,1fr)}.side{position:static}.steps{grid-auto-flow:column;grid-auto-columns:max-content;overflow-x:auto}.steps .sep{display:none}}
+</style>
+
+<div class="app">
+  <div class="top" id="top"></div>
+  <div class="grid">
+    <nav aria-label="Steg"><ul class="steps" id="steps"></ul></nav>
+    <main class="main" id="main"></main>
+    <aside class="side">
+      <div class="card"><canvas id="c3d" width="620" height="340" role="img" aria-label="3D-visning"></canvas><div class="hint" id="alt3d"></div></div>
+      <div class="card adv" aria-label="Rådgiver">
+        <div class="who"><i aria-hidden="true">R</i><div><b>Rådgiver</b><span>KI-coachen din. Alltid her.</span></div></div>
+        <div class="chat" id="chat" aria-live="polite"></div>
+        <div class="chips" id="chips"></div>
+        <form class="ask" id="ask"><input id="q" aria-label="Spør Rådgiver" placeholder="Spør Rådgiver …" autocomplete="off"><button class="btn2">Send</button></form>
+      </div>
+    </aside>
+  </div>
+  <div class="demo">Demo av forslaget på branchen forslag/tre-stadier. Tall fra simuleringsreglene, mange er estimater. Rådgiver svarer her med forberedte svar, uten språkmodell.</div>
+</div>
+
+<script id="engine">
+const T_WEEK=67,T_COST=169,PART=['Prosjektering og byggesøknad','Grunnarbeid','Råbygg','Tett bygg','Tekniske anlegg og innredning','Overlevering'];
+const SYS={cast:{n:'Plasstøpt betong',f:.96,w:2,r:'E9'},pre:{n:'Prefab betong',f:1,w:1.5,r:'E3'},steel:{n:'Stål og hulldekker',f:1.02,w:1.2,r:'E3'},clt:{n:'Massivtre',f:1.05,w:1,r:'E10'}};
+const RISK={
+E4:{n:'Arkeologiske funn',p:()=>.3,part:1,d:8,c:1,alt:'Ekstra arkeologer',half:1,x:1},
+E5:{n:'Forurenset grunn',p:()=>.4,part:1,d:4,c:2,alt:'Sortering på stedet og ekstra graver',half:1,x:.5},
+E2:{n:'Vind stopper kranløft, HMS reagerer',p:f=>.05*f,part:2,d:1,c:.2,alt:'Mobilkran og ny løfteplan',half:0,x:.4},
+E9:{n:'Frost og vinterstøp',p:()=>.4,part:2,d:2,c:.8,alt:'Varme og tildekking',half:1,x:.3},
+E3:{n:'Streik hos utenlandsk leverandør',p:()=>.25,part:2,d:4,c:0,alt:'Dyrere lokal leverandør',half:1,x:1.2},
+E10:{n:'Fukt i massivtre',p:()=>.4,part:2,d:3,c:.5,alt:'Værtelt',half:1,x:.6}};
+const OH=.3,RESP=['accept','reduce','transfer','avoid'],RN={accept:'Akseptere',reduce:'Redusere',transfer:'Overføre',avoid:'Unngå'};
+const r3=x=>Math.round(x*1000)/1000;
+const plotArea=f=>Math.round(2300/(f*.6)),plotCost=f=>r3(plotArea(f)*.14);
+const allowed=f=>f*4<=28;
+function buildCost(f,s){const lifts=f<=4?1:2,fire=f<5?0:(s==='clt'?3.5:1.5);return r3(66.7*SYS[s].f+lifts*.3*f+fire)}
+const refDur=(f,s)=>[12,13,Math.round(f*SYS[s].w+1e-9),10,10,5];
+const risksFor=(f,s)=>['E4','E5','E2','E9','E3','E10'].filter(k=>k==='E4'||k==='E5'||k==='E2'||k===SYS[s].r);
+function out(k,resp,f){const R=RISK[k],I=R.c+OH*R.d,p=R.p(f);
+ if(resp==='reduce')return{up:.2*I,d:Math.floor(R.d/2),c:R.c/2,p};
+ if(resp==='transfer')return{up:1.25*p*R.c,d:R.d,c:0,p};
+ if(resp==='avoid')return{up:.5*I,d:0,c:0,p,gone:1};
+ return{up:0,d:R.d,c:R.c,p}}
+const expTot=o=>o.up+(o.gone?0:o.p*(o.c+OH*o.d));
+const offered=k=>RESP.filter(r=>r!=='transfer'||RISK[k].c>0);
+function suggestResp(k,f){let b=null;for(const r of offered(k)){const o=out(k,r,f),t=expTot(o),dl=o.gone?0:o.p*o.d;
+ if(!b||t<b.t-1e-9||(Math.abs(t-b.t)<1e-9&&dl<b.dl-1e-9))b={r,t,dl}}return b.r}
+const respOf=(P,k)=>(P.resp&&P.resp[k])||suggestResp(k,P.floors);
+function exposure(P){let cost=0,wk=0,ex=0;for(const k of risksFor(P.floors,P.sys)){const o=out(k,respOf(P,k),P.floors);if(o.gone)continue;cost+=o.p*(o.c+OH*o.d);wk+=o.p*o.d;ex+=o.p*o.c}return{cost,wk,ex}}
+function suggestReserve(P){const c=refDur(P.floors,P.sys).slice(1).reduce((a,b)=>a+b,0),e=exposure(P),w=Math.round(.1*c+e.wk+1e-9);return{w,c:r3(OH*w+e.ex)}}
+const upfront=P=>risksFor(P.floors,P.sys).reduce((a,k)=>a+out(k,respOf(P,k),P.floors).up,0);
+function planFig(P){const cw=P.est.slice(1).reduce((a,b)=>a+b,0),base=plotCost(P.floors)+buildCost(P.floors,P.sys)+OH*cw,excl=base+upfront(P);
+ return{base:r3(base),excl:r3(excl),cost:r3(excl+P.resC),week:P.est.reduce((a,b)=>a+b,0)+P.resW}}
+function rng(seed){let a=seed>>>0;return()=>{a=(a+0x6D2B79F5)>>>0;let t=a;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296}}
+function draw(P,seed){const u=rng(seed),L=[-.1,0,.1,.2,.3],dev=[0,0,0,0,0].map(()=>L[Math.floor(u()*5)]);
+ const ks=risksFor(P.floors,P.sys),us={};ks.forEach(k=>us[k]=u());const aiU=[u(),u(),u(),u(),u()];
+ const ref=refDur(P.floors,P.sys),actual=ref.map((d,i)=>i?Math.round(d*(1+dev[i-1])+1e-9):d);
+ const live=ks.filter(k=>respOf(P,k)!=='avoid'),hit=live.filter(k=>us[k]<RISK[k].p(P.floors)).sort((a,b)=>us[a]-us[b]).slice(0,2);
+ const byRatio=live.filter(k=>!hit.includes(k)).sort((a,b)=>us[a]/RISK[a].p(P.floors)-us[b]/RISK[b].p(P.floors));
+ if(!hit.length&&byRatio.length)hit.push(byRatio.shift());
+ const ev=[];let best=-1,gap=0;for(let i=1;i<6;i++){const g=actual[i]-P.est[i];if(g>gap){gap=g;best=i}}
+ if(best>0)ev.push({id:'E1',type:'over',part:best,gap});else if(byRatio.length)hit.push(byRatio.shift());
+ hit.forEach(k=>ev.push({id:k,type:'risk',part:RISK[k].part}));ev.push({id:'E8',type:'change',part:4});
+ const ord={over:0,risk:1,change:2};ev.sort((a,b)=>a.part-b.part||ord[a.type]-ord[b.type]);
+ return{dev,ev,aiU,actual}}
+function sim(P,D,events,dec){const ref=refDur(P.floors,P.sys),work=ref.map((d,i)=>i?Math.round(d*(1+D.dev[i-1])+1e-9):d),idle=[0,0,0,0,0,0],mode=[];let extra=0;
+ const ot=i=>{if(mode[i])return;mode[i]=1;const d=Math.round(work[i]*6/7+1e-9);extra+=.039*d;work[i]=d};
+ const hire=i=>{if(mode[i])return;mode[i]=1;const d=Math.round(work[i]*.8+1e-9);extra+=.14625*d;work[i]=d};
+ const ks=risksFor(P.floors,P.sys);
+ for(const e of events){const c=dec[e.id];
+  if(e.type==='over'){if(c==='ot')ot(e.part);if(c==='hire')hire(e.part)}
+  else if(e.type==='risk'){if(!ks.includes(e.id)||respOf(P,e.id)==='avoid')continue;const o=out(e.id,respOf(P,e.id),P.floors),R=RISK[e.id];
+   if(c==='alt'){idle[e.part]+=R.half?Math.floor(o.d/2):0;extra+=o.c+R.x}else{idle[e.part]+=o.d;extra+=o.c;if(c==='ot')ot(e.part)}}
+  else{if(c==='later')extra+=3;else{extra+=2;idle[4]+=2}}}
+ const dur=work.map((w,i)=>w+idle[i]),week=dur.reduce((a,b)=>a+b,0),cw=week-dur[0];
+ return{dur,week,cost:r3(plotCost(P.floors)+buildCost(P.floors,P.sys)+OH*cw+upfront(P)+extra)}}
+function optionsFor(e,dec,evs,D,P){if(e.type==='change')return['now','later'];
+ const prior=evs.slice(0,evs.indexOf(e));const used=prior.some(x=>x.part===e.part&&['ot','hire'].includes(dec[x.id]));
+ if(e.type==='over')return used?['accept']:['accept','ot','hire'];return used?['take','alt']:['take','alt','ot']}
+function aiPick(e,dec,evs,D,P,rel,uv){const i=evs.indexOf(e),ids=optionsFor(e,dec,evs,D,P).map(o=>({o,r:sim(P,D,evs.slice(0,i+1),{...dec,[e.id]:o})}));
+ ids.sort((a,b)=>a.r.cost-b.r.cost||a.r.week-b.r.week);return(uv<rel||ids.length<2)?ids[0].o:ids[1].o}
+function aiPath(P,D,rel){const dec={};D.ev.forEach((e,i)=>dec[e.id]=aiPick(e,dec,D.ev,D,P,rel,D.aiU[i]));return dec}
+function band(c,w){const bc=c<=T_COST?0:c<=T_COST*1.05?1:2,bw=w<=T_WEEK?0:w<=Math.ceil(T_WEEK*1.05)?1:2;return[bc,bw]}
+</script>
+
+<script>
+const fmt=(x,d=1)=>x.toFixed(d).replace('.',','),mn=x=>fmt(x,1)+' MNOK',esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const REL={lett:1,middels:.8,vanskelig:.6},STEPS=[['intro','Oppdrag'],['concept','Konsept'],['schedule','Tidsplan'],['risk','Risiko og reserve'],['present','Legg frem']];
+let S;
+function fresh(seed,diff){const est=[12,9,5,7,7,3];S={scr:'intro',diff:diff||'middels',seed:seed||20261105,floors:5,sys:'pre',est,resp:{},resW:0,resC:0,touched:false,D:null,dec:{},idx:0,last:null,log:[],recs:[],chat:[]}}
+const plan=()=>({floors:S.floors,sys:S.sys,est:S.est,resp:S.resp,resW:S.resW,resC:S.resC});
+const logit=(what,rec,warn)=>S.log.push({tid:new Date().toLocaleTimeString('nb-NO'),valg:what,raadgiver:rec||'',advarsel:warn||''});
+const idx=()=>['intro','concept','schedule','risk','present','exec','debrief'].indexOf(S.scr);
+const OPT={accept:'Godta forsinkelsen',ot:'Kjør overtid',hire:'Leie inn folk',take:'Ta konsekvensen',alt:'',now:'Godkjenn nå',later:'Godkjenn senere'};
+const optName=(e,o)=>o==='alt'?RISK[e.id].alt:OPT[o];
+function citeFor(){return{steel:'Statens hus Nordfjordeid (1 880 m², stål og hulldekker) tok ca. 11 måneder å bygge.',pre:'Elvebredden på Kongsvinger (stål og prefab) brukte ca. 3 uker per etasje på 1 400 m².',clt:'Valle Wood i Oslo (massivtre, 6 700 m²) ble noen måneder forsinket fordi kranen måtte holde bjelkene til de var boltet.',cast:'Vi har ikke et publisert norsk kontorbygg i plasstøpt betong i denne størrelsen, men tallene bygger på normal råbyggtid per etasje.'}[S.sys]}
+function badParts(){const r=refDur(S.floors,S.sys);return S.est.map((e,i)=>Math.abs(e-r[i])>.2*r[i]?i:-1).filter(i=>i>=0)}
+function advice(){const P=plan(),r=refDur(S.floors,S.sys);
+ if(S.scr==='intro')return{t:'Hei! Jeg hjelper deg med planen. Du bestemmer. Jeg sier fra hvis noe ser urealistisk ut, og forteller hva lignende prosjekter har gjort.'};
+ if(S.scr==='concept'){if(!allowed(S.floors))return{k:'bad',t:`${S.floors} etasjer gir et bygg på ${S.floors*4} meter. Reguleringen tillater maks 28 meter, så dette kan ikke godkjennes.`};
+  const cur=planCostRef(S.floors,S.sys),o=Object.keys(SYS).filter(s=>s!==S.sys).map(s=>({s,d:Math.abs(planCostRef(S.floors,s)-cur)})).sort((a,b)=>a.d-b.d)[0];
+  return{t:`Hver etasje sparer tomt, men gir lengre råbygg. ${SYS[S.sys].n} og ${SYS[o.s].n.toLowerCase()} skiller seg bare med ca. ${fmt(o.d)} MNOK. Velg ut fra tid og risiko. Etasjevalget betyr mye mer.`}}
+ if(S.scr==='schedule'){const b=badParts();if(b.length){const i=b.sort((x,y)=>(S.est[y]-r[y]===0?0:Math.abs(S.est[y]-r[y])/r[y])-Math.abs(S.est[x]-r[x])/r[x])[0];
+   return{k:'warn',t:`${PART[i]}: du har satt ${S.est[i]} uker. Sammenlignbare prosjekter tilsier ca. ${r[i]} uker. ${i===2?citeFor():'Bygg sprekker i snitt 32 % på tid fordi anslagene er for optimistiske.'}`}}
+  return{t:'Anslagene dine ligger nær det sammenlignbare prosjekter brukte. Bra!'}}
+ if(S.scr==='risk'){if(S.resW===0&&S.resC===0)return{k:'warn',t:'Du har ingen reserve. Uten reserve treffer hver hendelse sluttresultatet direkte.'};
+  const over=risksFor(S.floors,S.sys).filter(k=>expTot(out(k,respOf(P,k),S.floors))>expTot(out(k,suggestResp(k,S.floors),S.floors))+.05);
+  if(over.length)return{k:'warn',t:`${RISK[over[0]].n}: valget ditt har høyere forventet kostnad enn ${RN[suggestResp(over[0],S.floors)].toLowerCase()}. Det kan likevel være riktig hvis du ikke tåler usikkerheten.`};return{t:'Tiltakene dine har lav forventet kostnad.'}}
+ if(S.scr==='present'){const f=planFig(P),b=band(f.cost,f.week);return{k:b[0]||b[1]?'warn':'',t:b[0]||b[1]?'Planen går over målene. Du kan godkjenne den likevel, men da har du lite å gå på når noe skjer.':'Planen er innenfor målene. La oss se om den tåler virkeligheten.'}}
+ return{t:'Jeg gir en anbefaling ved hver hendelse. Du bestemmer.'}}
+function planCostRef(f,s){const P={floors:f,sys:s,est:refDur(f,s),resp:{},resW:0,resC:0};return planFig(P).excl}
+const QA={concept:[['Hva betyr etasjevalget?','Tomten koster 140 000 kr per m². Færre etasjer gir større grunnflate og dyrere tomt. Fra 3 til 7 etasjer sparer du ca. 100 MNOK, men hver etasje gir lengre råbygg.'],['Hva er bæresystem?','Bæresystemet er det som holder bygget oppe. Massivtre og stål går raskt, plasstøpt betong tar lengst tid men er billigst.'],['Hvorfor brannklasse fra 5 etasjer?','Byggeforskriften TEK17 krever strengere brannsikring fra 5 etasjer. Det gir en ekstra kostnad i modellen. Beløpet er et estimat.']],
+schedule:[['Hvordan fordeler tiden seg?','For et bygg i denne størrelsen er byggingen ca. 12 måneder: grunnarbeid 25 %, tett bygg 20 %, tekniske anlegg 20 %, overlevering 10 %, og resten råbygg. Tallene er fra ett prosjekt.'],['Hva er kritisk linje?','Kritisk linje er rekken av oppgaver som bestemmer sluttdatoen. Her går delene etter hverandre, så alle er kritiske.'],['Hvorfor sprekker tidsplaner?','Bygg sprekker i snitt 32 % på tid og 62 % på kostnad. Vi planlegger ofte ut fra hvordan det bør gå, ikke hvordan det faktisk gikk andre.']],
+risk:[['Hva er forskjellen på tiltakene?','Akseptere: du gjør ingenting. Redusere: betal litt nå for mindre konsekvens. Overføre: forsikring dekker kostnaden, ikke tiden. Unngå: endre planen så risikoen forsvinner.'],['Hvor stor reserve trenger jeg?','Trykk «Bruk Rådgivers forslag». Da får du 10 % av byggetiden pluss forventet forsinkelse.'],['Hva er risikoeksponering?','Summen av sannsynlighet ganger konsekvens for risikoene du har igjen. Altså hva du i snitt må regne med.']],
+all:[['Hva koster en uke forsinkelse?','Rigg og drift koster 0,3 MNOK per byggeuke, altså brakker, kran og ledelse.'],['Når bør jeg stole på deg?','Ofte, men ikke blindt. På vanskelig nivå bommer jeg oftere. Debriefen viser hvor ofte jeg hadde rett.'],['Kjører du på overtid?','Overtid koster minst 40 % ekstra etter loven, og det er grenser for hvor mye man kan jobbe.']]};
+function say(text,who,k){S.chat.push({text,who,k});if(S.chat.length>20)S.chat.shift()}
+function answer(q){const l=q.toLowerCase(),all=[...(QA[S.scr]||[]),...QA.all].concat(QA.concept,QA.schedule,QA.risk);let best=null,sc=0;
+ for(const[a,b]of all){const w=(a+' '+b).toLowerCase().split(/[^a-zæøå0-9]+/).filter(x=>x.length>3),n=w.filter(x=>l.includes(x)).length;if(n>sc){sc=n;best=b}}
+ return best||'Det er utenfor det jeg kan her. La oss holde oss til steget du står på.'}
+function kpis(){let c=null,w=null,e=null,lab='Plan';const P=plan();
+ if(S.scr==='exec'||S.scr==='debrief'){const n=S.scr==='exec'?S.idx:S.D.ev.length,r=sim(P,S.D,S.D.ev.slice(0,n),S.dec);c=r.cost;w=r.week;lab='Prognose';e=exposure(P).cost}
+ else if(S.scr!=='intro'){const f=planFig(P);c=f.cost;w=f.week;e=exposure(P).cost}
+ const bd=b=>['<span class="badge b-ok">På mål</span>','<span class="badge b-warn">Litt over</span>','<span class="badge b-bad">Klart over</span>'][b];const b=c===null?[0,0]:band(c,w);
+ return`<div class="brand"><b>Fra tomt til tak</b><span>Kontorer til 100 ansatte, sentrum av Oslo</span></div>
+ <div class="kpi"><div class="l">${lab}: budsjett</div><div class="v">${c===null?'–':fmt(c)} <small>av ${T_COST} MNOK</small>${c===null?'':bd(b[0])}</div></div>
+ <div class="kpi"><div class="l">${lab}: ferdig</div><div class="v">${w===null?'–':'uke '+w} <small>av uke ${T_WEEK}</small>${w===null?'':bd(b[1])}</div></div>
+ <div class="kpi"><div class="l">Risikoeksponering</div><div class="v">${e===null?'–':fmt(e)+' <small>MNOK forventet</small>'}</div></div>`}
+function steps(){const i=idx();let h=STEPS.map(([k,n],j)=>`<li><button data-go="${k}" class="${j===i?'now':j<i?'done':''}" ${(i>4||j>i&&!S.touched)?'disabled':''} ${j===i?'aria-current="step"':''}><span class="n">${j<i?'✓':j+1}</span>${n}</button></li>`).join('');
+ return`<li class="sep">Stadium 1: Planlegge</li>${h}<li class="sep">Stadium 2 og 3</li><li><button class="${i===5?'now':i>5?'done':''}" disabled><span class="n">${i>5?'✓':6}</span>Gjennomføring</button></li><li><button class="${i===6?'now':''}" disabled><span class="n">7</span>Debrief</button></li>`}
+const seg=(name,items,cur)=>`<div class="seg" role="group" aria-label="${name}">${items.map(([v,l])=>`<button id="${name}-${v}" data-set="${name}" data-v="${v}" aria-pressed="${String(v)===String(cur)}">${l}</button>`).join('')}</div>`;
+function vIntro(){return`<section class="card"><p class="hint">Møte i brakka</p><h1>Vi trenger kontorer til 100 ansatte i Oslo</h1><br>
+ <p>Byggherren har valgt deg som prosjektleder. Bygget skal stå nær sentrum og bygges fra bunnen. Målet er ferdig innen <b>uke ${T_WEEK}</b> og innenfor <b>${T_COST} MNOK</b>.</p>
+ <p>Du planlegger først, ser planen bli testet av uforutsette hendelser, og får til slutt vite hva som faktisk betydde noe. Det tar ca. 20 minutter.</p>
+ <h2>Hvor ofte skal Rådgiver ha rett?</h2>${seg('diff',[['lett','Lett'],['middels','Middels'],['vanskelig','Vanskelig']],S.diff)}
+ <button class="btn" data-go="concept" id="start">Start planleggingen</button></section>`}
+function vConcept(){const f=S.floors,ok=allowed(f);return`<section class="card"><h1>Konsept</h1><p class="hint">Arealbehovet er 2 300 m² BTA (bruttoareal, 23 m² per ansatt). Tomten koster 140 000 kr per m² og maks 60 % kan bebygges.</p>
+ <h2>Antall etasjer</h2>${seg('floors',[3,4,5,6,7,8].map(n=>[n,n]),f)}<h2>Bæresystem</h2>${seg('sys',Object.keys(SYS).map(k=>[k,SYS[k].n]),S.sys)}
+ ${ok?'':`<div class="banner bad">${f*4} meter er over grensen på 28 meter. Velg færre etasjer.</div><br>`}
+ <div class="two"><div class="fig">Tomt å kjøpe<b>${plotArea(f)} m²</b><span class="hint">${mn(plotCost(f))}</span></div><div class="fig">Bygg<b>${mn(buildCost(f,S.sys))}</b><span class="hint">inkl. heis og brannkrav</span></div>
+ <div class="fig">Byggetid uten forsinkelser<b>${refDur(f,S.sys).reduce((a,b)=>a+b,0)} uker</b><span class="hint">rigg og drift 0,3 MNOK per uke</span></div><div class="fig">Råbygg<b>${refDur(f,S.sys)[2]} uker</b><span class="hint">${SYS[S.sys].w.toString().replace('.',',')} uker per etasje</span></div></div><br>
+ <div class="row between"><span></span><button class="btn" id="next" data-go="schedule" ${ok?'':'disabled'}>Neste: Tidsplan</button></div></section>`}
+function vSched(){const r=refDur(S.floors,S.sys),b=badParts();return`<section class="card"><div class="row between"><h1>Tidsplan</h1><button class="btn2" id="usedur" data-act="usedur">Bruk Rådgivers forslag</button></div><p class="hint">Dette er det vanskeligste steget. Anslå hvor mange uker hver hoveddel tar. Du bør bomme litt: det er anslagene dine stadium 2 tester.</p>
+ <div class="tw"><table><tr><th>Hoveddel</th><th>Ditt anslag</th><th class="n">Referanse</th><th>Status</th></tr>${PART.map((p,i)=>`<tr><td>${p}</td><td><span class="stp"><button id="m${i}" data-est="${i}" data-d="-1" aria-label="Én uke mindre: ${p}">−</button><b>${S.est[i]} uker</b><button id="p${i}" data-est="${i}" data-d="1" aria-label="Én uke mer: ${p}">+</button></span></td><td class="n">${r[i]}</td><td>${b.includes(i)?'<span class="badge b-warn">Avvik over 20 %</span>':'<span class="badge b-ok">Rimelig</span>'}</td></tr>`).join('')}</table></div><br>
+ ${gantt([{l:'Ditt anslag',d:S.est,c:'var(--acc)'}])}<br><div class="row between"><button class="btn2" data-go="concept">Tilbake</button><button class="btn" data-go="risk" id="next">Neste: Risiko og reserve</button></div></section>`}
+function vRisk(){const P=plan(),ks=risksFor(S.floors,S.sys),s=suggestReserve(P);return`<section class="card"><h1>Risiko og reserve</h1><p class="hint">Velg hvordan du møter hver kjente risiko. Sannsynligheten for vindstans øker med høyden.</p>
+ ${ks.map(k=>{const R=RISK[k],p=R.p(S.floors);return`<h2>${R.n} <span class="hint">${Math.round(p*100)} % sjanse, ${R.d} uker, ${fmt(R.c)} MNOK</span></h2>${seg('r_'+k,offered(k).map(o=>[o,`${RN[o]} (${fmt(out(k,o,S.floors).up)})`]),respOf(P,k))}`}).join('')}
+ <h2>Reserve</h2><div class="row"><span class="stp">Tid <button id="rw-" data-res="w" data-d="-1" aria-label="Mindre tidsreserve">−</button><b>${S.resW} uker</b><button id="rw+" data-res="w" data-d="1" aria-label="Mer tidsreserve">+</button></span><span class="stp">Kostnad <button id="rc-" data-res="c" data-d="-.5" aria-label="Mindre kostnadsreserve">−</button><b>${fmt(S.resC)}</b><button id="rc+" data-res="c" data-d=".5" aria-label="Mer kostnadsreserve">+</button></span><button class="btn2" id="useres" data-act="useres">Bruk Rådgivers forslag (${s.w} uker, ${fmt(s.c)})</button></div><br>
+ <div class="row between"><button class="btn2" data-go="schedule">Tilbake</button><button class="btn" id="next" data-go="present">Neste: Legg frem</button></div></section>`}
+function vPresent(){const P=plan(),f=planFig(P);return`<section class="card"><h1>Legg frem planen</h1><p class="hint">Byggherren vil se planen mot målene. Etter godkjenning er den låst.</p>
+ <div class="two"><div class="fig">Konsept<b>${S.floors} etasjer</b><span class="hint">${SYS[S.sys].n}</span></div><div class="fig">Plan inkl. reserve<b>${mn(f.cost)}</b><span class="hint">mål ${T_COST} MNOK</span></div><div class="fig">Ferdig<b>uke ${f.week}</b><span class="hint">mål uke ${T_WEEK}, reserve ${S.resW} uker</span></div></div><br>
+ ${gantt([{l:'Plan',d:S.est,c:'var(--acc)'}])}<br><div class="row between"><button class="btn2" data-go="risk">Tilbake</button><button class="btn" id="approve" data-act="approve">Godkjenn planen og start byggingen</button></div></section>`}
+function curEv(){return S.D.ev[S.idx]}
+const evWeek=e=>{const r=sim(plan(),S.D,S.D.ev.slice(0,S.D.ev.indexOf(e)),S.dec);return r.dur.slice(0,e.part).reduce((a,b)=>a+b,0)};
+function evText(e){if(e.type==='over')return[`${PART[e.part]} tar lengre tid enn du anslo`,`Du anslo ${S.est[e.part]} uker. Det ser ut til å bli ${S.D.actual[e.part]} uker, altså ${e.gap} uker mer.`];
+ if(e.type==='change')return['Byggherren vil ha 20 flere arbeidsplasser','Endringen kan godkjennes nå med litt forsinkelse, eller tas senere til høyere pris.'];
+ const o=out(e.id,respOf(plan(),e.id),S.floors);return[RISK[e.id].n,`Du valgte «${RN[respOf(plan(),e.id)].toLowerCase()}» i planen. Konsekvensen er nå ${o.d} uker og ${fmt(o.c)} MNOK.`]}
+function vExec(){const P=plan(),rel=REL[S.diff];if(S.last)return vCompare();const e=curEv();const[h,t]=evText(e),ops=optionsFor(e,S.dec,S.D.ev,S.D,P),rec=aiPick(e,S.dec,S.D.ev,S.D,P,rel,S.D.aiU[S.idx]);const i=S.idx,base=sim(P,S.D,S.D.ev.slice(0,i),S.dec);
+ return`<section class="card"><p class="hint">Hendelse ${i+1} av ${S.D.ev.length}, uke ${evWeek(e)}, ${PART[e.part]}</p><h1>${esc(h)}</h1><br><p>${esc(t)}</p>
+ ${ops.map(o=>{const r=sim(P,S.D,S.D.ev.slice(0,i+1),{...S.dec,[e.id]:o});return`<button class="opt" id="o_${o}" data-pick="${o}"><b>${optName(e,o)}${o===rec?'<span class="tag">Rådgiver anbefaler</span>':''}</b><span>Prognose: uke ${r.week}, ${mn(r.cost)}</span></button>`}).join('')}</section>`}
+function vCompare(){const L=S.last,y=L.you,a=L.ai;return`<section class="card"><h1>Din vei og KI-ens vei</h1><p class="hint">Regnet fra samme tilstand.</p><div class="two"><div class="fig">Du: ${esc(L.yn)}<b>uke ${y.week}, ${mn(y.cost)}</b></div><div class="fig">KI: ${esc(L.an)}<b>uke ${a.week}, ${mn(a.cost)}</b></div></div><br>
+ <p>${y.cost<=a.cost?'Valget ditt holder seg godt mot anbefalingen.':`Valget ditt koster ${mn(y.cost-a.cost)} mer enn anbefalingen.`}</p><button class="btn" id="cont" data-act="cont">${S.idx+1<S.D.ev.length?'Fortsett byggingen':'Se debriefen'}</button></section>`}
+function gantt(rows){const tot=Math.max(...rows.map(r=>r.d.reduce((a,b)=>a+b,0)),T_WEEK)+3,W=640,x=w=>110+w/tot*(W-120),h=rows.length*PART.length*17+24;let y=4,s='';
+ PART.forEach((p,i)=>{rows.forEach((r,j)=>{const st=r.d.slice(0,i).reduce((a,b)=>a+b,0);s+=`<rect x="${x(st)}" y="${y}" width="${Math.max(1,x(st+r.d[i])-x(st))}" height="13" rx="2" fill="${r.c}"><title>${r.l}: ${p}, uke ${st}–${st+r.d[i]}</title></rect>`;if(j===0)s+=`<text x="0" y="${y+11}">${['Prosjektering','Grunnarbeid','Råbygg','Tett bygg','Tekn. og innr.','Overlevering'][i]}</text>`;y+=15});y+=2});
+ s+=`<line x1="${x(T_WEEK)}" x2="${x(T_WEEK)}" y1="0" y2="${y}" stroke="var(--bad)" stroke-dasharray="4 3"/><text x="${Math.min(x(T_WEEK)+4,W-60)}" y="${y+12}">Mål uke ${T_WEEK}</text>`;
+ return`<div class="tw"><svg viewBox="0 0 ${W} ${y+18}" style="width:100%;min-width:460px" role="img" aria-label="Gantt-diagram">${s}</svg></div>${rows.length>1?`<div class="row hint">${rows.map(r=>`<span><span style="display:inline-block;width:10px;height:10px;background:${r.c};border-radius:2px"></span> ${r.l}</span>`).join('')}</div>`:''}`}
+function results(){const P=plan(),rel=REL[S.diff],D=S.D,fin=sim(P,D,D.ev,S.dec),aiDec=aiPath(P,D,rel),ai=sim(P,D,D.ev,aiDec),f=planFig(P),run2=sim(P,D,[],{}).cost;
+ const br=[['Planen din mot målet',f.excl-T_COST],['Anslagene dine',run2-f.excl],['Hendelsene',ai.cost-run2],['Valgene dine',fin.cost-ai.cost]];
+ const items=[];const sw=(l,Q,dec)=>{const r=sim(Q,D,D.ev,dec||S.dec);items.push({l,c:fin.cost-r.cost,w:fin.week-r.week})};
+ if(S.floors!==7)sw(`${S.floors} etasjer i stedet for 7`,{...P,floors:7});if(S.sys!=='steel')sw(`${SYS[S.sys].n} i stedet for stål`,{...P,sys:'steel'});
+ risksFor(S.floors,S.sys).forEach(k=>{const b=suggestResp(k,S.floors);if(respOf(P,k)!==b)sw(`${RN[respOf(P,k)]} på ${RISK[k].n.toLowerCase()}`,{...P,resp:{...P.resp,[k]:b}})});
+ D.ev.forEach(e=>{if(S.dec[e.id]!==aiDec[e.id])sw(`${optName(e,S.dec[e.id])}: ${evText(e)[0].toLowerCase()}`,P,{...S.dec,[e.id]:aiDec[e.id]})});
+ items.sort((a,b)=>Math.abs(b.c)-Math.abs(a.c));
+ const miss=[];D.ev.forEach(e=>{const i=D.ev.indexOf(e),prior={};D.ev.slice(0,i).forEach(x=>prior[x.id]=S.dec[x.id]);const run=o=>sim(P,D,D.ev.slice(0,i+1),{...prior,[e.id]:o}),me=run(S.dec[e.id]),ops=optionsFor(e,prior,D.ev,D,P).map(o=>({o,r:run(o)}));
+  if(e.type!=='change'&&ops.some(x=>x.r.week<me.week&&(x.r.cost-me.cost)<0))miss.push('time');if(S.dec[e.id]==='hire'&&ops.some(x=>x.o==='ot'&&x.r.week<=me.week&&x.r.cost<me.cost))miss.push('res')});
+ if(risksFor(S.floors,S.sys).some(k=>respOf(P,k)==='accept'&&expTot(out(k,suggestResp(k,S.floors),S.floors))<expTot(out(k,'accept',S.floors))-1e-9)||fin.week-S.est.reduce((a,b)=>a+b,0)>S.resW)miss.push('risk');
+ const r=refDur(S.floors,S.sys);let right=0,follow=0,wrong=0,n=0;S.est.forEach((e,i)=>{n++;const fo=e===r[i],ri=Math.abs(D.actual[i]-r[i])<=.2*r[i];if(fo)follow++;if(ri)right++;if((fo&&!ri)||(!fo&&ri))wrong++});
+ S.recs.forEach(x=>{n++;const ri=x.rc<=x.yc;if(x.f)follow++;if(ri)right++;if((x.f&&!ri)||(!x.f&&ri))wrong++});if(wrong>=n/2)miss.push('ai');
+ return{fin,ai,br,items,miss:[...new Set(miss)],right,follow,n,f}}
+function vDebrief(){const R=results(),P=plan(),b=band(R.fin.cost,R.fin.week),BN=['på mål','litt over','klart over'],BC=['b-ok','b-warn','b-bad'];
+ const G={time:['Tid koster penger','En uke forsinkelse koster 0,3 MNOK i rigg og drift. Sammenlign det med prisen for å hente den inn.'],res:['Ressurser har grenser','Innleie gir mindre per person. Prøv overtid først, innenfor lovens grenser.'],risk:['Risiko kan styres','Se på forventet kostnad når du velger tiltak, og sett av nok reserve.'],ai:['KI-råd bør veies','Bruk Rådgiver mer bevisst: følg rådet når begrunnelsen holder, og overstyr når den ikke gjør det.']};
+ const conc=`Du endte ${R.fin.cost>T_COST?mn(R.fin.cost-T_COST)+' over':mn(T_COST-R.fin.cost)+' under'} budsjett og ${R.fin.week>T_WEEK?(R.fin.week-T_WEEK)+' uker etter':'innenfor'} fristen. ${R.items[0]?`Det tyngste valget var «${R.items[0].l.toLowerCase()}».`:'Du fulgte Rådgiver og referanseplanen hele veien.'} ${R.miss.length?'Du kan lære mest av: '+R.miss.map(m=>G[m][0].toLowerCase()).join(', ')+'.':'Du traff alle fire læringsmålene.'}`;
+ const log=JSON.stringify(S.log,null,1);
+ return`<section class="card"><h1>Debrief</h1><br><div class="two"><div class="fig">Sluttkostnad<b>${mn(R.fin.cost)}</b><span class="badge ${BC[b[0]]}" style="margin:0">${BN[b[0]]}</span></div><div class="fig">Ferdig<b>uke ${R.fin.week}</b><span class="badge ${BC[b[1]]}" style="margin:0">${BN[b[1]]}</span></div><div class="fig">KI-ens vei, samme hendelser<b>uke ${R.ai.week}, ${mn(R.ai.cost)}</b></div></div></section>
+ <section class="card"><h2>Hvor ble avviket av?</h2>${bridge(R.br,R.fin.cost)}</section>
+ <section class="card"><h2>Det som betydde mest</h2>${R.items.length?`<div class="tw"><table><tr><th>Valg</th><th class="n">Kostnad</th><th class="n">Tid</th></tr>${R.items.slice(0,5).map(i=>`<tr><td>${esc(i.l)}${Math.abs(i.c)<T_COST*.02?'<span class="tag">Lite</span>':''}</td><td class="n">${i.c>=0?'+':'−'}${fmt(Math.abs(i.c))}</td><td class="n">${i.w>=0?'+':'−'}${Math.abs(i.w)} uker</td></tr>`).join('')}</table></div>`:'<p>Ingen av valgene dine skilte seg fra referanseplanen.</p>'}<p class="hint">Sammenlignet med referanseplanen (7 etasjer i stål) og KI-ens valg, ett valg om gangen.</p></section>
+ <section class="card"><h2>Plan mot virkelighet</h2>${gantt([{l:'Plan',d:S.est,c:'var(--acc)'},{l:'Faktisk',d:R.fin.dur,c:'#8a8a8a'}])}</section>
+ <section class="card"><h2>Konklusjon</h2><p>${esc(conc)}</p>${R.miss.map(m=>`<p><b>${G[m][0]}.</b> ${G[m][1]}</p>`).join('')}<p class="hint">KI-tillit: ${R.n} råd, du fulgte ${R.follow}, ${R.right} var riktige.</p>
+ <div class="row"><button class="btn2" id="copy" data-act="copy">Kopier beslutningsloggen</button><button class="btn" id="again" data-act="again">Spill på nytt med nye hendelser</button></div><textarea id="logt" readonly hidden aria-label="Beslutningslogg" rows="6" style="width:100%;margin-top:8px">${esc(log)}</textarea></section>`}
+function bridge(br,fin){const W=640,rowH=30,vals=[];let acc=T_COST;vals.push({l:'Budsjettmål',a:0,b:T_COST,t:1});br.forEach(([l,d])=>{vals.push({l,a:acc,b:acc+d,d});acc+=d});vals.push({l:'Sluttkostnad',a:0,b:fin,t:1});
+ const lo=Math.floor(Math.min(...vals.filter(v=>!v.t).flatMap(v=>[v.a,v.b]),T_COST,fin)-4),hi=Math.ceil(Math.max(...vals.filter(v=>!v.t).flatMap(v=>[v.a,v.b]),T_COST,fin)+4),x=v=>190+(v-lo)/(hi-lo)*(W-270);
+ const s=vals.map((v,i)=>{const y=i*rowH+4,a=v.t?lo:Math.min(v.a,v.b),b=v.t?v.b:Math.max(v.a,v.b),col=v.t?'var(--acc)':v.d>0?'var(--bad)':'var(--ok)';return`<text x="0" y="${y+15}">${v.l}</text><rect x="${x(a)}" y="${y+2}" width="${Math.max(2,x(b)-x(a))}" height="18" rx="2" fill="${col}"/><text x="${x(b)+6}" y="${y+15}">${v.t?fmt(v.b)+' MNOK':(v.d>=0?'+':'−')+fmt(Math.abs(v.d))}</text>`}).join('');
+ return`<div class="tw"><svg viewBox="0 0 ${W} ${vals.length*rowH+8}" style="width:100%;min-width:460px" role="img" aria-label="Budsjettbro fra mål til sluttkostnad">${s}</svg></div><p class="hint">Stolpene for mål og sluttkostnad starter på ${lo} MNOK, ikke null.</p>`}
+function draw3D(){const c=document.getElementById('c3d'),g=c.getContext('2d'),W=c.width,H=c.height;g.clearRect(0,0,W,H);const f=allowed(S.floors)?S.floors:S.floors,sq=Math.sqrt(plotArea(Math.min(f,8))),fs=Math.sqrt(2300/f),k=3.0,iso=(x,y,z)=>[W/2+(x-y)*k*.87,H-70+(x+y)*k*.42-65-z];
+ const poly=(p,fill,st)=>{g.beginPath();p.forEach((q,i)=>i?g.lineTo(q[0],q[1]):g.moveTo(q[0],q[1]));g.closePath();g.fillStyle=fill;g.fill();if(st){g.strokeStyle=st;g.stroke()}};
+ const s2=sq/2;poly([iso(-s2,-s2,0),iso(s2,-s2,0),iso(s2,s2,0),iso(-s2,s2,0)],'#dfe8d8','#b9c8ad');
+ let built=f,pct=null,pit=false;if(S.scr==='exec'||S.scr==='debrief'){const P=plan(),e=S.scr==='exec'&&S.D.ev[S.idx];const n=S.scr==='exec'?S.idx+(S.last?1:0):S.D.ev.length,r=sim(P,S.D,S.D.ev.slice(0,n),S.dec);const wk=S.scr==='debrief'?r.week:(e?evWeek(e):r.week);const st=i=>r.dur.slice(0,i).reduce((a,b)=>a+b,0);pct=wk;built=wk<=st(2)?0:Math.min(f,Math.round((wk-st(2))/Math.max(1,r.dur[2])*f));pit=wk<st(2)+1&&wk>=st(1)}
+ const col={cast:['#c9ced4','#aab1b9','#e2e6ea'],pre:['#c9d6e3','#9fb2c6','#e6edf4'],steel:['#b7cde4','#8fadc9','#dbe8f3'],clt:['#e0c49a','#c9a673','#efdcc0']}[S.sys],h=9*4/ (f>7?1.15:1),b=fs/2;
+ if(pit)poly([iso(-b,-b,0),iso(b,-b,0),iso(b,b,0),iso(-b,b,0)],'#a58f73','#7c6a54');
+ for(let i=0;i<built;i++){const dz=h;const z0=i*dz*.62,z1=(i+1)*dz*.62;const over=i*4>=28;
+  poly([iso(b,-b,z0),iso(b,b,z0),iso(b,b,z1),iso(b,-b,z1)],over?'#f2b8b0':col[0],'#7f8c99');poly([iso(-b,b,z0),iso(b,b,z0),iso(b,b,z1),iso(-b,b,z1)],over?'#e59a90':col[1],'#7f8c99');
+  if(i===built-1)poly([iso(-b,-b,z1),iso(b,-b,z1),iso(b,b,z1),iso(-b,b,z1)],col[2],'#7f8c99')}
+ g.fillStyle='#1b1b1b';g.font='24px "Segoe UI",system-ui,sans-serif';g.fillText(pct===null?`${f} etasjer · ${f*4} m · tomt ${plotArea(f)} m²`:`Uke ${pct} · ${built} av ${f} etasjer`,16,32);
+ document.getElementById('alt3d').textContent=pct===null?`Bygg i ${f} etasjer på ${Math.round(2300/f)} m² grunnflate, ${SYS[S.sys].n.toLowerCase()}.`:`Uke ${pct}: ${built} av ${f} etasjer er reist.`;c.setAttribute('aria-label',document.getElementById('alt3d').textContent)}
+let lastAdv='';
+function render(){const foc=document.activeElement&&document.activeElement.id;document.getElementById('top').innerHTML=kpis();document.getElementById('steps').innerHTML=steps();
+ document.getElementById('main').innerHTML=({intro:vIntro,concept:vConcept,schedule:vSched,risk:vRisk,present:vPresent,exec:vExec,debrief:vDebrief})[S.scr]();
+ const a=advice();if(a.t!==lastAdv&&S.scr!=='exec'&&S.scr!=='debrief'){say(a.t,'r',a.k);lastAdv=a.t}
+ const ch=document.getElementById('chat');ch.innerHTML=S.chat.map(m=>`<div class="msg ${m.who==='me'?'me':''} ${m.k||''}">${esc(m.text)}${m.pre?'<small>Forberedt svar</small>':''}</div>`).join('');ch.scrollTop=ch.scrollHeight;
+ document.getElementById('chips').innerHTML=(QA[S.scr]||QA.all).map((q,i)=>`<button type="button" id="ch${i}" data-q="${i}">${q[0]}</button>`).join('');draw3D();
+ if(foc&&document.getElementById(foc)&&foc!=='q')document.getElementById(foc).focus()}
+function approve(){const P=plan(),f=planFig(P);logit(`Godkjente plan: ${S.floors} etasjer, ${SYS[S.sys].n}, ${mn(f.cost)}, uke ${f.week}`,'',band(f.cost,f.week).some(x=>x)?'Planen over målene':'');S.D=draw(P,S.seed);S.scr='exec';S.idx=0;S.dec={};S.last=null;S.touched=false;say('Da bygger vi. Jeg anbefaler ved hver hendelse, og du bestemmer.','r')}
+function pick(o){const P=plan(),e=curEv(),i=S.idx,rel=REL[S.diff],rec=aiPick(e,S.dec,S.D.ev,S.D,P,rel,S.D.aiU[i]),evs=S.D.ev.slice(0,i+1),you=sim(P,S.D,evs,{...S.dec,[e.id]:o}),ai=sim(P,S.D,evs,{...S.dec,[e.id]:rec});
+ S.dec[e.id]=o;S.recs.push({f:o===rec,yc:you.cost,rc:ai.cost});logit(`${evText(e)[0]}: ${optName(e,o)}`,optName(e,rec));S.last={you,ai,yn:optName(e,o),an:optName(e,rec)};say(`Jeg anbefalte «${optName(e,rec).toLowerCase()}». ${o===rec?'Vi var enige.':'Du valgte annerledes, og det er lov.'}`,'r')}
+document.addEventListener('click',ev=>{const t=ev.target.closest('button');if(!t||t.closest('form'))return;const d=t.dataset;
+ if(d.go){S.touched=S.touched||d.go!=='intro';S.scr=d.go}
+ else if(d.set){if(d.set==='diff')S.diff=d.v;else if(d.set==='floors')S.floors=+d.v;else if(d.set==='sys')S.sys=d.v;else S.resp={...S.resp,[d.set.slice(2)]:d.v}}
+ else if(d.est){S.est=S.est.slice();S.est[+d.est]=Math.max(1,S.est[+d.est]+ +d.d)}
+ else if(d.res==='w')S.resW=Math.max(0,S.resW+ +d.d);else if(d.res==='c')S.resC=Math.max(0,S.resC+ +d.d);
+ else if(d.pick)pick(d.pick);else if(d.q){const q=(QA[S.scr]||QA.all)[+d.q];say(q[0],'me');S.chat.push({text:q[1],who:'r',pre:1})}
+ else if(d.act==='usedur')S.est=refDur(S.floors,S.sys);else if(d.act==='useres'){const s=suggestReserve(plan());S.resW=s.w;S.resC=s.c}
+ else if(d.act==='approve')approve();else if(d.act==='cont'){S.last=null;S.idx++;if(S.idx>=S.D.ev.length)S.scr='debrief'}
+ else if(d.act==='again'){const k=S.diff;fresh((Math.random()*1e9)|0,k);lastAdv=''}
+ else if(d.act==='copy'){const a=document.getElementById('logt');a.hidden=false;a.select();navigator.clipboard?.writeText(a.value).then(()=>{t.textContent='Kopiert'}).catch(()=>{t.textContent='Marker teksten og kopier'});return}
+ else return;render()});
+document.getElementById('ask').addEventListener('submit',e=>{e.preventDefault();const i=document.getElementById('q'),v=i.value.trim();if(!v)return;say(v,'me');S.chat.push({text:answer(v),who:'r',pre:1});i.value='';render()});
+fresh();render();
+</script>
+
+</body>
+</html>

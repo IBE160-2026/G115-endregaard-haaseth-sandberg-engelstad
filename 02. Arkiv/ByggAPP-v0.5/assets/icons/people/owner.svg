@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <defs>
+    <linearGradient id="owner-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5AB0FF"/><stop offset="1" stop-color="#0F6CBD"/></linearGradient>
+    <linearGradient id="owner-sheen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  </defs>
+  <rect x="3" y="4" width="42" height="42" rx="10" fill="#000" opacity=".18"/>
+  <rect x="3" y="2.5" width="42" height="42" rx="10" fill="url(#owner-bg)"/>
+  <rect x="3" y="2.5" width="42" height="42" rx="10" fill="url(#owner-sheen)"/>
+  <rect x="3.5" y="3" width="41" height="41" rx="9.5" fill="none" stroke="#fff" stroke-opacity=".22"/>
+  <g transform="translate(10 8.5) scale(1.1666666666666667)" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="3.2"/><path d="M5.5 20.5c0-3.9 2.9-6.4 6.5-6.4s6.5 2.5 6.5 6.4"/><path fill="#fff" stroke="none" d="M12 14.4l-1.2 2.3 1.2 3 1.2-3z"/></g>
+</svg>
