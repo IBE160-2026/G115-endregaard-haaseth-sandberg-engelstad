@@ -1,0 +1,69 @@
+{
+  "user": "Lagerhall med kontordel",
+  "turn": {
+    "reply": "En lagerhall med kontordel – da starter jeg med tomta og adkomsten, for de avgjør hvor portene og gårdsplassen kan ligge.",
+    "questions": [
+      {
+        "text": "Hvordan er tomta?",
+        "options": [
+          "Flat",
+          "Skrånende",
+          "Vet ikke"
+        ]
+      },
+      {
+        "text": "Hva slags kjøretøy skal inn og ut?",
+        "options": [
+          "Semitrailere",
+          "Lastebiler",
+          "Varebiler"
+        ]
+      },
+      {
+        "text": "Er tomta regulert til næring eller industri?",
+        "options": [
+          "Ja",
+          "Nei",
+          "Vet ikke"
+        ]
+      }
+    ],
+    "phase": "tomt",
+    "changes": [
+      {
+        "section": "annet",
+        "text": "Nytt prosjekt: lagerhall med kontordel",
+        "ref_id": null
+      }
+    ],
+    "project": {
+      "name": "Lagerhall med kontordel",
+      "type": "Lagerhall",
+      "summary": "Lagerhall i stål med en kontordel for administrasjon.",
+      "facts": [
+        {
+          "category": "Bygg",
+          "label": "Type",
+          "value": "Lagerhall med kontordel"
+        },
+        {
+          "category": "Bygg",
+          "label": "Bruk",
+          "value": "Lager og vareleveranser, kontor for administrasjonen"
+        }
+      ],
+      "building": {
+        "volumes": [],
+        "exterior": null,
+        "terrain_slope_pct": null,
+        "openings": []
+      },
+      "budget": [],
+      "schedule": [],
+      "risks": [],
+      "assumptions": [
+        "Hallen er en stålhall, og kontordelen bygges inntil den."
+      ]
+    }
+  }
+}

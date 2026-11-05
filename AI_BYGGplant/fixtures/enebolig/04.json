@@ -1,0 +1,438 @@
+{
+  "user": "Hvit liggende kledning på huset og grå takstein. Garasjen i samme stil.",
+  "turn": {
+    "reply": "Huset får hvit liggende dobbelfals kledning, hvite lister og grå betongtakstein, og garasjen kles likt så de henger sammen. Før budsjettet trenger jeg de tekniske valgene.",
+    "questions": [
+      {
+        "text": "Hvordan vil du varme opp huset?",
+        "options": [
+          "Vannbåren gulvvarme og varmepumpe",
+          "Panelovner og luft-til-luft-varmepumpe",
+          "Vet ikke"
+        ]
+      },
+      {
+        "text": "Hvilken ventilasjon?",
+        "options": [
+          "Balansert med varmegjenvinning",
+          "Bare avtrekk"
+        ]
+      }
+    ],
+    "phase": "materialer",
+    "changes": [
+      {
+        "section": "materialer",
+        "text": "Hvit liggende dobbelfals kledning",
+        "ref_id": "hus"
+      },
+      {
+        "section": "materialer",
+        "text": "Grå betongtakstein og hvite lister",
+        "ref_id": null
+      },
+      {
+        "section": "materialer",
+        "text": "Garasjen kles likt som huset",
+        "ref_id": "garasje"
+      }
+    ],
+    "project": {
+      "name": "Enebolig med dobbelgarasje",
+      "type": "Enebolig",
+      "summary": "Hvit enebolig på 12 × 9 m i to etasjer med kjeller, grå betongtakstein og saltak 30°, og dobbelgarasje på 7 × 7 m i samme stil inntil høyre gavl.",
+      "facts": [
+        {
+          "category": "Tomt",
+          "label": "Terreng",
+          "value": "Flat"
+        },
+        {
+          "category": "Tomt",
+          "label": "Størrelse",
+          "value": "Ca. 900 m², regulert boligfelt"
+        },
+        {
+          "category": "Bygg",
+          "label": "Type",
+          "value": "Enebolig med dobbelgarasje"
+        },
+        {
+          "category": "Bygg",
+          "label": "Hus",
+          "value": "12 × 9 m, 2 etasjer + kjeller (BRA ca. 300 m²)"
+        },
+        {
+          "category": "Bygg",
+          "label": "Garasje",
+          "value": "7 × 7 m (49 m²), inntil høyre gavl"
+        },
+        {
+          "category": "Bygg",
+          "label": "Tak",
+          "value": "Hus: saltak 30°, møne langs lengden. Garasje: saltak 22°, møne på tvers"
+        },
+        {
+          "category": "Åpninger",
+          "label": "Inngang",
+          "value": "Inngangsdør 10×21 midt på fronten"
+        },
+        {
+          "category": "Åpninger",
+          "label": "Vinduer",
+          "value": "11 vinduer i 1. og 2. etasje, vindusfelt 3 m mot hagen"
+        },
+        {
+          "category": "Åpninger",
+          "label": "Kjeller",
+          "value": "4 kjellervinduer med lysgraver"
+        },
+        {
+          "category": "Åpninger",
+          "label": "Garasje",
+          "value": "2 leddporter 2,5 × 2,25 m, sidedør og 2 vinduer"
+        },
+        {
+          "category": "Materialer",
+          "label": "Kledning",
+          "value": "Liggende dobbelfals kledning, også på garasjen"
+        },
+        {
+          "category": "Materialer",
+          "label": "Farger",
+          "value": "Hvit vegg og hvite lister, grått tak"
+        },
+        {
+          "category": "Materialer",
+          "label": "Taktekking",
+          "value": "Grå betongtakstein"
+        }
+      ],
+      "building": {
+        "volumes": [
+          {
+            "id": "hus",
+            "name": "Hovedhus",
+            "x_m": 0,
+            "y_m": 0,
+            "length_m": 12,
+            "width_m": 9,
+            "floors": 2,
+            "floor_height_m": 2.7,
+            "basement_floors": 1,
+            "roof": {
+              "kind": "saltak",
+              "pitch_deg": 30,
+              "ridge_along": "lengde",
+              "overhang_m": 0.5
+            },
+            "exterior": null
+          },
+          {
+            "id": "garasje",
+            "name": "Dobbelgarasje",
+            "x_m": 12,
+            "y_m": 0,
+            "length_m": 7,
+            "width_m": 7,
+            "floors": 1,
+            "floor_height_m": 2.8,
+            "basement_floors": 0,
+            "roof": {
+              "kind": "saltak",
+              "pitch_deg": 22,
+              "ridge_along": "bredde",
+              "overhang_m": 0.4
+            },
+            "exterior": null
+          }
+        ],
+        "exterior": {
+          "cladding": "Liggende dobbelfals kledning",
+          "wall_color": "#F3F2EE",
+          "roof_color": "#5B6066",
+          "trim_color": "#FFFFFF"
+        },
+        "terrain_slope_pct": 0,
+        "openings": [
+          {
+            "id": "dor-inngang",
+            "volume_id": "hus",
+            "kind": "dor",
+            "label": "Inngangsdør",
+            "width_m": 1,
+            "height_m": 2.1,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 5.5,
+            "sill_m": 0
+          },
+          {
+            "id": "vindu-f1-1",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Vindu stue",
+            "width_m": 1.2,
+            "height_m": 1.3,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 1.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "vindu-f1-2",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Vindu kjøkken",
+            "width_m": 1.2,
+            "height_m": 1.3,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 9.3,
+            "sill_m": 0.9
+          },
+          {
+            "id": "vindu-f2-1",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Vindu soverom",
+            "width_m": 1.2,
+            "height_m": 1.3,
+            "wall": "front",
+            "floor": 2,
+            "offset_m": 1.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "vindu-f2-2",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Vindu gang",
+            "width_m": 1.2,
+            "height_m": 1.3,
+            "wall": "front",
+            "floor": 2,
+            "offset_m": 5.4,
+            "sill_m": 0.9
+          },
+          {
+            "id": "vindu-f2-3",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Vindu soverom",
+            "width_m": 1.2,
+            "height_m": 1.3,
+            "wall": "front",
+            "floor": 2,
+            "offset_m": 9.3,
+            "sill_m": 0.9
+          },
+          {
+            "id": "vindu-b1-1",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Vindusfelt stue mot hagen",
+            "width_m": 3,
+            "height_m": 2.1,
+            "wall": "bak",
+            "floor": 1,
+            "offset_m": 1,
+            "sill_m": 0.3
+          },
+          {
+            "id": "vindu-b1-2",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Vindu kjøkken mot hagen",
+            "width_m": 1.2,
+            "height_m": 1.3,
+            "wall": "bak",
+            "floor": 1,
+            "offset_m": 8,
+            "sill_m": 0.9
+          },
+          {
+            "id": "vindu-b2-1",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Vindu soverom",
+            "width_m": 1.2,
+            "height_m": 1.3,
+            "wall": "bak",
+            "floor": 2,
+            "offset_m": 1.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "vindu-b2-2",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Vindu bad",
+            "width_m": 1.2,
+            "height_m": 1.3,
+            "wall": "bak",
+            "floor": 2,
+            "offset_m": 5.4,
+            "sill_m": 0.9
+          },
+          {
+            "id": "vindu-b2-3",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Vindu hovedsoverom",
+            "width_m": 1.2,
+            "height_m": 1.3,
+            "wall": "bak",
+            "floor": 2,
+            "offset_m": 9.3,
+            "sill_m": 0.9
+          },
+          {
+            "id": "vindu-v1-1",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Vindu stue gavl",
+            "width_m": 1.2,
+            "height_m": 1.3,
+            "wall": "venstre",
+            "floor": 1,
+            "offset_m": 3.9,
+            "sill_m": 0.9
+          },
+          {
+            "id": "vindu-v2-1",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Vindu soverom gavl",
+            "width_m": 1.2,
+            "height_m": 1.3,
+            "wall": "venstre",
+            "floor": 2,
+            "offset_m": 3.9,
+            "sill_m": 0.9
+          },
+          {
+            "id": "kjeller-1",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Kjellervindu med lysgrav",
+            "width_m": 1,
+            "height_m": 0.6,
+            "wall": "front",
+            "floor": 0,
+            "offset_m": 1.5,
+            "sill_m": 1.9
+          },
+          {
+            "id": "kjeller-2",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Kjellervindu med lysgrav",
+            "width_m": 1,
+            "height_m": 0.6,
+            "wall": "front",
+            "floor": 0,
+            "offset_m": 9.5,
+            "sill_m": 1.9
+          },
+          {
+            "id": "kjeller-3",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Kjellervindu med lysgrav",
+            "width_m": 1,
+            "height_m": 0.6,
+            "wall": "bak",
+            "floor": 0,
+            "offset_m": 2,
+            "sill_m": 1.9
+          },
+          {
+            "id": "kjeller-4",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Kjellervindu med lysgrav",
+            "width_m": 1,
+            "height_m": 0.6,
+            "wall": "venstre",
+            "floor": 0,
+            "offset_m": 4,
+            "sill_m": 1.9
+          },
+          {
+            "id": "port-1",
+            "volume_id": "garasje",
+            "kind": "port",
+            "label": "Garasjeport venstre",
+            "width_m": 2.5,
+            "height_m": 2.25,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 0.75,
+            "sill_m": 0
+          },
+          {
+            "id": "port-2",
+            "volume_id": "garasje",
+            "kind": "port",
+            "label": "Garasjeport høyre",
+            "width_m": 2.5,
+            "height_m": 2.25,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 3.75,
+            "sill_m": 0
+          },
+          {
+            "id": "dor-garasje",
+            "volume_id": "garasje",
+            "kind": "dor",
+            "label": "Sidedør garasje",
+            "width_m": 0.9,
+            "height_m": 2.1,
+            "wall": "hoyre",
+            "floor": 1,
+            "offset_m": 1,
+            "sill_m": 0
+          },
+          {
+            "id": "vindu-g-1",
+            "volume_id": "garasje",
+            "kind": "vindu",
+            "label": "Garasjevindu side",
+            "width_m": 1,
+            "height_m": 0.6,
+            "wall": "hoyre",
+            "floor": 1,
+            "offset_m": 4.5,
+            "sill_m": 1.5
+          },
+          {
+            "id": "vindu-g-2",
+            "volume_id": "garasje",
+            "kind": "vindu",
+            "label": "Garasjevindu bak",
+            "width_m": 1,
+            "height_m": 0.6,
+            "wall": "bak",
+            "floor": 1,
+            "offset_m": 3,
+            "sill_m": 1.5
+          }
+        ]
+      },
+      "budget": [],
+      "schedule": [],
+      "risks": [],
+      "assumptions": [
+        "Huset er en vanlig trehusbolig i bindingsverk på støpt kjeller.",
+        "Garasjen står inntil husets høyre gavl, med fronten i flukt med husets front.",
+        "Etasjehøyde 2,7 m i huset og 2,8 m i garasjen.",
+        "Tomta er flat og ligger i et regulert boligfelt med vei, vann og avløp fram til tomtegrensen.",
+        "Veggene der huset og garasjen står inntil hverandre har ingen åpninger (branncellebegrensende vegg).",
+        "Kjellervinduene får lysgraver i betong, så kjelleren kan brukes til kontor og boder.",
+        "Garasjen får samme kledning, farger og taktekking som huset."
+      ]
+    }
+  }
+}

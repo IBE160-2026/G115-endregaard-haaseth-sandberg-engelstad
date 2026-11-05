@@ -1,0 +1,69 @@
+{
+  "user": "Leilighetsbygg med 12 leiligheter",
+  "turn": {
+    "reply": "Et leilighetsbygg med 12 leiligheter – spennende! Jeg starter med tomta og reguleringen, for de bestemmer hvor høyt og stort bygget kan bli.",
+    "questions": [
+      {
+        "text": "Hvordan er tomta?",
+        "options": [
+          "Flat",
+          "Skrånende",
+          "Vet ikke"
+        ]
+      },
+      {
+        "text": "Er tomta regulert til boligformål, og hvor mange etasjer tillates?",
+        "options": [
+          "Ja, 4 etasjer",
+          "Ja, 5 etasjer",
+          "Må avklares"
+        ]
+      },
+      {
+        "text": "Hvor skal beboerne parkere?",
+        "options": [
+          "Kjeller",
+          "Utendørs",
+          "Begge deler"
+        ]
+      }
+    ],
+    "phase": "tomt",
+    "changes": [
+      {
+        "section": "annet",
+        "text": "Nytt prosjekt: leilighetsbygg med 12 leiligheter",
+        "ref_id": null
+      }
+    ],
+    "project": {
+      "name": "Leilighetsbygg med 12 leiligheter",
+      "type": "Leilighetsbygg",
+      "summary": "Boligblokk med 12 leiligheter.",
+      "facts": [
+        {
+          "category": "Bygg",
+          "label": "Type",
+          "value": "Leilighetsbygg (boligblokk)"
+        },
+        {
+          "category": "Bygg",
+          "label": "Leiligheter",
+          "value": "12"
+        }
+      ],
+      "building": {
+        "volumes": [],
+        "exterior": null,
+        "terrain_slope_pct": null,
+        "openings": []
+      },
+      "budget": [],
+      "schedule": [],
+      "risks": [],
+      "assumptions": [
+        "Bygget oppføres av en totalentreprenør for salg av leilighetene."
+      ]
+    }
+  }
+}

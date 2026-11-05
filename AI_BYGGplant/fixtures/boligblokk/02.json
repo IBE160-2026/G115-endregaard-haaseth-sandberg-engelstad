@@ -1,0 +1,136 @@
+{
+  "user": "Tomta er flat, ca. 2 500 m² og regulert til boligformål. Fire etasjer med tre leiligheter i hver, kjeller med parkering og boder, og trapp og heis i et tårn bak.",
+  "turn": {
+    "reply": "Da har jeg satt opp blokken på 28 × 13 m i fire etasjer med kjeller og flatt tak, og et trapp- og heistårn på 5 × 4 m midt på baksiden som går én etasje høyere. Nå tar vi fasadene.",
+    "questions": [
+      {
+        "text": "Hvor skal hovedinngangen være?",
+        "options": [
+          "Midt på fronten",
+          "Via trappetårnet bak",
+          "Begge deler"
+        ]
+      },
+      {
+        "text": "Hvor skal balkongene vende?",
+        "options": [
+          "Mot hagen bak",
+          "Mot gaten",
+          "Begge sider"
+        ]
+      }
+    ],
+    "phase": "bygg",
+    "changes": [
+      {
+        "section": "tomt",
+        "text": "Flat tomt på ca. 2 500 m²",
+        "ref_id": null
+      },
+      {
+        "section": "bygg",
+        "text": "Blokk 28 × 13 m, 4 etasjer + kjeller, flatt tak",
+        "ref_id": "blokk"
+      },
+      {
+        "section": "bygg",
+        "text": "Trapp- og heistårn 5 × 4 m bak, 5 etasjer",
+        "ref_id": "tarn"
+      }
+    ],
+    "project": {
+      "name": "Leilighetsbygg med 12 leiligheter",
+      "type": "Leilighetsbygg",
+      "summary": "Boligblokk på 28 × 13 m i fire etasjer med tre leiligheter per etasje, kjeller med parkering og boder, flatt tak og trapp- og heistårn på baksiden.",
+      "facts": [
+        {
+          "category": "Tomt",
+          "label": "Terreng",
+          "value": "Flat"
+        },
+        {
+          "category": "Tomt",
+          "label": "Størrelse",
+          "value": "Ca. 2 500 m², regulert til boligformål"
+        },
+        {
+          "category": "Bygg",
+          "label": "Type",
+          "value": "Leilighetsbygg (boligblokk)"
+        },
+        {
+          "category": "Bygg",
+          "label": "Leiligheter",
+          "value": "12 (3 per etasje, ca. 100 m² hver)"
+        },
+        {
+          "category": "Bygg",
+          "label": "Blokk",
+          "value": "28 × 13 m, 4 etasjer + kjeller, flatt tak"
+        },
+        {
+          "category": "Bygg",
+          "label": "Trapp og heis",
+          "value": "Tårn 5 × 4 m på baksiden, én etasje høyere enn blokken"
+        },
+        {
+          "category": "Bygg",
+          "label": "Kjeller",
+          "value": "Parkering for 10 biler og boder"
+        }
+      ],
+      "building": {
+        "volumes": [
+          {
+            "id": "blokk",
+            "name": "Boligblokk",
+            "x_m": 0,
+            "y_m": 0,
+            "length_m": 28,
+            "width_m": 13,
+            "floors": 4,
+            "floor_height_m": 3,
+            "basement_floors": 1,
+            "roof": {
+              "kind": "flatt",
+              "pitch_deg": null,
+              "ridge_along": "lengde",
+              "overhang_m": 0
+            },
+            "exterior": null
+          },
+          {
+            "id": "tarn",
+            "name": "Trapp- og heistårn",
+            "x_m": 11.5,
+            "y_m": 13,
+            "length_m": 5,
+            "width_m": 4,
+            "floors": 5,
+            "floor_height_m": 3,
+            "basement_floors": 1,
+            "roof": {
+              "kind": "flatt",
+              "pitch_deg": null,
+              "ridge_along": "lengde",
+              "overhang_m": 0
+            },
+            "exterior": null
+          }
+        ],
+        "exterior": null,
+        "terrain_slope_pct": 0,
+        "openings": []
+      },
+      "budget": [],
+      "schedule": [],
+      "risks": [],
+      "assumptions": [
+        "Bygget oppføres av en totalentreprenør for salg av leilighetene.",
+        "Etasjehøyde 3,0 m (dekke til dekke).",
+        "Trapp- og heistårnet går fra kjelleren og én etasje over blokken, med utgang til taket.",
+        "Reguleringsplanen tillater fire etasjer og kjeller."
+      ]
+    }
+  }
+}

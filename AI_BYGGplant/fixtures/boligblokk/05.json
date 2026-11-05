@@ -1,0 +1,1843 @@
+{
+  "user": "Legg til en etasje.",
+  "turn": {
+    "reply": "Nå har blokken fem etasjer og 15 leiligheter, og trappetårnet er hevet tilsvarende. Budsjettet øker med ca. 9,4 mill. kr og fremdriften med 6 uker. Sjekk med kommunen tidlig – femte etasje går trolig over regulert høyde.",
+    "questions": [
+      {
+        "text": "Noe mer du vil endre?",
+        "options": [
+          "Ser bra ut",
+          "Takterrasse på toppen",
+          "Flere parkeringsplasser"
+        ]
+      }
+    ],
+    "phase": "detaljer",
+    "changes": [
+      {
+        "section": "bygg",
+        "text": "Blokken 4 → 5 etasjer (12 → 15 leiligheter)",
+        "ref_id": "blokk"
+      },
+      {
+        "section": "bygg",
+        "text": "Trappetårnet 5 → 6 etasjer",
+        "ref_id": "tarn"
+      },
+      {
+        "section": "apninger",
+        "text": "Ny vindusrad i 5. etasje: 12 vinduer foran og bak",
+        "ref_id": "v-f-5-1"
+      },
+      {
+        "section": "apninger",
+        "text": "3 nye balkongdører i 5. etasje",
+        "ref_id": "bd-5-1"
+      },
+      {
+        "section": "apninger",
+        "text": "4 nye gavlvinduer og trappevindu i 6. etasje",
+        "ref_id": "v-t-6"
+      },
+      {
+        "section": "budsjett",
+        "text": "Prosjektering og søknad: +400 000 kr",
+        "ref_id": "b-prosj"
+      },
+      {
+        "section": "budsjett",
+        "text": "Rigg og drift: +400 000 kr",
+        "ref_id": "b-rigg"
+      },
+      {
+        "section": "budsjett",
+        "text": "Betong og bæresystem: +2 200 000 kr",
+        "ref_id": "b-baere"
+      },
+      {
+        "section": "budsjett",
+        "text": "Fasader: +900 000 kr",
+        "ref_id": "b-fasade"
+      },
+      {
+        "section": "budsjett",
+        "text": "Vinduer og dører: +550 000 kr",
+        "ref_id": "b-vindu"
+      },
+      {
+        "section": "budsjett",
+        "text": "Balkonger: +450 000 kr",
+        "ref_id": "b-balkong"
+      },
+      {
+        "section": "budsjett",
+        "text": "Heis: +120 000 kr",
+        "ref_id": "b-heis"
+      },
+      {
+        "section": "budsjett",
+        "text": "Innvendig: +1 700 000 kr",
+        "ref_id": "b-innv"
+      },
+      {
+        "section": "budsjett",
+        "text": "VVS: +850 000 kr",
+        "ref_id": "b-vvs"
+      },
+      {
+        "section": "budsjett",
+        "text": "Elektro: +700 000 kr",
+        "ref_id": "b-el"
+      },
+      {
+        "section": "budsjett",
+        "text": "Ventilasjon: +500 000 kr",
+        "ref_id": "b-vent"
+      },
+      {
+        "section": "budsjett",
+        "text": "Uforutsett: +610 000 kr",
+        "ref_id": "b-uforutsett"
+      },
+      {
+        "section": "fremdrift",
+        "text": "Bæresystem 16 → 20 uker",
+        "ref_id": "t-baere"
+      },
+      {
+        "section": "fremdrift",
+        "text": "Innvendig ferdigstilling 14 → 16 uker",
+        "ref_id": "t-innv"
+      },
+      {
+        "section": "fremdrift",
+        "text": "Overlevering uke 84 → 90",
+        "ref_id": "t-ferdig"
+      },
+      {
+        "section": "risiko",
+        "text": "Ny risiko: femte etasje over regulert høyde",
+        "ref_id": "r-hoyde"
+      }
+    ],
+    "project": {
+      "name": "Leilighetsbygg med 12 leiligheter",
+      "type": "Leilighetsbygg",
+      "summary": "Boligblokk på 28 × 13 m i fem etasjer med 15 leiligheter, lys puss, balkonger mot hagen, parkeringskjeller og trapp- og heistårn. Budsjett ca. 66,7 mill. kr inkl. mva og ca. 90 ukers fremdrift.",
+      "facts": [
+        {
+          "category": "Tomt",
+          "label": "Terreng",
+          "value": "Flat"
+        },
+        {
+          "category": "Tomt",
+          "label": "Størrelse",
+          "value": "Ca. 2 500 m², regulert til boligformål"
+        },
+        {
+          "category": "Bygg",
+          "label": "Type",
+          "value": "Leilighetsbygg (boligblokk)"
+        },
+        {
+          "category": "Bygg",
+          "label": "Leiligheter",
+          "value": "15 (3 per etasje, ca. 100 m² hver)"
+        },
+        {
+          "category": "Bygg",
+          "label": "Blokk",
+          "value": "28 × 13 m, 5 etasjer + kjeller, flatt tak"
+        },
+        {
+          "category": "Bygg",
+          "label": "Trapp og heis",
+          "value": "Tårn 5 × 4 m på baksiden, én etasje høyere enn blokken"
+        },
+        {
+          "category": "Bygg",
+          "label": "Kjeller",
+          "value": "Parkering for 10 biler og boder"
+        },
+        {
+          "category": "Åpninger",
+          "label": "Inngang",
+          "value": "Hovedinngang midt på fronten og inngang bak gjennom trappetårnet"
+        },
+        {
+          "category": "Åpninger",
+          "label": "Vinduer",
+          "value": "30 vinduer foran og 30 bak, 15 balkong- og terrassedører, 20 gavlvinduer"
+        },
+        {
+          "category": "Åpninger",
+          "label": "Balkonger",
+          "value": "Én balkong per leilighet mot hagen, terrasser på bakkeplan"
+        },
+        {
+          "category": "Åpninger",
+          "label": "Kjeller",
+          "value": "Port 3,0 × 2,5 m på venstre gavl med rampe ned"
+        },
+        {
+          "category": "Materialer",
+          "label": "Fasade",
+          "value": "Lys puss med grå vinduer og detaljer; trappetårnet i grå platekledning"
+        },
+        {
+          "category": "Teknikk",
+          "label": "Bæresystem",
+          "value": "Betong: hulldekker og bærevegger"
+        },
+        {
+          "category": "Teknikk",
+          "label": "Heis",
+          "value": "Personheis, 6 stopp"
+        },
+        {
+          "category": "Teknikk",
+          "label": "Brann",
+          "value": "Sprinkler og brannalarm"
+        },
+        {
+          "category": "Økonomi",
+          "label": "Budsjett",
+          "value": "ca. 66 680 000 kr inkl. mva"
+        },
+        {
+          "category": "Økonomi",
+          "label": "Fremdrift",
+          "value": "90 uker fra prosjektering til overlevering"
+        }
+      ],
+      "building": {
+        "volumes": [
+          {
+            "id": "blokk",
+            "name": "Boligblokk",
+            "x_m": 0,
+            "y_m": 0,
+            "length_m": 28,
+            "width_m": 13,
+            "floors": 5,
+            "floor_height_m": 3,
+            "basement_floors": 1,
+            "roof": {
+              "kind": "flatt",
+              "pitch_deg": null,
+              "ridge_along": "lengde",
+              "overhang_m": 0
+            },
+            "exterior": null
+          },
+          {
+            "id": "tarn",
+            "name": "Trapp- og heistårn",
+            "x_m": 11.5,
+            "y_m": 13,
+            "length_m": 5,
+            "width_m": 4,
+            "floors": 6,
+            "floor_height_m": 3,
+            "basement_floors": 1,
+            "roof": {
+              "kind": "flatt",
+              "pitch_deg": null,
+              "ridge_along": "lengde",
+              "overhang_m": 0
+            },
+            "exterior": {
+              "cladding": "Platekledning",
+              "wall_color": "#6B7075",
+              "roof_color": "#3A3D40",
+              "trim_color": "#3A3D40"
+            }
+          }
+        ],
+        "exterior": {
+          "cladding": "Puss på isolert betongvegg",
+          "wall_color": "#E8E3D8",
+          "roof_color": "#3A3D40",
+          "trim_color": "#6B7075"
+        },
+        "terrain_slope_pct": 0,
+        "openings": [
+          {
+            "id": "dor-hoved",
+            "volume_id": "blokk",
+            "kind": "dor",
+            "label": "Hovedinngang",
+            "width_m": 2,
+            "height_m": 2.4,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 13,
+            "sill_m": 0
+          },
+          {
+            "id": "port-kjeller",
+            "volume_id": "blokk",
+            "kind": "port",
+            "label": "Port til parkeringskjeller",
+            "width_m": 3,
+            "height_m": 2.5,
+            "wall": "venstre",
+            "floor": 0,
+            "offset_m": 4,
+            "sill_m": 0
+          },
+          {
+            "id": "v-f-1-1",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 1. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 1.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-1-2",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 1. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 5.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-1-3",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 1. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 9.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-1-4",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 1. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 17,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-1-5",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 1. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 21,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-1-6",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 1. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 25,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-1-1",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 1. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 1,
+            "offset_m": 1.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-1-2",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 1. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 1,
+            "offset_m": 5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-1-3",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 1. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 1,
+            "offset_m": 8.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-1-4",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 1. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 1,
+            "offset_m": 18,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-1-5",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 1. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 1,
+            "offset_m": 21.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-1-6",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 1. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 1,
+            "offset_m": 25,
+            "sill_m": 0.9
+          },
+          {
+            "id": "bd-1-1",
+            "volume_id": "blokk",
+            "kind": "dor",
+            "label": "Terrassedør",
+            "width_m": 1,
+            "height_m": 2.2,
+            "wall": "bak",
+            "floor": 1,
+            "offset_m": 3.6,
+            "sill_m": 0
+          },
+          {
+            "id": "bd-1-2",
+            "volume_id": "blokk",
+            "kind": "dor",
+            "label": "Terrassedør",
+            "width_m": 1,
+            "height_m": 2.2,
+            "wall": "bak",
+            "floor": 1,
+            "offset_m": 10.35,
+            "sill_m": 0
+          },
+          {
+            "id": "bd-1-3",
+            "volume_id": "blokk",
+            "kind": "dor",
+            "label": "Terrassedør",
+            "width_m": 1,
+            "height_m": 2.2,
+            "wall": "bak",
+            "floor": 1,
+            "offset_m": 20,
+            "sill_m": 0
+          },
+          {
+            "id": "v-v-1-1",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu gavl venstre 1. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "venstre",
+            "floor": 1,
+            "offset_m": 3,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-v-1-2",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu gavl venstre 1. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "venstre",
+            "floor": 1,
+            "offset_m": 8.4,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-h-1-1",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu gavl høyre 1. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "hoyre",
+            "floor": 1,
+            "offset_m": 3,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-h-1-2",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu gavl høyre 1. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "hoyre",
+            "floor": 1,
+            "offset_m": 8.4,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-2-1",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 2. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 2,
+            "offset_m": 1.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-2-2",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 2. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 2,
+            "offset_m": 5.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-2-3",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 2. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 2,
+            "offset_m": 9.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-2-4",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 2. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 2,
+            "offset_m": 17,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-2-5",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 2. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 2,
+            "offset_m": 21,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-2-6",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 2. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 2,
+            "offset_m": 25,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-2-1",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 2. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 2,
+            "offset_m": 1.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-2-2",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 2. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 2,
+            "offset_m": 5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-2-3",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 2. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 2,
+            "offset_m": 8.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-2-4",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 2. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 2,
+            "offset_m": 18,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-2-5",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 2. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 2,
+            "offset_m": 21.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-2-6",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 2. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 2,
+            "offset_m": 25,
+            "sill_m": 0.9
+          },
+          {
+            "id": "bd-2-1",
+            "volume_id": "blokk",
+            "kind": "dor",
+            "label": "Balkongdør 2. etasje",
+            "width_m": 1,
+            "height_m": 2.2,
+            "wall": "bak",
+            "floor": 2,
+            "offset_m": 3.6,
+            "sill_m": 0
+          },
+          {
+            "id": "bd-2-2",
+            "volume_id": "blokk",
+            "kind": "dor",
+            "label": "Balkongdør 2. etasje",
+            "width_m": 1,
+            "height_m": 2.2,
+            "wall": "bak",
+            "floor": 2,
+            "offset_m": 10.35,
+            "sill_m": 0
+          },
+          {
+            "id": "bd-2-3",
+            "volume_id": "blokk",
+            "kind": "dor",
+            "label": "Balkongdør 2. etasje",
+            "width_m": 1,
+            "height_m": 2.2,
+            "wall": "bak",
+            "floor": 2,
+            "offset_m": 20,
+            "sill_m": 0
+          },
+          {
+            "id": "v-v-2-1",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu gavl venstre 2. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "venstre",
+            "floor": 2,
+            "offset_m": 3,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-v-2-2",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu gavl venstre 2. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "venstre",
+            "floor": 2,
+            "offset_m": 8.4,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-h-2-1",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu gavl høyre 2. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "hoyre",
+            "floor": 2,
+            "offset_m": 3,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-h-2-2",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu gavl høyre 2. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "hoyre",
+            "floor": 2,
+            "offset_m": 8.4,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-3-1",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 3. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 3,
+            "offset_m": 1.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-3-2",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 3. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 3,
+            "offset_m": 5.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-3-3",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 3. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 3,
+            "offset_m": 9.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-3-4",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 3. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 3,
+            "offset_m": 17,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-3-5",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 3. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 3,
+            "offset_m": 21,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-3-6",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 3. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 3,
+            "offset_m": 25,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-3-1",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 3. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 3,
+            "offset_m": 1.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-3-2",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 3. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 3,
+            "offset_m": 5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-3-3",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 3. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 3,
+            "offset_m": 8.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-3-4",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 3. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 3,
+            "offset_m": 18,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-3-5",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 3. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 3,
+            "offset_m": 21.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-3-6",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 3. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 3,
+            "offset_m": 25,
+            "sill_m": 0.9
+          },
+          {
+            "id": "bd-3-1",
+            "volume_id": "blokk",
+            "kind": "dor",
+            "label": "Balkongdør 3. etasje",
+            "width_m": 1,
+            "height_m": 2.2,
+            "wall": "bak",
+            "floor": 3,
+            "offset_m": 3.6,
+            "sill_m": 0
+          },
+          {
+            "id": "bd-3-2",
+            "volume_id": "blokk",
+            "kind": "dor",
+            "label": "Balkongdør 3. etasje",
+            "width_m": 1,
+            "height_m": 2.2,
+            "wall": "bak",
+            "floor": 3,
+            "offset_m": 10.35,
+            "sill_m": 0
+          },
+          {
+            "id": "bd-3-3",
+            "volume_id": "blokk",
+            "kind": "dor",
+            "label": "Balkongdør 3. etasje",
+            "width_m": 1,
+            "height_m": 2.2,
+            "wall": "bak",
+            "floor": 3,
+            "offset_m": 20,
+            "sill_m": 0
+          },
+          {
+            "id": "v-v-3-1",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu gavl venstre 3. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "venstre",
+            "floor": 3,
+            "offset_m": 3,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-v-3-2",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu gavl venstre 3. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "venstre",
+            "floor": 3,
+            "offset_m": 8.4,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-h-3-1",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu gavl høyre 3. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "hoyre",
+            "floor": 3,
+            "offset_m": 3,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-h-3-2",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu gavl høyre 3. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "hoyre",
+            "floor": 3,
+            "offset_m": 8.4,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-4-1",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 4. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 4,
+            "offset_m": 1.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-4-2",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 4. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 4,
+            "offset_m": 5.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-4-3",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 4. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 4,
+            "offset_m": 9.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-4-4",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 4. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 4,
+            "offset_m": 17,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-4-5",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 4. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 4,
+            "offset_m": 21,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-4-6",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 4. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 4,
+            "offset_m": 25,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-4-1",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 4. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 4,
+            "offset_m": 1.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-4-2",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 4. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 4,
+            "offset_m": 5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-4-3",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 4. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 4,
+            "offset_m": 8.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-4-4",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 4. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 4,
+            "offset_m": 18,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-4-5",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 4. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 4,
+            "offset_m": 21.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-4-6",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 4. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 4,
+            "offset_m": 25,
+            "sill_m": 0.9
+          },
+          {
+            "id": "bd-4-1",
+            "volume_id": "blokk",
+            "kind": "dor",
+            "label": "Balkongdør 4. etasje",
+            "width_m": 1,
+            "height_m": 2.2,
+            "wall": "bak",
+            "floor": 4,
+            "offset_m": 3.6,
+            "sill_m": 0
+          },
+          {
+            "id": "bd-4-2",
+            "volume_id": "blokk",
+            "kind": "dor",
+            "label": "Balkongdør 4. etasje",
+            "width_m": 1,
+            "height_m": 2.2,
+            "wall": "bak",
+            "floor": 4,
+            "offset_m": 10.35,
+            "sill_m": 0
+          },
+          {
+            "id": "bd-4-3",
+            "volume_id": "blokk",
+            "kind": "dor",
+            "label": "Balkongdør 4. etasje",
+            "width_m": 1,
+            "height_m": 2.2,
+            "wall": "bak",
+            "floor": 4,
+            "offset_m": 20,
+            "sill_m": 0
+          },
+          {
+            "id": "v-v-4-1",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu gavl venstre 4. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "venstre",
+            "floor": 4,
+            "offset_m": 3,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-v-4-2",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu gavl venstre 4. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "venstre",
+            "floor": 4,
+            "offset_m": 8.4,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-h-4-1",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu gavl høyre 4. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "hoyre",
+            "floor": 4,
+            "offset_m": 3,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-h-4-2",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu gavl høyre 4. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "hoyre",
+            "floor": 4,
+            "offset_m": 8.4,
+            "sill_m": 0.9
+          },
+          {
+            "id": "dor-tarn",
+            "volume_id": "tarn",
+            "kind": "dor",
+            "label": "Inngang bak fra parkeringen",
+            "width_m": 2,
+            "height_m": 2.3,
+            "wall": "bak",
+            "floor": 1,
+            "offset_m": 1.5,
+            "sill_m": 0
+          },
+          {
+            "id": "v-t-2",
+            "volume_id": "tarn",
+            "kind": "vindu",
+            "label": "Trappevindu 2. etasje",
+            "width_m": 1.4,
+            "height_m": 1.2,
+            "wall": "bak",
+            "floor": 2,
+            "offset_m": 1.8,
+            "sill_m": 1
+          },
+          {
+            "id": "v-t-3",
+            "volume_id": "tarn",
+            "kind": "vindu",
+            "label": "Trappevindu 3. etasje",
+            "width_m": 1.4,
+            "height_m": 1.2,
+            "wall": "bak",
+            "floor": 3,
+            "offset_m": 1.8,
+            "sill_m": 1
+          },
+          {
+            "id": "v-t-4",
+            "volume_id": "tarn",
+            "kind": "vindu",
+            "label": "Trappevindu 4. etasje",
+            "width_m": 1.4,
+            "height_m": 1.2,
+            "wall": "bak",
+            "floor": 4,
+            "offset_m": 1.8,
+            "sill_m": 1
+          },
+          {
+            "id": "v-t-5",
+            "volume_id": "tarn",
+            "kind": "vindu",
+            "label": "Trappevindu 5. etasje",
+            "width_m": 1.4,
+            "height_m": 1.2,
+            "wall": "bak",
+            "floor": 5,
+            "offset_m": 1.8,
+            "sill_m": 1
+          },
+          {
+            "id": "v-f-5-1",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 5. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 5,
+            "offset_m": 1.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-5-2",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 5. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 5,
+            "offset_m": 5.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-5-3",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 5. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 5,
+            "offset_m": 9.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-5-4",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 5. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 5,
+            "offset_m": 17,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-5-5",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 5. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 5,
+            "offset_m": 21,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-f-5-6",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu front 5. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "front",
+            "floor": 5,
+            "offset_m": 25,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-5-1",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 5. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 5,
+            "offset_m": 1.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-5-2",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 5. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 5,
+            "offset_m": 5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-5-3",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 5. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 5,
+            "offset_m": 8.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-5-4",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 5. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 5,
+            "offset_m": 18,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-5-5",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 5. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 5,
+            "offset_m": 21.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-b-5-6",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu bak 5. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "bak",
+            "floor": 5,
+            "offset_m": 25,
+            "sill_m": 0.9
+          },
+          {
+            "id": "bd-5-1",
+            "volume_id": "blokk",
+            "kind": "dor",
+            "label": "Balkongdør 5. etasje",
+            "width_m": 1,
+            "height_m": 2.2,
+            "wall": "bak",
+            "floor": 5,
+            "offset_m": 3.6,
+            "sill_m": 0
+          },
+          {
+            "id": "bd-5-2",
+            "volume_id": "blokk",
+            "kind": "dor",
+            "label": "Balkongdør 5. etasje",
+            "width_m": 1,
+            "height_m": 2.2,
+            "wall": "bak",
+            "floor": 5,
+            "offset_m": 10.35,
+            "sill_m": 0
+          },
+          {
+            "id": "bd-5-3",
+            "volume_id": "blokk",
+            "kind": "dor",
+            "label": "Balkongdør 5. etasje",
+            "width_m": 1,
+            "height_m": 2.2,
+            "wall": "bak",
+            "floor": 5,
+            "offset_m": 20,
+            "sill_m": 0
+          },
+          {
+            "id": "v-v-5-1",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu gavl venstre 5. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "venstre",
+            "floor": 5,
+            "offset_m": 3,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-v-5-2",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu gavl venstre 5. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "venstre",
+            "floor": 5,
+            "offset_m": 8.4,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-h-5-1",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu gavl høyre 5. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "hoyre",
+            "floor": 5,
+            "offset_m": 3,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-h-5-2",
+            "volume_id": "blokk",
+            "kind": "vindu",
+            "label": "Vindu gavl høyre 5. etasje",
+            "width_m": 1.6,
+            "height_m": 1.5,
+            "wall": "hoyre",
+            "floor": 5,
+            "offset_m": 8.4,
+            "sill_m": 0.9
+          },
+          {
+            "id": "v-t-6",
+            "volume_id": "tarn",
+            "kind": "vindu",
+            "label": "Trappevindu 6. etasje",
+            "width_m": 1.4,
+            "height_m": 1.2,
+            "wall": "bak",
+            "floor": 6,
+            "offset_m": 1.8,
+            "sill_m": 1
+          }
+        ]
+      },
+      "budget": [
+        {
+          "id": "b-prosj",
+          "post": "Prosjektering og søknad",
+          "description": "Arkitekt og rådgivere, omprosjektering til 5 etasjer, rammesøknad og igangsettingstillatelse",
+          "amount_nok": 3600000,
+          "uncertainty_pct": 15,
+          "sku": null
+        },
+        {
+          "id": "b-rigg",
+          "post": "Rigg og drift",
+          "description": "Byggeplassrigg, kran, gjerde, brakker, strøm og avfall i ca. 74 uker",
+          "amount_nok": 4000000,
+          "uncertainty_pct": 15,
+          "sku": null
+        },
+        {
+          "id": "b-grunn",
+          "post": "Grunnarbeid",
+          "description": "Utgraving for kjeller, spunt mot naboer, drenering og VA-tilknytning",
+          "amount_nok": 3800000,
+          "uncertainty_pct": 25,
+          "sku": null
+        },
+        {
+          "id": "b-kjeller",
+          "post": "Kjeller og fundamenter",
+          "description": "Plasstøpt kjeller 364 m² med parkering, boder og tett kjellervegg",
+          "amount_nok": 6200000,
+          "uncertainty_pct": 15,
+          "sku": null
+        },
+        {
+          "id": "b-baere",
+          "post": "Betong og bæresystem",
+          "description": "Hulldekker, bærevegger og trapp- og heissjakt i betong, 5 etasjer",
+          "amount_nok": 11200000,
+          "uncertainty_pct": 15,
+          "sku": null
+        },
+        {
+          "id": "b-fasade",
+          "post": "Fasader",
+          "description": "Isolasjon og puss på yttervegger, platekledning på trappetårnet",
+          "amount_nok": 5200000,
+          "uncertainty_pct": 15,
+          "sku": null
+        },
+        {
+          "id": "b-vindu",
+          "post": "Vinduer og dører",
+          "description": "80 vinduer, 15 balkong- og terrassedører, inngangspartier og kjellerport",
+          "amount_nok": 3150000,
+          "uncertainty_pct": 10,
+          "sku": null
+        },
+        {
+          "id": "b-balkong",
+          "post": "Balkonger",
+          "description": "12 prefabrikkerte balkonger med glassrekkverk og 3 terrasser",
+          "amount_nok": 2250000,
+          "uncertainty_pct": 15,
+          "sku": null
+        },
+        {
+          "id": "b-tak",
+          "post": "Tak",
+          "description": "Flatt tak med isolasjon, takfolie, sluk og sikringspunkter",
+          "amount_nok": 1200000,
+          "uncertainty_pct": 10,
+          "sku": null
+        },
+        {
+          "id": "b-heis",
+          "post": "Heis",
+          "description": "Personheis for 8 personer, 6 stopp fra kjeller",
+          "amount_nok": 1270000,
+          "uncertainty_pct": 10,
+          "sku": null
+        },
+        {
+          "id": "b-innv",
+          "post": "Innvendig",
+          "description": "15 leiligheter: lettvegger, gulv, kjøkken, bad og innvendige dører",
+          "amount_nok": 8500000,
+          "uncertainty_pct": 20,
+          "sku": null
+        },
+        {
+          "id": "b-vvs",
+          "post": "VVS",
+          "description": "Rør, sanitær, vannbåren varme og sprinkleranlegg",
+          "amount_nok": 4450000,
+          "uncertainty_pct": 15,
+          "sku": null
+        },
+        {
+          "id": "b-el",
+          "post": "Elektro",
+          "description": "Elanlegg, brannalarm, porttelefon og elbilladere i kjelleren",
+          "amount_nok": 3600000,
+          "uncertainty_pct": 15,
+          "sku": null
+        },
+        {
+          "id": "b-vent",
+          "post": "Ventilasjon",
+          "description": "Balansert ventilasjon med aggregat per leilighet (15)",
+          "amount_nok": 2600000,
+          "uncertainty_pct": 15,
+          "sku": null
+        },
+        {
+          "id": "b-utomhus",
+          "post": "Utomhus",
+          "description": "Lekeplass, gangveier, sykkelparkering, beplantning og avfallsløsning",
+          "amount_nok": 1300000,
+          "uncertainty_pct": 25,
+          "sku": null
+        },
+        {
+          "id": "b-uforutsett",
+          "post": "Uforutsett",
+          "description": "Ca. 7 % av summen over, for uforutsette forhold i grunnen, prisendringer og avklaringer med kommunen",
+          "amount_nok": 4360000,
+          "uncertainty_pct": 50,
+          "sku": null
+        }
+      ],
+      "schedule": [
+        {
+          "id": "t-prosj",
+          "name": "Prosjektering og rammetillatelse",
+          "start_week": 0,
+          "duration_weeks": 16,
+          "depends_on": []
+        },
+        {
+          "id": "t-anbud",
+          "name": "Anbud, kontrakt og igangsettingstillatelse",
+          "start_week": 16,
+          "duration_weeks": 6,
+          "depends_on": [
+            "t-prosj"
+          ]
+        },
+        {
+          "id": "t-rigg",
+          "name": "Rigg og spunt",
+          "start_week": 22,
+          "duration_weeks": 2,
+          "depends_on": [
+            "t-anbud"
+          ]
+        },
+        {
+          "id": "t-grunn",
+          "name": "Utgraving, drenering og VA",
+          "start_week": 24,
+          "duration_weeks": 6,
+          "depends_on": [
+            "t-rigg"
+          ]
+        },
+        {
+          "id": "t-kjeller",
+          "name": "Kjeller og fundamenter",
+          "start_week": 30,
+          "duration_weeks": 8,
+          "depends_on": [
+            "t-grunn"
+          ]
+        },
+        {
+          "id": "t-baere",
+          "name": "Bæresystem og dekker, 5 etasjer",
+          "start_week": 38,
+          "duration_weeks": 20,
+          "depends_on": [
+            "t-kjeller"
+          ]
+        },
+        {
+          "id": "t-tak",
+          "name": "Tak og taktekking",
+          "start_week": 58,
+          "duration_weeks": 3,
+          "depends_on": [
+            "t-baere"
+          ]
+        },
+        {
+          "id": "t-vindu",
+          "name": "Vinduer og dører – tett bygg",
+          "start_week": 58,
+          "duration_weeks": 6,
+          "depends_on": [
+            "t-baere"
+          ]
+        },
+        {
+          "id": "t-balkong",
+          "name": "Montering av balkonger",
+          "start_week": 64,
+          "duration_weeks": 4,
+          "depends_on": [
+            "t-vindu"
+          ]
+        },
+        {
+          "id": "t-fasade",
+          "name": "Isolasjon og puss på fasadene",
+          "start_week": 64,
+          "duration_weeks": 10,
+          "depends_on": [
+            "t-vindu"
+          ]
+        },
+        {
+          "id": "t-tekn",
+          "name": "Grovinstallasjon VVS, el og ventilasjon",
+          "start_week": 61,
+          "duration_weeks": 10,
+          "depends_on": [
+            "t-tak"
+          ]
+        },
+        {
+          "id": "t-heis",
+          "name": "Montering av heis",
+          "start_week": 61,
+          "duration_weeks": 8,
+          "depends_on": [
+            "t-tak"
+          ]
+        },
+        {
+          "id": "t-innv",
+          "name": "Innvendig ferdigstilling av leilighetene",
+          "start_week": 71,
+          "duration_weeks": 16,
+          "depends_on": [
+            "t-tekn"
+          ]
+        },
+        {
+          "id": "t-utomhus",
+          "name": "Utomhusarbeider",
+          "start_week": 76,
+          "duration_weeks": 8,
+          "depends_on": [
+            "t-fasade",
+            "t-balkong"
+          ]
+        },
+        {
+          "id": "t-ferdig",
+          "name": "Ferdigattest og overlevering",
+          "start_week": 87,
+          "duration_weeks": 3,
+          "depends_on": [
+            "t-innv",
+            "t-utomhus",
+            "t-heis"
+          ]
+        }
+      ],
+      "risks": [
+        {
+          "id": "r-grunn",
+          "title": "Grunnforhold og grunnvann",
+          "probability": "middels",
+          "consequence": "Leire, kvikkleire eller høyt grunnvann krever peling eller tettere spunt for kjelleren",
+          "measure": "Geoteknisk undersøkelse før prosjekteringen er ferdig",
+          "cost_nok": 1500000
+        },
+        {
+          "id": "r-nabo",
+          "title": "Naboprotester og klager",
+          "probability": "middels",
+          "consequence": "Klage på rammetillatelsen kan forsinke oppstart 3–6 måneder",
+          "measure": "Tidlig nabomøte, sol- og skyggestudier og god dialog",
+          "cost_nok": 800000
+        },
+        {
+          "id": "r-brann",
+          "title": "Brannkrav og rømning",
+          "probability": "lav",
+          "consequence": "Krav om ekstra trapp eller endret sprinklerløsning gir omprosjektering",
+          "measure": "Brannrådgiver (RIBr) med fra start; tårnet er trapperom med sprinkler",
+          "cost_nok": 600000
+        },
+        {
+          "id": "r-heis",
+          "title": "Leveringstid på heis",
+          "probability": "middels",
+          "consequence": "Heisen kan komme 4–8 uker for sent og utsette ferdigattesten",
+          "measure": "Bestill heisen straks kontrakten er signert",
+          "cost_nok": 300000
+        },
+        {
+          "id": "r-rente",
+          "title": "Renteøkning og svakt salg",
+          "probability": "hoy",
+          "consequence": "For få solgte leiligheter kan stoppe byggestart, og høyere rente øker finanskostnadene",
+          "measure": "Krav om 60 % forhåndssalg før byggestart, og fastpris på entreprisen",
+          "cost_nok": 2500000
+        },
+        {
+          "id": "r-vinter",
+          "title": "Vinterarbeid med betong",
+          "probability": "middels",
+          "consequence": "Kulde gir vintertiltak og lengre herdetid på dekkene",
+          "measure": "Legg kjeller og bæresystem til sommerhalvåret der det går",
+          "cost_nok": 400000
+        },
+        {
+          "id": "r-hoyde",
+          "title": "Femte etasje over regulert høyde",
+          "probability": "middels",
+          "consequence": "Krever dispensasjon fra reguleringsplanen; avslag gir tilbake til fire etasjer",
+          "measure": "Forhåndskonferanse med kommunen før rammesøknaden",
+          "cost_nok": 700000
+        }
+      ],
+      "assumptions": [
+        "Bygget oppføres av en totalentreprenør for salg av leilighetene.",
+        "Etasjehøyde 3,0 m (dekke til dekke).",
+        "Trapp- og heistårnet går fra kjelleren og én etasje over blokken, med utgang til taket.",
+        "Reguleringsplanen tillater fire etasjer; den femte krever dispensasjon (se risiko).",
+        "Vinduene er 160 × 150 cm med brystning 90 cm; balkongdørene er 10×22.",
+        "Rampen til parkeringskjelleren ligger langs venstre gavl.",
+        "Prisene er i NOK inkl. mva for en totalentreprise; tomt, finansiering og salgskostnader er ikke med.",
+        "Balkongene er prefabrikkerte og henges på bærevegger og dekker.",
+        "Byggestart forutsetter 60 % forhåndssalg."
+      ]
+    }
+  }
+}

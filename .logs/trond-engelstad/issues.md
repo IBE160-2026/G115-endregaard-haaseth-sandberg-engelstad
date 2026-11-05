@@ -23,3 +23,11 @@
 - [ ] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — The deploy workflow is in `ByggAPP/.github/` and does not run; move `.github/` back to the root to publish on GitHub Pages
 - [ ] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — `CLAUDE.md` is in `01. Admin/` and is not loaded when Claude starts at the root; the session-log rule no longer applies automatically
 - [ ] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — The GitHub front page shows no README now that it is in `01. Admin/`
+- [ ] 2026-10-29 [ai-byggplant-v0-1](994-2026-10-29-21-45-00-ai-byggplant-v0-1.md) — Run a full AI_BYGGplant dialog against Claude with a real API key and tune `server/prompt.ts`
+- [ ] 2026-10-29 [ai-byggplant-v0-1](994-2026-10-29-21-45-00-ai-byggplant-v0-1.md) — Choose how to publish AI_BYGGplant (it needs a backend for the API key)
+- [ ] 2026-10-29 [ai-byggplant-v0-1](994-2026-10-29-21-45-00-ai-byggplant-v0-1.md) — Decide whether the Bygget tab should become 3D like ByggAPP
+- [ ] 2026-10-29 [ai-byggplant-v0-2-team](993-2026-10-29-22-15-00-ai-byggplant-v0-2-team.md) — Confirm the buyer the team chose for AI_BYGGplant (a white-label licence for a prefab or building-supply company) and the Claude API budget
+- [ ] 2026-10-29 [ai-byggplant-v0-2-team](993-2026-10-29-22-15-00-ai-byggplant-v0-2-team.md) — Check with a real key that the AI fills in risks, changes and budget uncertainty sensibly
+- [x] 2026-10-30 [ai-byggplant-v0-3](992-2026-10-30-00-45-00-ai-byggplant-v0-3.md) — Click through the v0.3 garage demo in a browser (løst 2026-10-30: all steps work; Stopp bug fixed)
+- [ ] 2026-10-30 [ai-byggplant-v0-3](992-2026-10-30-00-45-00-ai-byggplant-v0-3.md) — Handle X-Forwarded-For in the rate limit before AI_BYGGplant gets a public URL
+- [ ] 2026-10-30 [ai-byggplant-v0-4](991-2026-10-30-02-00-00-ai-byggplant-v0-4.md) — Decide whether volumes need rotation, round shapes or joined roofs, and whether to draw terrain slope

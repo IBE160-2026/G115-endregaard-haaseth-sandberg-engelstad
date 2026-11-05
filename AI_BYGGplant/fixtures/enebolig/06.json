@@ -1,0 +1,814 @@
+{
+  "user": "Gjør garasjen 1 meter bredere og legg til en terrassedør mot hagen.",
+  "turn": {
+    "reply": "Garasjen er nå 8 m bred langs fronten (56 m²), med portene midt på, og stua har fått en dobbel terrassedør mot hagen. Budsjettet øker med ca. 143 000 kr, mest for større garasje og den nye døren.",
+    "questions": [
+      {
+        "text": "Noe mer du vil endre?",
+        "options": [
+          "Ser bra ut",
+          "Legg til carport",
+          "Billigere alternativer"
+        ]
+      }
+    ],
+    "phase": "detaljer",
+    "changes": [
+      {
+        "section": "bygg",
+        "text": "Garasjen 7 → 8 m bred langs fronten (49 → 56 m²)",
+        "ref_id": "garasje"
+      },
+      {
+        "section": "apninger",
+        "text": "Ny dobbel terrassedør 18×21 mot hagen",
+        "ref_id": "dor-terrasse"
+      },
+      {
+        "section": "apninger",
+        "text": "Venstre port flyttet 0,5 m så portene står midt på",
+        "ref_id": "port-1"
+      },
+      {
+        "section": "apninger",
+        "text": "Høyre port flyttet 0,5 m",
+        "ref_id": "port-2"
+      },
+      {
+        "section": "budsjett",
+        "text": "Grunnarbeid: +12 000 kr",
+        "ref_id": "b-grunn"
+      },
+      {
+        "section": "budsjett",
+        "text": "Tak: +12 000 kr",
+        "ref_id": "b-tak"
+      },
+      {
+        "section": "budsjett",
+        "text": "Kledning og maling: +6 000 kr",
+        "ref_id": "b-kledning"
+      },
+      {
+        "section": "budsjett",
+        "text": "Vinduer og dører: +38 000 kr",
+        "ref_id": "b-vindu"
+      },
+      {
+        "section": "budsjett",
+        "text": "Garasje: +50 000 kr",
+        "ref_id": "b-garasje"
+      },
+      {
+        "section": "budsjett",
+        "text": "Utomhus: +15 000 kr",
+        "ref_id": "b-utomhus"
+      },
+      {
+        "section": "budsjett",
+        "text": "Uforutsett: +10 000 kr",
+        "ref_id": "b-uforutsett"
+      },
+      {
+        "section": "fremdrift",
+        "text": "Garasjen tar 5 → 6 uker",
+        "ref_id": "t-garasje"
+      }
+    ],
+    "project": {
+      "name": "Enebolig med dobbelgarasje",
+      "type": "Enebolig",
+      "summary": "Hvit enebolig på 12 × 9 m i to etasjer med kjeller, dobbel terrassedør mot hagen, vannbåren varme og balansert ventilasjon, og dobbelgarasje på 8 × 7 m i samme stil. Budsjett ca. 6,9 mill. kr inkl. mva og ca. 40 ukers byggetid.",
+      "facts": [
+        {
+          "category": "Tomt",
+          "label": "Terreng",
+          "value": "Flat"
+        },
+        {
+          "category": "Tomt",
+          "label": "Størrelse",
+          "value": "Ca. 900 m², regulert boligfelt"
+        },
+        {
+          "category": "Bygg",
+          "label": "Type",
+          "value": "Enebolig med dobbelgarasje"
+        },
+        {
+          "category": "Bygg",
+          "label": "Hus",
+          "value": "12 × 9 m, 2 etasjer + kjeller (BRA ca. 300 m²)"
+        },
+        {
+          "category": "Bygg",
+          "label": "Garasje",
+          "value": "8 × 7 m (56 m²), inntil høyre gavl"
+        },
+        {
+          "category": "Bygg",
+          "label": "Tak",
+          "value": "Hus: saltak 30°, møne langs lengden. Garasje: saltak 22°, møne på tvers"
+        },
+        {
+          "category": "Åpninger",
+          "label": "Inngang",
+          "value": "Inngangsdør 10×21 midt på fronten"
+        },
+        {
+          "category": "Åpninger",
+          "label": "Vinduer",
+          "value": "11 vinduer i 1. og 2. etasje, vindusfelt 3 m og dobbel terrassedør mot hagen"
+        },
+        {
+          "category": "Åpninger",
+          "label": "Kjeller",
+          "value": "4 kjellervinduer med lysgraver"
+        },
+        {
+          "category": "Åpninger",
+          "label": "Garasje",
+          "value": "2 leddporter 2,5 × 2,25 m, sidedør og 2 vinduer"
+        },
+        {
+          "category": "Materialer",
+          "label": "Kledning",
+          "value": "Liggende dobbelfals kledning, også på garasjen"
+        },
+        {
+          "category": "Materialer",
+          "label": "Farger",
+          "value": "Hvit vegg og hvite lister, grått tak"
+        },
+        {
+          "category": "Materialer",
+          "label": "Taktekking",
+          "value": "Grå betongtakstein"
+        },
+        {
+          "category": "Teknikk",
+          "label": "Fundament",
+          "value": "Støpt kjeller med drenering og lysgraver"
+        },
+        {
+          "category": "Teknikk",
+          "label": "Varme",
+          "value": "Vannbåren gulvvarme i 1. etasje og kjeller, luft-til-vann-varmepumpe"
+        },
+        {
+          "category": "Teknikk",
+          "label": "Ventilasjon",
+          "value": "Balansert med varmegjenvinning"
+        },
+        {
+          "category": "Økonomi",
+          "label": "Budsjett",
+          "value": "ca. 6 875 800 kr inkl. mva"
+        },
+        {
+          "category": "Økonomi",
+          "label": "Byggetid",
+          "value": "40 uker inkl. prosjektering og søknad"
+        }
+      ],
+      "building": {
+        "volumes": [
+          {
+            "id": "hus",
+            "name": "Hovedhus",
+            "x_m": 0,
+            "y_m": 0,
+            "length_m": 12,
+            "width_m": 9,
+            "floors": 2,
+            "floor_height_m": 2.7,
+            "basement_floors": 1,
+            "roof": {
+              "kind": "saltak",
+              "pitch_deg": 30,
+              "ridge_along": "lengde",
+              "overhang_m": 0.5
+            },
+            "exterior": null
+          },
+          {
+            "id": "garasje",
+            "name": "Dobbelgarasje",
+            "x_m": 12,
+            "y_m": 0,
+            "length_m": 8,
+            "width_m": 7,
+            "floors": 1,
+            "floor_height_m": 2.8,
+            "basement_floors": 0,
+            "roof": {
+              "kind": "saltak",
+              "pitch_deg": 22,
+              "ridge_along": "bredde",
+              "overhang_m": 0.4
+            },
+            "exterior": null
+          }
+        ],
+        "exterior": {
+          "cladding": "Liggende dobbelfals kledning",
+          "wall_color": "#F3F2EE",
+          "roof_color": "#5B6066",
+          "trim_color": "#FFFFFF"
+        },
+        "terrain_slope_pct": 0,
+        "openings": [
+          {
+            "id": "dor-inngang",
+            "volume_id": "hus",
+            "kind": "dor",
+            "label": "Inngangsdør",
+            "width_m": 1,
+            "height_m": 2.1,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 5.5,
+            "sill_m": 0
+          },
+          {
+            "id": "vindu-f1-1",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Vindu stue",
+            "width_m": 1.2,
+            "height_m": 1.3,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 1.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "vindu-f1-2",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Vindu kjøkken",
+            "width_m": 1.2,
+            "height_m": 1.3,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 9.3,
+            "sill_m": 0.9
+          },
+          {
+            "id": "vindu-f2-1",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Vindu soverom",
+            "width_m": 1.2,
+            "height_m": 1.3,
+            "wall": "front",
+            "floor": 2,
+            "offset_m": 1.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "vindu-f2-2",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Vindu gang",
+            "width_m": 1.2,
+            "height_m": 1.3,
+            "wall": "front",
+            "floor": 2,
+            "offset_m": 5.4,
+            "sill_m": 0.9
+          },
+          {
+            "id": "vindu-f2-3",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Vindu soverom",
+            "width_m": 1.2,
+            "height_m": 1.3,
+            "wall": "front",
+            "floor": 2,
+            "offset_m": 9.3,
+            "sill_m": 0.9
+          },
+          {
+            "id": "vindu-b1-1",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Vindusfelt stue mot hagen",
+            "width_m": 3,
+            "height_m": 2.1,
+            "wall": "bak",
+            "floor": 1,
+            "offset_m": 1,
+            "sill_m": 0.3
+          },
+          {
+            "id": "dor-terrasse",
+            "volume_id": "hus",
+            "kind": "dor",
+            "label": "Dobbel terrassedør mot hagen",
+            "width_m": 1.8,
+            "height_m": 2.1,
+            "wall": "bak",
+            "floor": 1,
+            "offset_m": 4.8,
+            "sill_m": 0
+          },
+          {
+            "id": "vindu-b1-2",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Vindu kjøkken mot hagen",
+            "width_m": 1.2,
+            "height_m": 1.3,
+            "wall": "bak",
+            "floor": 1,
+            "offset_m": 8,
+            "sill_m": 0.9
+          },
+          {
+            "id": "vindu-b2-1",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Vindu soverom",
+            "width_m": 1.2,
+            "height_m": 1.3,
+            "wall": "bak",
+            "floor": 2,
+            "offset_m": 1.5,
+            "sill_m": 0.9
+          },
+          {
+            "id": "vindu-b2-2",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Vindu bad",
+            "width_m": 1.2,
+            "height_m": 1.3,
+            "wall": "bak",
+            "floor": 2,
+            "offset_m": 5.4,
+            "sill_m": 0.9
+          },
+          {
+            "id": "vindu-b2-3",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Vindu hovedsoverom",
+            "width_m": 1.2,
+            "height_m": 1.3,
+            "wall": "bak",
+            "floor": 2,
+            "offset_m": 9.3,
+            "sill_m": 0.9
+          },
+          {
+            "id": "vindu-v1-1",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Vindu stue gavl",
+            "width_m": 1.2,
+            "height_m": 1.3,
+            "wall": "venstre",
+            "floor": 1,
+            "offset_m": 3.9,
+            "sill_m": 0.9
+          },
+          {
+            "id": "vindu-v2-1",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Vindu soverom gavl",
+            "width_m": 1.2,
+            "height_m": 1.3,
+            "wall": "venstre",
+            "floor": 2,
+            "offset_m": 3.9,
+            "sill_m": 0.9
+          },
+          {
+            "id": "kjeller-1",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Kjellervindu med lysgrav",
+            "width_m": 1,
+            "height_m": 0.6,
+            "wall": "front",
+            "floor": 0,
+            "offset_m": 1.5,
+            "sill_m": 1.9
+          },
+          {
+            "id": "kjeller-2",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Kjellervindu med lysgrav",
+            "width_m": 1,
+            "height_m": 0.6,
+            "wall": "front",
+            "floor": 0,
+            "offset_m": 9.5,
+            "sill_m": 1.9
+          },
+          {
+            "id": "kjeller-3",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Kjellervindu med lysgrav",
+            "width_m": 1,
+            "height_m": 0.6,
+            "wall": "bak",
+            "floor": 0,
+            "offset_m": 2,
+            "sill_m": 1.9
+          },
+          {
+            "id": "kjeller-4",
+            "volume_id": "hus",
+            "kind": "vindu",
+            "label": "Kjellervindu med lysgrav",
+            "width_m": 1,
+            "height_m": 0.6,
+            "wall": "venstre",
+            "floor": 0,
+            "offset_m": 4,
+            "sill_m": 1.9
+          },
+          {
+            "id": "port-1",
+            "volume_id": "garasje",
+            "kind": "port",
+            "label": "Garasjeport venstre",
+            "width_m": 2.5,
+            "height_m": 2.25,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 1.25,
+            "sill_m": 0
+          },
+          {
+            "id": "port-2",
+            "volume_id": "garasje",
+            "kind": "port",
+            "label": "Garasjeport høyre",
+            "width_m": 2.5,
+            "height_m": 2.25,
+            "wall": "front",
+            "floor": 1,
+            "offset_m": 4.25,
+            "sill_m": 0
+          },
+          {
+            "id": "dor-garasje",
+            "volume_id": "garasje",
+            "kind": "dor",
+            "label": "Sidedør garasje",
+            "width_m": 0.9,
+            "height_m": 2.1,
+            "wall": "hoyre",
+            "floor": 1,
+            "offset_m": 1,
+            "sill_m": 0
+          },
+          {
+            "id": "vindu-g-1",
+            "volume_id": "garasje",
+            "kind": "vindu",
+            "label": "Garasjevindu side",
+            "width_m": 1,
+            "height_m": 0.6,
+            "wall": "hoyre",
+            "floor": 1,
+            "offset_m": 4.5,
+            "sill_m": 1.5
+          },
+          {
+            "id": "vindu-g-2",
+            "volume_id": "garasje",
+            "kind": "vindu",
+            "label": "Garasjevindu bak",
+            "width_m": 1,
+            "height_m": 0.6,
+            "wall": "bak",
+            "floor": 1,
+            "offset_m": 3.5,
+            "sill_m": 1.5
+          }
+        ]
+      },
+      "budget": [
+        {
+          "id": "b-prosj",
+          "post": "Prosjektering og søknad",
+          "description": "Arkitekt, tegninger, ansvarsretter, byggesøknad og nabovarsel",
+          "amount_nok": 285000,
+          "uncertainty_pct": 15,
+          "sku": null
+        },
+        {
+          "id": "b-rigg",
+          "post": "Rigg og drift",
+          "description": "Brakke, toalett, stillas, strøm og avfall i byggetiden",
+          "amount_nok": 180000,
+          "uncertainty_pct": 15,
+          "sku": null
+        },
+        {
+          "id": "b-grunn",
+          "post": "Grunnarbeid",
+          "description": "Graving av byggegrop for kjeller, drenering, tilbakefylling og stikkledninger",
+          "amount_nok": 432000,
+          "uncertainty_pct": 25,
+          "sku": null
+        },
+        {
+          "id": "b-kjeller",
+          "post": "Kjeller og fundament",
+          "description": "Støpt kjeller 108 m² med isolasjon, fuktsikring og lysgraver",
+          "amount_nok": 780000,
+          "uncertainty_pct": 15,
+          "sku": null
+        },
+        {
+          "id": "b-rabygg",
+          "post": "Råbygg hus",
+          "description": "Bindingsverk, bjelkelag, takstoler og isolasjon, 2 etasjer à 108 m²",
+          "amount_nok": 1100000,
+          "uncertainty_pct": 10,
+          "sku": null
+        },
+        {
+          "id": "b-tak",
+          "post": "Tak",
+          "description": "Grå betongtakstein ca. 190 m² på hus og garasje, med renner og nedløp",
+          "amount_nok": 222000,
+          "uncertainty_pct": 10,
+          "sku": null
+        },
+        {
+          "id": "b-kledning",
+          "post": "Kledning og maling",
+          "description": "Liggende dobbelfals kledning ca. 300 m², hvite lister, to strøk maling",
+          "amount_nok": 246000,
+          "uncertainty_pct": 10,
+          "sku": null
+        },
+        {
+          "id": "b-vindu",
+          "post": "Vinduer og dører",
+          "description": "15 vinduer og vindusfelt i 3-lags glass, dobbel terrassedør, 4 kjellervinduer og inngangsdør",
+          "amount_nok": 398000,
+          "uncertainty_pct": 10,
+          "sku": null
+        },
+        {
+          "id": "b-garasje",
+          "post": "Garasje",
+          "description": "Plate på mark, reisverk og takstoler for dobbelgarasje 56 m², sidedør og vinduer",
+          "amount_nok": 470000,
+          "uncertainty_pct": 15,
+          "sku": null
+        },
+        {
+          "id": "b-porter",
+          "post": "Garasjeporter",
+          "description": "2 isolerte leddporter 2,5 × 2,25 m à 23 900 kr",
+          "amount_nok": 47800,
+          "uncertainty_pct": 5,
+          "sku": "NL-PORT-2522"
+        },
+        {
+          "id": "b-innv",
+          "post": "Innvendig",
+          "description": "Gulv, vegger, himling, innvendige dører, trapp, kjøkken og to bad",
+          "amount_nok": 1080000,
+          "uncertainty_pct": 20,
+          "sku": null
+        },
+        {
+          "id": "b-vvs",
+          "post": "VVS og varme",
+          "description": "Rør, sanitær, vannbåren gulvvarme i 1. etasje og kjeller, luft-til-vann-varmepumpe",
+          "amount_nok": 520000,
+          "uncertainty_pct": 15,
+          "sku": null
+        },
+        {
+          "id": "b-el",
+          "post": "Elektro",
+          "description": "Elanlegg med sikringsskap, lys, stikk og forberedelse for elbillader",
+          "amount_nok": 310000,
+          "uncertainty_pct": 15,
+          "sku": null
+        },
+        {
+          "id": "b-vent",
+          "post": "Ventilasjon",
+          "description": "Balansert ventilasjon med varmegjenvinning",
+          "amount_nok": 160000,
+          "uncertainty_pct": 10,
+          "sku": null
+        },
+        {
+          "id": "b-utomhus",
+          "post": "Utomhus",
+          "description": "Innkjørsel, plen, trapp og terrasse ved terrassedøren, tilkobling til vei",
+          "amount_nok": 195000,
+          "uncertainty_pct": 25,
+          "sku": null
+        },
+        {
+          "id": "b-uforutsett",
+          "post": "Uforutsett",
+          "description": "Ca. 7 % av summen over, til det ingen ser før byggingen starter",
+          "amount_nok": 450000,
+          "uncertainty_pct": 50,
+          "sku": null
+        }
+      ],
+      "schedule": [
+        {
+          "id": "t-prosj",
+          "name": "Prosjektering, byggesøknad og nabovarsel",
+          "start_week": 0,
+          "duration_weeks": 8,
+          "depends_on": []
+        },
+        {
+          "id": "t-bestill",
+          "name": "Bestilling av vinduer, takstoler og varmepumpe",
+          "start_week": 8,
+          "duration_weeks": 3,
+          "depends_on": [
+            "t-prosj"
+          ]
+        },
+        {
+          "id": "t-grunn",
+          "name": "Graving, drenering og stikkledninger",
+          "start_week": 8,
+          "duration_weeks": 3,
+          "depends_on": [
+            "t-prosj"
+          ]
+        },
+        {
+          "id": "t-kjeller",
+          "name": "Støping av kjeller og lysgraver",
+          "start_week": 11,
+          "duration_weeks": 4,
+          "depends_on": [
+            "t-grunn"
+          ]
+        },
+        {
+          "id": "t-garasje",
+          "name": "Garasje: plate, reisverk og tak",
+          "start_week": 15,
+          "duration_weeks": 6,
+          "depends_on": [
+            "t-kjeller"
+          ]
+        },
+        {
+          "id": "t-rabygg",
+          "name": "Råbygg: vegger, bjelkelag og takstoler",
+          "start_week": 15,
+          "duration_weeks": 5,
+          "depends_on": [
+            "t-kjeller",
+            "t-bestill"
+          ]
+        },
+        {
+          "id": "t-tak",
+          "name": "Tekking og takrenner",
+          "start_week": 20,
+          "duration_weeks": 2,
+          "depends_on": [
+            "t-rabygg"
+          ]
+        },
+        {
+          "id": "t-vindu",
+          "name": "Vinduer og ytterdører – tett hus",
+          "start_week": 20,
+          "duration_weeks": 2,
+          "depends_on": [
+            "t-rabygg"
+          ]
+        },
+        {
+          "id": "t-kledning",
+          "name": "Kledning og maling",
+          "start_week": 22,
+          "duration_weeks": 4,
+          "depends_on": [
+            "t-tak",
+            "t-vindu"
+          ]
+        },
+        {
+          "id": "t-tekn",
+          "name": "Rør, el og ventilasjon",
+          "start_week": 22,
+          "duration_weeks": 7,
+          "depends_on": [
+            "t-vindu"
+          ]
+        },
+        {
+          "id": "t-innv",
+          "name": "Innvendig ferdigstilling, kjøkken og bad",
+          "start_week": 29,
+          "duration_weeks": 10,
+          "depends_on": [
+            "t-tekn"
+          ]
+        },
+        {
+          "id": "t-utomhus",
+          "name": "Innkjørsel og utomhus",
+          "start_week": 35,
+          "duration_weeks": 3,
+          "depends_on": [
+            "t-garasje",
+            "t-kledning"
+          ]
+        },
+        {
+          "id": "t-overlevering",
+          "name": "Ferdigattest og overlevering",
+          "start_week": 39,
+          "duration_weeks": 1,
+          "depends_on": [
+            "t-innv",
+            "t-utomhus"
+          ]
+        }
+      ],
+      "risks": [
+        {
+          "id": "r-grunn",
+          "title": "Fjell eller leire i byggegropen",
+          "probability": "middels",
+          "consequence": "Sprengning eller masseutskifting for kjelleren gir ekstra kostnad og 1–3 ukers forsinkelse",
+          "measure": "Bestill grunnundersøkelse eller prøvegraving før kontrakt",
+          "cost_nok": 150000
+        },
+        {
+          "id": "r-fukt",
+          "title": "Grunnvann og fukt i kjelleren",
+          "probability": "middels",
+          "consequence": "Fuktskader og mugg hvis drenering og fuktsikring ikke holder",
+          "measure": "Drenering rundt hele kjelleren, grunnmursplast og radonsperre",
+          "cost_nok": 90000
+        },
+        {
+          "id": "r-regulering",
+          "title": "Søknad og regulering",
+          "probability": "lav",
+          "consequence": "Avvik fra reguleringsplanen (høyde, utnyttelse) kan gi dispensasjonssøknad og 4–8 ukers ventetid",
+          "measure": "Sjekk reguleringsplanen og BYA før søknaden sendes",
+          "cost_nok": 60000
+        },
+        {
+          "id": "r-frost",
+          "title": "Vinterstøp av kjeller",
+          "probability": "middels",
+          "consequence": "Kulde gir dyrere støp, frostsikring og lengre herdetid",
+          "measure": "Planlegg graving og støp før frosten, ellers sett av til vintertiltak",
+          "cost_nok": 50000
+        },
+        {
+          "id": "r-lever",
+          "title": "Leveringstid på vinduer og varmepumpe",
+          "probability": "lav",
+          "consequence": "Sen levering utsetter tett hus og innvendig arbeid",
+          "measure": "Bestill straks søknaden er godkjent",
+          "cost_nok": 40000
+        },
+        {
+          "id": "r-pris",
+          "title": "Prisøkning og rente",
+          "probability": "middels",
+          "consequence": "Materialer og finansiering kan bli dyrere i byggetiden",
+          "measure": "Avtal fastpris med entreprenøren og bind renten på byggelånet",
+          "cost_nok": 200000
+        }
+      ],
+      "assumptions": [
+        "Huset er en vanlig trehusbolig i bindingsverk på støpt kjeller.",
+        "Garasjen står inntil husets høyre gavl, med fronten i flukt med husets front.",
+        "Etasjehøyde 2,7 m i huset og 2,8 m i garasjen.",
+        "Tomta er flat og ligger i et regulert boligfelt med vei, vann og avløp fram til tomtegrensen.",
+        "Veggene der huset og garasjen står inntil hverandre har ingen åpninger (branncellebegrensende vegg).",
+        "Kjellervinduene får lysgraver i betong, så kjelleren kan brukes til kontor og boder.",
+        "Garasjen får samme kledning, farger og taktekking som huset.",
+        "Prisene er i NOK inkl. mva for et ferdig hus levert av totalentreprenør; tomt og tilknytningsavgifter er ikke med.",
+        "Byggegropen er i løsmasser uten fjell; fjell gir ekstra kostnad (se risiko).",
+        "Kjøkken og bad er i middels standard."
+      ]
+    }
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "user": "Flat tomt på ca. 900 m² i et boligfelt. Huset skal ha to etasjer og kjeller, ca. 12 × 9 m, og garasjen skal stå inntil huset på høyre side.",
+  "turn": {
+    "reply": "Da har jeg satt opp huset på 12 × 9 m i to etasjer med kjeller og saltak, og dobbelgarasjen på 7 × 7 m inntil høyre gavl med et eget, lavere saltak. Nå tar vi dører og vinduer.",
+    "questions": [
+      {
+        "text": "Hvor vil du ha inngangsdøren?",
+        "options": [
+          "Midt på fronten",
+          "På gavlen",
+          "Ved garasjen"
+        ]
+      },
+      {
+        "text": "Skal kjelleren ha vinduer?",
+        "options": [
+          "Ja, med lysgraver",
+          "Nei, bare boder"
+        ]
+      },
+      {
+        "text": "Hvordan vil du ha garasjeportene?",
+        "options": [
+          "To enkeltporter",
+          "Én dobbel port"
+        ]
+      }
+    ],
+    "phase": "bygg",
+    "changes": [
+      {
+        "section": "tomt",
+        "text": "Flat tomt på ca. 900 m²",
+        "ref_id": null
+      },
+      {
+        "section": "bygg",
+        "text": "Hus 12 × 9 m, 2 etasjer + kjeller, saltak 30°",
+        "ref_id": "hus"
+      },
+      {
+        "section": "bygg",
+        "text": "Dobbelgarasje 7 × 7 m inntil høyre gavl, saltak 22°",
+        "ref_id": "garasje"
+      }
+    ],
+    "project": {
+      "name": "Enebolig med dobbelgarasje",
+      "type": "Enebolig",
+      "summary": "Enebolig på 12 × 9 m i to etasjer med kjeller og saltak 30°, og dobbelgarasje på 7 × 7 m inntil høyre gavl med eget, lavere saltak.",
+      "facts": [
+        {
+          "category": "Tomt",
+          "label": "Terreng",
+          "value": "Flat"
+        },
+        {
+          "category": "Tomt",
+          "label": "Størrelse",
+          "value": "Ca. 900 m², regulert boligfelt"
+        },
+        {
+          "category": "Bygg",
+          "label": "Type",
+          "value": "Enebolig med dobbelgarasje"
+        },
+        {
+          "category": "Bygg",
+          "label": "Hus",
+          "value": "12 × 9 m, 2 etasjer + kjeller (BRA ca. 300 m²)"
+        },
+        {
+          "category": "Bygg",
+          "label": "Garasje",
+          "value": "7 × 7 m (49 m²), inntil høyre gavl"
+        },
+        {
+          "category": "Bygg",
+          "label": "Tak",
+          "value": "Hus: saltak 30°, møne langs lengden. Garasje: saltak 22°, møne på tvers"
+        }
+      ],
+      "building": {
+        "volumes": [
+          {
+            "id": "hus",
+            "name": "Hovedhus",
+            "x_m": 0,
+            "y_m": 0,
+            "length_m": 12,
+            "width_m": 9,
+            "floors": 2,
+            "floor_height_m": 2.7,
+            "basement_floors": 1,
+            "roof": {
+              "kind": "saltak",
+              "pitch_deg": 30,
+              "ridge_along": "lengde",
+              "overhang_m": 0.5
+            },
+            "exterior": null
+          },
+          {
+            "id": "garasje",
+            "name": "Dobbelgarasje",
+            "x_m": 12,
+            "y_m": 0,
+            "length_m": 7,
+            "width_m": 7,
+            "floors": 1,
+            "floor_height_m": 2.8,
+            "basement_floors": 0,
+            "roof": {
+              "kind": "saltak",
+              "pitch_deg": 22,
+              "ridge_along": "bredde",
+              "overhang_m": 0.4
+            },
+            "exterior": null
+          }
+        ],
+        "exterior": null,
+        "terrain_slope_pct": 0,
+        "openings": []
+      },
+      "budget": [],
+      "schedule": [],
+      "risks": [],
+      "assumptions": [
+        "Huset er en vanlig trehusbolig i bindingsverk på støpt kjeller.",
+        "Garasjen står inntil husets høyre gavl, med fronten i flukt med husets front.",
+        "Etasjehøyde 2,7 m i huset og 2,8 m i garasjen.",
+        "Tomta er flat og ligger i et regulert boligfelt med vei, vann og avløp fram til tomtegrensen."
+      ]
+    }
+  }
+}

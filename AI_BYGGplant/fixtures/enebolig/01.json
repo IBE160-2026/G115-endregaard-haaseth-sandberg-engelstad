@@ -1,0 +1,64 @@
+{
+  "user": "Enebolig med dobbelgarasje",
+  "turn": {
+    "reply": "En enebolig med dobbelgarasje – flott! Jeg begynner med tomta, for den avgjør kjeller, grunnarbeid og hvor huset og garasjen kan stå.",
+    "questions": [
+      {
+        "text": "Hvordan er tomta?",
+        "options": [
+          "Flat",
+          "Svak helning",
+          "Bratt",
+          "Vet ikke"
+        ]
+      },
+      {
+        "text": "Hvor stor er tomta, og ligger den i et regulert boligfelt?",
+        "options": [
+          "Under 700 m²",
+          "700–1 000 m²",
+          "Over 1 000 m²",
+          "Vet ikke"
+        ]
+      }
+    ],
+    "phase": "tomt",
+    "changes": [
+      {
+        "section": "annet",
+        "text": "Nytt prosjekt: enebolig med dobbelgarasje",
+        "ref_id": null
+      }
+    ],
+    "project": {
+      "name": "Enebolig med dobbelgarasje",
+      "type": "Enebolig",
+      "summary": "Enebolig for en familie, med dobbelgarasje inntil huset.",
+      "facts": [
+        {
+          "category": "Bygg",
+          "label": "Type",
+          "value": "Enebolig med dobbelgarasje"
+        },
+        {
+          "category": "Bygg",
+          "label": "Bruk",
+          "value": "Bolig for en familie, garasje til to biler"
+        }
+      ],
+      "building": {
+        "volumes": [],
+        "exterior": null,
+        "terrain_slope_pct": null,
+        "openings": []
+      },
+      "budget": [],
+      "schedule": [],
+      "risks": [],
+      "assumptions": [
+        "Huset bygges på egen tomt, og garasjen står inntil huset.",
+        "Huset er en vanlig trehusbolig i bindingsverk."
+      ]
+    }
+  }
+}
