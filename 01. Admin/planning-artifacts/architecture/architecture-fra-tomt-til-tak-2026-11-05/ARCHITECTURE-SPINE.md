@@ -5,7 +5,7 @@ purpose: build-substrate
 altitude: feature
 paradigm: 'Functional core, imperative shell, with ports and adapters at the AI edge'
 scope: 'The whole simulator: engine, adviser, view, server function, deployment'
-status: draft
+status: final
 created: '2026-11-05'
 updated: '2026-11-05'
 binds: ['FR-1..FR-38', 'NFR-1..NFR-10']
@@ -214,7 +214,7 @@ interface AdviserReply { answer: string; basis: string; onTopic: boolean } // 20
 | @types/three | ^0.186.0 |
 | jsdom [ASSUMPTION] | 31.0.0 |
 | @anthropic-ai/sdk | ^1.6.0 |
-| Claude model [ASSUMPTION] | `claude-opus-5-5`, effort `low`, via `ADVISER_MODEL` |
+| Claude model | `claude-sonnet-5-5` via `ADVISER_MODEL`; cost and response time to be measured |
 | Node, functions and CI [ASSUMPTION] | 22.x |
 | Hosting | Vercel services |
 

@@ -18,7 +18,7 @@ Building projects run on average 32 % over schedule and 62 % over cost. Project 
 
 ## Status
 
-The group chose this direction after comparing three proposals. **The planning is done; the new app is not built yet.** `ByggAPP/` still contains the previous game (v0.5, *Regjeringskvartalet Light*), which is the base for the new app: its simulation engine, 3D site and AI comparison are reused. The README will be updated as the stories are completed.
+The group chose this direction after comparing three proposals. **The planning is done; the new app is not built yet.** `ByggAPP/` still contains the previous game (v0.5, *Regjeringskvartalet Light*), which is the starting point for the new app: the 3D world, Gantt view and icons are reused, while the engine is rewritten to follow the new simulation rules. The README will be updated as the stories are completed.
 
 ## Run locally
 
@@ -50,6 +50,7 @@ All in `01. Admin/planning-artifacts/`:
 - [PRD](01.%20Admin/planning-artifacts/prds/prd-fra-tomt-til-tak-2026-10-31/prd.md), with [simulation rules and worked examples](01.%20Admin/planning-artifacts/prds/prd-fra-tomt-til-tak-2026-10-31/simulation-rules.md)
 - [Research: figures](01.%20Admin/planning-artifacts/research/research-fra-tomt-til-tak-2026-10-31/research.md) and [research: reference projects](01.%20Admin/planning-artifacts/research/research-referanseprosjekter-2026-10-31/research.md)
 - [UX: EXPERIENCE.md](01.%20Admin/planning-artifacts/ux-designs/ux-fra-tomt-til-tak-2026-10-31/EXPERIENCE.md) and [DESIGN.md](01.%20Admin/planning-artifacts/ux-designs/ux-fra-tomt-til-tak-2026-10-31/DESIGN.md)
+- [Architecture](01.%20Admin/planning-artifacts/architecture/architecture-fra-tomt-til-tak-2026-11-05/ARCHITECTURE-SPINE.md)
 
 Development follows the [BMAD framework](https://bmadcode.com/).
 

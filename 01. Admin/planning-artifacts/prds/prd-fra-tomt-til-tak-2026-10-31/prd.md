@@ -500,7 +500,7 @@ The flows that are hard to test automatically (the 3D view, the adviser's free-t
 - Stage 1 step 2 is a schedule estimate (durations per main part, with reference shares from the adviser), not choosing crew and work mode. Crew decisions move to stage 2 as responses to events. The learning goal "resources have limits" is met there.
 - The adviser's warnings follow a reference-class approach: they open with what comparable projects did.
 
-**Reused from v0.5:** the site office scene and figures, the week-by-week engine (work modes, crowding, cost factors, events, forecast), the Gantt view, the comparison with the AI path from the same state, the final report as a base for the debrief, and the 3D construction site shown in a smaller view.
+**Carried over from v0.5:** the rules and ideas behind work modes, crowding, cost factors, events and the forecast; the comparison with the AI path from the same state; the final report as a model for the debrief. **Code reused:** the 3D world and figures, the Gantt view (adapted), formatting, the random generator and the icons. The v0.5 engine code itself is replaced, because it runs one fixed scenario week by week (architecture AD-4, AD-6).
 
 **New:** the planning view, the building-block model, the schedule estimate, the adviser window with prepared answers, event selection tied to the plan, and the debrief.
 

@@ -21,7 +21,7 @@ One playthrough takes about 20 minutes and runs in three stages:
 
 The three stages belong together because project management judgement is learned across the whole cycle. A plan only teaches something when you see it break, and a breakdown only teaches something when you understand why it happened.
 
-The simulator builds on the group's existing game (v0.5). Its simulation engine, events and AI comparison are reused in stage 2; the planning stage and the debrief are new.
+The simulator builds on the group's existing game (v0.5). Its rules for work modes and events, its AI comparison and its 3D world carry over to stage 2, while the engine code is rewritten; the planning stage and the debrief are new.
 
 ## The Problem
 
@@ -98,7 +98,7 @@ The group has about 120 hours in total over about 1.5 months, with Claude Code a
 - A building-block model that turns the concept into WBS, quantities, durations and cost, with simple rules the group owns and worked examples with answers.
 - The adviser's rule-based suggestions and warnings, and suggested-question buttons with prepared answers.
 - Free-text conversation with a guardrailed language model, with the offline fallback.
-- A shortened stage 2 (three or four events), reusing the v0.5 engine and the comparison with the AI's path.
+- A shortened stage 2 (three or four events), carrying over the v0.5 rules and the comparison with the AI's path.
 - A short stage 3 debrief with a conclusion tied to the learning goals.
 - A decision log of every choice, with time and what the adviser recommended. It feeds the debrief and can be downloaded. This is how the simulator meets the assignment's recommendation of an audit log; see "Out" for why there is no login.
 - Runs from the README without keys or accounts.
