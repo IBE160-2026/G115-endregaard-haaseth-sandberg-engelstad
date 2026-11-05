@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <defs>
+    <linearGradient id="R6-water-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF8080"/><stop offset="1" stop-color="#C50F1F"/></linearGradient>
+    <linearGradient id="R6-water-sheen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  </defs>
+  <rect x="3" y="4" width="42" height="42" rx="10" fill="#000" opacity=".18"/>
+  <rect x="3" y="2.5" width="42" height="42" rx="10" fill="url(#R6-water-bg)"/>
+  <rect x="3" y="2.5" width="42" height="42" rx="10" fill="url(#R6-water-sheen)"/>
+  <rect x="3.5" y="3" width="41" height="41" rx="9.5" fill="none" stroke="#fff" stroke-opacity=".22"/>
+  <g transform="translate(10 8.5) scale(1.1666666666666667)" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5h4M18 6.5h4M5 6.5v14h14v-14"/><path d="M5 12c1.4 0 1.4-1.2 2.8-1.2s1.4 1.2 2.8 1.2 1.4-1.2 2.8-1.2 1.4 1.2 2.8 1.2 1.4-1.2 2.8-1.2M5 16.5c1.4 0 1.4-1.2 2.8-1.2s1.4 1.2 2.8 1.2 1.4-1.2 2.8-1.2 1.4 1.2 2.8 1.2 1.4-1.2 2.8-1.2"/></g>
+</svg>

@@ -2,6 +2,14 @@
 
 An assessment of how well the simulator meets its goals, measured against the instructor's feedback (`01. Admin/tilbakemelding-product-brief.md`, the part 1 criteria of the grading guide) and the brief's success criteria, with recommended next steps. One section per simulator version (newest first). Each entry has at most four lines.
 
+## Fra tomt til tak – 2026-11-05
+
+**Overall:** the planning chain from brief to architecture now exists and describes the app the group intends to deliver. The gap has moved from planning to building: no code for the new app exists yet.
+
+1. **Build through stories.** One story per issue, branch and pull request, with a member as owner, so the history shows steady work by the whole group. Affects criterion 1, Process (30 %).
+2. **Start with the worked examples as tests.** They are the group's own check that the AI-written engine is right. Affects criterion 3, Quality assurance (15 %).
+3. **Have the group approve the estimates** in §5 of the simulation rules, the 5 % band and the fire-cost rule before the engine is written.
+
 ## v0.5 – 2026-10-27
 
 **Status estimate (2026-10-27):** brief about 75 %, the part 1 grading criteria about 74 % weighted, the BMAD flow about 35 % (brief and specs exist; no PRD, architecture or epics). The whole game is described in `G115_FinalPrompt.md`, which can be the starting point for a PRD written after the fact.

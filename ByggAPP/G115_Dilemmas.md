@@ -2,6 +2,41 @@
 
 The choices the AI (Claude Code) put to the group, with the group's reply word for word, one section per simulator version (newest first). Each entry has at most four lines: the prompt, the reply, and what came of it.
 
+## Fra tomt til tak – 2026-10-29 til 2026-11-05
+
+The planning of the new project, on the branch `forslag/tre-stadier`. The AI's prompt, the group's reply word for word, and what came of it. Full reasoning is in the `.memlog.md` of each planning folder in `01. Admin/planning-artifacts/`.
+
+1. **The group chose the direction.** Prompt: which files move to the archive, how far to go now, and how to reach main?
+   Reply: "Hei, la oss starte opp igjen. Gruppen valgte dette forslaget. La oss implementere det i filsystemet vi allerede har dannet. De filene som kommer i konflikt, legger vi på en egen mappe" and "Det betyr da at vi ikke skal ha tre forksjellige oppgaver, men kun deenne"
+   Result: AI_BYGGplant, the earlier brief and the other PRDs moved to `02. Arkiv/`, and v0.5 was copied there and tagged. Main is reached through a pull request.
+2. **What is really reused from v0.5.** Prompt: the AI had said the engine would be reused, but the code review showed it should be rewritten. New engine, or adapt the old one?
+   Reply: "Gjør som anbefalt og push det"
+   Result: new engine, and the PRD, brief and README were corrected to say so. An example of a claim from the AI that did not hold up against the code.
+3. **The score must not be the point.** Prompt: only one plan met both targets; should the budget be raised to 170 MNOK so that two plans pass?
+   Reply: "Jeg tror det blir feil fokus på oppnåelse. Om hun velger stål eller trevirke og det skiller 1 million til slutt, blir poenget for lite."
+   Result: the AI's proposal was dropped. Results are shown in bands and the debrief ranks decisions by how much they mattered (FR-38, R29, R30).
+4. **Challenging the fire rule.** Prompt: the draft rules charged timber 2 MNOK extra for fire.
+   Reply: "Sjekk ut en ting først. Er ikke massift tre bedre enn stål ifht bærende evne ved brannkrav?"
+   Result: a source check showed the group was partly right. Steel had no fire protection cost, and timber's extra is documentation, not worse performance. The rule was corrected (steel 3.3, timber 2.5 MNOK from 5 floors), and the gap between them fell to about 1 MNOK.
+5. **One plot instead of three.** Prompt: with three plots, the outer plot was always cheapest. Give it a time penalty?
+   Reply: "Jeg tror vi må snevre inn. Vi sier at bygget skal stå sentrumsnært i oslo, derav er det bare en tomtepris per kvm, derfor blir regnetykket mellom hvor mange kvm tomt mot hvor mye hver etasje koster."
+   Result: one central plot. The AI then showed that building as tall as allowed always wins on cost, and the group chose time as the counterweight.
+6. **The AI as a must.** Prompt: should free-text conversation with the language model be must-have?
+   Reply: "Nei, det må være et valg når jeg tenker meg om." and later "ki skal være en must i språkmodellen"
+   Result: FR-17 is must-have, with prepared answers as the fallback without a key.
+7. **The warning threshold.** Prompt: the draft had the adviser warn at 30 % from the reference value.
+   Reply: "30% hørtes mye ut, sett den til 20%."
+   Result: 20 % (FR-15). The research later showed that both can be defended.
+8. **Rejected scope cuts.** Prompt: four proposed cuts to the must-have scope.
+   Reply: "La prden stå, ikke gjør endringer. Vi beholder alt, og gjør heller en vurdering når vi har kommet skikkelig igang og ser tempoet."
+   Result: no cuts; scope is reassessed when the pace is known.
+9. **How the adviser behaves.** Prompt: an adviser that proposes, or a coach that asks back? Should the student be free to choose?
+   Reply: "Som en rådgiver, for å kjenne utnyttelsen av ki sine kunnaskaper." and "fritt valg hvor coachen varlser at det er vil være en feil vurdering, gitt en vurdering den tar."
+   Result: an adviser with concrete suggestions that warns when the student is far outside reasonable bounds, citing real projects.
+10. **The direction itself.** Prompt: the AI proposed research topics for the PRD.
+    Reply: "Vi har lyst å vinkle det en annen vei. Tenk på prosjektet i tre stadier." and "Ok, la oss brance den, slik at resten av gruppen kan pulle det hvis det blir vellykket."
+    Result: plan, execute and debrief as three stages, worked out on a separate branch so that the group's other work was untouched.
+
 ## Repo structure – 2026-10-29
 
 1. **The folder structure.** Prompt: none (the group's own request).

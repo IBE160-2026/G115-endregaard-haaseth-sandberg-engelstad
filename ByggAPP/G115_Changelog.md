@@ -2,6 +2,11 @@
 
 Major iterations of the *Regjeringskvartalet Light* project management simulator. Each entry has a summary of at most four lines.
 
+## Fra tomt til tak (planning) – 2026-11-05
+
+The group chose a new direction: a 20-minute simulator in three stages (plan, execute, debrief) for an office building for 100 employees in central Oslo. New brief, two research reports, PRD (FR-1 to FR-38) with simulation rules R1–R30 and worked examples, UX (DESIGN.md, EXPERIENCE.md), architecture (AD-1 to AD-20) and a clickable demo.
+AI_BYGGplant and the earlier planning documents moved to `02. Arkiv/`, with v0.5 copied there and tagged. The new app is not built yet; this file continues with its versions.
+
 ## Repo structure – 2026-10-29
 
 The repo is split into folders. `ByggAPP/` holds everything for the game (source code, icons, build setup, the BMAD specs), the G115 files and the deploy workflow (`ByggAPP/.github/`, where GitHub does not run it). `01. Admin/` holds `README.md`, `CLAUDE.md`, the brief and the instructor's feedback.

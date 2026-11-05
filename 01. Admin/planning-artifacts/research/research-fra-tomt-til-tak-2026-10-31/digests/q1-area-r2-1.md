@@ -1,0 +1,4 @@
+# Digest Q1 — round 2 (lead). Accessed 2026-10-31.
+
+- claim: Statens lokaler 2024: average office area 25.5 m2 per office employee in the civil state; the norm of 23 m2 is the maximum for state-built new buildings; leases negotiated through Statsbygg's advisory service average 19.7 m2 ("godt ned mot 18-19 m2"); average cost ~3,300 NOK/m2/yr, just under 110,000 NOK per employee; Statsbygg tasked by DFD/FIN to assess changes to the area norm, due Oct 2025; text: "maksimale arealnormen på 23 m2 BTA for kontordelen i formålsbygg". | https://www.regjeringen.no/contentassets/5cef510093144705822eddbe4f38e2f6/statens-lokaler-2024.pdf | DFD/Statsbygg (regjeringen.no) | pub 2025 | conf high | class quantitative
+- Verification: the 23 m2 BTA norm is confirmed by two publishers (KMD rundskriv H-2/16 and Statens lokaler 2024), so it is verified.
