@@ -37,7 +37,7 @@ The simulation engine is in `ByggAPP/src/engine/` and has no UI code.
 ## Folder structure
 
 - `ByggAPP/` — the application: source code (`src/`), icons (`assets/`), build setup, the group's G115 files and the BMAD specs for each version (`.docs/`)
-- `01. Admin/` — assignment material and planning: this README, `CLAUDE.md`, the instructor's feedback and `planning-artifacts/`
+- `01. Admin/` — assignment material and planning: the instructor's feedback and `planning-artifacts/`
 - `02. Arkiv/` — what the group decided not to take forward, kept as history (see its README)
 - `_bmad/` — the BMAD framework, with its Claude Code skills in `.claude/skills/`
 - `.logs/` — session logs per group member
@@ -46,10 +46,10 @@ The simulation engine is in `ByggAPP/src/engine/` and has no UI code.
 
 All in `01. Admin/planning-artifacts/`:
 
-- [Product brief](planning-artifacts/briefs/brief-G115-tre-stadier-2026-10-29/brief.md)
-- [PRD](planning-artifacts/prds/prd-fra-tomt-til-tak-2026-10-31/prd.md), with [simulation rules and worked examples](planning-artifacts/prds/prd-fra-tomt-til-tak-2026-10-31/simulation-rules.md)
-- [Research: figures](planning-artifacts/research/research-fra-tomt-til-tak-2026-10-31/research.md) and [research: reference projects](planning-artifacts/research/research-referanseprosjekter-2026-10-31/research.md)
-- [UX: EXPERIENCE.md](planning-artifacts/ux-designs/ux-fra-tomt-til-tak-2026-10-31/EXPERIENCE.md) and [DESIGN.md](planning-artifacts/ux-designs/ux-fra-tomt-til-tak-2026-10-31/DESIGN.md)
+- [Product brief](01.%20Admin/planning-artifacts/briefs/brief-G115-tre-stadier-2026-10-29/brief.md)
+- [PRD](01.%20Admin/planning-artifacts/prds/prd-fra-tomt-til-tak-2026-10-31/prd.md), with [simulation rules and worked examples](01.%20Admin/planning-artifacts/prds/prd-fra-tomt-til-tak-2026-10-31/simulation-rules.md)
+- [Research: figures](01.%20Admin/planning-artifacts/research/research-fra-tomt-til-tak-2026-10-31/research.md) and [research: reference projects](01.%20Admin/planning-artifacts/research/research-referanseprosjekter-2026-10-31/research.md)
+- [UX: EXPERIENCE.md](01.%20Admin/planning-artifacts/ux-designs/ux-fra-tomt-til-tak-2026-10-31/EXPERIENCE.md) and [DESIGN.md](01.%20Admin/planning-artifacts/ux-designs/ux-fra-tomt-til-tak-2026-10-31/DESIGN.md)
 
 Development follows the [BMAD framework](https://bmadcode.com/).
 
