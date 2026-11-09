@@ -2,6 +2,12 @@
 
 Major iterations of *AI Byggplan*, the AI dialog that plans a building project. Each entry has a summary of at most four lines.
 
+## v0.5 – 2026-11-09
+
+Only what is asked: a small cabin gave a block of flats because demo mode played a scripted dialog whatever the user typed. Now a demo step plays only for its own scripted line; free text gets an honest reply, no changes and no building, and the demo chooser stays until a dialog is picked.
+The system prompt makes Claude a prosjektleder for bygg who builds exactly what is described and adds nothing. Nothing is drawn until type, size, floors, roof and pitch, and style are settled with the user, and a proposed value is used only after the user says yes.
+565 tests, tsc, build and smoke pass; "En liten hytte" checked against the demo API. Still never run against Claude.
+
 ## v0.4 – 2026-10-30
 
 Every building type: a building is now one or more bygningskropper (volumes), each with a site position, size, floors, basement, roof and optional colours, and every opening names its volume. That covers L/T shapes, a house with an attached garage, blocks of flats with a stair tower, warehouses with an office part, extensions, barns and halls. The system prompt now covers all building types and the volume model.

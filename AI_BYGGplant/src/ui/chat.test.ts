@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { addUser, newSession } from '../session';
+import { addUser, newSession, type Session } from '../session';
 import {
   addChip,
   canRetry,
@@ -52,14 +52,22 @@ describe('chatReducer', () => {
 
 describe('demo script', () => {
   const script = ['Dobbelgarasje med loft', 'Flat, langsiden', 'En meter lengre'];
-  it('offers the line after the user messages so far', () => {
+  const answer = (s: Session): Session => ({ ...s, entries: [...s.entries, { role: 'assistant', text: 'svar', questions: [] }] });
+  it('offers the line after the scripted steps answered so far', () => {
     let s = newSession();
     expect(nextDemoLine(s, script)).toBe(script[0]);
-    s = addUser(s, 'noe');
+    s = answer(addUser(s, 'dobbelgarasje med loft.'));
     expect(nextDemoLine(s, script)).toBe(script[1]);
-    s = addUser(addUser(s, 'a'), 'b');
+    s = answer(addUser(s, script[1]));
+    s = answer(addUser(s, script[2]));
     expect(nextDemoLine(s, script)).toBeNull();
     expect(nextDemoLine(newSession(), [])).toBeNull();
+  });
+  it('does not move on for free text or an unanswered line', () => {
+    let s = answer(addUser(newSession(), 'En liten hytte'));
+    expect(nextDemoLine(s, script)).toBe(script[0]);
+    s = addUser(s, script[0]);
+    expect(nextDemoLine(s, script)).toBe(script[0]);
   });
   it('renders the button or the end note', () => {
     expect(renderDemoNext('Hei "du"', false)).toContain('title="Hei &quot;du&quot;"');

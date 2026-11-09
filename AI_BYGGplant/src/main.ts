@@ -4,6 +4,7 @@ import './styles.css';
 import { applyBrand, brand } from './brand/brand';
 import type { AppConfig } from './contract/stream';
 import type { Lead } from './contract/brand';
+import { sameLine } from './contract/script';
 import { esc } from './format';
 import { buildLead, downloadLead, sendToDealer } from './handoff/lead';
 import * as inboxMod from './handoff/inbox';
@@ -235,9 +236,16 @@ async function send(text: string, retry = false) {
     s = addUser(s, text.trim());
   }
   store = setSession(store, projectId, s);
-  // In demo mode the project keeps playing one scripted dialog: the chosen one, or the default from the first line on.
-  const demo = config.provider === 'demo' ? demoDialogFor(config, activeProject(store).demo)?.id : undefined;
-  if (demo && activeProject(store).demo !== demo) store = setDemo(store, projectId, demo);
+  // In demo mode the project keeps playing one scripted dialog: the chosen one, or the one whose first line
+  // the user typed. Free text never picks a dialog; the demo then says it cannot answer it.
+  const chosen = activeProject(store).demo;
+  const demo =
+    config.provider !== 'demo'
+      ? undefined
+      : chosen
+        ? demoDialogFor(config, chosen)?.id
+        : config.demoDialogs.find((d) => d.script[0] !== undefined && sameLine(text, d.script[0]))?.id;
+  if (demo && chosen !== demo) store = setDemo(store, projectId, demo);
   save();
   dispatch({ type: 'send', projectId });
   abort = new AbortController();

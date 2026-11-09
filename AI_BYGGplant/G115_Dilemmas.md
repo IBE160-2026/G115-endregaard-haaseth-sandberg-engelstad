@@ -2,6 +2,14 @@
 
 The choices the AI (Claude Code) put to the group, with the group's reply word for word, one section per version (newest first). Each entry has at most four lines: the prompt, the reply, and what came of it.
 
+## v0.5 – 2026-11-09
+
+**Open:** Never run against Claude yet, so the new prompt rules are unproven live. The demo fixtures still draw a volume before roof and style are settled (garage step 2 already has a 35° roof and a gate); should the four demo dialogs be rewritten to clarify first, like the prompt? Which basic choices must be settled before drawing (type, size, floors, roof and pitch, style) was decided by Claude Code from the request.
+
+1. **Generate only what is asked.** Prompt: none (the group's own request).
+   Reply: "appen fungerer ikke som tenkt.Jeg skulle bygge en liten hytte, og det ble valgt  12 etasjers lelighetsbygg. den skal generere det som blir forespurt. ikke mer. Sørrelse, takvinkel , stil og slike ting må avklares før den generere. ta rollen som en prosjektleder for bygg."
+   Result: the cause was demo mode (no API key), which played a scripted dialog whatever was typed. Now the demo answers free text honestly without drawing anything, and the prompt makes Claude a prosjektleder who draws nothing before the basic choices are settled.
+
 ## v0.4 – 2026-10-30
 
 **Open:** Volumes are rectangular and axis-aligned (no rotated wings, round or curved buildings, and roofs of attached volumes do not join with valleys); terrain slope is still not drawn. The house dialog reads «1 meter bredere» as wider along the front. The brand's tagline still says garage and cabin; should the fictional supplier sell all building types?

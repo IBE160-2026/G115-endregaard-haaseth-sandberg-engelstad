@@ -1,9 +1,11 @@
 // The demo provider: a hand-written, scripted dialog (fixtures/<dialog>/NN.json), clearly labelled
-// DEMO_LABEL in the app. It is not a recording of real AI. It ignores what the user actually typed
-// and plays step N for the N-th user message, streaming the reply with a believable pace.
+// DEMO_LABEL in the app. It is not a recording of real AI. It plays the next step only when the user
+// sends that step's scripted line (anything else gets an honest reply and no changes), streaming the
+// reply with a believable pace.
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import type { AiTurn, ChatMessage } from '../../src/contract/types.ts';
+import { sameLine, scriptProgress } from '../../src/contract/script.ts';
+import { emptyProject, type AiTurn, type ChatMessage } from '../../src/contract/types.ts';
 import { schemaErrors } from '../../src/contract/validate.ts';
 import { aborted, type Provider } from './types.ts';
 
@@ -40,14 +42,43 @@ export function endOfScript(steps: DemoStep[]): AiTurn {
   };
 }
 
+/** The turn for a line that is not in the script: honest, no changes, the project as it stands. */
+export function offScript(steps: DemoStep[], answered: number): AiTurn {
+  const last = answered > 0 ? steps[answered - 1].turn : null;
+  return {
+    reply:
+      'Dette er en forhåndsskrevet demo, så jeg kan ikke svare på det du skrev, og jeg lager ikke noe bygg du ikke har bedt om. Velg en demo eller bruk «Neste demo-replikk», eller koble til Claude med en API-nøkkel for en ekte samtale.',
+    questions: [],
+    phase: last ? last.phase : 'oppstart',
+    changes: [],
+    project: last ? structuredClone(last.project) : emptyProject(),
+  };
+}
+
+// The client wraps the user's own text (toApiMessages in src/session.ts): the greeting before the first
+// line, the project JSON after the last. Kept here because node cannot load src/session.ts's imports.
+export const GREETING = 'Hei, hva skal bygges?';
+export const PROJECT_SUFFIX = '\n\n[Prosjektet slik det står nå, som JSON]';
+
+/** The user's own words in an API message, without the greeting or the project JSON the client adds. */
+export function ownText(content: string): string {
+  const cut = content.indexOf(PROJECT_SUFFIX);
+  let text = cut >= 0 ? content.slice(0, cut) : content;
+  if (text.startsWith(`${GREETING}\n\n`)) text = text.slice(GREETING.length + 2);
+  return text;
+}
+
 /**
- * Which scripted turn answers this dialog: the number of turns already answered (assistant messages).
- * Counting answers, not user messages, means a stopped or failed turn (two user messages in a row)
- * never skips a step of the script.
+ * Which scripted turn answers this dialog: the next step, but only when the newest user line is that
+ * step's scripted line. Free text gets the off-script turn and never moves the script; a stopped or
+ * failed turn (two user messages in a row) never skips a step.
  */
 export function demoTurn(steps: DemoStep[], messages: ChatMessage[]): AiTurn {
-  const step = messages.filter((m) => m.role === 'assistant').length;
-  return step < steps.length ? structuredClone(steps[step].turn) : endOfScript(steps);
+  const dialog = messages.map((m) => ({ role: m.role, text: ownText(m.content) }));
+  const { answered, pending } = scriptProgress(dialog, steps.map((s) => s.user));
+  if (answered >= steps.length) return endOfScript(steps);
+  if (pending === null || !sameLine(pending, steps[answered].user)) return offScript(steps, answered);
+  return structuredClone(steps[answered].turn);
 }
 
 /** Splits text into 35–80 small chunks (whole code points), so it reads like typing. */

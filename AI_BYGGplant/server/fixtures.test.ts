@@ -23,6 +23,14 @@ describe('brand.json', () => {
     expect(new Set(brand.catalogue.map((i) => i.sku)).size).toBe(brand.catalogue.length);
   });
 
+  it('keeps the rules that stop the AI from drawing what nobody asked for', () => {
+    expect(SYSTEM_PROMPT).toContain('prosjektleder for bygg');
+    expect(SYSTEM_PROMPT).toContain('Legg aldri til bygningskropper');
+    expect(SYSTEM_PROMPT).toContain('skal være tomt til brukeren selv har avklart alle disse grunnvalgene');
+    expect(SYSTEM_PROMPT).toContain('Bruk det først når brukeren har sagt ja');
+    expect(SYSTEM_PROMPT).not.toContain('foreslå et vanlig valg og legg det inn som en antakelse');
+  });
+
   it('goes into the prompt as data, capped at 50 products', () => {
     expect(systemPrompt(brand)).toContain(SYSTEM_PROMPT);
     expect(systemPrompt(brand)).toContain('Produktkatalog fra Nordlys Hus og Garasje AS – bruk disse prisene når de passer, ellers egne anslag');
