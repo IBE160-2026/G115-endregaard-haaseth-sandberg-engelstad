@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Designretninger – oversikt</title>
+<style>
+/* Oversikt: nøytral lys flate #f3f3f3, tekst #1b1b1b / #5f5f5f, aksent #005fb8 */
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;background:#f3f3f3;color:#1b1b1b;padding:28px 20px 60px}
+.page{max-width:1500px;margin:0 auto}
+h1{margin:0 0 4px;font-size:26px;font-weight:600}
+.lead{color:#3d3d3d;max-width:900px;line-height:1.55;margin:6px 0 22px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.col{background:#fff;border:1px solid #e0e0e0;border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+.thumb{position:relative;height:330px;overflow:hidden;border-bottom:1px solid #e0e0e0;background:#ddd}
+.thumb iframe{position:absolute;left:0;top:0;width:1400px;height:1100px;border:0;transform:scale(.33);transform-origin:0 0;pointer-events:none}
+.body{padding:14px 16px 16px;flex:1;display:flex;flex-direction:column}
+.body h2{margin:0 0 2px;font-size:18px}
+.body .n{font-size:12px;color:#005fb8;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.body p{font-size:14px;line-height:1.5;color:#3d3d3d;margin:8px 0 10px}
+dl{display:grid;grid-template-columns:110px 1fr;gap:4px 10px;font-size:13px;margin:0 0 12px}
+dt{color:#5f5f5f}dd{margin:0}
+.sw{display:flex;gap:6px;margin-bottom:12px}
+.sw i{width:26px;height:26px;border-radius:5px;border:1px solid rgba(0,0,0,.12)}
+a.open{margin-top:auto;align-self:flex-start;background:#005fb8;color:#fff;text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border-radius:4px}
+a.open:focus-visible{outline:2px solid #1b1b1b;outline-offset:2px}
+table{width:100%;border-collapse:collapse;margin-top:28px;background:#fff;border:1px solid #e0e0e0;font-size:14px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid #eee;vertical-align:top}
+th{background:#fafafa;font-size:12px;color:#5f5f5f;text-transform:uppercase;letter-spacing:.05em}
+@media (max-width:1000px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="page">
+<h1>Fra tomt til tak – tre designretninger</h1>
+<p class="lead">Samme skjerm i alle tre: stadium 1, steget «Konsept» (7 etasjer, stål), med mål øverst, steg til venstre, konsekvensboks, 3D-visning og et lite rådgivervindu. Hver fil viser også varselet for 8 etasjer (32 m over grensen på 28 m). Alle bygger på Fluent; de skiller seg i tetthet, lys/mørk, hvor dominerende 3D er, og hvilken stemning de gir.</p>
+
+<div class="grid">
+  <div class="col">
+    <div class="thumb"><iframe src="direction-glass.html" title="Retning 1" tabindex="-1"></iframe></div>
+    <div class="body">
+      <span class="n">Retning 1</span><h2>Glass over byggeplassen</h2>
+      <p>Spillet først: 3D-byggeplassen fyller skjermen, frostede glasspaneler svever oppå. Direkte videreføring av v0.5.</p>
+      <div class="sw"><i style="background:#0b1a2b"></i><i style="background:rgba(28,32,40,.8)"></i><i style="background:#60cdff"></i><i style="background:#005fb8"></i><i style="background:#ffd27a"></i></div>
+      <dl><dt>Lys/mørk</dt><dd>Mørk scene</dd><dt>3D</dt><dd>Hele bakgrunnen</dd><dt>Tetthet</dt><dd>Luftig, flytende paneler</dd><dt>Risiko</dt><dd>Glass over 3D krever ekstra kontrollert kontrast</dd></dl>
+      <a class="open" href="direction-glass.html">Åpne retning 1</a>
+    </div>
+  </div>
+  <div class="col">
+    <div class="thumb"><iframe src="direction-verktoy.html" title="Retning 2" tabindex="-1"></iframe></div>
+    <div class="body">
+      <span class="n">Retning 2</span><h2>Prosjektverktøy</h2>
+      <p>Alvor først: lyst og rolig rutenett med nøkkeltall-kort, tabeller og 3D i en innrammet visning, som profesjonell PM-programvare.</p>
+      <div class="sw"><i style="background:#f3f3f3"></i><i style="background:#ffffff"></i><i style="background:#005fb8"></i><i style="background:#0f7b0f"></i><i style="background:#c42b1c"></i></div>
+      <dl><dt>Lys/mørk</dt><dd>Lys</dd><dt>3D</dt><dd>Kort i rutenettet</dd><dt>Tetthet</dt><dd>Høy, strukturert</dd><dt>Risiko</dt><dd>Kan føles tørt; mindre spillfølelse</dd></dl>
+      <a class="open" href="direction-verktoy.html">Åpne retning 2</a>
+    </div>
+  </div>
+  <div class="col">
+    <div class="thumb"><iframe src="direction-brakka.html" title="Retning 3" tabindex="-1"></iframe></div>
+    <div class="body">
+      <span class="n">Retning 3</span><h2>Brakka</h2>
+      <p>Mellomveien med varme: anleggskontoret – klemmebrett, linjert papir, tegningsark med tittelfelt, anleggsgult ved siden av Fluent-blått.</p>
+      <div class="sw"><i style="background:#ece6d8"></i><i style="background:#fbf8f1"></i><i style="background:#f2b705"></i><i style="background:#005fb8"></i><i style="background:#1f3b5a"></i></div>
+      <dl><dt>Lys/mørk</dt><dd>Lys, varm</dd><dt>3D</dt><dd>Tegningsark, egen sone</dd><dt>Tetthet</dt><dd>Middels</dd><dt>Risiko</dt><dd>Temaet må holdes nede så det ikke blir pynt</dd></dl>
+      <a class="open" href="direction-brakka.html">Åpne retning 3</a>
+    </div>
+  </div>
+</div>
+
+<table>
+  <tr><th>Spørsmål til gruppa</th><th>1 Glass</th><th>2 Verktøy</th><th>3 Brakka</th></tr>
+  <tr><td>Hva husker Sara etterpå?</td><td>Bygget som vokser</td><td>Tallene og tabellene</td><td>Stedet – brakka og tegningen</td></tr>
+  <tr><td>Hvordan føles rådgiveren?</td><td>En stemme i spillet</td><td>Et hjelpepanel</td><td>En kollega i brakka</td></tr>
+  <tr><td>Gjenbruk fra v0.5</td><td>Høyest</td><td>Lavest</td><td>Middels</td></tr>
+  <tr><td>Overgang til stadium 2 (fullskjerm 3D)</td><td>Sømløs</td><td>Tydelig skifte</td><td>Naturlig («ut av brakka»)</td></tr>
+</table>
+</div>
+</body>
+</html>

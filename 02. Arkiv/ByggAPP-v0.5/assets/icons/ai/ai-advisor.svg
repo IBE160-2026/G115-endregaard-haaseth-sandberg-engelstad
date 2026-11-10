@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <defs>
+    <linearGradient id="ai-advisor-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E58BFF"/><stop offset="1" stop-color="#5B3FD9"/></linearGradient>
+    <linearGradient id="ai-advisor-sheen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  </defs>
+  <rect x="3" y="4" width="42" height="42" rx="10" fill="#000" opacity=".18"/>
+  <rect x="3" y="2.5" width="42" height="42" rx="10" fill="url(#ai-advisor-bg)"/>
+  <rect x="3" y="2.5" width="42" height="42" rx="10" fill="url(#ai-advisor-sheen)"/>
+  <rect x="3.5" y="3" width="41" height="41" rx="9.5" fill="none" stroke="#fff" stroke-opacity=".22"/>
+  <g transform="translate(10 8.5) scale(1.1666666666666667)" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 3c.7 4.6 3 6.9 7.6 7.6-4.6.7-6.9 3-7.6 7.6-.7-4.6-3-6.9-7.6-7.6 4.6-.7 6.9-3 7.6-7.6z"/><path d="M18 14.5c.3 2 1.3 3 3.3 3.3-2 .3-3 1.3-3.3 3.3-.3-2-1.3-3-3.3-3.3 2-.3 3-1.3 3.3-3.3z"/></g>
+</svg>
