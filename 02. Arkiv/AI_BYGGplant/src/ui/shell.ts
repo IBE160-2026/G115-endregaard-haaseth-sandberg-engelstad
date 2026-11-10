@@ -56,10 +56,9 @@ export function demoDialogFor(config: AppConfig, chosen: string | undefined): De
 export const demoScriptFor = (config: AppConfig, chosen: string | undefined): string[] =>
   demoDialogFor(config, chosen)?.script ?? config.demoScript;
 
-/** The chips under the greeting: in demo mode, for a new project nobody has chosen a dialog for yet. */
+/** The chips under the greeting: in demo mode, until a dialog is chosen (free text does not choose one). */
 export function demoChoices(config: AppConfig, project: { session: Session; demo?: string }): DemoDialog[] {
-  if (config.provider !== 'demo' || project.demo) return [];
-  return project.session.entries.some((e) => e.role === 'user') ? [] : config.demoDialogs;
+  return config.provider !== 'demo' || project.demo ? [] : config.demoDialogs;
 }
 
 /** The tab to fall back to when 3D cannot run (the 2D drawing), if the tab strip has it. */

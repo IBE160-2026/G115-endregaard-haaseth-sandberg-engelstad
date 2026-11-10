@@ -116,11 +116,14 @@ describe('the API handler', () => {
 
   it('keeps POST /api/turn (plain JSON) working', async () => {
     const base = await serve();
-    const res = await post(`${base}/api/turn`, { messages: [user('a'), { role: 'assistant', content: 'b' }, user('c')] });
+    const garage = loadDialog(FIXTURES_DIR, 'garage');
+    const res = await post(`${base}/api/turn`, {
+      messages: [user(garage[0].user), { role: 'assistant', content: 'b' }, user(garage[1].user)],
+    });
     expect(res.status).toBe(200);
     const turn = await res.json();
     expect(schemaErrors(turn)).toEqual([]);
-    expect((turn as { phase: string }).phase).toBe('bygg');
+    expect(turn).toEqual(garage[1].turn);
   });
 
   it('rate-limits turns per IP with a Norwegian 429', async () => {
@@ -258,9 +261,12 @@ describe('the demo dialogs', () => {
   it('body.demo follows that dialog turn by turn, and an unknown id falls back to the default', async () => {
     const base = await serveHandler(handlerFromEnv({}));
     const steps = loadDialog(FIXTURES_DIR, 'boligblokk');
-    const second = await post(`${base}/api/turn`, { messages: [user('a'), { role: 'assistant', content: 'b' }, user('c')], demo: 'boligblokk' });
+    const second = await post(`${base}/api/turn`, {
+      messages: [user(steps[0].user), { role: 'assistant', content: 'b' }, user(steps[1].user)],
+      demo: 'boligblokk',
+    });
     expect(await second.json()).toEqual(steps[1].turn);
-    const unknown = await post(`${base}/api/turn`, { messages: [user('a')], demo: 'finnes-ikke' });
+    const unknown = await post(`${base}/api/turn`, { messages: [user('Dobbelgarasje med loft')], demo: 'finnes-ikke' });
     expect(((await unknown.json()) as { project: { name: string } }).project.name).toBe('Dobbelgarasje med loft');
   });
 

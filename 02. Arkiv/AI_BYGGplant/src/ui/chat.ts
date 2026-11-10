@@ -1,5 +1,6 @@
 // The dialog: state machine for one streamed turn, the log as HTML, and the demo helper.
 // Everything here is pure (strings in, strings out) except patchDraft, so it is tested without a DOM.
+import { scriptProgress } from '../contract/script';
 import { esc } from '../format';
 import type { Session } from '../session';
 
@@ -49,10 +50,9 @@ export function chatReducer(s: ChatState, a: ChatAction): ChatState {
   }
 }
 
-export const userCount = (s: Session) => s.entries.filter((e) => e.role === 'user').length;
-
-/** The scripted line the seller would type next (index = user messages so far), or null at the end. */
-export const nextDemoLine = (s: Session, script: string[]): string | null => script[userCount(s)] ?? null;
+/** The scripted line the seller would type next (index = scripted steps answered so far), or null at the end. */
+export const nextDemoLine = (s: Session, script: string[]): string | null =>
+  script[scriptProgress(s.entries.slice(1), script).answered] ?? null;
 
 /** The newest user message has no answer yet (after an error or Stopp), so it can be sent again. */
 export const canRetry = (s: Session) => s.entries.at(-1)?.role === 'user';
@@ -109,7 +109,7 @@ export function renderLog(session: Session, chat: ChatState, view: LogView): str
       )
       .join('');
     const greeting = i === 0 ? ' greeting' : '';
-    // The demo chooser sits under the greeting of a new project, until a dialog is chosen or the first line is sent.
+    // The demo chooser sits under the greeting until a dialog is chosen.
     const choices = i === 0 && !busyHere ? renderDemoChoices(view.choices ?? []) : '';
     return `<div class="msg ai${greeting}"><p>${esc(e.text)}</p>${questions}${choices}</div>`;
   });

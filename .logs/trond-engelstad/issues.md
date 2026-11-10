@@ -31,3 +31,5 @@
 - [x] 2026-10-30 [ai-byggplant-v0-3](992-2026-10-30-00-45-00-ai-byggplant-v0-3.md) — Click through the v0.3 garage demo in a browser (løst 2026-10-30: all steps work; Stopp bug fixed)
 - [ ] 2026-10-30 [ai-byggplant-v0-3](992-2026-10-30-00-45-00-ai-byggplant-v0-3.md) — Handle X-Forwarded-For in the rate limit before AI_BYGGplant gets a public URL
 - [ ] 2026-10-30 [ai-byggplant-v0-4](991-2026-10-30-02-00-00-ai-byggplant-v0-4.md) — Decide whether volumes need rotation, round shapes or joined roofs, and whether to draw terrain slope
+- [ ] 2026-11-09 [ai-byggplant-v0-5-only-what-is-asked](990-2026-11-09-20-26-47-ai-byggplant-v0-5-only-what-is-asked.md) — Rewrite the four demo dialogs (fixtures/) to clarify size, roof and pitch, and style before drawing
+- [ ] 2026-11-09 [ai-byggplant-v0-5-only-what-is-asked](990-2026-11-09-20-26-47-ai-byggplant-v0-5-only-what-is-asked.md) — Test with a real key that Claude asks the basic questions and never draws an unrequested building

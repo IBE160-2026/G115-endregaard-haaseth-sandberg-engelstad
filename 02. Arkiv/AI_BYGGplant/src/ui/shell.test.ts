@@ -53,9 +53,9 @@ describe('the demo chooser', () => {
     expect(demoChoices(demo, fresh).map((d) => d.id)).toEqual(['garage', 'enebolig']);
     expect(demoChoices(live, fresh)).toEqual([]);
   });
-  it('hides the chips once a dialog is chosen or the first line is sent', () => {
+  it('hides the chips once a dialog is chosen, but keeps them after free text', () => {
     expect(demoChoices(demo, { ...fresh, demo: 'enebolig' })).toEqual([]);
-    expect(demoChoices(demo, { session: addUser(newSession(), 'Hei') })).toEqual([]);
+    expect(demoChoices(demo, { session: addUser(newSession(), 'En liten hytte') }).map((d) => d.id)).toEqual(['garage', 'enebolig']);
   });
   it('plays the chosen dialog, or the first one by default', () => {
     expect(demoDialogFor(demo, 'enebolig')?.id).toBe('enebolig');
