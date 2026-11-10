@@ -11,6 +11,8 @@
 - [ ] 2026-10-31 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — bestem navnet på rådgiveren, og gå gjennom utkastene til DESIGN.md og EXPERIENCE.md
 - [x] 2026-11-05 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — legg `osk7199@himolde.no` til på GitHub-kontoen, så commitene teller på profilen og i Insights (løst 2026-11-05)
 - [ ] 2026-11-05 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — bekreft hvem som eier API-nøkkelen og forbruksgrensen
-- [ ] 2026-11-05 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — gå gjennom [GROUP TO CONFIRM] i `epics.md`, og flett PR #1
+- [x] 2026-11-05 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — gå gjennom [GROUP TO CONFIRM] i `epics.md`, og flett PR #1 (løst 2026-11-10: PR #1 flettet; [GROUP TO CONFIRM] flyttet til eget punkt)
+- [ ] 2026-11-10 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — gå gjennom [GROUP TO CONFIRM] i `epics.md` (nå på main)
+- [ ] 2026-11-10 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — si fra til Trond at AI_BYGGplant nå ligger i `02. Arkiv/` på main
 - [ ] 2026-11-05 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — Trond kobler `trond.engelstad@gmail.com` til GitHub-kontoen sin
 - [ ] 2026-11-05 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — løs at FR-19 krever 3–4 hendelser, mens en plan uten risiko kan gi bare 2
