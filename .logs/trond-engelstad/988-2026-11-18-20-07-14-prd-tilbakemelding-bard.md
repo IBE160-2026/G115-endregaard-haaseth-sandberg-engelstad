@@ -59,3 +59,18 @@ Draft answers to Bård's two reflection questions (§7), saved as a draft, using
 ### Åpne punkter
 - The submission date is not in the repo, so the reminder fires at every session start rather than at a date.
 - Reflection input from all four members before submission (in `issues.md`).
+
+## 2026-11-18 kl. 20:48 — Trond Engelstad
+
+### Oppgave
+Formulate a short question in Norwegian to Bård and Istvan (teaching assistant) about whether `technology.md` is an example or a requirement. Trond sent it, then asked to push.
+
+### Plan
+- Compare `technology.md` (Next.js, FastAPI, Postgres, Supabase …) with our spine (TypeScript, Vite, three.js, one Vercel function).
+- Ask: template for documentation, principles to copy, or a required stack?
+
+### Resultat
+- Question sent by Trond. Logged as entry 4 in `G115_Dilemmas.md`. All of today's commits pushed to origin/main.
+
+### Åpne punkter
+- Waiting for the answer from Bård/Istvan about `technology.md`; log the reply in `G115_Dilemmas.md` and let Oskar close his item.

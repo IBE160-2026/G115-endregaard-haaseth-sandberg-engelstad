@@ -37,3 +37,4 @@
 - [x] 2026-11-18 [prd-tilbakemelding-bard](988-2026-11-18-20-07-14-prd-tilbakemelding-bard.md) — The group answers Bård's two reflection questions (§7 in tilbakemelding-prd.md) (draft written 2026-11-18 in refleksjon-prd.md; follow-up below)
 - [ ] 2026-11-18 [prd-tilbakemelding-bard](988-2026-11-18-20-07-14-prd-tilbakemelding-bard.md) — Write R31–R34 into simulation-rules.md (epics stories 1.1–1.4) to close the rest of spine Open Question 2
 - [ ] 2026-11-18 [prd-tilbakemelding-bard](988-2026-11-18-20-07-14-prd-tilbakemelding-bard.md) — Before submission: all four members add their input to `refleksjon-prd.md` (Bård §7), the answers are rewritten in the group's words and set to final. Reminder in CLAUDE.md
+- [ ] 2026-11-18 [prd-tilbakemelding-bard](988-2026-11-18-20-07-14-prd-tilbakemelding-bard.md) — Answer from Bård/Istvan: is technology.md a template, principles, or a required stack? Log the reply in G115_Dilemmas.md
