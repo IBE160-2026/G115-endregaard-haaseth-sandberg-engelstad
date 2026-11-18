@@ -2,6 +2,12 @@
 
 The choices the AI (Claude Code) put to the group, with the group's reply word for word, one section per simulator version (newest first). Each entry has at most four lines: the prompt, the reply, and what came of it.
 
+## PRD revised after Bård's feedback – 2026-11-18
+
+1. **Four points for the group.** Prompt: PR #3 (Oskar) asked the group to confirm the priorities and cut order in §8.2, R31–R34 in epics, that a student who avoids every risk gets only two events (FR-19), and SM-5's bar of 16 of 20 answers.
+   Reply: "Pr #3- Vi bekrefter alle 4 punktene."
+   Result: PR #3 merged into main. The four items are marked confirmed in the PRD and in epics stories 1.1–1.4, and open question 4 is removed. The R30 proposals in story 1.5 still wait.
+
 ## Repo structure restored – 2026-11-18
 
 1. **The merge went too far.** Prompt: Trond said the merge had made a mess of the repo; the AI found that AI_BYGGplant, its agents and the earlier plans had been archived. Move them back on a branch, revert the merge, or reset main?

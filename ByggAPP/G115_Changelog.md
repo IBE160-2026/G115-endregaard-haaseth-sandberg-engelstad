@@ -2,6 +2,11 @@
 
 Major iterations of the *Regjeringskvartalet Light* project management simulator. Each entry has a summary of at most four lines.
 
+## PRD revised after Bård's feedback – 2026-11-18
+
+PR #3 answers the instructor's PRD feedback (12 Nov): FR-17 has a decided provider and testable consequences, FR-32 to FR-36 and NFR-10 have consequences, every requirement is must/should/could with a vertical slice and a cut order, the glossary has Norwegian display names, and UJ-2, SM-5 and SM-6 are added.
+The group confirmed the priorities and cut order, R31–R34 (milestones, at most 40 workers, opportunities, visible forecast), the FR-19 two-event edge case and the SM-5 bar of 16 of 20.
+
 ## Repo structure restored – 2026-11-18
 
 The merge on 2026-11-10 archived more than intended. AI_BYGGplant and its three agents are back at their earlier paths, the earlier brief and PRDs sit next to the new ones in `01. Admin/planning-artifacts/`. `README.md` and `CLAUDE.md` stay at the root, where GitHub shows the README and Claude Code loads the instructions. `02. Arkiv/` is removed; v0.5 is kept as the git tag `v0.5`.

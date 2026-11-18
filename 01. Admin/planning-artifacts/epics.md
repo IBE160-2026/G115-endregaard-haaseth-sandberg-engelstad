@@ -20,7 +20,7 @@ This document breaks the PRD, the UX contract and the architecture spine for *Fr
 
 **How this was made.** The BMAD skill ran non-interactively, so no menu or approval step reached the group. Choices made on the group's behalf are marked:
 
-- **[GROUP TO CONFIRM]**: a concrete resolution proposed here. Stories can build on it, but the group decides.
+- **[GROUP TO CONFIRM]**: a concrete resolution proposed here. Stories can build on it, but the group decides. **[CONFIRMED by the group 2026-11-18]** marks a proposal the group has accepted.
 - **[ASSUMPTION]**: a smaller choice made to fill a gap.
 
 **Reading a story.** `Traces` lists the FR, NFR, rule (R), architecture (AD) and UX-DR ids. `Depends on` lists what must be merged first.
@@ -210,7 +210,7 @@ So that the schedule, execution and debrief stories build the same thing.
 
 **Traces:** FR-32, new R31, UX-DR10, spine Open Question 2. **Depends on:** none.
 
-**Proposed resolution [GROUP TO CONFIRM]: R31.**
+**Resolution [CONFIRMED by the group 2026-11-18]: R31.**
 
 - A milestone is one main part's finish plus a target week. The names are a fixed list, one per part: *Tillatelse klar* (permit), *Grunnarbeid ferdig* (ground), *Råbygg ferdig* (frame), *Tett bygg* (envelope), *Teknikk og innredning ferdig* (interior), *Overlevert* (handover).
 - The student keeps 2 or 3, on different parts. *Råbygg ferdig* and *Tett bygg* are pre-filled with the plan's finish week, so the step never blocks on them. A week the student has not edited follows the estimates.
@@ -236,7 +236,7 @@ So that FR-33 is a real limit and not one the player can never reach.
 
 **The conflict.** R21 hires a fixed 12, so the site holds 36 workers and never reaches the UX placeholder of 40. FR-33 would never fire.
 
-**Proposed resolution [GROUP TO CONFIRM]: keep the stepper and generalise R21; add R32.**
+**Resolution [CONFIRMED by the group 2026-11-18]: keep the stepper and generalise R21; add R32.**
 
 - The student hires `h` workers, in steps of 4 (S37), from 4 to 16. The stepper starts at 12 (S32).
 - R21 generalised: `D = round(W × 24 ÷ (24 + 0.5h))`, extra cost `h × 37.5 × 650 × 0.5` NOK per week, times D. With `h = 12` this is exactly today's R21, so example (c) does not change.
@@ -272,7 +272,7 @@ So that not every event is bad news and the event count stays within FR-19.
 
 **Traces:** FR-19, FR-20, FR-35, R15, R17, R18, R19, new R33, new S38, S39, S40, AD-2, spine Open Question 2. **Depends on:** none.
 
-**Proposed resolution [GROUP TO CONFIRM]: R33.** Both events come from v0.5 and keep its trade-off: money saved at the cost of time.
+**Resolution [CONFIRMED by the group 2026-11-18]: R33.** Both events come from v0.5 and keep its trade-off: money saved at the cost of time.
 
 | ID | Event | Fires at start of | Take it | Decline |
 |---|---|---|---|---|
@@ -284,7 +284,7 @@ So that not every event is bad news and the event count stays within FR-19.
 - Order within a part: overrun, external risks, change request, opportunity.
 - All other rules treat it as an event. The bridge, R25 and R27 need no change.
 
-**A consequence to accept [GROUP TO CONFIRM].** A student who avoids every risk and has no overrun gets two events (change request and opportunity), one short of FR-19's 3–4. Lifting the limit of one opportunity would conflict with FR-35, so this edge case stays.
+**A consequence accepted [CONFIRMED by the group 2026-11-18].** A student who avoids every risk and has no overrun gets two events (change request and opportunity), one short of FR-19's 3–4. Lifting the limit of one opportunity would conflict with FR-35, so this edge case stays.
 
 **Worked example (g), example (d) with slot 15 = 0.20 and slot 16 = 0.20:** n = 3 and 0.20 < 0.30, so an opportunity occurs; floor(0.40) = 0 gives O1. Taking it is 172.554 − 1.200 + 0.300 = **171.654**, week 70. Declining stays 172.554, week 69. The AI recommends taking it, so run 3 is 172.000 − 0.900 = **171.100**, week 68. The bridge is −7.446 + 4.800 + 4.746 + 0.554 = **+2.654** = 171.654 − 169.000 ✓.
 
@@ -305,7 +305,7 @@ So that the overrun is something I discover, not something the top bar shows at 
 
 **The problem.** R24 forecasts unstarted parts at their actual durations. In example (c) the top bar would show 166.354 and week 65 at week 0, against a plan of 161.554 and week 49, then stand still between events.
 
-**Proposed resolution [GROUP TO CONFIRM]: two views of one replay.**
+**Resolution [CONFIRMED by the group 2026-11-18]: two views of one replay.**
 
 - **R24 stays as written** as the full forecast. It is used only where the engine needs the truth: R25, R26, R27, R30 and the final AI path. Examples (c) and (d) do not change.
 - **New R34, the visible forecast.** The same `replay`, but a part not yet started counts at the student's estimate; a started or finished part counts at its actual duration. Decided events apply, and undecided ones do not. Everything shown in stage 2 uses it: top-bar cards, *Reserve igjen*, option deltas, path comparison and milestone status.

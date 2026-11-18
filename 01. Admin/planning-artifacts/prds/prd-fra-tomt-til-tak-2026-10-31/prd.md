@@ -335,7 +335,7 @@ Each playthrough has 3–4 events, decided by the seed: one estimate overrun, on
 - If no main part's actual duration exceeds the student's estimate, there is no estimate overrun, and one more external risk or opportunity takes its place.
 - An external risk is a known risk that occurs (see Glossary), so it counts toward the 3–4 events. An opportunity (FR-35) also counts.
 - External risks are drawn only from those possible for the central site, the number of floors and the structural system.
-- **Edge case.** A student who avoids every known risk and has no estimate overrun gets two events: the change request and an opportunity. This is accepted, because good planning should be able to make execution quiet [GROUP TO CONFIRM, epics story 1.3].
+- **Edge case.** A student who avoids every known risk and has no estimate overrun gets two events: the change request and an opportunity. This is accepted, because good planning should be able to make execution quiet (confirmed by the group 2026-11-18, epics story 1.3).
 - The same seed and plan always give the same events.
 
 #### FR-20: Decide on an event
@@ -545,6 +545,8 @@ The group keeps the whole scope and reassesses it once the pace is known (decisi
 
 **Cut order if the pace demands it:** (1) FR-28, (2) FR-35, (3) the difficulty choice in FR-1, (4) FR-2, (5) FR-38's ranking, keeping its result bands, (6) FR-9. Must-have requirements are not cut; FR-17 can at most fall back to prepared answers in the delivered version, which NFR-1 already covers.
 
+The priorities, the vertical slice and the cut order were confirmed by the group on 2026-11-18.
+
 Assignment coverage (§13) holds after every cut in this list, because each row in §13 also names a must-have FR.
 
 ### 8.3 Out of Scope for MVP
@@ -563,7 +565,7 @@ Assignment coverage (§13) holds after every cut in this list, because each row 
 **Secondary**
 - **SM-3 Correctness:** every worked example and every adviser warning rule passes as an automated test. Validates FR-15, FR-30, FR-31, FR-33, FR-34, FR-36.
 - **SM-4 Runnable:** a person outside the group runs the simulator from the README without a key on the first try. Validates UJ-2, NFR-1, FR-16, the FR-17 fallback.
-- **SM-5 Answer quality:** in the first live test round (NFR-10), 20 typical free-text questions are asked with a key. No reply shown contains a figure outside the approved facts, and at least 16 of 20 are judged on topic and useful by two group members independently. Validates FR-17. [ASSUMPTION: 20 questions and 16 of 20 are first proposals.]
+- **SM-5 Answer quality:** in the first live test round (NFR-10), 20 typical free-text questions are asked with a key. No reply shown contains a figure outside the approved facts, and at least 16 of 20 are judged on topic and useful by two group members independently. Validates FR-17. The 20 questions and the 16-of-20 bar were confirmed by the group on 2026-11-18 as a first target, to be adjusted after the first live round.
 - **SM-6 Coverage:** every row in §13 names at least one FR, and every FR has a story in `epics.md`. Validates FR-37.
 
 **Counter-metrics (do not optimize)**
@@ -585,19 +587,18 @@ Assignment coverage (§13) holds after every cut in this list, because each row 
 
 ## 11. Open Questions
 
-*Answered on 2026-11-18 and removed:* target values (week 67 and 171 MNOK, simulation rules R14 and example (a)), options per choice (floors, structural systems and the fire-class step, simulation rules §2.3 and §2.4) and the language model provider (FR-17).
+*Answered on 2026-11-18 and removed:* target values (week 67 and 171 MNOK, simulation rules R14 and example (a)), options per choice (floors, structural systems and the fire-class step, simulation rules §2.3 and §2.4) and the language model provider (FR-17). Also confirmed on 2026-11-18: R31 to R34 and parameter S36 (milestones, site capacity of at most 40 workers, opportunities, visible forecast), epics stories 1.1 to 1.4.
 
 1. **Live language model.** Who owns the key and the spend limit, and when the Vercel service is set up. Cost per playthrough and response time are measured in the first live round (NFR-10, SM-5).
 2. **Phase shares.** The shares of total duration come from one project (Elvebredden); can a better source be found?
 3. **Weak figures.** Land prices and structural-system factors are estimates; can the group find better sources (a current Norsk Prisbok or a broker report)?
-4. **Proposed rules.** R31 to R34 and parameter S36 (milestones, site capacity, opportunities, visible forecast) are proposed in epics stories 1.1 to 1.4 and wait for the group's confirmation.
 
 ## 12. Assumptions Index
 
 - §4.7 FR-18 — stage 2 about 6 minutes, advancing automatically between events.
 - §5 NFR-4 — at least 30 fps.
 - §6 — at most about 20 language model calls per playthrough.
-- §9 SM-5 — 20 test questions, 16 of 20 judged on topic and useful.
+- ~~§9 SM-5 — 20 test questions, 16 of 20 judged on topic and useful.~~ Confirmed by the group 2026-11-18.
 
 ## 13. Traceability to the Assignment
 
