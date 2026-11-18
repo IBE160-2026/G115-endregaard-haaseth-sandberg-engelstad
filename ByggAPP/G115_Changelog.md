@@ -2,6 +2,21 @@
 
 Major iterations of the *Regjeringskvartalet Light* project management simulator. Each entry has a summary of at most four lines.
 
+## R30 fixed, story 1.5 – 2026-11-18
+
+Simulation rules revision 4. Estimates in the debrief ranking are measured by what they hid from the plan (0.300 × weeks), so they sum to bridge step 2 and get their own wording ("Planen skjulte …"). "Small" is under 0.900 MNOK and under 3 weeks (S43); the adviser keeps 2 % (S42) and the bands 5 % (S41).
+Worked examples (i) R15, (j) R29 and (k) R30 are added, re-based to the 171 MNOK target; the seed-115 stream was checked by running mulberry32.
+
+## PRD revised after Bård's feedback – 2026-11-18
+
+PR #3 answers the instructor's PRD feedback (12 Nov): FR-17 has a decided provider and testable consequences, FR-32 to FR-36 and NFR-10 have consequences, every requirement is must/should/could with a vertical slice and a cut order, the glossary has Norwegian display names, and UJ-2, SM-5 and SM-6 are added.
+The group confirmed the priorities and cut order, R31–R34 (milestones, at most 40 workers, opportunities, visible forecast), the FR-19 two-event edge case and the SM-5 bar of 16 of 20.
+Draft answers to Bård's two reflection questions are in `refleksjon-prd.md`; every member adds input before submission (reminder in `CLAUDE.md`).
+
+## Repo structure restored – 2026-11-18
+
+The merge on 2026-11-10 archived more than intended. AI_BYGGplant and its three agents are back at their earlier paths, the earlier brief and PRDs sit next to the new ones in `01. Admin/planning-artifacts/`. `README.md` and `CLAUDE.md` stay at the root, where GitHub shows the README and Claude Code loads the instructions. `02. Arkiv/` is removed; v0.5 is kept as the git tag `v0.5`.
+
 ## Fra tomt til tak (planning) – 2026-11-05
 
 The group chose a new direction: a 20-minute simulator in three stages (plan, execute, debrief) for an office building for 100 employees in central Oslo. New brief, two research reports, PRD (FR-1 to FR-38) with simulation rules R1–R30 and worked examples, UX (DESIGN.md, EXPERIENCE.md), architecture (AD-1 to AD-20) and a clickable demo.

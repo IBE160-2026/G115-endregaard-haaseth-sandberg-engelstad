@@ -1,8 +1,8 @@
 ---
 title: "Addendum: PRD Fra tomt til tak"
-status: draft
+status: final
 created: 2026-10-31
-updated: 2026-10-31
+updated: 2026-11-18
 ---
 
 # Addendum: PRD Fra tomt til tak
@@ -52,7 +52,7 @@ The shares come from one project (Elvebredden). The total construction time for 
 
 ## 4. Event catalogue for stage 2
 
-Each playthrough draws 3–4 events (FR-19): one estimate overrun, one or two external risks tied to the concept, and one change request. FR-35 (proposed) adds at most one opportunity.
+Each playthrough draws 3–4 events (FR-19): one estimate overrun, one or two external risks tied to the concept, and one change request. FR-35 (approved 2026-10-31) adds at most one opportunity; the rule is proposed as R33 in epics story 1.3.
 
 | ID | Event | Triggered by the student's choice | Decision type (assignment) | Learning goal | Evidence |
 |---|---|---|---|---|---|

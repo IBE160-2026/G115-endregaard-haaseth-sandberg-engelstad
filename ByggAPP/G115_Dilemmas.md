@@ -2,6 +2,30 @@
 
 The choices the AI (Claude Code) put to the group, with the group's reply word for word, one section per simulator version (newest first). Each entry has at most four lines: the prompt, the reply, and what came of it.
 
+## PRD revised after Bård's feedback – 2026-11-18
+
+1. **Four points for the group.** Prompt: PR #3 (Oskar) asked the group to confirm the priorities and cut order in §8.2, R31–R34 in epics, that a student who avoids every risk gets only two events (FR-19), and SM-5's bar of 16 of 20 answers.
+   Reply: "Pr #3- Vi bekrefter alle 4 punktene."
+   Result: PR #3 merged into main. The four items are marked confirmed in the PRD and in epics stories 1.1–1.4, and open question 4 is removed. The R30 proposals in story 1.5 still wait.
+2. **How to fix R30.** Prompt: R30 ranked estimates near zero and called almost every decision small. The AI proposed measuring estimates by what they hid from the plan, with their own wording, and "small" as under 0.900 MNOK (three weeks of site overhead) and under 3 weeks, instead of 0.5 % of target cost.
+   Reply: "implement both fixes"
+   Result: written into simulation rules revision 4 with examples (i), (j), (k), S41–S43, the PRD, EXPERIENCE.md and epics story 1.5. Side effect accepted: CLT vs steel at 7 floors (0.981) is "both work" in stage 1 but not "small" in the debrief.
+3. **Answering Bård's reflection questions.** Prompt: Bård asked (§7) how the group decided what the AI may phrase freely, and what in FR-32–37 came from the group and what from the AI. The AI proposed draft answers built on the logs.
+   Reply: "yes. save as draft. bruk også loggene fra tidligere forslag, for det står det mye om hvem som har gort hva. Sett opp en reminder om at alle skal mate inn refleksjonsnotatet før innlevering og at input fra dette blir lagt til der det skal."
+   Result: `refleksjon-prd.md` saved as a draft with a who-did-what table from all logs, a checklist per member, and a reminder in `CLAUDE.md` that routes each member's input to the right file.
+4. **What is technology.md for?** Prompt: Bård added `architecture/technology.md` (Pytagoras Forlag's website stack) on 12 Nov; the group was unsure whether it is a template, an example of principles, or a required stack. The AI drafted a short question to Bård and Istvan.
+   Reply: "vi er usikker på hva vi skal gjøre med technology.md. Var dette ment som et eksempel eller som krav til å implmentere." and "sendt. Push GIT"
+   Result: the question (template, principles such as mock answers without a key, or required stack?) is sent. The stack is unchanged until they answer.
+
+## Repo structure restored – 2026-11-18
+
+1. **The merge went too far.** Prompt: Trond said the merge had made a mess of the repo; the AI found that AI_BYGGplant, its agents and the earlier plans had been archived. Move them back on a branch, revert the merge, or reset main?
+   Reply: "Vi ønsker samme struktut som det var tidligere før vi forsøkte å flette sammen. Ideen er å gjøre om oppgaven til det oppdaterte innholdet, hvor de gamle ideene strykes. Likevell har de gamle ideene mange gode verdier vi skal bruke." and "Gjør som anbefalt. I værste fall kan vi vel trekke tilbake de siste endringene."
+   Result: moved back on a branch with a pull request. AI_BYGGplant and its agents are in place again, the earlier plans sit next to the new ones, and `02. Arkiv/` is gone. README and `CLAUDE.md` stay at the root, so GitHub shows the README and Claude Code loads the instructions.
+2. **Approving PR #2.** Prompt: the AI showed PR #2 (branch `fiks/gammel-struktur`, opened by Oskar), whose last checklist item was Trond's approval.
+   Reply: "Jeg er Trond og godkjenner Pr #2. Jeg huket også av på GIT hub. Start godkjenning."
+   Result: PR #2 merged into main without conflicts on 2026-11-18.
+
 ## Fra tomt til tak – 2026-10-29 til 2026-11-05
 
 The planning of the new project, on the branch `forslag/tre-stadier`. The AI's prompt, the group's reply word for word, and what came of it. Full reasoning is in the `.memlog.md` of each planning folder in `01. Admin/planning-artifacts/`.

@@ -17,7 +17,7 @@ sources:
   - ../../ux-designs/ux-fra-tomt-til-tak-2026-10-31/DESIGN.md
   - ../../../tilbakemelding-product-brief.md
   - ../../../../ByggAPP
-  - ../../../../02. Arkiv/AI_BYGGplant/server
+  - ../../../../AI_BYGGplant/server
 companions: []
 ---
 
@@ -49,7 +49,7 @@ graph TD
   server --> claude[Claude API]
 ```
 
-Arrows are the only allowed imports. `engine` imports nothing outside itself. `server` imports nothing from `src`. No code imports from `02. Arkiv`.
+Arrows are the only allowed imports. `engine` imports nothing outside itself. `server` imports nothing from `src`. No code imports from `AI_BYGGplant/`.
 
 ## Invariants & Rules
 
@@ -297,7 +297,7 @@ graph LR
 ## Open Questions
 
 1. **R24 forecast shows the truth too early.** Example (c) forecasts with actual durations for parts not yet started, so the top bar shows the real overrun from week 0 of stage 2 and stands still between events. Keep it, or use estimates for unstarted parts? The second option changes example (c). Implemented as written until the group decides.
-2. **Rules are missing for MVP scope.** FR-32, FR-33 and FR-35 have no rule (open point 20). R15, R29 and R30 have no worked example, though FR-31 asks for one per rule. Those stories wait for these.
+2. **Rules are missing for MVP scope.** FR-32, FR-33 and FR-35 have no rule (open point 20). R15, R29 and R30 have no worked example, though FR-31 asks for one per rule. Those stories wait for these. *Update 2026-11-18:* the R15, R29 and R30 half is closed (simulation rules revision 4, examples (i), (j), (k)). The FR-32, FR-33 and FR-35 half stays open until R31–R34, now confirmed by the group, are written into the rules (epics stories 1.1–1.4).
 3. **Crew stepper against R21.** UX shows a stepper stopped by site capacity. R21 hires a fixed 12, so 36 workers never reach the placeholder 40. Which holds?
 4. **Model, cost and owner.** Confirm the model and the cost per playthrough, measure whether it answers within 7 s, and name who owns the key and the spend limit.
 
@@ -310,4 +310,4 @@ graph LR
 - **CI.** A root GitHub Action for tests and build of both packages [ASSUMPTION]; add it when the first engine tests land. Vercel does not run tests.
 - **Rate-limit store outside memory.** Only if the deployed app is abused; the spend limit covers cost until then.
 - **Renaming `ByggAPP`.** Cosmetic; it touches `vercel.json` only.
-- **Save and resume, the AI's own plan, the HMS check, analytics.** Out of MVP per PRD §8.2.
+- **Save and resume, the AI's own plan, the HMS check, analytics.** Out of MVP per PRD §8.3.

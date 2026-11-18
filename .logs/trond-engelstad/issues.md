@@ -21,8 +21,8 @@
 - [x] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — A BMAD update/reinstall writes `_bmad/` to the root and resets the skill paths; move and rewrite again after an update (løst 2026-10-29: `_bmad/` is back at the root with its original paths)
 - [ ] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — Add the assignment text (oppgavetekst) to `01. Admin/` if the group has it
 - [ ] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — The deploy workflow is in `ByggAPP/.github/` and does not run; move `.github/` back to the root to publish on GitHub Pages
-- [ ] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — `CLAUDE.md` is in `01. Admin/` and is not loaded when Claude starts at the root; the session-log rule no longer applies automatically
-- [ ] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — The GitHub front page shows no README now that it is in `01. Admin/`
+- [x] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — `CLAUDE.md` is in `01. Admin/` and is not loaded when Claude starts at the root; the session-log rule no longer applies automatically (løst 2026-11-18: back at the root with PR #2)
+- [x] 2026-10-29 [repo-structure](995-2026-10-29-20-40-31-repo-structure.md) — The GitHub front page shows no README now that it is in `01. Admin/` (løst 2026-11-18: README at the root with PR #2)
 - [ ] 2026-10-29 [ai-byggplant-v0-1](994-2026-10-29-21-45-00-ai-byggplant-v0-1.md) — Run a full AI_BYGGplant dialog against Claude with a real API key and tune `server/prompt.ts`
 - [ ] 2026-10-29 [ai-byggplant-v0-1](994-2026-10-29-21-45-00-ai-byggplant-v0-1.md) — Choose how to publish AI_BYGGplant (it needs a backend for the API key)
 - [ ] 2026-10-29 [ai-byggplant-v0-1](994-2026-10-29-21-45-00-ai-byggplant-v0-1.md) — Decide whether the Bygget tab should become 3D like ByggAPP
@@ -33,3 +33,8 @@
 - [ ] 2026-10-30 [ai-byggplant-v0-4](991-2026-10-30-02-00-00-ai-byggplant-v0-4.md) — Decide whether volumes need rotation, round shapes or joined roofs, and whether to draw terrain slope
 - [ ] 2026-11-09 [ai-byggplant-v0-5-only-what-is-asked](990-2026-11-09-20-26-47-ai-byggplant-v0-5-only-what-is-asked.md) — Rewrite the four demo dialogs (fixtures/) to clarify size, roof and pitch, and style before drawing
 - [ ] 2026-11-09 [ai-byggplant-v0-5-only-what-is-asked](990-2026-11-09-20-26-47-ai-byggplant-v0-5-only-what-is-asked.md) — Test with a real key that Claude asks the basic questions and never draws an unrequested building
+- [x] 2026-11-18 [prd-tilbakemelding-bard](988-2026-11-18-20-07-14-prd-tilbakemelding-bard.md) — Confirm or change the two R30 proposals in epics story 1.5 (løst 2026-11-18: simulation rules revision 4)
+- [x] 2026-11-18 [prd-tilbakemelding-bard](988-2026-11-18-20-07-14-prd-tilbakemelding-bard.md) — The group answers Bård's two reflection questions (§7 in tilbakemelding-prd.md) (draft written 2026-11-18 in refleksjon-prd.md; follow-up below)
+- [ ] 2026-11-18 [prd-tilbakemelding-bard](988-2026-11-18-20-07-14-prd-tilbakemelding-bard.md) — Write R31–R34 into simulation-rules.md (epics stories 1.1–1.4) to close the rest of spine Open Question 2
+- [ ] 2026-11-18 [prd-tilbakemelding-bard](988-2026-11-18-20-07-14-prd-tilbakemelding-bard.md) — Before submission: all four members add their input to `refleksjon-prd.md` (Bård §7), the answers are rewritten in the group's words and set to final. Reminder in CLAUDE.md
+- [ ] 2026-11-18 [prd-tilbakemelding-bard](988-2026-11-18-20-07-14-prd-tilbakemelding-bard.md) — Answer from Bård/Istvan: is technology.md a template, principles, or a required stack? Log the reply in G115_Dilemmas.md
