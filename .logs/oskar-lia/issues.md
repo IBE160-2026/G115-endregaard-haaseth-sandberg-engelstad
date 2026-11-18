@@ -13,6 +13,10 @@
 - [ ] 2026-11-05 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — bekreft hvem som eier API-nøkkelen og forbruksgrensen
 - [x] 2026-11-05 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — gå gjennom [GROUP TO CONFIRM] i `epics.md`, og flett PR #1 (løst 2026-11-10: PR #1 flettet; [GROUP TO CONFIRM] flyttet til eget punkt)
 - [ ] 2026-11-10 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — gå gjennom [GROUP TO CONFIRM] i `epics.md` (nå på main)
-- [ ] 2026-11-10 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — si fra til Trond at AI_BYGGplant nå ligger i `02. Arkiv/` på main
+- [x] 2026-11-10 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — si fra til Trond at AI_BYGGplant nå ligger i `02. Arkiv/` på main (løst 2026-11-18: erstattet, AI_BYGGplant flyttes tilbake i PR #2)
 - [ ] 2026-11-05 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — Trond kobler `trond.engelstad@gmail.com` til GitHub-kontoen sin
 - [ ] 2026-11-05 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — løs at FR-19 krever 3–4 hendelser, mens en plan uten risiko kan gi bare 2
+- [ ] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — Trond ser over og godkjenner PR #2 (gammel struktur tilbake), deretter flettes den
+- [ ] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — Elisabeth og Trond avklarer om AI_BYGGplant skal publiseres på Vercel igjen
+- [ ] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — følg opp Bårds PRD-tilbakemelding: testbare konsekvenser for FR-17, MVP-kuttlinje (must/should/could), definer begreper som «external risk»
+- [ ] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — spør Bård om `technology.md` (om Pytagoras-nettsiden) er ment som mal for oss
