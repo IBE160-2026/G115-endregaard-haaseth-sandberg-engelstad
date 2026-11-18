@@ -19,3 +19,23 @@ Pull Bård's latest feedback, then merge PR #3 ("PRD: svar på Bårds tilbakemel
 ### Åpne punkter
 - The two R30 proposals in epics story 1.5 are still [GROUP TO CONFIRM]; they were not among the four points.
 - Bård's two reflection questions (§7 in the feedback) must be answered by the group itself.
+
+## 2026-11-18 kl. 20:24 — Trond Engelstad
+
+### Oppgave
+Fix the two R30 problems in epics story 1.5. Trond asked for a proposal, then: "implement both fixes" (the recommended variant).
+
+### Plan
+- Estimates ranked by what they hid from the plan, with their own debrief wording; "small" = under 0.900 MNOK and under 3 weeks (S43); S41 (5 %) and S42 (2 %) named.
+- Write story 1.5 into `simulation-rules.md`: examples (i), (j), (k), amended R30, S41–S43.
+
+### Resultat
+- `simulation-rules.md` revision 4: S41–S43 in the parameter table, R29 refers to S41, R30 rewritten, examples (i), (j), (k) and a closeness table added.
+- Story 1.5's examples used the old 169 MNOK target (from before the fire-rule revision on 5 Nov). Re-based to 171 MNOK and final 174.354; the impacts are differences, so they did not change. The seed-115 values were checked by running mulberry32 with Node.
+- The old closeness example (steel 168.429 vs CLT 172.210, firm) was stale; with current figures steel and CLT at 7 floors differ by 0.981, so "about 1 MNOK" in Flow 1 step 3 was right after all.
+- `prd.md` (thresholds paragraph, FR-38), `EXPERIENCE.md` (Flow 1 steps 3 and 8, debrief order), `epics.md` story 1.5 marked confirmed, spine Open Question 2 half closed. Changelog and Dilemmas updated.
+- Not pushed yet.
+
+### Åpne punkter
+- Spine Open Question 2 stays half open: R31–R34 (confirmed) must still be written into `simulation-rules.md` (stories 1.1–1.4). Example (i) already refers to R33's slots 15–16.
+- Story 1.5's own tables in `epics.md` still show the old 169 MNOK figures; `simulation-rules.md` is the authority.
