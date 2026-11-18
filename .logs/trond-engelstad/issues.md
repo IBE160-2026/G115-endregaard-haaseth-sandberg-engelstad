@@ -33,3 +33,5 @@
 - [ ] 2026-10-30 [ai-byggplant-v0-4](991-2026-10-30-02-00-00-ai-byggplant-v0-4.md) — Decide whether volumes need rotation, round shapes or joined roofs, and whether to draw terrain slope
 - [ ] 2026-11-09 [ai-byggplant-v0-5-only-what-is-asked](990-2026-11-09-20-26-47-ai-byggplant-v0-5-only-what-is-asked.md) — Rewrite the four demo dialogs (fixtures/) to clarify size, roof and pitch, and style before drawing
 - [ ] 2026-11-09 [ai-byggplant-v0-5-only-what-is-asked](990-2026-11-09-20-26-47-ai-byggplant-v0-5-only-what-is-asked.md) — Test with a real key that Claude asks the basic questions and never draws an unrequested building
+- [ ] 2026-11-18 [prd-tilbakemelding-bard](988-2026-11-18-20-07-14-prd-tilbakemelding-bard.md) — Confirm or change the two R30 proposals in epics story 1.5
+- [ ] 2026-11-18 [prd-tilbakemelding-bard](988-2026-11-18-20-07-14-prd-tilbakemelding-bard.md) — The group answers Bård's two reflection questions (§7 in tilbakemelding-prd.md)
