@@ -310,4 +310,4 @@ graph LR
 - **CI.** A root GitHub Action for tests and build of both packages [ASSUMPTION]; add it when the first engine tests land. Vercel does not run tests.
 - **Rate-limit store outside memory.** Only if the deployed app is abused; the spend limit covers cost until then.
 - **Renaming `ByggAPP`.** Cosmetic; it touches `vercel.json` only.
-- **Save and resume, the AI's own plan, the HMS check, analytics.** Out of MVP per PRD §8.2.
+- **Save and resume, the AI's own plan, the HMS check, analytics.** Out of MVP per PRD §8.3.
