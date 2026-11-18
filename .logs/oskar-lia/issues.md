@@ -12,14 +12,15 @@
 - [x] 2026-11-05 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — legg `osk7199@himolde.no` til på GitHub-kontoen, så commitene teller på profilen og i Insights (løst 2026-11-05)
 - [ ] 2026-11-05 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — bekreft hvem som eier API-nøkkelen og forbruksgrensen
 - [x] 2026-11-05 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — gå gjennom [GROUP TO CONFIRM] i `epics.md`, og flett PR #1 (løst 2026-11-10: PR #1 flettet; [GROUP TO CONFIRM] flyttet til eget punkt)
-- [ ] 2026-11-10 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — gå gjennom [GROUP TO CONFIRM] i `epics.md` (nå på main)
+- [x] 2026-11-10 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — gå gjennom [GROUP TO CONFIRM] i `epics.md` (nå på main) (løst 2026-11-18: historie 1.1–1.4 bekreftet; 1.5 står igjen som eget punkt)
 - [x] 2026-11-10 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — si fra til Trond at AI_BYGGplant nå ligger i `02. Arkiv/` på main (løst 2026-11-18: erstattet, AI_BYGGplant flyttes tilbake i PR #2)
 - [ ] 2026-11-05 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — Trond kobler `trond.engelstad@gmail.com` til GitHub-kontoen sin
 - [x] 2026-11-05 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — løs at FR-19 krever 3–4 hendelser, mens en plan uten risiko kan gi bare 2 (løst 2026-11-18: unntaket er beskrevet i FR-19, merket GROUP TO CONFIRM, PR #3)
-- [ ] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — Trond ser over og godkjenner PR #2 (gammel struktur tilbake), deretter flettes den
+- [x] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — Trond ser over og godkjenner PR #2 (gammel struktur tilbake), deretter flettes den (løst 2026-11-18: Trond godkjente og flettet PR #2)
 - [ ] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — Elisabeth og Trond avklarer om AI_BYGGplant skal publiseres på Vercel igjen
 - [x] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — følg opp Bårds PRD-tilbakemelding: testbare konsekvenser for FR-17, MVP-kuttlinje (must/should/could), definer begreper som «external risk» (løst 2026-11-18: PR #3, venter på gruppen)
 - [ ] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — spør Bård om `technology.md` (om Pytagoras-nettsiden) er ment som mal for oss
-- [ ] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — gruppen bekrefter i PR #3: prioriteringene og kuttrekkefølgen (§8.2), R31–R34 og SM-5-terskelen; deretter flettes PR #3
+- [x] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — gruppen bekrefter i PR #3: prioriteringene og kuttrekkefølgen (§8.2), R31–R34 og SM-5-terskelen; deretter flettes PR #3 (løst 2026-11-18: gruppen bekreftet alle fire, Trond flettet PR #3)
 - [x] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — avgjør om README skal tilbake til rot (5. nov ble den flyttet dit så GitHub og sensor finner den; PR #2 flytter den til `01. Admin/`) (løst 2026-11-18: README ligger på rot, PR #2)
 - [ ] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — svar på refleksjonsspørsmålene i §7 i Bårds PRD-tilbakemelding
+- [ ] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — gruppen tar stilling til de to R30-forslagene i epics historie 1.5 (effekt av estimat, og 0,5 % i stedet for 2 % for «liten» i debriefen); rett da PRD-ordlistens merknad om at 2 % gjelder begge steder
