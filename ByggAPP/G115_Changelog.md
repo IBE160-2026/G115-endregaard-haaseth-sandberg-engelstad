@@ -4,7 +4,7 @@ Major iterations of the *Regjeringskvartalet Light* project management simulator
 
 ## Repo structure restored – 2026-11-18
 
-The merge on 2026-11-10 archived more than intended. AI_BYGGplant and its three agents are back at their earlier paths, the earlier brief and PRDs sit next to the new ones in `01. Admin/planning-artifacts/`, and `README.md` is back in `01. Admin/`. `02. Arkiv/` is removed; v0.5 is kept as the git tag `v0.5`.
+The merge on 2026-11-10 archived more than intended. AI_BYGGplant and its three agents are back at their earlier paths, the earlier brief and PRDs sit next to the new ones in `01. Admin/planning-artifacts/`. `README.md` and `CLAUDE.md` stay at the root, where GitHub shows the README and Claude Code loads the instructions. `02. Arkiv/` is removed; v0.5 is kept as the git tag `v0.5`.
 
 ## Fra tomt til tak (planning) – 2026-11-05
 
