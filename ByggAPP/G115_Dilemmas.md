@@ -2,6 +2,12 @@
 
 The choices the AI (Claude Code) put to the group, with the group's reply word for word, one section per simulator version (newest first). Each entry has at most four lines: the prompt, the reply, and what came of it.
 
+## Earlier plans archived – 2026-11-18
+
+1. **What goes to the archive.** Prompt: the user asked to move unnecessary files to the archive; the AI listed four groups (earlier plans, `technology.md`, AI_BYGGplant with its agents, v0.5 code) and noted that Trond had just approved bringing AI_BYGGplant and the plans out of the archive.
+   Reply: "Flytt alt av unødvendige filer til arkivet, slik at vi ikke jobber på feil filer." Then chose only "Gamle planer".
+   Result: the earlier brief and three PRDs moved to `02. Arkiv/planning-artifacts/`. AI_BYGGplant, its agents and `technology.md` stay; the v0.5 code goes in story 1.6. `CLAUDE.md` says the archive is history and not to be edited.
+
 ## PRD revised after Bård's feedback – 2026-11-18
 
 1. **Four points for the group.** Prompt: PR #3 (Oskar) asked the group to confirm the priorities and cut order in §8.2, R31–R34 in epics, that a student who avoids every risk gets only two events (FR-19), and SM-5's bar of 16 of 20 answers.

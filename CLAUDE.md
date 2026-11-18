@@ -2,6 +2,10 @@
 
 Når en oppgave eller økt avsluttes, før sluttoppsummeringen, bruk `sesjonslogg`-skillen: dokumenter Oppgave + Plan + Resultat + åpne punkter i `.logs/<bruker>/`, og før åpne punkter i `.logs/<bruker>/issues.md`. Skillen committer loggfila lokalt; push gjør du selv. Gruppens egne regler for commit og språk gjelder foran dette.
 
+## Arkivet er historikk
+
+`02. Arkiv/` holder planer som *Fra tomt til tak* har erstattet. Ikke rediger filene der, og ikke bygg krav, regler eller kode på dem med mindre noen ber om det; de gjeldende planene ligger i `01. Admin/planning-artifacts/`. Det er greit å lese i arkivet for å hente ideer, men si da hvilken fil ideen kommer fra.
+
 ## Reminder: reflection note before submission
 
 Until `01. Admin/planning-artifacts/prds/prd-fra-tomt-til-tak-2026-10-31/refleksjon-prd.md` has `status: final`:

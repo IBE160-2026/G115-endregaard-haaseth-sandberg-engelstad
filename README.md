@@ -39,6 +39,7 @@ The simulation engine is in `ByggAPP/src/engine/` and has no UI code.
 - `ByggAPP/` — the application: source code (`src/`), icons (`assets/`), build setup, the group's G115 files and the BMAD specs for each version (`.docs/`)
 - `AI_BYGGplant/` — the group's app where an AI plans a construction project in dialogue (v0.5). Its dialogue and server function are a source for the AI adviser (FR-17)
 - `01. Admin/` — assignment material and planning: the instructor's feedback and `planning-artifacts/`
+- `02. Arkiv/` — earlier plans that *Fra tomt til tak* replaces, kept as a source of ideas (see its README)
 - `_bmad/` — the BMAD framework, with its Claude Code skills in `.claude/skills/` (also the AI_BYGGplant agents Ingrid, Jonas and Mats)
 - `.logs/` — session logs per group member
 
@@ -55,10 +56,10 @@ All in `01. Admin/planning-artifacts/`:
 
 ### Earlier ideas
 
-*Fra tomt til tak* replaces the earlier plans, but they hold ideas and data the group builds on. They stay next to the new documents:
+*Fra tomt til tak* replaces the earlier plans, but they hold ideas and data the group builds on. They are kept in `02. Arkiv/`, apart from the current documents so that nobody works on the wrong one:
 
-- [Earlier product brief](01.%20Admin/planning-artifacts/briefs/brief-G115-2026-10-29/brief.md) (Regjeringskvartalet Light)
-- [PRD for ByggAPP v0.5](01.%20Admin/planning-artifacts/prds/prd-G115-endregaard-haaseth-sandberg-2026-11-03/prd.md) and [PRD for AI_BYGGplant](01.%20Admin/planning-artifacts/prds/prd-AI_BYGGplant-2026-11-05/prd.md)
+- [Earlier product brief](02.%20Arkiv/planning-artifacts/briefs/brief-G115-2026-10-29/brief.md) (Regjeringskvartalet Light)
+- [PRD for ByggAPP v0.5](02.%20Arkiv/planning-artifacts/prds/prd-G115-endregaard-haaseth-sandberg-2026-11-03/prd.md) and [PRD for AI_BYGGplant](02.%20Arkiv/planning-artifacts/prds/prd-AI_BYGGplant-2026-11-05/prd.md)
 - The v0.5 game itself is kept as the git tag `v0.5`
 
 Development follows the [BMAD framework](https://bmadcode.com/).
