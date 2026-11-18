@@ -6,7 +6,7 @@
 - [x] 2026-10-29 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — ingen `CLAUDE.md` i rotmappen etter omstruktureringen, så prosjektinstruksene lastes ikke; avklar med Trond (løst 2026-11-05)
 - [ ] 2026-10-29 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — Vercel: Elisabeth setter opp en ny side når hun får filene, og legger inn `ANTHROPIC_API_KEY` og `ADVISER_MODEL`
 - [ ] 2026-10-31 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — gruppen godkjenner estimatene i simuleringsreglene §5 og 5 %-båndet
-- [ ] 2026-10-31 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — FR-32 til FR-37 mangler testbare konsekvenser; sjekk formuleringen i simuleringsreglene §5 punkt 5 (prefab mot stål)
+- [x] 2026-10-31 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — FR-32 til FR-37 mangler testbare konsekvenser; sjekk formuleringen i simuleringsreglene §5 punkt 5 (prefab mot stål) (løst 2026-11-18: konsekvenser lagt til i PR #3)
 - [x] 2026-10-31 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — gruppen bestemmer om «Fra tomt til tak» tas i bruk (PR fra `forslag/tre-stadier` til main) (løst 2026-11-05: gruppen valgte forslaget)
 - [ ] 2026-10-31 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — bestem navnet på rådgiveren, og gå gjennom utkastene til DESIGN.md og EXPERIENCE.md
 - [x] 2026-11-05 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — legg `osk7199@himolde.no` til på GitHub-kontoen, så commitene teller på profilen og i Insights (løst 2026-11-05)
@@ -15,8 +15,11 @@
 - [ ] 2026-11-10 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — gå gjennom [GROUP TO CONFIRM] i `epics.md` (nå på main)
 - [x] 2026-11-10 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — si fra til Trond at AI_BYGGplant nå ligger i `02. Arkiv/` på main (løst 2026-11-18: erstattet, AI_BYGGplant flyttes tilbake i PR #2)
 - [ ] 2026-11-05 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — Trond kobler `trond.engelstad@gmail.com` til GitHub-kontoen sin
-- [ ] 2026-11-05 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — løs at FR-19 krever 3–4 hendelser, mens en plan uten risiko kan gi bare 2
+- [x] 2026-11-05 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — løs at FR-19 krever 3–4 hendelser, mens en plan uten risiko kan gi bare 2 (løst 2026-11-18: unntaket er beskrevet i FR-19, merket GROUP TO CONFIRM, PR #3)
 - [ ] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — Trond ser over og godkjenner PR #2 (gammel struktur tilbake), deretter flettes den
 - [ ] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — Elisabeth og Trond avklarer om AI_BYGGplant skal publiseres på Vercel igjen
-- [ ] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — følg opp Bårds PRD-tilbakemelding: testbare konsekvenser for FR-17, MVP-kuttlinje (must/should/could), definer begreper som «external risk»
+- [x] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — følg opp Bårds PRD-tilbakemelding: testbare konsekvenser for FR-17, MVP-kuttlinje (must/should/could), definer begreper som «external risk» (løst 2026-11-18: PR #3, venter på gruppen)
 - [ ] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — spør Bård om `technology.md` (om Pytagoras-nettsiden) er ment som mal for oss
+- [ ] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — gruppen bekrefter i PR #3: prioriteringene og kuttrekkefølgen (§8.2), R31–R34 og SM-5-terskelen; deretter flettes PR #3
+- [ ] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — avgjør om README skal tilbake til rot (5. nov ble den flyttet dit så GitHub og sensor finner den; PR #2 flytter den til `01. Admin/`)
+- [ ] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — svar på refleksjonsspørsmålene i §7 i Bårds PRD-tilbakemelding
