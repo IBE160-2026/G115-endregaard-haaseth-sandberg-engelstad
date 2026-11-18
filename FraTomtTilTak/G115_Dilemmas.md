@@ -2,6 +2,12 @@
 
 The choices the AI (Claude Code) put to the group, with the group's reply word for word, one section per simulator version (newest first). Each entry has at most four lines: the prompt, the reply, and what came of it.
 
+## One project folder – 2026-11-18
+
+1. **Structure for Fra tomt til tak.** Prompt: the AI showed three options: one project folder, only renaming ByggAPP, or waiting for story 1.6. It also asked where AI_BYGGplant should go, since Trond had just approved bringing it out of the archive.
+   Reply: "Kan vi få byggapp osv til å ligge ender fra tomt til tak [...] vi ser at det er uversiktelig og trenger systematisering, grunnet vi har hatt så mange ulike ideer og prosjekter". Then chose "Én prosjektmappe" and "Til arkivet" for AI_BYGGplant.
+   Result: everything for the project is in `FraTomtTilTak/` (`app/`, `planlegging/`, `implementering/`, the G115 files). `01. Admin/` holds only course material. AI_BYGGplant, its agents and the v0.x specs moved to `02. Arkiv/`. No code changed; 187 tests pass and the build runs from `FraTomtTilTak/app`.
+
 ## Earlier plans archived – 2026-11-18
 
 1. **What goes to the archive.** Prompt: the user asked to move unnecessary files to the archive; the AI listed four groups (earlier plans, `technology.md`, AI_BYGGplant with its agents, v0.5 code) and noted that Trond had just approved bringing AI_BYGGplant and the plans out of the archive.

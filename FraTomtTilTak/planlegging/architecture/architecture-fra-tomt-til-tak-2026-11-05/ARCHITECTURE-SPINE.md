@@ -15,9 +15,9 @@ sources:
   - ../../prds/prd-fra-tomt-til-tak-2026-10-31/addendum.md
   - ../../ux-designs/ux-fra-tomt-til-tak-2026-10-31/EXPERIENCE.md
   - ../../ux-designs/ux-fra-tomt-til-tak-2026-10-31/DESIGN.md
-  - ../../../tilbakemelding-product-brief.md
-  - ../../../../ByggAPP
-  - ../../../../AI_BYGGplant/server
+  - ../../../../01. Admin/tilbakemelding-product-brief.md
+  - ../../../app
+  - ../../../../02. Arkiv/AI_BYGGplant/server
 companions: []
 ---
 
@@ -29,11 +29,11 @@ companions: []
 
 | Layer | Directory | May do |
 |---|---|---|
-| **Engine** (core) | `ByggAPP/src/engine` | Calculate. No effects. |
-| **Adviser rules** (core) | `ByggAPP/src/engine/adviser` | Suggestions, warnings, recommendations, as data. |
-| **Content** | `ByggAPP/src/content` | Norwegian text, prepared answers, formatting of facts. |
-| **AI layer** (adapter) | `ByggAPP/src/ai`, `ByggAPP/server` | Ask the language model for text. Fall back. |
-| **View** (shell) | `ByggAPP/src/ui`, `ByggAPP/src/main.ts` | Hold state, render, draw 3D, run the clock. |
+| **Engine** (core) | `FraTomtTilTak/app/src/engine` | Calculate. No effects. |
+| **Adviser rules** (core) | `FraTomtTilTak/app/src/engine/adviser` | Suggestions, warnings, recommendations, as data. |
+| **Content** | `FraTomtTilTak/app/src/content` | Norwegian text, prepared answers, formatting of facts. |
+| **AI layer** (adapter) | `FraTomtTilTak/app/src/ai`, `FraTomtTilTak/app/server` | Ask the language model for text. Fall back. |
+| **View** (shell) | `FraTomtTilTak/app/src/ui`, `FraTomtTilTak/app/src/main.ts` | Hold state, render, draw 3D, run the clock. |
 
 ```mermaid
 graph TD
@@ -49,7 +49,7 @@ graph TD
   server --> claude[Claude API]
 ```
 
-Arrows are the only allowed imports. `engine` imports nothing outside itself. `server` imports nothing from `src`. No code imports from `AI_BYGGplant/`.
+Arrows are the only allowed imports. `engine` imports nothing outside itself. `server` imports nothing from `src`. No code imports from `02. Arkiv/AI_BYGGplant/`.
 
 ## Invariants & Rules
 
@@ -129,7 +129,7 @@ Arrows are the only allowed imports. `engine` imports nothing outside itself. `s
 
 - **Binds:** NFR-1, NFR-2, FR-17
 - **Prevents:** A key in the bundle, the SDK in the client, and client and server drifting apart.
-- **Rule:** `ByggAPP/server` is its own package and Vercel service with its own `package.json`. It is the only code that reads `ANTHROPIC_API_KEY` or imports `@anthropic-ai/sdk`. TypeScript stays `~5.9.3` there, because Vercel's Node builder cannot use TypeScript 7 (build log 2026-11-03). `server/contract.ts` is the source of the contract below; the client uses `import type` only. Code worth keeping from the archive is copied in and adapted, never imported. The status route reports `live: false` with no key, and the POST route answers 503.
+- **Rule:** `FraTomtTilTak/app/server` is its own package and Vercel service with its own `package.json`. It is the only code that reads `ANTHROPIC_API_KEY` or imports `@anthropic-ai/sdk`. TypeScript stays `~5.9.3` there, because Vercel's Node builder cannot use TypeScript 7 (build log 2026-11-03). `server/contract.ts` is the source of the contract below; the client uses `import type` only. Code worth keeping from the archive is copied in and adapted, never imported. The status route reports `live: false` with no key, and the POST route answers 503.
 
 ```ts
 // GET /api/adviser/status -> { live: boolean }
@@ -180,13 +180,13 @@ interface AdviserReply { answer: string; basis: string; onTopic: boolean } // 20
 
 - **Binds:** NFR-8, NFR-10, SM-3, instructor feedback
 - **Prevents:** Logic tested through the DOM, and flows tested nowhere.
-- **Rule:** (1) Vitest in Node for `engine`, `content`, `ai` with a fake `fetch`, and `server` with an injected client; no network and no key. (2) DOM tests under jsdom, set per file, that drive click flows through `mountApp` with a fake `View3d` and adviser port, one per UX flow, including the no-key path. (3) A manual test plan in `ByggAPP/docs/manual-test-plan.md` [ASSUMPTION] for the 3D view, free-text answers and a full playthrough, with results recorded per round (NFR-10). The purity scan from AD-1 runs in layer 1.
+- **Rule:** (1) Vitest in Node for `engine`, `content`, `ai` with a fake `fetch`, and `server` with an injected client; no network and no key. (2) DOM tests under jsdom, set per file, that drive click flows through `mountApp` with a fake `View3d` and adviser port, one per UX flow, including the no-key path. (3) A manual test plan in `FraTomtTilTak/app/docs/manual-test-plan.md` [ASSUMPTION] for the 3D view, free-text answers and a full playthrough, with results recorded per round (NFR-10). The purity scan from AD-1 runs in layer 1.
 
 ### AD-20 — Vercel is the one deployment, and local needs nothing
 
 - **Binds:** NFR-1, NFR-2, SM-4
 - **Prevents:** A README that needs a key, and two hosting paths.
-- **Rule:** `vercel.json` has the services `byggapp` (root `ByggAPP`) and `adviser` (root `ByggAPP/server`, entrypoint `vercel.ts`) [ASSUMPTION until the first deploy]. `/api/(.*)` is rewritten to `adviser` before the catch-all; Vercel keeps the path, so routes include `/api`. `npm install && npm run dev` in `ByggAPP` runs the full game on prepared answers. `ByggAPP/server/.env.example` lists `ANTHROPIC_API_KEY` and `ADVISER_MODEL`, with no values. The key is set in Vercel for Production only. With a local key, `npm start` in `server` runs the same handler and the Vite dev proxy forwards `/api` to it. GitHub Pages is dropped: remove `ByggAPP/.github` and `BASE_PATH`.
+- **Rule:** `vercel.json` has the services `byggapp` (root `FraTomtTilTak/app`) and `adviser` (root `FraTomtTilTak/app/server`, entrypoint `vercel.ts`) [ASSUMPTION until the first deploy]. `/api/(.*)` is rewritten to `adviser` before the catch-all; Vercel keeps the path, so routes include `/api`. `npm install && npm run dev` in `FraTomtTilTak/app` runs the full game on prepared answers. `FraTomtTilTak/app/server/.env.example` lists `ANTHROPIC_API_KEY` and `ADVISER_MODEL`, with no values. The key is set in Vercel for Production only. With a local key, `npm start` in `server` runs the same handler and the Vite dev proxy forwards `/api` to it. GitHub Pages is dropped: remove `02. Arkiv/ByggAPP-v0.x-specs/.github` and `BASE_PATH`.
 
 ## Consistency Conventions
 
@@ -221,7 +221,7 @@ interface AdviserReply { answer: string; basis: string; onTopic: boolean } // 20
 ## Structural Seed
 
 ```text
-ByggAPP/
+FraTomtTilTak/app/
   src/
     engine/
       data/        params.ts, references.ts
@@ -309,5 +309,5 @@ graph LR
 - **Delivery order and when v0.5 is deleted.** Epic planning decides. Whatever the order, AD-4 bans new imports of the old engine.
 - **CI.** A root GitHub Action for tests and build of both packages [ASSUMPTION]; add it when the first engine tests land. Vercel does not run tests.
 - **Rate-limit store outside memory.** Only if the deployed app is abused; the spend limit covers cost until then.
-- **Renaming `ByggAPP`.** Cosmetic; it touches `vercel.json` only.
+- **Renaming `FraTomtTilTak/app`.** Cosmetic; it touches `vercel.json` only.
 - **Save and resume, the AI's own plan, the HMS check, analytics.** Out of MVP per PRD §8.3.

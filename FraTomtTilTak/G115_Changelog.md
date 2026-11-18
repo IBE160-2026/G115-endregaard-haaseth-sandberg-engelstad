@@ -2,6 +2,10 @@
 
 Major iterations of the *Regjeringskvartalet Light* project management simulator. Each entry has a summary of at most four lines.
 
+## One project folder – 2026-11-18
+
+The repo is reorganised around the chosen project. `FraTomtTilTak/` holds the app (`app/`, formerly `ByggAPP/`), the plans (`planlegging/`, formerly `01. Admin/planning-artifacts/`), `implementering/` for stories, and these G115 files. AI_BYGGplant, its agents and the ByggAPP v0.x specs moved to `02. Arkiv/`. BMAD and all current documents point to the new paths.
+
 ## Earlier plans archived – 2026-11-18
 
 The earlier brief and the PRDs for ByggAPP v0.5 and AI_BYGGplant moved to `02. Arkiv/planning-artifacts/`, so they cannot be mistaken for the current documents. README links to them, and `CLAUDE.md` says the archive is history.

@@ -4,7 +4,7 @@ created: 2026-10-31
 prd: prd.md (draft, 2026-10-31)
 inputs:
   - ../../research/research-fra-tomt-til-tak-2026-10-31/research.md (P1-P17)
-  - ../../../tilbakemelding-product-brief.md
+  - ../../../../01. Admin/tilbakemelding-product-brief.md
   - Assignment text (AI-styrt simulering av prosjektledelse, byggeprosjekt)
   - Sensorveiledning del 1 (summary, 7 criteria)
 ---
