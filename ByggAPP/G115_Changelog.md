@@ -2,6 +2,11 @@
 
 Major iterations of the *Regjeringskvartalet Light* project management simulator. Each entry has a summary of at most four lines.
 
+## R30 fixed, story 1.5 – 2026-11-18
+
+Simulation rules revision 4. Estimates in the debrief ranking are measured by what they hid from the plan (0.300 × weeks), so they sum to bridge step 2 and get their own wording ("Planen skjulte …"). "Small" is under 0.900 MNOK and under 3 weeks (S43); the adviser keeps 2 % (S42) and the bands 5 % (S41).
+Worked examples (i) R15, (j) R29 and (k) R30 are added, re-based to the 171 MNOK target; the seed-115 stream was checked by running mulberry32.
+
 ## PRD revised after Bård's feedback – 2026-11-18
 
 PR #3 answers the instructor's PRD feedback (12 Nov): FR-17 has a decided provider and testable consequences, FR-32 to FR-36 and NFR-10 have consequences, every requirement is must/should/could with a vertical slice and a cut order, the glossary has Norwegian display names, and UJ-2, SM-5 and SM-6 are added.

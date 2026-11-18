@@ -109,7 +109,7 @@ The interface is in Norwegian (NFR-6). The middle column is the name the student
 | **Difficulty** | vanskelighetsgrad † | Easy, medium or hard: how often the AI's stage 2 recommendation is the best option (FR-1). |
 | **Learning goal** | læringsmål | One of four: time costs money; resources have limits; risk is managed, not just suffered; AI advice is worth weighing. |
 
-**Two thresholds share one figure on purpose.** R30 uses 2 % of the target cost both for "the choice matters little" (FR-14) and for a "small" decision in the debrief (FR-38). It is the same line: a choice the adviser called unimportant in stage 1 is also labelled small in stage 3.
+**Two thresholds, on purpose (group decision 2026-11-18).** The adviser's "the choice matters little" (FR-14) is 2 % of the target cost (S42, 3.420 MNOK), because concept options differ by several MNOK. The debrief's "small" (FR-38) is under 0.900 MNOK, three weeks of site overhead, and under 3 weeks (S43); with 2 % nearly every decision in a playthrough would be called small. So a choice the adviser called close in stage 1 can still show in the debrief: CLT instead of steel at 7 floors is about 1 MNOK dearer and 2 weeks faster, and the student should see that trade-off.
 
 ## 4. Features
 
@@ -457,7 +457,8 @@ The debrief ranks the student's decisions by how much each one changed the final
 
 **Consequences (testable):**
 - The three decisions with the largest cost impact are shown first, each with its effect in MNOK and weeks (rule R30).
-- Decisions with an impact under the "small" threshold are labelled as small.
+- Decisions with an impact under the "small" threshold (S43: under 0.900 MNOK and under 3 weeks) are labelled as small.
+- Estimates are ranked by what they hid from the plan, so they sum to bridge step 2 (FR-24), and are worded that way ("Planen skjulte 6 uker og 1,8 MNOK").
 - The final result is shown in bands against the targets (on target, slightly over, clearly over; rule R29), not as pass or fail on the exact figure.
 
 ### 4.9 Simulation model

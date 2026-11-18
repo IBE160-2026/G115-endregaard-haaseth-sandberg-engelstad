@@ -7,6 +7,9 @@ The choices the AI (Claude Code) put to the group, with the group's reply word f
 1. **Four points for the group.** Prompt: PR #3 (Oskar) asked the group to confirm the priorities and cut order in §8.2, R31–R34 in epics, that a student who avoids every risk gets only two events (FR-19), and SM-5's bar of 16 of 20 answers.
    Reply: "Pr #3- Vi bekrefter alle 4 punktene."
    Result: PR #3 merged into main. The four items are marked confirmed in the PRD and in epics stories 1.1–1.4, and open question 4 is removed. The R30 proposals in story 1.5 still wait.
+2. **How to fix R30.** Prompt: R30 ranked estimates near zero and called almost every decision small. The AI proposed measuring estimates by what they hid from the plan, with their own wording, and "small" as under 0.900 MNOK (three weeks of site overhead) and under 3 weeks, instead of 0.5 % of target cost.
+   Reply: "implement both fixes"
+   Result: written into simulation rules revision 4 with examples (i), (j), (k), S41–S43, the PRD, EXPERIENCE.md and epics story 1.5. Side effect accepted: CLT vs steel at 7 floors (0.981) is "both work" in stage 1 but not "small" in the debrief.
 
 ## Repo structure restored – 2026-11-18
 

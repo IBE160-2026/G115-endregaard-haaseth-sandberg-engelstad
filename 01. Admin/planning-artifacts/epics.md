@@ -359,7 +359,7 @@ The overrun hits the envelope: gaps are 0, 2, 3, 0, 1 with estimates at referenc
 | 177.450 | *Litt over* | Week 71 | *Litt over* |
 | 177.451 | *Klart over* | Week 72 | *Klart over* |
 
-**Two problems found in R30 while working the example, with proposals [GROUP TO CONFIRM]:**
+**Two problems found in R30 while working the example [CONFIRMED by the group 2026-11-18, with two changes: estimate rows get their own wording, and S43 is 0.900 MNOK and under 3 weeks instead of 0.5 %]. Written into `simulation-rules.md` revision 4, with examples (i), (j) and (k) re-based to the 171 MNOK target:**
 
 1. **Estimates have no effect on final cost.** R16 makes actual durations independent of estimates, so R30 as written ranks an estimate near zero. That contradicts Flow 1 step 8 ("the frame estimate weighed most") and the point of the product. Proposal: an estimate's impact is what it hid from the plan: `0.300 × (actual − estimate)` for parts 2–6 and 0 for the permit, with `actual − estimate` weeks. These sum exactly to bridge cause 2. *Alternative:* compare with the reference estimate, which is closer to R30's wording but does not sum to the bridge.
 2. **The 2 % threshold labels nearly everything small.** It is 3.380 MNOK, and in example (d) every decision falls under it, so the top three would all read "liten betydning". Proposal: the debrief's "small" becomes 0.5 % of target cost (S43, 0.845 MNOK). The adviser's closeness rule keeps 2 % (S42). The band width of 5 % becomes S41, so all three live in `params.ts`.

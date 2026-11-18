@@ -2,7 +2,7 @@
 title: "Simulation rules: Fra tomt til tak"
 status: draft
 created: 2026-10-31
-updated: 2026-11-05
+updated: 2026-11-18
 ---
 
 # Simulation rules: Fra tomt til tak
@@ -22,6 +22,8 @@ Simplicity beats precision (PRD SM-C3). Every value is either sourced or marked 
 - **The risk catalogue uses the event IDs E1–E10** from `addendum.md`.
 
 **Revision 3 (fire rule approved by Oskar, 2026-11-05):** the fire-class cost now differs by structural system (S19, R5). Steel pays for protection and CLT for documentation. Target cost rises to 171 MNOK; target week stays 67.
+
+**Revision 4 (R30 approved by the group, 2026-11-18, epics story 1.5):** estimates are ranked by what they hid from the plan, so they sum to bridge cause 2. The debrief's "small" is under 0.900 MNOK (three weeks of site overhead) and under 3 weeks (S43). The adviser keeps 2 % (S42) and the bands keep 5 % (S41). Worked examples (i), (j) and (k) are added for R15, R29 and R30.
 
 Sources:
 
@@ -133,6 +135,9 @@ For the project it keeps the current week, the cost so far, the reserve used, th
 | S33 | Crowding | Each hired worker gives 0.5 of a full worker's output and is paid in full | v0.5, PRD FR-20 | [ESTIMATE] |
 | S34 | Change request (E8) | Now: +2.000 MNOK and +2 weeks. Later: +3.000 MNOK and 0 weeks | V12 / E8 (changes ~14 % of contract cost; later costs more) | [ESTIMATE] anchored |
 | S35 | AI reliability by difficulty | easy 100 % · medium 80 % · hard 60 % | v0.5 | design choice |
+| S41 | Result band width (R29) | 5 % over the target cost or the target week | PRD FR-26 | design choice |
+| S42 | Closeness threshold for the adviser (R30, stage 1) | 2 % of the target cost (3.420 MNOK at 171) | PRD FR-14 | design choice |
+| S43 | "Small" in the debrief (R30) | Cost impact under 3 construction weeks of site overhead (3 × S14 = **0.900 MNOK**) **and** week impact under 3 weeks | Group decision 2026-11-18; 3 weeks is just under the S41 week band (3.35) | design choice |
 
 ### 2.2 The site (FR-3, now fixed)
 
@@ -305,7 +310,7 @@ How to read it:
 
 - **7 floors are the cheapest height**, but only steel (week 67) and CLT (week 65) meet the target week there. Cast-in-place (73, clearly over) and precast (70, slightly over) are cheaper but too slow.
 - **Cast-in-place meets the target week only at 3 or 4 floors**, and there the land costs 57.400 (4 floors) or 102.200 (3 floors) more than at 7 floors. Precast needs 5 floors or fewer.
-- **CLT at 7 floors** is fastest and lands 0.210 MNOK over the target cost, which is slightly over, mainly because of its +5 % work cost. It is 0.981 dearer than steel; that is under R30's 2 % of the target cost (3.420), and both are on target for the week, so the adviser says both work instead of recommending one firmly.
+- **CLT at 7 floors** is fastest and lands 0.210 MNOK over the target cost, which is slightly over, mainly because of its +5 % work cost. It is 0.981 dearer than steel; that is under the closeness threshold S42 (R30), 2 % of the target cost (3.420), and both are on target for the week, so the adviser says both work instead of recommending one firmly.
 - **Only the reference plan is on target for both**, with 0.771 MNOK to spare. At 6 floors, cast-in-place and precast are slightly over on both; steel and CLT are clearly over on cost. At 5 floors or fewer every plan is clearly over on cost. The student must judge which miss to accept, or squeeze the estimates and reserve and see what stage 2 makes of it.
 
 ### Stage 2: execution
@@ -416,16 +421,18 @@ The targets are a frame, not an exact answer. The final cost and the final week 
 | Band | Cost | Week |
 |---|---|---|
 | On target | final cost ≤ target cost | final week ≤ target week |
-| Slightly over | up to 5 % over the target cost | up to 5 % over the target week (rounded up to whole weeks) |
-| Clearly over | more than 5 % over | more than 5 % over |
+| Slightly over | up to S41 (5 %) over the target cost | up to S41 (5 %) over the target week (rounded up to whole weeks) |
+| Clearly over | more than S41 over | more than S41 over |
 
 With the current targets the slightly-over limits are 171 × 1.05 = **179.550 MNOK** and 67 × 1.05 = 70.35 → **week 71**. The debrief shows the band, not a pass or fail on the exact figure. [ASSUMPTION: the 5 % band is a first proposal for the group to approve.]
 
 **R30. Decision impact ranking** (FR-38, FR-14)
 
-- For each of the student's decisions (floors, structural system, each main part's estimate, each risk response, the reserve, each stage 2 event), the impact is the change in final cost and final week if that one decision is replaced by the reference plan's choice (stage 1) or by the AI's recommendation (stage 2), with everything else unchanged.
-- The debrief lists decisions from the largest to the smallest absolute cost impact, with the week impact beside it, and shows the top three. A decision whose impact is under 2 % of the target cost is labelled "small".
-- In stage 1, when two options for a choice differ by less than 2 % of the target cost and fall in the same week band, the adviser says so ("both work; the difference is about X MNOK") instead of recommending one firmly.
+- **Decisions measured against the result.** For floors, structural system, each risk response, the reserve and each stage 2 event, the impact is the change in final cost and final week if that one decision is replaced by the reference plan's choice (stage 1) or by the AI's recommendation (stage 2), with everything else unchanged.
+- **Estimates measured against the plan.** Actual durations do not depend on the estimates (R16), so swapping an estimate would barely move the final cost. An estimate's impact is instead what it hid from the plan: `0.300 × (actual − estimate)` MNOK and `actual − estimate` weeks for parts 2 to 6, and 0 MNOK with `actual − estimate` weeks for the permit (it has no site overhead). The estimate rows sum exactly to bridge cause 2 (R26), so the ranking and the bridge always agree.
+- **Wording.** Estimate rows say what the plan hid, not what the decision cost, because the money would have been spent anyway: *"Planen skjulte 6 uker og 1,8 MNOK"* for an estimate that was too low, and *"Planen var 2 uker for forsiktig (0,6 MNOK)"* for one that was too high. Other rows say how the result changed.
+- **Ranking.** The debrief lists all decisions from the largest to the smallest absolute cost impact, with the week impact beside it, and shows the top three. Ties go to the earlier part, then to the earlier decision. A decision is labelled "liten betydning" (small) only when its cost impact is under S43 (0.900 MNOK) **and** its week impact is under 3 weeks, so a cheap decision that costs many weeks is never called small.
+- **Closeness in stage 1.** When two options for a choice differ by less than S42 (2 % of the target cost, 3.420) and fall in the same week band (R29), the adviser says so ("both work; the difference is about X MNOK") instead of recommending one firmly.
 
 ---
 
@@ -631,6 +638,61 @@ Difficulty: easy.
   - The reserve also ran out.
 - **AI advice is worth weighing:** missed. 6 of 9 recommendations were right and ignored (6 ≥ 4.5).
 
+### Example (i): R15, seed 115 (the group number) on the reference plan
+
+Generator: mulberry32 from v0.5 (`ByggAPP/src/engine/game.ts`). The test compares to 4 decimals. The values were checked by running the generator on 2026-11-18.
+
+| Slots | Used for | Values | Result |
+|---|---|---|---|
+| 0–4 | Deviation, parts 2–6 (R16) | 0.2682, 0.9728, 0.9265, 0.2672, 0.5870 | 0 %, +30 %, +30 %, 0 %, +10 %. Actual 13, 10, 13, 10, 6 |
+| 5–8 | E4, E5, E2, E3 (R17) | 0.6846, 0.0470, 0.4766, 0.7998 | Only E5 occurs (0.0470 < 0.40) |
+| 9–14 | Reliability (R25) | 0.7585, 0.5543, 0.6627, 0.6074, 0.7396, 0.6515 | Event order E5, E1, E8. Medium: best each time. Hard: second-best, best, second-best |
+| 15–16 | Opportunity (R33, epics story 1.3) | 0.5104, 0.4384 | n = 3, 0.5104 ≥ 0.30, so none |
+
+The overrun (R18) hits the envelope: the gaps are 0, 2, 3, 0, 1 with estimates at reference. **If the student avoids E5**, every other slot keeps its value, no risk qualifies, and E2 occurs with the lowest u ÷ p (1.362, against E4 2.282 and E3 3.199). That shows an avoided risk does not shift the stream.
+
+### Example (j): R29, targets 171 MNOK and week 67
+
+The limits are 171 × 1.05 = 179.550 and 67 × 1.05 = 70.35, rounded up to week 71.
+
+| Final cost | Band | Final week | Band |
+|---|---|---|---|
+| 171.000 | *På mål* | 67 | *På mål* |
+| 174.354 (example d) | *Litt over* | 69 (example d) | *Litt over* |
+| 179.550 | *Litt over* | 71 | *Litt over* |
+| 179.551 | *Klart over* | 72 | *Klart over* |
+
+### Example (k): R30, the playthrough in example (d)
+
+Final 174.354, week 69. Estimate rows are measured against the plan, the other rows against the result.
+
+| Rank | Decision | Student → compared with | Cost | Weeks | Label | Debrief wording |
+|---|---|---|---|---|---|---|
+| 1 | Groundworks estimate | 10, actual 16 | +1.800 | +6 | | Planen skjulte 6 uker og 1,8 MNOK |
+| 2 | Technical and interior estimate | 8, actual 13 | +1.500 | +5 | | Planen skjulte 5 uker og 1,5 MNOK |
+| 3 | E5 response | Accept → reduce: +0.640 upfront, −1.000, −2 weeks | −0.960 | −2 | | |
+| 4 | Frame estimate | 7, actual 9 | +0.600 | +2 | small | Planen skjulte 2 uker og 0,6 MNOK |
+| 5 | Envelope estimate | 8, actual 10 | +0.600 | +2 | small | Planen skjulte 2 uker og 0,6 MNOK |
+| 6 | E8 event | Later → now | −0.400 | +2 | small | |
+| 7 | Handover estimate | 4, actual 5 | +0.300 | +1 | small | Planen skjulte 1 uke og 0,3 MNOK |
+| 8 | E5 event | Impact → alternative | −0.100 | −2 | small | |
+| 9 | E2 response | Accept → reduce: upfront only, it did not occur | +0.100 | 0 | small | |
+| 10 | E1 event | Delay → overtime | −0.054 | −2 | small | |
+
+- Permit estimate, E4, E3, floors and system equal the reference, so they are 0. The reserve is also 0, because unused reserve is not spent (R13).
+- Frame and envelope tie at 0.600; the earlier part goes first.
+- The estimate rows sum to 1.800 + 1.500 + 0.600 + 0.600 + 0.300 = **4.800** MNOK and 6 + 5 + 2 + 2 + 1 = **16** weeks. That is bridge cause 2 in example (d) (168.154 − 163.354) and run 2's week 65 against the plan's week 49 ✓.
+- Labels with S43: rows 1–3 are at or above 0.900 MNOK, so not small. Rows 4–10 are under 0.900 and under 3 weeks, so small. The top three the debrief shows are rows 1–3.
+
+**Closeness (R30, stage 1, S42 = 3.420).** Plan costs and weeks from the table under R14:
+
+| Floors | Options | Difference | Week bands | Adviser |
+|---|---|---|---|---|
+| 7 | Steel 170.229 (week 67) and CLT 171.210 (week 65) | 0.981 | both on target | Both work, "about 1 MNOK" |
+| 4 | Precast 219.300 (week 65) and steel 220.334 (week 64) | 1.034 | both on target | Both work, "about 1 MNOK" |
+| 5 | Precast 196.545 (week 67) and CLT 200.060 (week 63) | 3.515 ≥ 3.420 | both on target | Recommends precast firmly |
+| 6 | Precast 179.530 (week 68) and steel 182.064 (week 66) | 2.534 | slightly over and on target | Recommends firmly: the week bands differ |
+
 ---
 
 ## 5. Open points for the group
@@ -651,7 +713,7 @@ Difficulty: easy.
 
 **Design decisions to confirm:**
 
-12. **The targets leave exactly one plan on target for both** (7 floors, steel, suggested reserve). CLT at 7 floors is 0.210 over and counts as slightly over (R29); the adviser treats the two as equal (R30). A CLT extra of 0.790 or less would put CLT on target too, ending the single-solution puzzle (fire research §6.3). That is a design decision.
+12. **The targets leave exactly one plan on target for both** (7 floors, steel, suggested reserve). CLT at 7 floors is 0.210 over and counts as slightly over (R29); the adviser treats the two as equal (R30, S42; example (k)). A CLT extra of 0.790 or less would put CLT on target too, ending the single-solution puzzle (fire research §6.3). That is a design decision.
 13. **The PRD needs edits** to match the single site:
     - FR-3 ("choose one of three plots") becomes a fixed site that only shows its land price and limits.
     - FR-10 ("risks depend on the plot") becomes "depend on floors and structural system".

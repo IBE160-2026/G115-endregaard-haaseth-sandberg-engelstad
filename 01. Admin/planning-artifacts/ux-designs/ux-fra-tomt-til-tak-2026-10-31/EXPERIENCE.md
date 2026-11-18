@@ -2,7 +2,7 @@
 title: "EXPERIENCE: Fra tomt til tak"
 status: draft
 created: 2026-10-31
-updated: 2026-10-31
+updated: 2026-11-18
 sources:
   - ../../prds/prd-fra-tomt-til-tak-2026-10-31/prd.md
   - ../../briefs/brief-G115-tre-stadier-2026-10-29/brief.md
@@ -52,7 +52,7 @@ Every surface after the start screen shares one frame (layout in `DESIGN.md` Lay
 | Stage 3 · Debrief | Last week of stage 2 | One scrolling page in sections (below) | FR-23–FR-29, FR-38 |
 | Decision log | Top bar, any time; debrief | Read-only list of every choice with time, Rådgiver's recommendation and any warning; download in the debrief | FR-29 |
 
-**Debrief section order:** (1) *Resultat* — final cost and week in bands; (2) *Budsjettbroen* — the climax; (3) *Det som betydde mest* — top three decisions by cost impact with MNOK and weeks, small ones labelled "liten betydning" (FR-38); (4) *Plan mot faktisk* — Gantt overlay and milestones (FR-23, FR-32); (5) *Risikoer* — prepared vs occurred (FR-25); (6) *Din vei mot AI-veien* (FR-26); (7) *AI-tillit* — recommendations, followed, right, right-but-not-followed (FR-28); (8) *Konklusjon* — 2–3 sentences and one "Neste gang" per missed learning goal (FR-27, §4.10); (9) *Beslutningslogg* with "Last ned" (FR-29). [ASSUMPTION: order puts the budget bridge right after the result so the climax comes early.]
+**Debrief section order:** (1) *Resultat* — final cost and week in bands; (2) *Budsjettbroen* — the climax; (3) *Det som betydde mest* — top three decisions by cost impact with MNOK and weeks, small ones (under 0.900 MNOK and under 3 weeks, S43) labelled "liten betydning"; estimate rows say what the plan hid, the others how the result changed (FR-38, R30); (4) *Plan mot faktisk* — Gantt overlay and milestones (FR-23, FR-32); (5) *Risikoer* — prepared vs occurred (FR-25); (6) *Din vei mot AI-veien* (FR-26); (7) *AI-tillit* — recommendations, followed, right, right-but-not-followed (FR-28); (8) *Konklusjon* — 2–3 sentences and one "Neste gang" per missed learning goal (FR-27, §4.10); (9) *Beslutningslogg* with "Last ned" (FR-29). [ASSUMPTION: order puts the budget bridge right after the result so the climax comes early.]
 
 Navigation rules: before approval the student can go back to any stage 1 step from the rail (FR-13); after approval stage 1 is read-only. Stage 2 has no back. Modals stack at most one deep; the only modal is the plan-approval confirmation and the term explanation popover. [ASSUMPTION]
 
@@ -178,12 +178,12 @@ Desktop only (NFR-7). Minimum 1280 × 720; below that width a notice says "Fra t
 
 1. **Start.** Sara opens the simulator, keeps difficulty *middels* and presses "Start ny gjennomspilling" (FR-1).
 2. **Site office (stage 0).** The client presents the order in short lines: "Vi trenger kontorer til 100 ansatte i Oslo sentrum. Ferdig innen uke 67, innenfor 171 MNOK." The 3D card shows the empty plot. Rådgiver greets her. The targets settle into the top bar, where they stay (FR-2).
-3. **Konsept.** She drags the floors slider to 8; the 3D building grows past the dashed limit line and the top floor turns red. The InfoBar reads "Over høydegrensen. 8 etasjer gir 32 m; tomta tillater maks 28 m." and "Neste: Tidsplan" is disabled with its reason. She moves to 7, picks steel; the plot cost and building cost update, and Rådgiver notes that steel and CLT differ by about 1 MNOK (FR-3–FR-6, R30).
+3. **Konsept.** She drags the floors slider to 8; the 3D building grows past the dashed limit line and the top floor turns red. The InfoBar reads "Over høydegrensen. 8 etasjer gir 32 m; tomta tillater maks 28 m." and "Neste: Tidsplan" is disabled with its reason. She moves to 7, picks steel; the plot cost and building cost update, and Rådgiver notes that steel and CLT differ by about 1 MNOK (0.981, under the 2 % closeness threshold S42) and that both work (FR-3–FR-6, R30).
 4. **Tidsplan.** She types her estimates. For the frame she enters 9 weeks; Rådgiver posts a *Varsel*: "Sammenlignbare prosjekter brukte rundt 14 uker på råbygget. Grunnlag: Statens hus Nordfjordeid (år fra kilden)." She raises it to 11, not all the way, and sets two milestones (FR-8, FR-15, FR-32).
 5. **Risiko og reserve.** She reduces the crane-wind risk, accepts contaminated ground and sets a 2-week, 4 MNOK reserve; risk exposure updates in the top bar (FR-10–FR-12).
 6. **Legg frem.** Back in the site office she sees the whole plan against the targets, *Litt over* on time, and Rådgiver's assessment. The dialog lists the open frame warning; she approves (FR-13).
 7. **Execution.** The building rises week by week in the 3D card while the forecast updates (FR-18, FR-34). The run stops: "Råbygget tar 4 uker lenger enn anslaget ditt." She weighs *Aksepter forsinkelsen*, *Overtid* and *Leie inn flere*; the crew stepper stops at site capacity. She chooses overtime and sees "Din vei" next to "AI-veien" (FR-19–FR-22, FR-33). Wind stops a crane lift; a strike delays steel and she weighs a dearer local supplier.
-8. **Climax — the budget bridge.** In the debrief, under *Klart over* on cost, the budget bridge splits the overrun into her plan, her optimistic schedule estimate, the events and her own decisions. The tallest red bar is the schedule estimate, not the strike (FR-24). *Det som betydde mest* confirms: the frame estimate weighed most; the structural choice mattered little (FR-38).
+8. **Climax — the budget bridge.** In the debrief, under *Klart over* on cost, the budget bridge splits the overrun into her plan, her optimistic schedule estimate, the events and her own decisions. The tallest red bar is the schedule estimate, not the strike (FR-24). *Det som betydde mest* confirms it: the top row reads "Planen skjulte … uker" for her frame estimate, and the structural choice is labelled "liten betydning" (FR-38, R30).
 9. **Resolution.** The conclusion names the goals she missed, with one "Neste gang" each; *AI-tillit* shows she ignored two right recommendations. She downloads her decision log (FR-27–FR-29).
 
 Failure: no key is configured. Sara's free-text question "Hvorfor tar råbygg så lang tid?" gets the nearest prepared answer, marked "Forberedt svar"; nothing looks broken.
