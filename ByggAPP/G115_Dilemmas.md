@@ -6,7 +6,7 @@ The choices the AI (Claude Code) put to the group, with the group's reply word f
 
 1. **The merge went too far.** Prompt: Trond said the merge had made a mess of the repo; the AI found that AI_BYGGplant, its agents and the earlier plans had been archived. Move them back on a branch, revert the merge, or reset main?
    Reply: "Vi ønsker samme struktut som det var tidligere før vi forsøkte å flette sammen. Ideen er å gjøre om oppgaven til det oppdaterte innholdet, hvor de gamle ideene strykes. Likevell har de gamle ideene mange gode verdier vi skal bruke." and "Gjør som anbefalt. I værste fall kan vi vel trekke tilbake de siste endringene."
-   Result: moved back on a branch with a pull request. AI_BYGGplant and its agents are in place again, the earlier plans sit next to the new ones, `02. Arkiv/` is gone and README is back in `01. Admin/`. `CLAUDE.md` stays at the root so Claude Code loads it.
+   Result: moved back on a branch with a pull request. AI_BYGGplant and its agents are in place again, the earlier plans sit next to the new ones, and `02. Arkiv/` is gone. README and `CLAUDE.md` stay at the root, so GitHub shows the README and Claude Code loads the instructions.
 
 ## Fra tomt til tak – 2026-10-29 til 2026-11-05
 
