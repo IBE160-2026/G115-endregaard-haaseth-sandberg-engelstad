@@ -13,6 +13,9 @@ The choices the AI (Claude Code) put to the group, with the group's reply word f
 3. **Answering Bård's reflection questions.** Prompt: Bård asked (§7) how the group decided what the AI may phrase freely, and what in FR-32–37 came from the group and what from the AI. The AI proposed draft answers built on the logs.
    Reply: "yes. save as draft. bruk også loggene fra tidligere forslag, for det står det mye om hvem som har gort hva. Sett opp en reminder om at alle skal mate inn refleksjonsnotatet før innlevering og at input fra dette blir lagt til der det skal."
    Result: `refleksjon-prd.md` saved as a draft with a who-did-what table from all logs, a checklist per member, and a reminder in `CLAUDE.md` that routes each member's input to the right file.
+4. **What is technology.md for?** Prompt: Bård added `architecture/technology.md` (Pytagoras Forlag's website stack) on 12 Nov; the group was unsure whether it is a template, an example of principles, or a required stack. The AI drafted a short question to Bård and Istvan.
+   Reply: "vi er usikker på hva vi skal gjøre med technology.md. Var dette ment som et eksempel eller som krav til å implmentere." and "sendt. Push GIT"
+   Result: the question (template, principles such as mock answers without a key, or required stack?) is sent. The stack is unchanged until they answer.
 
 ## Repo structure restored – 2026-11-18
 
