@@ -17,7 +17,7 @@ sources:
   - ../../ux-designs/ux-fra-tomt-til-tak-2026-10-31/DESIGN.md
   - ../../../tilbakemelding-product-brief.md
   - ../../../../ByggAPP
-  - ../../../../02. Arkiv/AI_BYGGplant/server
+  - ../../../../AI_BYGGplant/server
 companions: []
 ---
 
@@ -49,7 +49,7 @@ graph TD
   server --> claude[Claude API]
 ```
 
-Arrows are the only allowed imports. `engine` imports nothing outside itself. `server` imports nothing from `src`. No code imports from `02. Arkiv`.
+Arrows are the only allowed imports. `engine` imports nothing outside itself. `server` imports nothing from `src`. No code imports from `AI_BYGGplant/`.
 
 ## Invariants & Rules
 

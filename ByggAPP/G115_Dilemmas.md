@@ -2,6 +2,12 @@
 
 The choices the AI (Claude Code) put to the group, with the group's reply word for word, one section per simulator version (newest first). Each entry has at most four lines: the prompt, the reply, and what came of it.
 
+## Repo structure restored – 2026-11-18
+
+1. **The merge went too far.** Prompt: Trond said the merge had made a mess of the repo; the AI found that AI_BYGGplant, its agents and the earlier plans had been archived. Move them back on a branch, revert the merge, or reset main?
+   Reply: "Vi ønsker samme struktut som det var tidligere før vi forsøkte å flette sammen. Ideen er å gjøre om oppgaven til det oppdaterte innholdet, hvor de gamle ideene strykes. Likevell har de gamle ideene mange gode verdier vi skal bruke." and "Gjør som anbefalt. I værste fall kan vi vel trekke tilbake de siste endringene."
+   Result: moved back on a branch with a pull request. AI_BYGGplant and its agents are in place again, the earlier plans sit next to the new ones, `02. Arkiv/` is gone and README is back in `01. Admin/`. `CLAUDE.md` stays at the root so Claude Code loads it.
+
 ## Fra tomt til tak – 2026-10-29 til 2026-11-05
 
 The planning of the new project, on the branch `forslag/tre-stadier`. The AI's prompt, the group's reply word for word, and what came of it. Full reasoning is in the `.memlog.md` of each planning folder in `01. Admin/planning-artifacts/`.

@@ -79,7 +79,7 @@ Together these cover the three areas the assignment names (scheduling, resources
 
 **Secondary: the instructor and the examiner.** They must be able to run the simulator from the README without keys or accounts, and to follow the trail from plan to code.
 
-**The G115 group.** This brief is the group's chosen direction (2026-11-05). It replaces the earlier brief, which is kept in `02. Arkiv/`.
+**The G115 group.** This brief is the group's chosen direction (2026-11-05). It replaces the earlier brief, which is kept in `briefs/brief-G115-2026-10-29/` as a source of ideas.
 
 ## What Makes This Different
 

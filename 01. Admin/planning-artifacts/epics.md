@@ -503,7 +503,7 @@ So that a choice can never shift a later draw.
 
 **Given** the spine's arrows
 **When** the import scan runs
-**Then** it fails on a banned direction, on `server` importing from `src`, and on any import from `02. Arkiv`
+**Then** it fails on a banned direction, on `server` importing from `src`, and on any import from `AI_BYGGplant/`
 
 ### Story 1.11: Worked examples as tests
 
@@ -1031,7 +1031,7 @@ So that the language model can answer without the key reaching the browser.
 **Given** `ByggAPP/server`
 **When** the package is created
 **Then** it has its own `package.json` with TypeScript ~5.9.3 and `@anthropic-ai/sdk`, and `contract.ts` holds the contract from AD-13
-**And** kept code from `02. Arkiv/AI_BYGGplant/server` is copied and adapted, never imported
+**And** kept code from `AI_BYGGplant/server` is copied and adapted, never imported
 
 **Given** no `ANTHROPIC_API_KEY` or no `ADVISER_MODEL`
 **When** `GET /api/adviser/status` and `POST /api/adviser` are called
