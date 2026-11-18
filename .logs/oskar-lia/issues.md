@@ -25,3 +25,5 @@
 - [ ] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — svar på refleksjonsspørsmålene i §7 i Bårds PRD-tilbakemelding — Trond har skrevet utkast i `refleksjon-prd.md`; Oskar må legge inn sitt innspill og krysse av
 - [x] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — gruppen tar stilling til de to R30-forslagene i epics historie 1.5 (effekt av estimat, og 0,5 % i stedet for 2 % for «liten» i debriefen); rett da PRD-ordlistens merknad om at 2 % gjelder begge steder (løst 2026-11-18: Trond gjorde historie 1.5 og rettet PRD-merknaden, `e0aeac6`)
 - [ ] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — PR #4 (gamle planer til arkivet) må godkjennes og flettes
+- [ ] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — PR #5 (én prosjektmappe `FraTomtTilTak/`) godkjennes og flettes etter PR #4
+- [ ] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — Elisabeth endrer Root Directory i Vercel fra `ByggAPP` til `FraTomtTilTak/app` når PR #5 er flettet
