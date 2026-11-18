@@ -10,6 +10,9 @@ The choices the AI (Claude Code) put to the group, with the group's reply word f
 2. **How to fix R30.** Prompt: R30 ranked estimates near zero and called almost every decision small. The AI proposed measuring estimates by what they hid from the plan, with their own wording, and "small" as under 0.900 MNOK (three weeks of site overhead) and under 3 weeks, instead of 0.5 % of target cost.
    Reply: "implement both fixes"
    Result: written into simulation rules revision 4 with examples (i), (j), (k), S41–S43, the PRD, EXPERIENCE.md and epics story 1.5. Side effect accepted: CLT vs steel at 7 floors (0.981) is "both work" in stage 1 but not "small" in the debrief.
+3. **Answering Bård's reflection questions.** Prompt: Bård asked (§7) how the group decided what the AI may phrase freely, and what in FR-32–37 came from the group and what from the AI. The AI proposed draft answers built on the logs.
+   Reply: "yes. save as draft. bruk også loggene fra tidligere forslag, for det står det mye om hvem som har gort hva. Sett opp en reminder om at alle skal mate inn refleksjonsnotatet før innlevering og at input fra dette blir lagt til der det skal."
+   Result: `refleksjon-prd.md` saved as a draft with a who-did-what table from all logs, a checklist per member, and a reminder in `CLAUDE.md` that routes each member's input to the right file.
 
 ## Repo structure restored – 2026-11-18
 

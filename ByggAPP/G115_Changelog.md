@@ -11,6 +11,7 @@ Worked examples (i) R15, (j) R29 and (k) R30 are added, re-based to the 171 MNOK
 
 PR #3 answers the instructor's PRD feedback (12 Nov): FR-17 has a decided provider and testable consequences, FR-32 to FR-36 and NFR-10 have consequences, every requirement is must/should/could with a vertical slice and a cut order, the glossary has Norwegian display names, and UJ-2, SM-5 and SM-6 are added.
 The group confirmed the priorities and cut order, R31–R34 (milestones, at most 40 workers, opportunities, visible forecast), the FR-19 two-event edge case and the SM-5 bar of 16 of 20.
+Draft answers to Bård's two reflection questions are in `refleksjon-prd.md`; every member adds input before submission (reminder in `CLAUDE.md`).
 
 ## Repo structure restored – 2026-11-18
 
