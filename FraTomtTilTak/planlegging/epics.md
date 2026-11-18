@@ -7,7 +7,7 @@ inputDocuments:
   - architecture/architecture-fra-tomt-til-tak-2026-11-05/ARCHITECTURE-SPINE.md
   - ux-designs/ux-fra-tomt-til-tak-2026-10-31/EXPERIENCE.md
   - ux-designs/ux-fra-tomt-til-tak-2026-10-31/DESIGN.md
-  - ../../ByggAPP/G115_Changelog.md
+  - ../G115_Changelog.md
 ---
 
 # Fra tomt til tak - Epic Breakdown
@@ -85,7 +85,7 @@ NFR-10: The 3D view, free-text answers and a full playthrough have a written man
 
 ### Additional Requirements
 
-From the architecture spine (status final). There is no starter template: this is a brownfield rewrite inside `ByggAPP/`, so the first code story is a removal, not a scaffold.
+From the architecture spine (status final). There is no starter template: this is a brownfield rewrite inside `FraTomtTilTak/app/`, so the first code story is a removal, not a scaffold.
 
 - Layers and import direction are fixed: engine, adviser rules, content, AI layer, view (spine, Design Paradigm).
 - AD-1: the engine is pure; a test scans `src/engine` for banned APIs and imports.
@@ -100,14 +100,14 @@ From the architecture spine (status final). There is no starter template: this i
 - AD-10: adviser rules return records, not text; citations point only into `references.ts`.
 - AD-11: the language model only explains; `src/ai` has no access to `dispatch` or `reduce`.
 - AD-12: prepared answers are the floor; `ask.ts` is the one entry point; `guard` checks every number; no streaming to the browser.
-- AD-13: `ByggAPP/server` is its own package on TypeScript ~5.9.3 and the only reader of the key; `contract.ts` is the source of the contract.
+- AD-13: `FraTomtTilTak/app/server` is its own package on TypeScript ~5.9.3 and the only reader of the key; `contract.ts` is the source of the contract.
 - AD-14: 20 calls per playthrough, client abort at 8 s, server timeout 7 s with no retries, 32 KB body limit, in-memory rate limit, no question logging.
 - AD-15: 3D reads `SceneState` only; `three` loads lazily; missing WebGL gives a static illustration; `describeScene` gives the text alternative.
 - AD-16: student-facing text lives only in `src/content`; ids never show in the UI.
 - AD-17: vanilla TypeScript renderers, one mounted form per step, `mountApp(root, deps)`, delegated `data-action`.
 - AD-18: every worked example is a test; rule functions and test titles start with the rule id; a test fails if an R id has no test.
 - AD-19: three test layers: Vitest in Node, DOM flows under jsdom, a manual test plan.
-- AD-20: Vercel is the one deployment; local `npm install && npm run dev` needs nothing; GitHub Pages is dropped (`ByggAPP/.github`, `BASE_PATH`).
+- AD-20: Vercel is the one deployment; local `npm install && npm run dev` needs nothing; GitHub Pages is dropped (the workflow is archived in `02. Arkiv/ByggAPP-v0.x-specs/.github`; `BASE_PATH` goes in story 1.6).
 - Conventions: ids for parts, systems and responses; commands as plain objects with `type` and `at`; only `content/format.ts` formats numbers; decision log as UTF-8 CSV with BOM and `;`; no analytics, cookies or storage.
 - Deferred by the spine and picked up here: delivery order, when v0.5 is deleted, and root CI [ASSUMPTION in the spine].
 - Spine Open Questions 1–3 are closed by the Epic 1 rule-gap stories. Open Question 4 (model, cost, owner) is handled in the FR-17 stories.
@@ -182,7 +182,7 @@ Linter, formatter and CI sit in Epic 1 rather than Epic 6, so that all later pul
 
 Traceability only. No stories and no build work.
 
-**What existed.** `ByggAPP/` held *Regjeringskvartalet Light* v0.5: a walkable 3D site of the Government Quarter, with a fixed scenario run week by week, rule-based AI roles, meetings instead of dialogs, and a final report. It had 187 passing tests at the repo restructure.
+**What existed.** `FraTomtTilTak/app/` held *Regjeringskvartalet Light* v0.5: a walkable 3D site of the Government Quarter, with a fixed scenario run week by week, rule-based AI roles, meetings instead of dialogs, and a final report. It had 187 passing tests at the repo restructure.
 
 | Version | Date | What it added | Commit |
 |---|---|---|---|
@@ -192,9 +192,9 @@ Traceability only. No stories and no build work.
 | v0.4 | 2026-10-27 | Full-screen 3D makeover, glass HUD | `8286a81` |
 | v0.5 | 2026-10-27 | Walkable site, meetings, test rounds | `d4cdcc3` |
 | Pages workflow | 2026-10-27 | GitHub Pages workflow; Pages was never turned on | `71eeaa7` |
-| Repo structure | 2026-10-29 | Code moved into `ByggAPP/` | `c4913eb`, `ebeaac7`, `0aed2f6` |
+| Repo structure | 2026-10-29 | Code moved into `FraTomtTilTak/app/` | `c4913eb`, `ebeaac7`, `0aed2f6` |
 
-Commit hashes come from `.logs/trond-engelstad/` and `.logs/oskar-lia/`. Details per version are in [G115_Changelog.md](../../ByggAPP/G115_Changelog.md); the whole game is described in [G115_FinalPrompt.md](../../ByggAPP/G115_FinalPrompt.md).
+Commit hashes come from `.logs/trond-engelstad/` and `.logs/oskar-lia/`. Details per version are in [G115_Changelog.md](../G115_Changelog.md); the whole game is described in [G115_FinalPrompt.md](../G115_FinalPrompt.md).
 
 **What happens to it.** The spine's table "What happens to the v0.5 code" is the authority. Story 1.6 carries it out.
 
@@ -413,13 +413,13 @@ So that no one builds on it by accident and the app has one model of truth.
 **Then** it calls `mountApp(root, realDeps)` and shows only a placeholder title, with `?uke` and `?scene` gone
 
 **Given** the repo
-**When** `npm test` and `npm run build` run in `ByggAPP`
+**When** `npm test` and `npm run build` run in `FraTomtTilTak/app`
 **Then** both pass, and no file outside the parked list imports a removed module
 **And** the park list is one commented block in `tsconfig.json` and `vite.config.ts`
 
 **Given** AD-20
 **When** the deployment files are checked
-**Then** `ByggAPP/.github` and `BASE_PATH` are gone, and the package and page title read *Fra tomt til tak*
+**Then** `BASE_PATH` is gone (the old `.github` workflow already lies in `02. Arkiv/ByggAPP-v0.x-specs/`), and the package and page title read *Fra tomt til tak*
 
 ### Story 1.7: Linter and formatter
 
@@ -433,7 +433,7 @@ So that four people produce one style and reviews stay on the content.
 
 **Acceptance Criteria:**
 
-**Given** `ByggAPP`
+**Given** `FraTomtTilTak/app`
 **When** a developer runs `npm run lint` and `npm run format`
 **Then** lint reports rule breaches, format rewrites files, and both pass on the repo
 
@@ -453,10 +453,10 @@ So that a red branch is seen before review, since Vercel does not run tests.
 
 **Given** a pull request
 **When** it opens
-**Then** a root GitHub Action on Node 22 runs lint, tests and build for `ByggAPP`
+**Then** a root GitHub Action on Node 22 runs lint, tests and build for `FraTomtTilTak/app`
 **And** a failure shows on the pull request
 
-**Given** `ByggAPP/server` does not exist yet
+**Given** `FraTomtTilTak/app/server` does not exist yet
 **When** the workflow runs
 **Then** it skips that package without failing, and Story 3.7 turns it on
 
@@ -503,7 +503,7 @@ So that a choice can never shift a later draw.
 
 **Given** the spine's arrows
 **When** the import scan runs
-**Then** it fails on a banned direction, on `server` importing from `src`, and on any import from `AI_BYGGplant/`
+**Then** it fails on a banned direction, on `server` importing from `src`, and on any import from `02. Arkiv/AI_BYGGplant/`
 
 ### Story 1.11: Worked examples as tests
 
@@ -1028,10 +1028,10 @@ So that the language model can answer without the key reaching the browser.
 
 **Acceptance Criteria:**
 
-**Given** `ByggAPP/server`
+**Given** `FraTomtTilTak/app/server`
 **When** the package is created
 **Then** it has its own `package.json` with TypeScript ~5.9.3 and `@anthropic-ai/sdk`, and `contract.ts` holds the contract from AD-13
-**And** kept code from `AI_BYGGplant/server` is copied and adapted, never imported
+**And** kept code from `02. Arkiv/AI_BYGGplant/server` is copied and adapted, never imported
 
 **Given** no `ANTHROPIC_API_KEY` or no `ADVISER_MODEL`
 **When** `GET /api/adviser/status` and `POST /api/adviser` are called
@@ -1071,7 +1071,7 @@ So that production and local runs behave the same way.
 **When** the app is opened
 **Then** the game runs, status says `live: false`, and answers are prepared
 
-**Given** `ByggAPP/server/.env.example`
+**Given** `FraTomtTilTak/app/server/.env.example`
 **When** it is read
 **Then** it lists `ANTHROPIC_API_KEY` and `ADVISER_MODEL` with no values, and real env files are in `.gitignore`
 
@@ -1673,7 +1673,7 @@ So that each test round leaves a record.
 
 **Acceptance Criteria:**
 
-**Given** `ByggAPP/docs/manual-test-plan.md`
+**Given** `FraTomtTilTak/app/docs/manual-test-plan.md`
 **When** it is written
 **Then** it covers the 3D view, free-text answers and a full playthrough, each with steps, expected result and a result column
 

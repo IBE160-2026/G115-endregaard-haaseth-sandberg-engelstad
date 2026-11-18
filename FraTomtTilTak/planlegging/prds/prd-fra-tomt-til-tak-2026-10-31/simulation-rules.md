@@ -32,7 +32,7 @@ Sources:
 - **E1–E10**: event catalogue in `addendum.md` §4, with evidence in the reference research §C.
 - **TEK17**: DiBK's guidance pages for §§ 11-2, 11-3 and 11-4 (dibk.no, read 2026-10-31 and 2026-11-05).
 - **Fire rule**: `../../research/research-brannregel-2026-11-05/research.md`, the source check behind S18 and S19. Variant C in its §6.3 is the approved rule, without the optional BKL 2 step for steel.
-- **v0.5**: the group's earlier game (`ByggAPP/G115_FinalPrompt.md` §4), reused for work modes, crowding, site overhead per week, forecast and seeds.
+- **v0.5**: the group's earlier game (`FraTomtTilTak/G115_FinalPrompt.md` §4), reused for work modes, crowding, site overhead per week, forecast and seeds.
 
 Flags: **[SOURCED]** means the value comes directly from a source. **[ESTIMATE]** means the group or the research chose it, anchored on sources where possible. Every [ESTIMATE] is listed in §5 for the group's approval. **[ASSUMPTION]** marks a value proposed in this document that the group has not yet approved; **[partly sourced]** means the event itself is sourced but its size is estimated.
 
@@ -640,7 +640,7 @@ Difficulty: easy.
 
 ### Example (i): R15, seed 115 (the group number) on the reference plan
 
-Generator: mulberry32 from v0.5 (`ByggAPP/src/engine/game.ts`). The test compares to 4 decimals. The values were checked by running the generator on 2026-11-18.
+Generator: mulberry32 from v0.5 (`FraTomtTilTak/app/src/engine/game.ts`). The test compares to 4 decimals. The values were checked by running the generator on 2026-11-18.
 
 | Slots | Used for | Values | Result |
 |---|---|---|---|

@@ -18,47 +18,53 @@ Building projects run on average 32 % over schedule and 62 % over cost. Project 
 
 ## Status
 
-The group chose this direction after comparing three proposals. **The planning is done; the new app is not built yet.** `ByggAPP/` still contains the previous game (v0.5, *Regjeringskvartalet Light*), which is the starting point for the new app: the 3D world, Gantt view and icons are reused, while the engine is rewritten to follow the new simulation rules. The README will be updated as the stories are completed.
+The group chose this direction after comparing three proposals. **The planning is done; the new app is not built yet.** `FraTomtTilTak/app/` still contains the previous game (v0.5, *Regjeringskvartalet Light*), which is the starting point for the new app: the 3D world, Gantt view and icons are reused, while the engine is rewritten to follow the new simulation rules. The README will be updated as the stories are completed.
 
 ## Run locally
 
 Requires [Node.js](https://nodejs.org/) 22.12 or newer. No API keys or accounts are needed.
 
 ```bash
-cd ByggAPP
+cd FraTomtTilTak/app
 npm install
 npm run dev     # serves the app at http://localhost:5173
 npm test        # runs the tests
 npm run build   # type-checks and builds to dist/
 ```
 
-The simulation engine is in `ByggAPP/src/engine/` and has no UI code.
+The simulation engine is in `FraTomtTilTak/app/src/engine/` and has no UI code.
 
 ## Folder structure
 
-- `ByggAPP/` — the application: source code (`src/`), icons (`assets/`), build setup, the group's G115 files and the BMAD specs for each version (`.docs/`)
-- `AI_BYGGplant/` — the group's app where an AI plans a construction project in dialogue (v0.5). Its dialogue and server function are a source for the AI adviser (FR-17)
-- `01. Admin/` — assignment material and planning: the instructor's feedback and `planning-artifacts/`
-- `_bmad/` — the BMAD framework, with its Claude Code skills in `.claude/skills/` (also the AI_BYGGplant agents Ingrid, Jonas and Mats)
+Everything for *Fra tomt til tak* is in one folder:
+
+- `FraTomtTilTak/` — the project
+  - `app/` — the application: source code (`src/`), icons (`assets/`) and build setup. Vercel builds from here.
+  - `planlegging/` — the plans: brief, PRD, simulation rules, research, UX, architecture and `epics.md`
+  - `implementering/` — stories and sprint status, created as the work starts
+  - `G115_*.md` — the group's G115 files (changelog, dilemmas, final prompt, recommendations)
+- `01. Admin/` — course material: the instructor's feedback on the brief
+- `02. Arkiv/` — what *Fra tomt til tak* replaces, kept as a source of ideas: the earlier plans, the v0.x specs, and AI_BYGGplant with its agents (see its README)
+- `_bmad/` — the BMAD framework, with its Claude Code skills in `.claude/skills/`
 - `.logs/` — session logs per group member
 
 ## Planning documents
 
-All in `01. Admin/planning-artifacts/`:
+All in `FraTomtTilTak/planlegging/`:
 
-- [Product brief](01.%20Admin/planning-artifacts/briefs/brief-G115-tre-stadier-2026-10-29/brief.md)
-- [PRD](01.%20Admin/planning-artifacts/prds/prd-fra-tomt-til-tak-2026-10-31/prd.md), with [simulation rules and worked examples](01.%20Admin/planning-artifacts/prds/prd-fra-tomt-til-tak-2026-10-31/simulation-rules.md)
-- [Research: figures](01.%20Admin/planning-artifacts/research/research-fra-tomt-til-tak-2026-10-31/research.md) and [research: reference projects](01.%20Admin/planning-artifacts/research/research-referanseprosjekter-2026-10-31/research.md)
-- [UX: EXPERIENCE.md](01.%20Admin/planning-artifacts/ux-designs/ux-fra-tomt-til-tak-2026-10-31/EXPERIENCE.md) and [DESIGN.md](01.%20Admin/planning-artifacts/ux-designs/ux-fra-tomt-til-tak-2026-10-31/DESIGN.md)
-- [Architecture](01.%20Admin/planning-artifacts/architecture/architecture-fra-tomt-til-tak-2026-11-05/ARCHITECTURE-SPINE.md)
-- [Clickable demo of the proposal](01.%20Admin/planning-artifacts/ux-designs/ux-fra-tomt-til-tak-2026-10-31/mockups/demo-fra-tomt-til-tak.html): download and open in a browser
+- [Product brief](FraTomtTilTak/planlegging/briefs/brief-G115-tre-stadier-2026-10-29/brief.md)
+- [PRD](FraTomtTilTak/planlegging/prds/prd-fra-tomt-til-tak-2026-10-31/prd.md), with [simulation rules and worked examples](FraTomtTilTak/planlegging/prds/prd-fra-tomt-til-tak-2026-10-31/simulation-rules.md)
+- [Research: figures](FraTomtTilTak/planlegging/research/research-fra-tomt-til-tak-2026-10-31/research.md) and [research: reference projects](FraTomtTilTak/planlegging/research/research-referanseprosjekter-2026-10-31/research.md)
+- [UX: EXPERIENCE.md](FraTomtTilTak/planlegging/ux-designs/ux-fra-tomt-til-tak-2026-10-31/EXPERIENCE.md) and [DESIGN.md](FraTomtTilTak/planlegging/ux-designs/ux-fra-tomt-til-tak-2026-10-31/DESIGN.md)
+- [Architecture](FraTomtTilTak/planlegging/architecture/architecture-fra-tomt-til-tak-2026-11-05/ARCHITECTURE-SPINE.md)
+- [Clickable demo of the proposal](FraTomtTilTak/planlegging/ux-designs/ux-fra-tomt-til-tak-2026-10-31/mockups/demo-fra-tomt-til-tak.html): download and open in a browser
 
 ### Earlier ideas
 
-*Fra tomt til tak* replaces the earlier plans, but they hold ideas and data the group builds on. They stay next to the new documents:
+*Fra tomt til tak* replaces the earlier plans, but they hold ideas and data the group builds on. They are kept in `02. Arkiv/`, apart from the current documents so that nobody works on the wrong one:
 
-- [Earlier product brief](01.%20Admin/planning-artifacts/briefs/brief-G115-2026-10-29/brief.md) (Regjeringskvartalet Light)
-- [PRD for ByggAPP v0.5](01.%20Admin/planning-artifacts/prds/prd-G115-endregaard-haaseth-sandberg-2026-11-03/prd.md) and [PRD for AI_BYGGplant](01.%20Admin/planning-artifacts/prds/prd-AI_BYGGplant-2026-11-05/prd.md)
+- [Earlier product brief](02.%20Arkiv/planning-artifacts/briefs/brief-G115-2026-10-29/brief.md) (Regjeringskvartalet Light)
+- [PRD for ByggAPP v0.5](02.%20Arkiv/planning-artifacts/prds/prd-G115-endregaard-haaseth-sandberg-2026-11-03/prd.md) and [PRD for AI_BYGGplant](02.%20Arkiv/planning-artifacts/prds/prd-AI_BYGGplant-2026-11-05/prd.md)
 - The v0.5 game itself is kept as the git tag `v0.5`
 
 Development follows the [BMAD framework](https://bmadcode.com/).

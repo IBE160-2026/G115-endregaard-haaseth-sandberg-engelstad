@@ -2,6 +2,14 @@
 
 Major iterations of the *Regjeringskvartalet Light* project management simulator. Each entry has a summary of at most four lines.
 
+## One project folder – 2026-11-18
+
+The repo is reorganised around the chosen project. `FraTomtTilTak/` holds the app (`app/`, formerly `ByggAPP/`), the plans (`planlegging/`, formerly `01. Admin/planning-artifacts/`), `implementering/` for stories, and these G115 files. AI_BYGGplant, its agents and the ByggAPP v0.x specs moved to `02. Arkiv/`. BMAD and all current documents point to the new paths.
+
+## Earlier plans archived – 2026-11-18
+
+The earlier brief and the PRDs for ByggAPP v0.5 and AI_BYGGplant moved to `02. Arkiv/planning-artifacts/`, so they cannot be mistaken for the current documents. README links to them, and `CLAUDE.md` says the archive is history.
+
 ## R30 fixed, story 1.5 – 2026-11-18
 
 Simulation rules revision 4. Estimates in the debrief ranking are measured by what they hid from the plan (0.300 × weeks), so they sum to bridge step 2 and get their own wording ("Planen skjulte …"). "Small" is under 0.900 MNOK and under 3 weeks (S43); the adviser keeps 2 % (S42) and the bands 5 % (S41).

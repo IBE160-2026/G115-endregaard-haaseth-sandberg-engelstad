@@ -53,7 +53,7 @@ The simulator answers a question many people ask when they read the news: why do
   - **Persona + context:** the IBE160 examiner, who has the repository and the assignment text, but no API key and no account with the group's services.
   - **Entry state:** a fresh clone and Node.js installed.
   - **Path:**
-    1. Follows the README: `npm install` and `npm run dev` in `ByggAPP`, then `npm test`. Every test passes without a key or network.
+    1. Follows the README: `npm install` and `npm run dev` in `FraTomtTilTak/app`, then `npm test`. Every test passes without a key or network.
     2. Plays through all three stages. Suggestions and warnings work, suggested questions get prepared answers, and a typed question gets the nearest prepared answer, marked as prepared.
     3. Opens §13 and follows an assignment item to its FRs, and an FR to its story and code.
   - **Climax:** a complete playthrough with no key, no error message and no waiting on the network.
