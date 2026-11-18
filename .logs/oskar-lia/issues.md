@@ -21,5 +21,5 @@
 - [x] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — følg opp Bårds PRD-tilbakemelding: testbare konsekvenser for FR-17, MVP-kuttlinje (must/should/could), definer begreper som «external risk» (løst 2026-11-18: PR #3, venter på gruppen)
 - [ ] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — spør Bård om `technology.md` (om Pytagoras-nettsiden) er ment som mal for oss
 - [ ] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — gruppen bekrefter i PR #3: prioriteringene og kuttrekkefølgen (§8.2), R31–R34 og SM-5-terskelen; deretter flettes PR #3
-- [ ] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — avgjør om README skal tilbake til rot (5. nov ble den flyttet dit så GitHub og sensor finner den; PR #2 flytter den til `01. Admin/`)
+- [x] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — avgjør om README skal tilbake til rot (5. nov ble den flyttet dit så GitHub og sensor finner den; PR #2 flytter den til `01. Admin/`) (løst 2026-11-18: README ligger på rot, PR #2)
 - [ ] 2026-11-18 [tre-stadier-forslag](999-2026-10-29-21-00-49-tre-stadier-forslag.md) — svar på refleksjonsspørsmålene i §7 i Bårds PRD-tilbakemelding
