@@ -2,6 +2,10 @@
 
 Major iterations of the *Regjeringskvartalet Light* project management simulator. Each entry has a summary of at most four lines.
 
+## Repo structure restored – 2026-11-18
+
+The merge on 2026-11-10 archived more than intended. AI_BYGGplant and its three agents are back at their earlier paths, the earlier brief and PRDs sit next to the new ones in `01. Admin/planning-artifacts/`. `README.md` and `CLAUDE.md` stay at the root, where GitHub shows the README and Claude Code loads the instructions. `02. Arkiv/` is removed; v0.5 is kept as the git tag `v0.5`.
+
 ## Fra tomt til tak (planning) – 2026-11-05
 
 The group chose a new direction: a 20-minute simulator in three stages (plan, execute, debrief) for an office building for 100 employees in central Oslo. New brief, two research reports, PRD (FR-1 to FR-38) with simulation rules R1–R30 and worked examples, UX (DESIGN.md, EXPERIENCE.md), architecture (AD-1 to AD-20) and a clickable demo.

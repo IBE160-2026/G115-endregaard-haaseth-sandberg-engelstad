@@ -37,9 +37,9 @@ The simulation engine is in `ByggAPP/src/engine/` and has no UI code.
 ## Folder structure
 
 - `ByggAPP/` — the application: source code (`src/`), icons (`assets/`), build setup, the group's G115 files and the BMAD specs for each version (`.docs/`)
+- `AI_BYGGplant/` — the group's app where an AI plans a construction project in dialogue (v0.5). Its dialogue and server function are a source for the AI adviser (FR-17)
 - `01. Admin/` — assignment material and planning: the instructor's feedback and `planning-artifacts/`
-- `02. Arkiv/` — what the group decided not to take forward, kept as history (see its README)
-- `_bmad/` — the BMAD framework, with its Claude Code skills in `.claude/skills/`
+- `_bmad/` — the BMAD framework, with its Claude Code skills in `.claude/skills/` (also the AI_BYGGplant agents Ingrid, Jonas and Mats)
 - `.logs/` — session logs per group member
 
 ## Planning documents
@@ -52,6 +52,14 @@ All in `01. Admin/planning-artifacts/`:
 - [UX: EXPERIENCE.md](01.%20Admin/planning-artifacts/ux-designs/ux-fra-tomt-til-tak-2026-10-31/EXPERIENCE.md) and [DESIGN.md](01.%20Admin/planning-artifacts/ux-designs/ux-fra-tomt-til-tak-2026-10-31/DESIGN.md)
 - [Architecture](01.%20Admin/planning-artifacts/architecture/architecture-fra-tomt-til-tak-2026-11-05/ARCHITECTURE-SPINE.md)
 - [Clickable demo of the proposal](01.%20Admin/planning-artifacts/ux-designs/ux-fra-tomt-til-tak-2026-10-31/mockups/demo-fra-tomt-til-tak.html): download and open in a browser
+
+### Earlier ideas
+
+*Fra tomt til tak* replaces the earlier plans, but they hold ideas and data the group builds on. They stay next to the new documents:
+
+- [Earlier product brief](01.%20Admin/planning-artifacts/briefs/brief-G115-2026-10-29/brief.md) (Regjeringskvartalet Light)
+- [PRD for ByggAPP v0.5](01.%20Admin/planning-artifacts/prds/prd-G115-endregaard-haaseth-sandberg-2026-11-03/prd.md) and [PRD for AI_BYGGplant](01.%20Admin/planning-artifacts/prds/prd-AI_BYGGplant-2026-11-05/prd.md)
+- The v0.5 game itself is kept as the git tag `v0.5`
 
 Development follows the [BMAD framework](https://bmadcode.com/).
 
