@@ -174,7 +174,7 @@ Desktop only (NFR-7). Minimum 1280 × 720; below that width a notice says "Fra t
 
 ### Flow 1 — UJ-1. Sara finds out why building projects run late
 
-*Sara, 22, economics and management student, little construction experience, desktop browser, no account. All figures below are placeholders until the building-block model sets them (PRD open questions 1–2). [ASSUMPTION]*
+*Sara, 22, economics and management student, little construction experience, desktop browser, no account. All figures below are placeholders until they are updated to the simulation rules (targets: R14, example (a)). [ASSUMPTION]*
 
 1. **Start.** Sara opens the simulator, keeps difficulty *middels* and presses "Start ny gjennomspilling" (FR-1).
 2. **Site office (stage 0).** The client presents the order in short lines: "Vi trenger kontorer til 100 ansatte i Oslo sentrum. Ferdig innen uke 67, innenfor 171 MNOK." The 3D card shows the empty plot. Rådgiver greets her. The targets settle into the top bar, where they stay (FR-2).
