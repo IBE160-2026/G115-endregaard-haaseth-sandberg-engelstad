@@ -17,6 +17,9 @@ Etter at PR #5 samlet prosjektet i `FraTomtTilTak/`, skulle Vercel bygge fra den
 - Produksjonsbyggingen etter pushen ble **Ready** med ny rotmappe. De to byggene rett før (etter PR #5) feilet, fordi Vercel da lette i `ByggAPP/`.
 - `origin` endret til `https://github.com/IBE160-2026/G115-endregaard-haaseth-sandberg-engelstad.git` (repoet er flyttet på GitHub). Kjørt av brukeren med `!`; første forsøk fikk et `!` på slutten av URL-en og ble rettet. `git fetch` virker.
 - Lokal mappe lik GitHub: `git clean -fdx` (kjørt av brukeren) fjernet `AI_BYGGplant/`, `ByggAPP/` og `node_modules/` (kun `node_modules`/`dist`, ingen egne filer). `main` i synk med `origin/main`.
+- Loggen pushet (`0299574`).
+- Vercel ryddet etter brukerens eksplisitte bekreftelse: 44 gamle utrullinger slettet med `vercel rm` (AI_BYGGplant 3.–9. nov., ByggAPP 10.–18. nov., 9 feilede bygg og forhåndsvisninger fra grener). Igjen er kun `dpl_AmmREmh3zzPQstnM7Kzy1Y4qAnk1` (produksjon, commit `0299574`, bygget fra `FraTomtTilTak/app`). Prosjektet har ingen miljøvariabler og kun standarddomenet `g115-endregaard-haaseth-sandberg-en.vercel.app` (svarer 200). Det finnes bare ett Vercel-prosjekt; ingen egne prosjekter for ByggAPP eller AI_BYGGplant. Ingen endring i GitHub-repoet; GitHubs «Deployments»-oppføringer for gamle commits blir stående med døde lenker.
+- Merk: den publiserte appen viser fortsatt v0.5-spillet, fordi `FraTomtTilTak/app` ennå ikke er erstattet (story 1.6).
 
 ### Åpne punkter
 - Legge inn eget refleksjonsinnspill og krysse av «Input added» i `FraTomtTilTak/planlegging/prds/prd-fra-tomt-til-tak-2026-10-31/refleksjon-prd.md` (Bårds PRD-tilbakemelding §7), og bekrefte/rette raden om Vercel og Claude-nøkkel i «Who did what».
