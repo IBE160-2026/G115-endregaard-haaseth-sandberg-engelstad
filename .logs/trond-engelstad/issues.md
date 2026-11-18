@@ -34,5 +34,6 @@
 - [ ] 2026-11-09 [ai-byggplant-v0-5-only-what-is-asked](990-2026-11-09-20-26-47-ai-byggplant-v0-5-only-what-is-asked.md) — Rewrite the four demo dialogs (fixtures/) to clarify size, roof and pitch, and style before drawing
 - [ ] 2026-11-09 [ai-byggplant-v0-5-only-what-is-asked](990-2026-11-09-20-26-47-ai-byggplant-v0-5-only-what-is-asked.md) — Test with a real key that Claude asks the basic questions and never draws an unrequested building
 - [x] 2026-11-18 [prd-tilbakemelding-bard](988-2026-11-18-20-07-14-prd-tilbakemelding-bard.md) — Confirm or change the two R30 proposals in epics story 1.5 (løst 2026-11-18: simulation rules revision 4)
-- [ ] 2026-11-18 [prd-tilbakemelding-bard](988-2026-11-18-20-07-14-prd-tilbakemelding-bard.md) — The group answers Bård's two reflection questions (§7 in tilbakemelding-prd.md)
+- [x] 2026-11-18 [prd-tilbakemelding-bard](988-2026-11-18-20-07-14-prd-tilbakemelding-bard.md) — The group answers Bård's two reflection questions (§7 in tilbakemelding-prd.md) (draft written 2026-11-18 in refleksjon-prd.md; follow-up below)
 - [ ] 2026-11-18 [prd-tilbakemelding-bard](988-2026-11-18-20-07-14-prd-tilbakemelding-bard.md) — Write R31–R34 into simulation-rules.md (epics stories 1.1–1.4) to close the rest of spine Open Question 2
+- [ ] 2026-11-18 [prd-tilbakemelding-bard](988-2026-11-18-20-07-14-prd-tilbakemelding-bard.md) — Before submission: all four members add their input to `refleksjon-prd.md` (Bård §7), the answers are rewritten in the group's words and set to final. Reminder in CLAUDE.md

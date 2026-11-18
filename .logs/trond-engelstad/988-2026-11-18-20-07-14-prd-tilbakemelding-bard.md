@@ -39,3 +39,23 @@ Fix the two R30 problems in epics story 1.5. Trond asked for a proposal, then: "
 ### Åpne punkter
 - Spine Open Question 2 stays half open: R31–R34 (confirmed) must still be written into `simulation-rules.md` (stories 1.1–1.4). Example (i) already refers to R33's slots 15–16.
 - Story 1.5's own tables in `epics.md` still show the old 169 MNOK figures; `simulation-rules.md` is the authority.
+
+## 2026-11-18 kl. 20:41 — Trond Engelstad
+
+### Oppgave
+Draft answers to Bård's two reflection questions (§7), saved as a draft, using the logs from the earlier proposals to show who did what. Set up a reminder that everyone adds their reflection input before submission, and that the input is put where it belongs.
+
+### Plan
+- Read all `.logs/` folders and the `.memlog.md` files in `01. Admin/planning-artifacts/` for who decided what.
+- Write `refleksjon-prd.md` next to the feedback, with `status: draft`.
+- Reminder in `CLAUDE.md`, so every member's Claude Code session reminds them and routes their input.
+
+### Resultat
+- `01. Admin/planning-artifacts/prds/prd-fra-tomt-til-tak-2026-10-31/refleksjon-prd.md`: checklist per member, a table of where input ends up, a who-did-what table (Trond: ByggAPP v0.1–v0.5, earlier brief, AI_BYGGplant, repo; Oskar: three stages and all of "Fra tomt til tak", 23 + 27 + 7 decisions in the memlogs; Hedda: ByggAPP PRD with P-1 to P-22; Elisabeth: Vercel and likely key owner), two draft answers and an empty input section per member.
+- Corrected from the chat draft: the fire-rule challenge was Oskar's, not Trond's. "The group play-tested" was softened to "three test rounds", because the logs do not say who tested.
+- `CLAUDE.md`: new section "Reminder: reflection note before submission".
+- `G115_Dilemmas.md` entry 3 and a changelog line.
+
+### Åpne punkter
+- The submission date is not in the repo, so the reminder fires at every session start rather than at a date.
+- Reflection input from all four members before submission (in `issues.md`).
