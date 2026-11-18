@@ -7,7 +7,7 @@ sources:
   - ../../prds/prd-fra-tomt-til-tak-2026-10-31/prd.md
   - ../../briefs/brief-G115-tre-stadier-2026-10-29/brief.md
   - ../../briefs/brief-G115-tre-stadier-2026-10-29/addendum.md
-  - ../../../../ByggAPP/G115_FinalPrompt.md
+  - ../../../G115_FinalPrompt.md
   - .working/direction-verktoy.html
 name: Fra tomt til tak
 description: Desktop web simulator where a newcomer plans and runs an office-building project. Visual direction "Prosjektverktøy" - light, calm Fluent-style project software with a framed 3D view and a named adviser.

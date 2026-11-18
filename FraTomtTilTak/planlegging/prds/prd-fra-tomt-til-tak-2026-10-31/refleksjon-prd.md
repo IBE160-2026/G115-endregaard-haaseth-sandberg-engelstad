@@ -8,7 +8,7 @@ answers: tilbakemelding-prd.md §7 (2026-11-12)
 
 # Reflection on the PRD: answers to Bård's two questions
 
-> **DRAFT — not the group's answer yet.** Claude Code wrote this draft on 2026-11-18 from the group's logs (`.logs/`, the `.memlog.md` files in `01. Admin/planning-artifacts/` and `ByggAPP/G115_Dilemmas.md`). Bård asked the group directly, so **every member adds their own input below before submission**, and the answers are rewritten in the group's own words. Then `status` becomes `final`.
+> **DRAFT — not the group's answer yet.** Claude Code wrote this draft on 2026-11-18 from the group's logs (`.logs/`, the `.memlog.md` files in `FraTomtTilTak/planlegging/` and `FraTomtTilTak/G115_Dilemmas.md`). Bård asked the group directly, so **every member adds their own input below before submission**, and the answers are rewritten in the group's own words. Then `status` becomes `final`.
 
 ## Before submission: everyone adds their input
 
@@ -26,7 +26,7 @@ answers: tilbakemelding-prd.md §7 (2026-11-12)
 | Input about … | Goes into |
 |---|---|
 | How we used or corrected the AI (answer 1 or 2) | The draft answers below, in the group's words |
-| A choice the AI put to us, and our reply | `ByggAPP/G115_Dilemmas.md`, prompt + reply word for word + result |
+| A choice the AI put to us, and our reply | `FraTomtTilTak/G115_Dilemmas.md`, prompt + reply word for word + result |
 | A decision that changes a requirement | `prd.md` (and its `.memlog.md`), via a pull request |
 | Something still to do | The member's own `.logs/<name>/issues.md` |
 
