@@ -18,7 +18,7 @@ Building projects run on average 32 % over schedule and 62 % over cost. Project 
 
 ## Status
 
-The group chose this direction after comparing three proposals. **The planning is done; the new app is not built yet.** `FraTomtTilTak/app/` still contains the previous game (v0.5, *Regjeringskvartalet Light*), which is the starting point for the new app: the 3D world, Gantt view and icons are reused, while the engine is rewritten to follow the new simulation rules. The README will be updated as the stories are completed.
+The group chose this direction after comparing three proposals. **The planning is done; the new app is not built yet.** `FraTomtTilTak/app/` still contains the previous game (v0.5, *Regjeringskvartalet Light*), which is the starting point for the new app: the 3D world, Gantt view and icons are reused, while the engine is rewritten to follow the new simulation rules. Until the first version is ready, the app shows only a placeholder page for *Fra tomt til tak*; the v0.5 code is no longer started and is removed in story 1.6. The published app is at <https://g115-endregaard-haaseth-sandberg-en.vercel.app>. The README will be updated as the stories are completed.
 
 ## Run locally
 
