@@ -2,7 +2,7 @@
 title: "Reflection: answers to Bård's PRD feedback, §7"
 status: draft
 created: 2026-11-18
-updated: 2026-11-18
+updated: 2026-11-22
 answers: tilbakemelding-prd.md §7 (2026-11-12)
 ---
 
@@ -14,7 +14,7 @@ answers: tilbakemelding-prd.md §7 (2026-11-12)
 
 | Member | Input added (section "Input from the group") | Read and approved the final answers |
 |---|---|---|
-| Trond Engelstad | [ ] | [ ] |
+| Trond Engelstad | [x] | [ ] |
 | Oskar Lia | [ ] | [ ] |
 | Hedda Endregaard | [ ] | [ ] |
 | Elisabeth Sandberg | [ ] | [ ] |
@@ -38,7 +38,7 @@ Facts for both answers. Check that your own row is right.
 
 | Who | What the logs show | Source |
 |---|---|---|
-| **Trond** | Built ByggAPP v0.1–v0.5 with Claude Code (game, 3D site, AI roles), including three test rounds with comments. Made the two earlier ideas: the brief of 29 Oct and AI_BYGGplant v0.1–v0.5. Restructured the repo (29 Oct and 18 Nov). Approved PR #2 and #3, and the R30 fix on 18 Nov. | `.logs/trond-engelstad/` 988–999, `brief-G115-2026-10-29/.memlog.md` |
+| **Trond** | Built ByggAPP v0.1–v0.5 with Claude Code (game, 3D site, AI roles), including three test rounds with comments. Made the two earlier ideas: the brief of 29 Oct and AI_BYGGplant v0.1–v0.5. Restructured the repo (29 Oct and 18 Nov). Approved PR #2 and #3, and the R30 fix on 18 Nov. On 22 Nov: built story 1.6 (removed the v0.5 code, with a review by three AI reviewers) and wrote the draft `save-code-context.md` (what a playthrough code must hold). | `.logs/trond-engelstad/` 984–999, `brief-G115-2026-10-29/.memlog.md` |
 | **Oskar** | Proposed the three stages (plan → execute → debrief) and carried out "Fra tomt til tak" with Claude Code: brief, research, PRD, simulation rules, UX, architecture and epics. The product decisions in them were made by the group in its weekly meetings; Oskar brought them into the sessions, which is why the memlogs record them as "Source: Oskar" (23 in the brief, 27 in the PRD, 7 in UX). Challenged the AI on the fire rule and the 30 % warning threshold. Answered Bård's feedback (PR #3). | `.logs/oskar-lia/` 994–999, the `.memlog.md` files; Oskar's input below |
 | **Hedda** | Wrote the PRD for ByggAPP (3 Nov) with 22 proposals (P-1 to P-22) for the group to decide, ahead of the group meeting on 5 Nov. | `.logs/hedda-endregaard/999-2026-11-03-…-byggapp-prd.md` |
 | **Elisabeth** | Set up the deploy on Vercel (3, 5 and 11 Nov) and is assumed to own the Claude key and spend limit (to be confirmed). | `.logs/elisabeth-sandberg/`, architecture `.memlog.md` |
@@ -82,7 +82,11 @@ Write a few lines under your name: what you did, what you think of the AI's role
 
 ### Trond
 
-*(not added yet)*
+*Added 2026-11-22, word for word from a Claude Code session.*
+
+- **On his row in "Who did what":** "ja, det stemmer."
+- **The AI's role:** "foreløpig mye avklaringer å lite bruk i selve utviklingen. men i utviklingen av "regjeringskvartelet" ble jeg imponert over hva som ble generert og hvor bra agentene fungerte. Bmad og skills er definitivft en claude styrke."
+- **Keeping control of the AI:** "venner meg til å bruke visual studio code, som jeg syntes gir meg lettere og bedre kontroll over hva AIen gjør ved å se i koder, ha filtrer oppe etc."
 
 ### Oskar
 
