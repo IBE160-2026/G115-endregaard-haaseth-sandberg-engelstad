@@ -1,0 +1,112 @@
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - ready-for-dev: Story file created, ready for development
+#   - in-progress: Developer actively working on implementation
+#   - review: Implementation complete, ready for review
+#   - done: Story completed
+
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - done: Retrospective has been completed
+
+# Action Item Status:
+#   - open: Committed during a retrospective, not yet addressed
+#   - in-progress: Actively being worked on
+#   - done: Completed
+
+# WORKFLOW NOTES:
+# ===============
+# - Epic transitions to 'in-progress' automatically when its first story starts (via build's sprint sync)
+# - Stories can be worked in parallel if team capacity allows
+# - Developer typically creates the next story after the previous one is 'done' to incorporate learnings
+# - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
+# - Retrospective appends its action items to action_items; the status view surfaces open ones
+generated: 11-22-2026 19:27
+last_updated: 11-22-2026 19:28
+project: G115-endregaard-haaseth-sandberg
+project_key: NOKEY
+tracking_system: file-system
+story_location: FraTomtTilTak/implementering
+development_status:
+  epic-0: done
+  epic-0-retrospective: optional
+
+  epic-1: in-progress
+  1-1-rule-gap-milestones: backlog
+  1-2-rule-gap-site-capacity-and-the-crew-stepper: backlog
+  1-3-rule-gap-opportunities: backlog
+  1-4-rule-gap-a-forecast-that-does-not-reveal-the-overrun: backlog
+  1-5-rule-gap-worked-examples-for-r15-r29-and-r30: in-progress
+  1-6-remove-the-v0-5-code: backlog
+  1-7-linter-and-formatter: backlog
+  1-8-continuous-integration: backlog
+  1-9-units-parameter-file-and-references: backlog
+  1-10-seeded-table-and-purity-checks: backlog
+  1-11-worked-examples-as-tests: backlog
+  1-12-building-block-model-concept-to-cost-and-time: backlog
+  1-13-risks-responses-suggested-reserve-targets-and-bands: backlog
+  epic-1-retrospective: optional
+
+  epic-2: backlog
+  2-1-playthrough-state-commands-and-decision-log: backlog
+  2-2-frame-design-tokens-and-app-shell: backlog
+  2-3-start-screen-and-site-office-meeting: backlog
+  2-4-3d-card-with-a-parametric-building: backlog
+  2-5-konsept-step: backlog
+  2-6-tidsplan-step-with-gantt-chart: backlog
+  2-7-milestones-in-the-schedule-step: backlog
+  2-8-risiko-og-reserve-step: backlog
+  2-9-legg-frem-approve-the-plan: backlog
+  2-10-term-explanations-in-plain-norwegian: backlog
+  epic-2-retrospective: optional
+
+  epic-3: backlog
+  3-1-suggestion-rules: backlog
+  3-2-warning-rules-with-reference-values: backlog
+  3-3-adviser-window-with-suggestions-and-warnings: backlog
+  3-4-bruk-forslaget: backlog
+  3-5-suggested-questions-and-prepared-answers: backlog
+  3-6-free-text-without-a-server: backlog
+  3-7-adviser-server-function: backlog
+  3-8-vercel-services-and-local-proxy: backlog
+  3-9-live-adviser-client: backlog
+  epic-3-retrospective: optional
+
+  epic-4: backlog
+  4-1-event-selection: backlog
+  4-2-replay-and-forecasts: backlog
+  4-3-overtime-and-hiring: backlog
+  4-4-risk-change-request-and-opportunity-options: backlog
+  4-5-ai-recommendation-and-ai-path: backlog
+  4-6-execution-surface-and-playback: backlog
+  4-7-event-card-and-decision: backlog
+  4-8-path-comparison: backlog
+  4-9-milestone-status-during-the-run: backlog
+  4-10-construction-progress-in-3d: backlog
+  epic-4-retrospective: optional
+
+  epic-5: backlog
+  5-1-budget-bridge-calculation: backlog
+  5-2-ai-trust-and-learning-goals: backlog
+  5-3-decision-impact: backlog
+  5-4-debrief-result-bridge-and-what-mattered-most: backlog
+  5-5-debrief-plan-against-actual-milestones-and-past-warnings: backlog
+  5-6-debrief-risks-ai-path-trust-and-conclusion: backlog
+  5-7-decision-log-view-and-download: backlog
+  epic-5-retrospective: optional
+
+  epic-6: backlog
+  6-1-dom-click-flow-sara-s-playthrough: backlog
+  6-2-dom-click-flows-warned-plan-and-no-key: backlog
+  6-3-manual-test-plan-and-first-round: backlog
+  6-4-accessibility-check: backlog
+  6-5-performance-and-session-timing: backlog
+  6-6-readme-and-hand-over: backlog
+  epic-6-retrospective: optional

@@ -18,7 +18,7 @@ Building projects run on average 32 % over schedule and 62 % over cost. Project 
 
 ## Status
 
-The group chose this direction after comparing three proposals. **The planning is done; the new app is not built yet.** `FraTomtTilTak/app/` still contains the previous game (v0.5, *Regjeringskvartalet Light*), which is the starting point for the new app: the 3D world, Gantt view and icons are reused, while the engine is rewritten to follow the new simulation rules. The README will be updated as the stories are completed.
+The group chose this direction after comparing three proposals. **The planning is done; the new app is not built yet.** `FraTomtTilTak/app/` still contains the previous game (v0.5, *Regjeringskvartalet Light*), which is the starting point for the new app: the 3D world, Gantt view and icons are reused, while the engine is rewritten to follow the new simulation rules. Until the first version is ready, the app shows only a placeholder page for *Fra tomt til tak*; the v0.5 code is no longer started and is removed in story 1.6. The published app is at <https://g115-endregaard-haaseth-sandberg-en.vercel.app>. The README will be updated as the stories are completed.
 
 ## Run locally
 
@@ -33,6 +33,39 @@ npm run build   # type-checks and builds to dist/
 ```
 
 The simulation engine is in `FraTomtTilTak/app/src/engine/` and has no UI code.
+
+## Architecture at a glance
+
+*The decided architecture for the new app; it is being built story by story. The full rules (AD-1 to AD-20) are in the [architecture document](FraTomtTilTak/planlegging/architecture/architecture-fra-tomt-til-tak-2026-11-05/ARCHITECTURE-SPINE.md).*
+
+**Parts.** A static web app in TypeScript, built with Vite, with the 3D site in three.js. It runs entirely in the browser. The only server code is one small function on Vercel that calls Claude.
+
+| Part | Folder | Does |
+|---|---|---|
+| Engine | `app/src/engine` | All figures: cost, time, risks, events, the AI path and the debrief. Pure and deterministic, so the same seed and choices always give the same result. |
+| Adviser rules | `app/src/engine/adviser` | Suggestions, warnings and recommendations, computed by rules, never by the language model. |
+| Content | `app/src/content` | Norwegian text and prepared answers, filled with figures from the engine. |
+| AI layer | `app/src/ai` | Sends a free-text question to the server, checks the reply, and falls back to a prepared answer. |
+| View | `app/src/ui` | Screens, Gantt chart and the 3D site. Holds the state and shows it. |
+| Server function | `app/server` | Holds the Claude key and calls the Claude API. Nothing else. |
+
+**Data flow.** The student's choice becomes a command. The command changes the one playthrough state, and the engine recalculates everything from that state. The view and the 3D site only read the state; they never change figures. Every choice is recorded in the decision log.
+
+**Where Claude is called, and how the key is protected.** Only free-text questions to the adviser go to Claude (FR-17). The browser sends the question and the approved facts to `/api/adviser` on Vercel. The server function adds the key from a Vercel environment variable and calls Claude (`claude-sonnet-5-5`). The key is never in the repository or the browser; the repository has only `.env.example` without values. The function limits calls per playthrough and per IP address, and a spend limit on the Claude account is the hard cap. Before a reply is shown, every number in it is checked against the engine's figures; if one does not match, the reply is discarded.
+
+**Without a key.** The whole game works with no key, no account and no server: suggestions and warnings are rules, and every question gets a prepared answer, marked *Forberedt svar*. This is the default locally and on Vercel previews. With a key, a failed or slow call (8 seconds) also falls back to a prepared answer.
+
+```mermaid
+graph LR
+  student[Student] --> view[View and 3D]
+  view -->|command| engine[Engine and adviser rules]
+  engine -->|figures| view
+  view -->|free-text question + approved facts| fn["/api/adviser on Vercel<br/>key in environment variable"]
+  fn --> claude[Claude API]
+  claude --> fn
+  fn -->|reply, checked against the figures| view
+  view -. no key, error or timeout .-> prepared[Prepared answer in the browser]
+```
 
 ## Folder structure
 
