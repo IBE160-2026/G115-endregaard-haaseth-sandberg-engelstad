@@ -31,3 +31,4 @@
 - [x] 2026-11-22 [pull-og-status](993-2026-11-22-19-09-09-pull-og-status.md) — PR #6 (plassholderside, Elisabeth) trenger godkjenning fra et annet medlem (løst 2026-11-22: godkjent av Oskar og flettet, `f097d24`)
 - [ ] 2026-11-22 [pull-og-status](993-2026-11-22-19-09-09-pull-og-status.md) — svar på spørsmål 3 (FR-32–37) i `refleksjon-prd.md` og kryss av «Input added»
 - [ ] 2026-11-22 [pull-og-status](993-2026-11-22-19-09-09-pull-og-status.md) — epics historie 1.3 eksempel (g) bruker 172,554; må regnes om til 174,354 når historien gjøres
+- [ ] 2026-11-22 [pull-og-status](993-2026-11-22-19-09-09-pull-og-status.md) — gruppa velger visuell retning: «Prosjektverktøy» (DESIGN.md) eller den filmiske, og for startsiden alene eller hele appen
