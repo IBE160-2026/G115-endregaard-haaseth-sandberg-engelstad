@@ -2,7 +2,7 @@
 title: "Simulation rules: Fra tomt til tak"
 status: draft
 created: 2026-10-31
-updated: 2026-11-18
+updated: 2026-11-22
 ---
 
 # Simulation rules: Fra tomt til tak
@@ -24,6 +24,8 @@ Simplicity beats precision (PRD SM-C3). Every value is either sourced or marked 
 **Revision 3 (fire rule approved by Oskar, 2026-11-05):** the fire-class cost now differs by structural system (S19, R5). Steel pays for protection and CLT for documentation. Target cost rises to 171 MNOK; target week stays 67.
 
 **Revision 4 (R30 approved by the group, 2026-11-18, epics story 1.5):** estimates are ranked by what they hid from the plan, so they sum to bridge cause 2. The debrief's "small" is under 0.900 MNOK (three weeks of site overhead) and under 3 weeks (S43). The adviser keeps 2 % (S42) and the bands keep 5 % (S41). Worked examples (i), (j) and (k) are added for R15, R29 and R30.
+
+**Revision 5 (R31 confirmed by the group, 2026-11-18, epics story 1.1):** milestones get a rule, R31, with worked example (e). They change no cost or time.
 
 Sources:
 
@@ -64,6 +66,7 @@ Flags: **[SOURCED]** means the value comes directly from a source. **[ESTIMATE]*
 | `response[risk]` | accept, reduce, transfer or avoid, for each known risk | FR-11 |
 | `reserveWeeks` | Whole weeks ≥ 0 | FR-12 |
 | `reserveCost` | MNOK ≥ 0 | FR-12 |
+| `milestones` | 2 or 3 pairs of (main part, target week), on different parts (R31) | FR-32 |
 | `difficulty` | easy, medium, hard | FR-1 |
 
 FR-3 (choose a plot) becomes a fixed site in v1. The PRD needs a matching edit (§5).
@@ -90,7 +93,7 @@ For each main part, the engine keeps:
 - the work mode: normal, overtime, heavy overtime or hired;
 - the extra cost so far.
 
-For the project it keeps the current week, the cost so far, the reserve used, the decision log and the events still to come.
+For the project it keeps the current week, the cost so far, the reserve used, the decision log and the events still to come. The milestones (R31) come from the plan; their status is computed from this state, not stored or logged.
 
 ---
 
@@ -434,6 +437,33 @@ With the current targets the slightly-over limits are 171 × 1.05 = **179.550 MN
 - **Ranking.** The debrief lists all decisions from the largest to the smallest absolute cost impact, with the week impact beside it, and shows the top three. Ties go to the earlier part, then to the earlier decision. A decision is labelled "liten betydning" (small) only when its cost impact is under S43 (0.900 MNOK) **and** its week impact is under 3 weeks, so a cheap decision that costs many weeks is never called small.
 - **Closeness in stage 1.** When two options for a choice differ by less than S42 (2 % of the target cost, 3.420) and fall in the same week band (R29), the adviser says so ("both work; the difference is about X MNOK") instead of recommending one firmly.
 
+### Across the stages: milestones
+
+**R31. Milestones** (FR-32)
+
+- **What a milestone is.** One main part's finish plus a target week. The name comes from a fixed list, one per part:
+
+  | Part | Milestone |
+  |---|---|
+  | 1 Permit | *Tillatelse klar* |
+  | 2 Groundworks | *Grunnarbeid ferdig* |
+  | 3 Frame | *Råbygg ferdig* |
+  | 4 Envelope | *Tett bygg* |
+  | 5 Technical and interior | *Teknikk og innredning ferdig* |
+  | 6 Handover | *Overlevert* |
+
+- **Stage 1 (schedule step).** The student keeps 2 or 3 milestones, each on a different part. *Råbygg ferdig* and *Tett bygg* are pre-filled, so the step never blocks on milestones. A milestone's week starts at the plan's finish week for its part (the sum of the estimates up to and including that part, R8). A week the student has not edited follows the estimates when they change; an edited week stays as typed. A milestone week is a whole week ≥ 1.
+- **Weeks.** A part's finish week is its start week plus its duration, as in R8. The milestone week has passed when the current week is greater than it.
+- **Stage 2 status.** Status is re-checked every week and after every decision, like the forecast (FR-22). Each milestone has one of four states, checked in this order:
+  1. *Nådd*: the part has finished, in or before the milestone week.
+  2. *Ikke nådd*: the part finished after the milestone week, or the current week has passed the milestone week with the part unfinished.
+  3. *I fare*: the visible forecast (R34, epics story 1.4) puts the part's finish after the milestone week. In that forecast a started or finished part counts at its actual duration and an unstarted part at the student's estimate.
+  4. *Planlagt* (neutral): the visible forecast meets the milestone week.
+
+  *Planlagt* is an addition to the three states in `EXPERIENCE.md`.
+- **Debrief.** Each milestone shows its week, the part's actual finish week, and its final state: *Nådd*, with the weeks early if any, or *Ikke nådd* with the weeks late.
+- **No effect on the result.** Milestones change no cost or time. They are not decisions in R30 and not part of R28.
+
 ---
 
 ## 4. Worked examples (with answers)
@@ -638,6 +668,32 @@ Difficulty: easy.
   - The reserve also ran out.
 - **AI advice is worth weighing:** missed. 6 of 9 recommendations were right and ignored (6 ≥ 4.5).
 
+### Example (e): R31, milestones in the playthrough of examples (c) and (d)
+
+**Stage 1.** The student keeps the two pre-filled milestones and does not edit their weeks, so they follow the estimates in example (c):
+
+- *Råbygg ferdig*: permit 12 + groundworks 10 + frame 7 = **week 29**.
+- *Tett bygg*: 29 + envelope 8 = **week 37**.
+
+**Stage 2.** Visible forecast as in R34: a started part counts at its actual duration, an unstarted part at the estimate.
+
+| Moment | Frame finish (visible) | *Råbygg ferdig* | Envelope finish (visible) | *Tett bygg* |
+|---|---|---|---|---|
+| Week 0 | 12 + 10 + 7 = 29 | *Planlagt* (29 ≤ 29) | 29 + 8 = 37 | *Planlagt* (37 ≤ 37) |
+| Week 12, after E1 and E5 are decided as in (d) | groundworks 12 + 16 + 4 = 32, so 32 + 7 = **39** | *I fare* (39 > 29) | 39 + 8 = **47** | *I fare* (47 > 37) |
+| Week 30 (groundworks still running) | 39 | *Ikke nådd* (30 > 29, frame unfinished) | 47 | *I fare* (47 > 37) |
+
+**Debrief.** Actual finishes: frame 32 + 9 = **41**, envelope 41 + 10 = **51**.
+
+| Milestone | Week | Actual | State |
+|---|---|---|---|
+| *Råbygg ferdig* | 29 | 41 | *Ikke nådd*, 12 weeks late |
+| *Tett bygg* | 37 | 51 | *Ikke nådd*, 14 weeks late |
+
+**Variant: an edited week.** Suppose the student had typed week 41 for *Råbygg ferdig*. The week stays 41 whatever the estimates become. It is *Planlagt* at week 0 (29 ≤ 41) and at week 12 (39 ≤ 41), and the frame finishes in week 41, so it ends *Nådd*, on time.
+
+The final cost (174.354) and week (69) are the same as in example (d): milestones change nothing (R31).
+
 ### Example (i): R15, seed 115 (the group number) on the reference plan
 
 Generator: mulberry32 from v0.5 (`FraTomtTilTak/app/src/engine/game.ts`). The test compares to 4 decimals. The values were checked by running the generator on 2026-11-18.
@@ -725,7 +781,7 @@ Final 174.354, week 69. Estimate rows are measured against the plan, the other r
 17. The warning threshold is 20 % (±30 % is the alternative). Target cost is rounded up to whole MNOK.
 18. The "AI advice" goal counts stage 1 suggestions, and "followed" in stage 1 means the estimate equals the suggestion exactly.
 19. All main parts run in sequence, so the critical path is always all six.
-20. Opportunities (FR-35) and milestones (FR-32) are not specified until they are approved.
+20. Opportunities (FR-35) are not specified until they are approved. Milestones (FR-32) are specified in R31 (revision 5).
 
 ---
 
