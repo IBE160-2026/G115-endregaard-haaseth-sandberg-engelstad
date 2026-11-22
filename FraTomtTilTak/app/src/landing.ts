@@ -109,14 +109,14 @@ function html(): string {
     <span class="brand serif">fra tomt til tak</span>
     <a href="#slik">Slik fungerer det</a>
     <a href="#bygget">Bygget</a>
-    <a class="pill" href="#status">Status</a>
+    <a class="pill" href="spill/">Spill</a>
   </nav>
   <div class="hero-grid wrap">
     <div>
       <div class="eyebrow up" style="animation-delay:.1s">En simulator i prosjektledelse · 20 minutter</div>
       <h1 class="serif"><span class="up" style="display:block;animation-delay:.3s">Fra tomt</span><em class="up" style="animation-delay:.7s">til tak.</em></h1>
       <p class="up" style="animation-delay:1.1s">Du er prosjektlederen for et kontorbygg i Oslo sentrum. Planlegg det, bygg det, og se hvorfor det gikk som det gikk.</p>
-      <div class="cta up" style="animation-delay:1.4s"><a class="btn" href="#status">Følg utviklingen</a><a class="link" href="#slik">Se hvordan det virker</a></div>
+      <div class="cta up" style="animation-delay:1.4s"><a class="btn" href="spill/">Spill prototypen</a><a class="link" href="#slik">Se hvordan det virker</a></div>
       <div class="facts up" style="animation-delay:1.6s"><span>100 arbeidsplasser</span><span>Mål: uke 67</span><span>Budsjett: 171 MNOK</span></div>
     </div>
     <svg viewBox="100 90 430 320" role="img" aria-label="En tom tomt i skumring. Fotavtrykket til bygget er stukket ut, og et gjennomsiktig omriss viser bygget som skal reises.">
@@ -180,8 +180,9 @@ function html(): string {
       <p class="note serif">I snitt, for byggeprosjekter. Finn ut hvorfor ved å gjøre det selv.</p>
       <div id="status" class="end">
         <span class="serif">Fra tomt <em>til tak.</em></span>
-        <a class="btn" href="${REPO}">Følg utviklingen på GitHub</a>
-        <span class="status">Under utvikling. Første spillbare versjon kommer.</span>
+        <a class="btn" href="spill/">Spill prototypen</a>
+        <a class="link" href="${REPO}">Følg utviklingen på GitHub</a>
+        <span class="status">Prototypen har hele spillrunden, men ikke 3D og språkmodell ennå. Den ferdige appen bygges nå.</span>
       </div>
     </div>
   </section>
