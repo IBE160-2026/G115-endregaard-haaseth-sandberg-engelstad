@@ -1,3 +1,5 @@
+> **Referanse fra Bård, ikke vår arkitektur.** Dokumentet beskriver en annen nettside (Pytagoras Forlag). Hjelpelærer Istvan har bekreftet (november 2026) at det er et eksempel på prinsipper og på hvordan arkitektur kan dokumenteres, ikke et krav om å bruke denne teknologien. Vår arkitektur er [ARCHITECTURE-SPINE.md](architecture-fra-tomt-til-tak-2026-11-05/ARCHITECTURE-SPINE.md), med en kort oversikt i README under «Architecture at a glance». Prinsippet vi har tatt med herfra er mock-svar når nøkkelen mangler (AD-12).
+
 # Website V2 – arkitektur, teknologi og nøkler
 
 Oversikt over `pytagoras-website-v2` (Pytagoras Forlag), skrevet for å kunne gjenskape oppsettet for en annen nettside.
