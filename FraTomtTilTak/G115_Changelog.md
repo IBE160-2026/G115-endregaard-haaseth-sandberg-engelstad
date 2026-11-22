@@ -2,6 +2,10 @@
 
 Major iterations of the *Regjeringskvartalet Light* project management simulator. Each entry has a summary of at most four lines.
 
+## v0.5 code removed, story 1.6 – 2026-11-22
+
+The old game's engine, story layer, HUD, tabs and walking are deleted (the game stays as git tag `v0.5`). The 3D scene and Gantt files are parked: kept, but outside type-check and tests in one list in `tsconfig.json` and `vite.config.ts`, until the stories that adapt them. `main.ts` starts through `mountApp(root, deps)`, which shows the landing page as before; `format.ts` moved to `src/content/`, and `BASE_PATH` is gone.
+
 ## One project folder – 2026-11-18
 
 The repo is reorganised around the chosen project. `FraTomtTilTak/` holds the app (`app/`, formerly `ByggAPP/`), the plans (`planlegging/`, formerly `01. Admin/planning-artifacts/`), `implementering/` for stories, and these G115 files. AI_BYGGplant, its agents and the ByggAPP v0.x specs moved to `02. Arkiv/`. BMAD and all current documents point to the new paths.

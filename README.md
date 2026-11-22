@@ -32,7 +32,7 @@ npm test        # runs the tests
 npm run build   # type-checks and builds to dist/
 ```
 
-The simulation engine is in `FraTomtTilTak/app/src/engine/` and has no UI code.
+The simulation engine will live in `FraTomtTilTak/app/src/engine/` (built from story 1.9) and has no UI code.
 
 ## Architecture at a glance
 

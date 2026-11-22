@@ -21,7 +21,7 @@ import {
 } from './scene/visuals';
 import { GATE_IN, GATE_OUT, OFFICE_MEET, PLACES, foremanSpot, meetingLayout, resolve, route, walkable, type P2 } from './scene/walk';
 import { buildWorld, latticeMap, mullionMap, part, roadPoint, signMap, tiledBox } from './scene/world';
-import { iconUrl } from './tabs/context';
+import { iconUrl } from './icons';
 
 /** A scene on site: the camera frames the people in it, round a table with the challenge model. */
 export interface SceneSpec {
