@@ -39,12 +39,12 @@ Facts for both answers. Check that your own row is right.
 | Who | What the logs show | Source |
 |---|---|---|
 | **Trond** | Built ByggAPP v0.1–v0.5 with Claude Code (game, 3D site, AI roles), including three test rounds with comments. Made the two earlier ideas: the brief of 29 Oct and AI_BYGGplant v0.1–v0.5. Restructured the repo (29 Oct and 18 Nov). Approved PR #2 and #3, and the R30 fix on 18 Nov. | `.logs/trond-engelstad/` 988–999, `brief-G115-2026-10-29/.memlog.md` |
-| **Oskar** | Proposed the three stages (plan → execute → debrief) and drove "Fra tomt til tak": brief, research, PRD, simulation rules, UX, architecture and epics. Made almost every product decision in them (23 "Source: Oskar" in the brief, 27 in the PRD, 7 in UX). Challenged the AI on the fire rule and the 30 % warning threshold. Answered Bård's feedback (PR #3). | `.logs/oskar-lia/999-…-tre-stadier-forslag.md`, the `.memlog.md` files |
+| **Oskar** | Proposed the three stages (plan → execute → debrief) and carried out "Fra tomt til tak" with Claude Code: brief, research, PRD, simulation rules, UX, architecture and epics. The product decisions in them were made by the group in its weekly meetings; Oskar brought them into the sessions, which is why the memlogs record them as "Source: Oskar" (23 in the brief, 27 in the PRD, 7 in UX). Challenged the AI on the fire rule and the 30 % warning threshold. Answered Bård's feedback (PR #3). | `.logs/oskar-lia/` 994–999, the `.memlog.md` files; Oskar's input below |
 | **Hedda** | Wrote the PRD for ByggAPP (3 Nov) with 22 proposals (P-1 to P-22) for the group to decide, ahead of the group meeting on 5 Nov. | `.logs/hedda-endregaard/999-2026-11-03-…-byggapp-prd.md` |
 | **Elisabeth** | Set up the deploy on Vercel (3, 5 and 11 Nov) and is assumed to own the Claude key and spend limit (to be confirmed). | `.logs/elisabeth-sandberg/`, architecture `.memlog.md` |
-| **The group** | Chose "Fra tomt til tak" as the only project, keeping the good parts of the earlier ideas. Confirmed the four PR #3 points on 18 Nov. | `G115_Dilemmas.md` |
+| **The group** | Meets every week; all four take part and make the decisions together. Chose "Fra tomt til tak" as the only project, keeping the good parts of the earlier ideas. Confirmed the four PR #3 points on 18 Nov. | `G115_Dilemmas.md`; Oskar's input below |
 
-**What the logs do not show:** who besides Oskar took part in the decisions on the `forslag/tre-stadier` branch, and how the group discussed them in meetings. Fill this in under your name.
+**What the logs do not show:** the meetings themselves, because only the sessions are logged. Oskar's input confirms that the decisions on the `forslag/tre-stadier` branch were made in the weekly meetings with all four. The others can add how they saw it under their own names.
 
 ---
 
@@ -54,7 +54,7 @@ Facts for both answers. Check that your own row is right.
 
 > We split the adviser into two layers from the start. Everything that carries a number or a judgement — suggestions, warnings, reference values, the "both work" closeness rule — is rule-based and computed by the building-block model (FR-9, FR-14, FR-15, R30). The language model only phrases free-text answers, and only within the approved facts the model hands it (FR-17). It can never choose or change anything in the plan. The split follows your feedback on the brief: a pure engine, an AI layer and a view, and a game that runs without keys.
 >
-> The line moved while we worked. Oskar first wanted free text to be optional ("det må være et valg"), then made it must-have ("ki skal være en must i språkmodellen"). We accepted that only because the whole game still runs from the README without a key, on prepared answers (NFR-1, UJ-2).
+> The line moved while we worked. At first we wanted free text to be optional ("det må være et valg"), then made it must-have ("ki skal være en must i språkmodellen"). The assignment text described the AI part poorly, and we first read it as a risk rather than a strength. Once we saw that the point of the course is to use AI, it had to be usable in the game, with a clear line between what the rules decide and what the language model may phrase. We accepted must-have only because the whole game still runs from the README without a key, on prepared answers (NFR-1, UJ-2).
 >
 > If a reply stated a wrong figure in a test, it would never reach the student. Every number is checked against the model before display; a mismatch discards the reply, shows the nearest prepared answer and counts the discard (FR-17). All automated tests run without a key, including tests with a deliberately wrong figure. SM-5 then measures the live answers: no figure outside the approved facts, and at least 16 of 20 judged useful by two of us independently.
 >
@@ -86,7 +86,12 @@ Write a few lines under your name: what you did, what you think of the AI's role
 
 ### Oskar
 
-*(not added yet)*
+*Added 2026-11-22, word for word from a Claude Code session. Question 3 (FR-32 to FR-37) is still open: Oskar wants to see the requirements listed before he comments.*
+
+- **On his row in "Who did what":** "Nei vi gjorde det gjennom møter og jeg utførte bare."
+- **Why free text became must-have (answer 1):** "For å ha klar linje, hele hensikten med KI er jo å bruke det, derfor er det et must å kunne bruke det i spillet. Grunnen til vi rotet med dette i starten, var for det var dårøig beskrevet i oppgaven og vi trodde det var negativt, fremofor positivt."
+- **Who took part in the decisions:** "ja alle er med i øtene ukentlig og tar beslutninger ssmmen."
+- **The AI's role overall:** "Fordeler og ulemper, i starten visste vi ikke noen ting om faget eller hvordan det skulle gjøres før vi bestemte oppgave og startet arbeidet. Det skapte derfor mye kløning for oss og kommunikasjon med KI. Det positive med ki-rns rolle er at den utypder valg og vurdering, som gjør at man får en fortåelse og kan ta valg sammen."
 
 ### Hedda
 
