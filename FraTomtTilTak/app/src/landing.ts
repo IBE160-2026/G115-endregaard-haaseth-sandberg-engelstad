@@ -234,8 +234,10 @@ export function mountLanding(root: HTMLElement): void {
   const items = Array.from(root.querySelectorAll<HTMLLIElement>('.steps li'));
   const opacity = (sel: string, v: number): void => { q<SVGElement>(sel).style.opacity = String(v); };
   let lastStage = 0;
+  let view3d: { setU(u: number): void } | null = null;
 
   const draw = (u: number): void => {
+    view3d?.setU(u);
     const p2 = ss(1.5, 3.0, u), p4 = ss(5.5, 7.0, u), p5 = ss(7.0, 8.5, u);
     opacity('#b-foot', ss(0, 1.2, u) * (1 - p2 * 0.7));
     opacity('#b-pit', p2);
@@ -273,6 +275,20 @@ export function mountLanding(root: HTMLElement): void {
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
   onScroll();
+
+  // The real-time 3D building replaces the flat drawing when WebGL is available.
+  const canGL = ((): boolean => {
+    try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') ?? c.getContext('webgl')); } catch { return false; }
+  })();
+  if (canGL && !reduced) {
+    import('./landing3d').then(({ mountBuilding3D }) => {
+      const stage = q<HTMLElement>('.stage');
+      view3d = mountBuilding3D(stage);
+      q<SVGElement>('.stage svg').style.display = 'none';
+      lastStage = 0;
+      onScroll();
+    }).catch(() => { /* keep the flat drawing */ });
+  }
 
   const io = new IntersectionObserver((entries) => {
     for (const e of entries) {
