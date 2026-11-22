@@ -28,4 +28,7 @@
 - [x] 2026-11-18 [opprydning-og-prd-tilbakemelding](994-2026-11-18-17-50-00-opprydning-og-prd-tilbakemelding.md) — PR #5 (én prosjektmappe `FraTomtTilTak/`) godkjennes og flettes etter PR #4 (løst 2026-11-18: flettet, `02d4110`)
 - [x] 2026-11-18 [opprydning-og-prd-tilbakemelding](994-2026-11-18-17-50-00-opprydning-og-prd-tilbakemelding.md) — Elisabeth endrer Root Directory i Vercel fra `ByggAPP` til `FraTomtTilTak/app` når PR #5 er flettet (løst 2026-11-18: Elisabeth endret det, bygget er Ready)
 - [ ] 2026-11-18 [opprydning-og-prd-tilbakemelding](994-2026-11-18-17-50-00-opprydning-og-prd-tilbakemelding.md) — Trond lager PR for `chore/branch-arbeidsflyt` (regel: branch og PR for alt), og et annet medlem godkjenner
-- [ ] 2026-11-22 [pull-og-status](993-2026-11-22-19-09-09-pull-og-status.md) — PR #6 (plassholderside, Elisabeth) trenger godkjenning fra et annet medlem
+- [x] 2026-11-22 [pull-og-status](993-2026-11-22-19-09-09-pull-og-status.md) — PR #6 (plassholderside, Elisabeth) trenger godkjenning fra et annet medlem (løst 2026-11-22: godkjent av Oskar og flettet, `f097d24`)
+- [ ] 2026-11-22 [pull-og-status](993-2026-11-22-19-09-09-pull-og-status.md) — svar på spørsmål 3 (FR-32–37) i `refleksjon-prd.md` og kryss av «Input added»
+- [ ] 2026-11-22 [pull-og-status](993-2026-11-22-19-09-09-pull-og-status.md) — epics historie 1.3 eksempel (g) bruker 172,554; må regnes om til 174,354 når historien gjøres
+- [ ] 2026-11-22 [pull-og-status](993-2026-11-22-19-09-09-pull-og-status.md) — gruppa velger visuell retning: «Prosjektverktøy» (DESIGN.md) eller den filmiske, og for startsiden alene eller hele appen
