@@ -1089,7 +1089,7 @@ As a student,
 I want real answers when a key is available,
 So that I can discuss and push back, without ever waiting long or seeing an error.
 
-**Traces:** FR-17, NFR-1, AD-12, AD-14, spine Open Question 4, spine Deferred (prompt text and approved-facts list). **Depends on:** Story 3.8. Live checks need the Vercel variables from Story 3.7.
+**Traces:** FR-17, NFR-1, SM-5, AD-12, AD-14, spine Open Question 4, spine Deferred (prompt text and approved-facts list). **Depends on:** Story 3.8. Live checks need the Vercel variables from Story 3.7.
 
 **Acceptance Criteria:**
 
@@ -1116,6 +1116,7 @@ So that I can discuss and push back, without ever waiting long or seeing an erro
 **Given** the Vercel variables are set
 **When** the group tests production
 **Then** the result is recorded in the manual test plan: response time against 7 s, cost per playthrough, and who owns the key and the Console spend limit
+**And** the same round asks 20 typical free-text questions: no reply shown has a figure outside the approved facts, and at least 16 of 20 are judged on topic and useful by two group members independently (SM-5)
 
 **Given** the variables are not yet set
 **When** this story is reviewed
@@ -1647,7 +1648,7 @@ As the group,
 I want the edge flows tested as well,
 So that the warning trail and the no-key path cannot break unnoticed.
 
-**Traces:** FR-13, FR-15, FR-16, FR-17, NFR-1, AD-12, AD-19, EXPERIENCE Flow 2. **Depends on:** Story 6.1.
+**Traces:** FR-13, FR-15, FR-16, FR-17, NFR-1, UJ-2, AD-12, AD-19, EXPERIENCE Flow 2. **Depends on:** Story 6.1.
 
 **Acceptance Criteria:**
 
@@ -1740,7 +1741,7 @@ As an examiner,
 I want a README that gets me running on the first try,
 So that I can run the simulator without keys and trace requirements to code.
 
-**Traces:** FR-37, NFR-1, NFR-2, NFR-6, SM-4, AD-20. **Depends on:** Stories 3.8, 6.2.
+**Traces:** FR-37, NFR-1, NFR-2, NFR-6, SM-4, SM-6, UJ-2, AD-20. **Depends on:** Stories 3.8, 6.2.
 
 **Acceptance Criteria:**
 
