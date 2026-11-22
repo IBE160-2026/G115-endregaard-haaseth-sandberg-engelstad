@@ -32,3 +32,6 @@
 - [ ] 2026-11-22 [pull-og-status](993-2026-11-22-19-09-09-pull-og-status.md) — svar på spørsmål 3 (FR-32–37) i `refleksjon-prd.md` og kryss av «Input added»
 - [ ] 2026-11-22 [pull-og-status](993-2026-11-22-19-09-09-pull-og-status.md) — epics historie 1.3 eksempel (g) bruker 172,554; må regnes om til 174,354 når historien gjøres
 - [ ] 2026-11-22 [pull-og-status](993-2026-11-22-19-09-09-pull-og-status.md) — gruppa velger visuell retning: «Prosjektverktøy» (DESIGN.md) eller den filmiske, og for startsiden alene eller hele appen
+- [ ] 2026-11-22 [pull-og-status](993-2026-11-22-19-09-09-pull-og-status.md) — avklar hvem som eier Claude-API-kontoen og nøkkelen; spør Bård om kurset gir API-kreditt; vurder Haiku 5.5 i stedet for Sonnet 5.5
+- [ ] 2026-11-22 [pull-og-status](993-2026-11-22-19-09-09-pull-og-status.md) — bestem hva som skjer med den lokale testbranchen `test/ekte-3d-i-spillet` (mer ekte 3D, slått sammen med spillet; ikke publisert)
+- [ ] 2026-11-22 [pull-og-status](993-2026-11-22-19-09-09-pull-og-status.md) — start den ekte appen: Epic 1, historie 1.1 (med `bmad-build`)
