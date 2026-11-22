@@ -14,7 +14,7 @@ answers: tilbakemelding-prd.md §7 (2026-11-12)
 
 | Member | Input added (section "Input from the group") | Read and approved the final answers |
 |---|---|---|
-| Trond Engelstad | [x] | [ ] |
+| Trond Engelstad | [x] | [x] |
 | Oskar Lia | [ ] | [ ] |
 | Hedda Endregaard | [ ] | [ ] |
 | Elisabeth Sandberg | [ ] | [ ] |
