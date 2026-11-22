@@ -105,7 +105,7 @@ Behavioural. Visual specs live in `DESIGN.md` Components.
 | Reserve fields | Risiko og reserve | Weeks and MNOK; zero is allowed but triggers a *Varsel* (FR-36). |
 | Plan-approval dialog | Legg frem | Summarises open warnings, states "Planen låses som utgangspunkt for byggingen." Buttons: "Godkjenn planen" / "Gå tilbake". Focus starts on "Gå tilbake". [ASSUMPTION] |
 | Event card | Stage 2 | Clock stops; card replaces the progress panel in the form column. Options are radio rows; "Bekreft valg" commits. Rådgiver's recommendation is tagged on its option and explained in the window. |
-| Crew stepper | Stage 2 hiring option | Plus/minus with number; at site capacity the plus is disabled with "Maks 40 på byggeplassen samtidig" beside it, and Rådgiver explains why (FR-33). [ASSUMPTION: capacity figure is a placeholder.] |
+| Crew stepper | Stage 2 hiring option | Plus/minus with number of hired workers, in steps of 4 from 4 to 16, starting at 12 (R21, S32, S37). At 4 the minus is disabled. At site capacity (24 planned + 16 hired = 40) the plus is disabled with "Maks 40 på byggeplassen samtidig" beside it, and Rådgiver explains why (FR-33). The figure 40 is S36 (R32), confirmed by the group 2026-11-18. |
 | Path comparison | Stage 2, after each decision; debrief | "Din vei" and "AI-veien" side by side, both from the same state, week and cost against targets with bands (FR-22). "Fortsett byggingen" resumes. |
 | Term explanation | Anywhere | First occurrence per surface is dotted-underlined; hover or focus opens a short popover; Esc closes. Same text as the matching chip answer. |
 | Decision-log download | Debrief | One file, one entry per decision (FR-29). [ASSUMPTION: format decided in architecture.] |

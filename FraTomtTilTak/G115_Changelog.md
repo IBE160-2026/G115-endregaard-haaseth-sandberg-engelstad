@@ -2,6 +2,11 @@
 
 Major iterations of the *Regjeringskvartalet Light* project management simulator. Each entry has a summary of at most four lines.
 
+## R32 site capacity, story 1.2 – 2026-11-22
+
+Simulation rules revision 6. R21 is generalised: the student hires 4 to 16 workers in steps of 4 (default 12, S32, S37), and `h = 12` gives the old R21, so example (c) is unchanged. The new R32 caps the site at 40 workers at once (S36), so FR-33 can fire.
+Worked example (f) shows every crew size at example (c)'s overrun: hiring 4 or 8 misses "resources have limits". `EXPERIENCE.md` no longer calls 40 a placeholder, and the spine's Open Question 3 is closed.
+
 ## R31 milestones, story 1.1 – 2026-11-22
 
 Simulation rules revision 5. Milestones get a rule, R31: a fixed name per main part, 2 or 3 kept, *Råbygg ferdig* and *Tett bygg* pre-filled, and four states (*Planlagt*, *I fare*, *Nådd*, *Ikke nådd*). They change no cost or time.

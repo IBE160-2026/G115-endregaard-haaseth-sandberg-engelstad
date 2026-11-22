@@ -29,7 +29,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 11-22-2026 19:27
-last_updated: 11-22-2026 21:05
+last_updated: 11-22-2026 21:20
 project: G115-endregaard-haaseth-sandberg
 project_key: NOKEY
 tracking_system: file-system
@@ -40,7 +40,7 @@ development_status:
 
   epic-1: in-progress
   1-1-rule-gap-milestones: review
-  1-2-rule-gap-site-capacity-and-the-crew-stepper: backlog
+  1-2-rule-gap-site-capacity-and-the-crew-stepper: review
   1-3-rule-gap-opportunities: backlog
   1-4-rule-gap-a-forecast-that-does-not-reveal-the-overrun: backlog
   1-5-rule-gap-worked-examples-for-r15-r29-and-r30: in-progress
