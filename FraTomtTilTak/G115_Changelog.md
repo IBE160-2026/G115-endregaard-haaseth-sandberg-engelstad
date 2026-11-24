@@ -2,6 +2,11 @@
 
 Major iterations of the *Regjeringskvartalet Light* project management simulator. Each entry has a summary of at most four lines.
 
+## R34 visible forecast, story 1.4 – 2026-11-24
+
+Simulation rules revision 8 (5–7 belong to stories 1.1–1.3). The forecast gets two views of one replay: R24 stays as the full forecast, and the new R34 counts unstarted parts at the student's estimate and drives everything shown in stage 2. R13 uses R34.
+Worked example (h) follows example (c): 163.354 and week 49 at week 0, where R24 already says 168.154 and week 65. The ranking of options is the same in both. The spine's Open Question 1 is closed, and AD-6 names R34.
+
 ## One project folder – 2026-11-18
 
 The repo is reorganised around the chosen project. `FraTomtTilTak/` holds the app (`app/`, formerly `ByggAPP/`), the plans (`planlegging/`, formerly `01. Admin/planning-artifacts/`), `implementering/` for stories, and these G115 files. AI_BYGGplant, its agents and the ByggAPP v0.x specs moved to `02. Arkiv/`. BMAD and all current documents point to the new paths.

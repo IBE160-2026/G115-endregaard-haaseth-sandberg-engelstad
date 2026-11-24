@@ -85,9 +85,9 @@ Arrows are the only allowed imports. `engine` imports nothing outside itself. `s
 
 ### AD-6 — A run is a pure fold over six parts, and events are fixed at approval
 
-- **Binds:** R16–R24, FR-18–FR-22, FR-34
+- **Binds:** R16–R24, R34, FR-18–FR-22, FR-34
 - **Prevents:** A weekly tick with its own state, forecasts by cloning mutable state, and event sets that shift with decisions.
-- **Rule:** `selectEvents(plan, draws)` is decided at approval and depends on nothing else (R17–R19). `replay(plan, draws, policy, upTo?)` folds over the parts in order: apply events at the part's start, ask `policy` for each decision, then compute duration and cost. It returns a `Run` with start and finish per part, cost and events. The forecast (R24) is `replay` with the events cut off after the last decided one. Weeks are playback: the shell moves a cursor over the `Run`, `timelineAt(run, week)` gives progress, and the cursor stops at the next undecided event. This replaces the v0.5 `step` loop; only its concepts and values carry over.
+- **Rule:** `selectEvents(plan, draws)` is decided at approval and depends on nothing else (R17–R19). `replay(plan, draws, policy, upTo?)` folds over the parts in order: apply events at the part's start, ask `policy` for each decision, then compute duration and cost. It returns a `Run` with start and finish per part, cost and events. The forecast (R24) is `replay` with the events cut off after the last decided one. The visible forecast (R34) is the same `replay` with the student's estimates for parts not yet started. Weeks are playback: the shell moves a cursor over the `Run`, `timelineAt(run, week)` gives progress, and the cursor stops at the next undecided event. This replaces the v0.5 `step` loop; only its concepts and values carry over.
 
 ### AD-7 — One state, changed only by commands
 
@@ -296,7 +296,7 @@ graph LR
 
 ## Open Questions
 
-1. **R24 forecast shows the truth too early.** Example (c) forecasts with actual durations for parts not yet started, so the top bar shows the real overrun from week 0 of stage 2 and stands still between events. Keep it, or use estimates for unstarted parts? The second option changes example (c). Implemented as written until the group decides.
+1. ~~**R24 forecast shows the truth too early.** Example (c) forecasts with actual durations for parts not yet started, so the top bar shows the real overrun from week 0 of stage 2 and stands still between events. Keep it, or use estimates for unstarted parts? The second option changes example (c). Implemented as written until the group decides.~~ *Closed 2026-11-24:* both, as two views of one replay. R24 stays as the full forecast for R25, R26, R27, R30 and the final AI path, so example (c) does not change. The new R34 is the visible forecast, with the student's estimates for unstarted parts, and drives everything shown in stage 2. See simulation rules revision 8 and example (h) (epics story 1.4).
 2. **Rules are missing for MVP scope.** FR-32, FR-33 and FR-35 have no rule (open point 20). R15, R29 and R30 have no worked example, though FR-31 asks for one per rule. Those stories wait for these. *Update 2026-11-18:* the R15, R29 and R30 half is closed (simulation rules revision 4, examples (i), (j), (k)). The FR-32, FR-33 and FR-35 half stays open until R31–R34, now confirmed by the group, are written into the rules (epics stories 1.1–1.4).
 3. **Crew stepper against R21.** UX shows a stepper stopped by site capacity. R21 hires a fixed 12, so 36 workers never reach the placeholder 40. Which holds?
 4. **Model, cost and owner.** Confirm the model and the cost per playthrough, measure whether it answers within 7 s, and name who owns the key and the spend limit.

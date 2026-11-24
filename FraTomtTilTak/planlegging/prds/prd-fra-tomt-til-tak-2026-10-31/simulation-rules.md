@@ -2,7 +2,7 @@
 title: "Simulation rules: Fra tomt til tak"
 status: draft
 created: 2026-10-31
-updated: 2026-11-18
+updated: 2026-11-24
 ---
 
 # Simulation rules: Fra tomt til tak
@@ -24,6 +24,8 @@ Simplicity beats precision (PRD SM-C3). Every value is either sourced or marked 
 **Revision 3 (fire rule approved by Oskar, 2026-11-05):** the fire-class cost now differs by structural system (S19, R5). Steel pays for protection and CLT for documentation. Target cost rises to 171 MNOK; target week stays 67.
 
 **Revision 4 (R30 approved by the group, 2026-11-18, epics story 1.5):** estimates are ranked by what they hid from the plan, so they sum to bridge cause 2. The debrief's "small" is under 0.900 MNOK (three weeks of site overhead) and under 3 weeks (S43). The adviser keeps 2 % (S42) and the bands keep 5 % (S41). Worked examples (i), (j) and (k) are added for R15, R29 and R30.
+
+**Revision 8 (visible forecast confirmed by the group, 2026-11-18, epics story 1.4):** the forecast gets two views of one replay. R24 is unchanged and is the full forecast. The new R34 is the visible forecast, where a part that has not started counts at the student's estimate, so the top bar does not show the overrun at week 0. R13 says which forecast it uses. Worked example (h) is added; no parameter changes. Revisions 5–7 belong to epics stories 1.1–1.3.
 
 Sources:
 
@@ -285,6 +287,7 @@ For a risk with probability p, delay d weeks and cost c, the **full impact** is 
 
 **R13. Reserve during stage 2** (FR-12)
 
+- During stage 2, `forecastCost` and `forecastWeek` are the visible forecast (R34).
 - Cost reserve used = `min(reserveCost, max(0, forecastCost − planCostExclReserve))`.
 - Time reserve used = `min(reserveWeeks, max(0, forecastWeek − Σ estimates))`.
 - The reserve **runs out** when either overrun is larger than its reserve. Unused reserve is not spent: the final cost is what was actually spent.
@@ -378,6 +381,17 @@ Approving now is usually cheaper (2.600 incl. site overhead against 3.000), but 
 
 **R24. Forecast** (FR-22, FR-34)
 The engine runs on from the current state with no new events (v0.5). Forecast final cost = cost so far + the remaining parts at their actual durations and current work modes + site overhead for every remaining construction week.
+
+**R34. Visible forecast** (FR-22, FR-32, FR-34)
+The forecast has two views of one replay. R24 is the **full forecast** and knows the actual duration of every part. R34 is the **visible forecast**, the one the student sees.
+
+- **Definition.** As R24, but a part that has not started counts at the student's estimate, while a started or finished part counts at its actual duration. A part has started from its start week on, before its events are decided. Decided events apply, and undecided events do not. The estimate overrun (R18) is part of the actual duration, so it shows when its part starts, also before the student has decided what to do about it.
+- **Where each view is used.**
+  - R34 drives everything shown in stage 2: the top-bar cards, *Reserve igjen* (R13), the option deltas, the path comparison after each decision (FR-22) and the milestone status (FR-32).
+  - R24 is used only for R25, R26, R27, R30 and the final AI path (FR-26). What they use is R24's actual durations: R26, R27, R30 and the final AI path still include the events their own rules name. In R25 the engine uses R24 to rank the options; the AI path shown after each decision is the same replay, shown in R34.
+- **Start and end.** With a permit estimate of 12, R34 at week 0 equals the plan without its reserve: `planCostExclReserve` (R8) and the sum of the estimates. The permit has already started, so it counts at 12 weeks; with another permit estimate, the week differs from the plan, and with it the time reserve used (R13) when the estimate is under 12. The cost does not differ, because the permit has no site overhead (R7). When all parts have finished, R34 = R24 = the final cost and week. [ASSUMPTION, as in epics story 4.2: the upfront response costs (R11) are part of the cost so far in both views.]
+- **When it moves.** At each part start, when that part's actual duration becomes known, and after each decision. Recomputing it in the weeks between gives the same figures.
+- **Why the ranking does not change.** No option changes a part that has not started, so R24 − R34 is the same for every option: `0.300 × Σ (actual − estimate)` MNOK and `Σ (actual − estimate)` weeks over those parts. The ranking of the options and the difference between them are therefore the same in both views. A test asserts this over many seeds.
 
 **R25. AI recommendation and difficulty** (FR-1, FR-22)
 
@@ -637,6 +651,26 @@ Difficulty: easy.
   - **E4** and **E3**: accept was the cheapest.
   - The reserve also ran out.
 - **AI advice is worth weighing:** missed. 6 of 9 recommendations were right and ignored (6 ≥ 4.5).
+
+### Example (h): R34, the visible forecast in example (c)
+
+*Re-based:* the epics file (story 1.4) wrote this example before the fire rule (revision 3). Here it uses the current figures from example (c). Every cost is 1.800 higher than in the epics file; the weeks and the differences are unchanged.
+
+Fixed costs are 152.254. The estimates are 12, 10, 7, 8, 8, 4 and the actual durations 12, 16, 9, 10, 13, 5. At week 12 groundworks starts, so it counts at its actual duration (16, or 14 with overtime and 13 with 12 hired). The four later parts count at their estimates in R34, 7 + 8 + 8 + 4 = 27 weeks, and at their actual durations in R24, 9 + 10 + 13 + 5 = 37 weeks.
+
+| Moment | Construction weeks (R34) | Visible cost (R34) | Visible week | Full cost (R24) | Full week |
+|---|---|---|---|---|---|
+| Week 0 | 10 + 27 = 37 | 152.254 + 0.300 × 37 = **163.354** | 12 + 37 = **49** | 168.154 | 65 |
+| Week 12, take the delay | 16 + 27 = 43 | 152.254 + 0.300 × 43 = **165.154** | 12 + 43 = **55** | 168.154 | 65 |
+| Week 12, overtime | 14 + 27 = 41 | 152.254 + 0.300 × 41 + 0.546 = **165.100** | 12 + 41 = **53** | 168.100 | 63 |
+| Week 12, hire 12 | 13 + 27 = 40 | 152.254 + 0.300 × 40 + 1.901 = **166.155** | 12 + 40 = **52** | 169.155 | 62 |
+
+**Answer:**
+
+- At week 0 the visible forecast is the plan without its reserve (163.354, week 49). The full forecast is 4.800 and 16 weeks higher, and the student does not see that.
+- At week 12 each option is 3.000 and 10 weeks below R24, because the later parts hide 2 + 2 + 5 + 1 = 10 weeks and 0.300 × 10 = 3.000.
+- Overtime still wins by 0.054 over taking the delay: 165.154 − 165.100 in R34 and 168.154 − 168.100 in R24. The order is the same in both: overtime, take the delay, hire 12.
+- Groundworks starts with the overrun in view, so the forecast is 165.154 and week 55 before the student decides. Taking the delay leaves it there.
 
 ### Example (i): R15, seed 115 (the group number) on the reference plan
 
