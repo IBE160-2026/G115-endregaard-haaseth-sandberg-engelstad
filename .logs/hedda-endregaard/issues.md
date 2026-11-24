@@ -5,3 +5,5 @@
 - [ ] 2026-11-03 [byggapp-prd](999-2026-11-03-16-30-48-byggapp-prd.md) — bygge R1: demospill med DP1–DP4, overtid 1,4 og eksempel 3 som test; bekrefte de håndregnede 1,4-tallene med tester
 - [ ] 2026-11-03 [byggapp-prd](999-2026-11-03-16-30-48-byggapp-prd.md) — visningen for risikoeksponering (FR-23, R2) og å skrive inn et seed (FR-30, R3)
 - [ ] 2026-11-03 [byggapp-prd](999-2026-11-03-16-30-48-byggapp-prd.md) — PRD Finalize (åpne punkter, polering, status final) etter gruppens beslutninger
+- [ ] 2026-11-24 [refleksjonsinnspill](996-2026-11-24-11-27-39-refleksjonsinnspill.md) — lese de endelige svarene i `refleksjon-prd.md` og krysse av «Read and approved»
+- [ ] 2026-11-24 [refleksjonsinnspill](996-2026-11-24-11-27-39-refleksjonsinnspill.md) — gruppen avgjør om utkast 2 presiseres: R31–R34 dekker bare FR-32 til FR-35, og «point by point» stemmer ikke med `G115_Dilemmas.md`
