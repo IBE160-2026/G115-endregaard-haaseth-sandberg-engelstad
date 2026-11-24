@@ -5,3 +5,6 @@
 - [ ] 2026-11-03 [byggapp-prd](999-2026-11-03-16-30-48-byggapp-prd.md) — bygge R1: demospill med DP1–DP4, overtid 1,4 og eksempel 3 som test; bekrefte de håndregnede 1,4-tallene med tester
 - [ ] 2026-11-03 [byggapp-prd](999-2026-11-03-16-30-48-byggapp-prd.md) — visningen for risikoeksponering (FR-23, R2) og å skrive inn et seed (FR-30, R3)
 - [ ] 2026-11-03 [byggapp-prd](999-2026-11-03-16-30-48-byggapp-prd.md) — PRD Finalize (åpne punkter, polering, status final) etter gruppens beslutninger
+- [ ] 2026-11-24 [story-1-4-synlig-prognose](997-2026-11-24-10-55-58-story-1-4-synlig-prognose.md) — PRD FR-34 sier fortsatt «R34 (proposed in epics story 1.4)» og sier ikke at uke 0 er planen uten reserve; rettes i egen PRD-pull request
+- [ ] 2026-11-24 [story-1-4-synlig-prognose](997-2026-11-24-10-55-58-story-1-4-synlig-prognose.md) — gruppen må avgjøre når «reserven gikk tom» (R13) vurderes for R28: ved slutten eller straks (story 4.2 eller 5.2)
+- [ ] 2026-11-24 [story-1-4-synlig-prognose](997-2026-11-24-10-55-58-story-1-4-synlig-prognose.md) — PR for story 1.4 trenger gruppens bekreftelse; nevn permit-anslag ulikt 12, antakelsen om upfront-kostnader, (h) re-basert mot gamle tall i epics 1.4/4.2/4.5, at (h) bare har fire rader, AD-6 replay-inndata (story 4.2) og konflikter med 1.1–1.3
