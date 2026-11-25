@@ -22,4 +22,4 @@
 - [ ] 2026-11-25 [ki-radgiver-claude](992-2026-11-25-21-50-09-ki-radgiver-claude.md) — pushe `feat/3-7-adviser-server-function`, lage PR og få gruppens bekreftelse av Haiku, `FTTT_API_KEY` og `api/` (erstatter Oskars valg av Sonnet og en egen serverpakke)
 - [ ] 2026-11-25 [ki-radgiver-claude](992-2026-11-25-21-50-09-ki-radgiver-claude.md) — etter deploy: sjekke at `/api/adviser/status` gir `{"live":true}`, og at funksjonsloggene bare har statuskoder
 - [ ] 2026-11-25 [ki-radgiver-claude](992-2026-11-25-21-50-09-ki-radgiver-claude.md) — koble rådgivervinduet til `createAdviser` (story 3.5, 3.6, 3.9), måle svartid, kostnad og SM-5, og oppdatere sprintstatus
-- [ ] 2026-11-25 [ki-radgiver-claude](992-2026-11-25-21-50-09-ki-radgiver-claude.md) — sjekke at automatisk påfyll (auto-reload) er slått av i Claude Console, så den forhåndsbetalte kreditten er det harde taket
+- [x] 2026-11-25 [ki-radgiver-claude](992-2026-11-25-21-50-09-ki-radgiver-claude.md) — sjekke at automatisk påfyll (auto-reload) er slått av i Claude Console, så den forhåndsbetalte kreditten er det harde taket (løst 2026-11-25: auto-reload er slått av)
