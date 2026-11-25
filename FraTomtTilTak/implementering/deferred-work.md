@@ -24,3 +24,9 @@
 - source_spec: `spec-1-6-remove-the-v0-5-code.md`
   summary: Add a lasting test that no non-parked file imports a parked or removed v0.5 module (tsc pulls an imported parked file back in and fails).
   evidence: Only a one-time grep checks it today; the import-direction scan planned in story 1.10 should cover parked paths too.
+- source_spec: `FraTomtTilTak/implementering/spec-1-5-rule-gap-worked-examples-for-r15-r29-and-r30.md`
+  summary: R20, R22 and R23 are worked in examples (c) and (d) but never named by id there, and R11 appears only inside the range "R10–R12", so the story 1.11 coverage test (test titles start with the R id) needs an explicit mapping for them.
+  evidence: A grep of §4 finds no "R20", "R22" or "R23"; overtime, the E5 alternative and the E8 change request appear in examples (c) and (d). §5 item 20 now says so.
+- source_spec: `FraTomtTilTak/implementering/spec-1-5-rule-gap-worked-examples-for-r15-r29-and-r30.md`
+  summary: R30 does not say which two options the stage 1 closeness check compares, and the closeness table in example (k) may pick the wrong pair (unverified, medium).
+  evidence: At 5 floors precast 196.545 (week 67) and steel 199.079 (week 65) differ by 2.534 < S42 3.420 in the same week band, yet the table compares precast with CLT (3.515) and says "recommends precast firmly". At 4 and 6 floors cast-in-place pairs within 3.420 are left out. A group decision on the compared pair (cheapest two, closest pair in a band, or the student's choice against the best) settles it before story 3.2 implements the rule.

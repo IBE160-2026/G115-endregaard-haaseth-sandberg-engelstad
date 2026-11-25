@@ -27,8 +27,8 @@ Every simulation rule runs as an automated test, every estimate can be changed i
 - **Determinism:** the same seed, plan and decisions always give the same result.
 - **Traceable rules:** every parameter has a source or is flagged as an estimate; every rule has a worked example that runs as a test.
 - **Pure, tested core:** engine, building-block model, adviser rules and event selection are pure and covered by automated tests (Vitest in Node, no network, no key).
-- **Rule-gap stories (1.1–1.5) are document stories:** each edits `simulation-rules.md` (and where named `EXPERIENCE.md` or the architecture spine's open questions), and needs a group confirmation in its pull request. The resolutions were confirmed by the group on 2026-11-18. They touch different sections, and the new ids are pre-allocated: R31–R34, S36–S43.
-- **Current figures live in `simulation-rules.md`, not in the epics file.** The worked examples in the epic were written before the fire rule changed (revision 3). Current values: building cost 75.534, base cost 166.054 for 7 floors/steel, targets **week 67 and 171 MNOK**, band limits 179.550 / week 71. Revision 4 (R30 amendment, S41–S43, examples (i), (j), (k)) is already in the rules; S43 "small" means under 0.900 MNOK **and** under 3 weeks. R31 is written into the rules (revision 5, story 1.1); R32–R34 are not yet written.
+- **Rule-gap stories (1.1–1.5) are document stories:** each edits `simulation-rules.md` (and where named `EXPERIENCE.md` or the architecture spine's open questions), and needs a group confirmation in its pull request. The resolutions were confirmed by the group on 2026-11-18. The ids R31–R34 and S36–S43 are now all in the rules.
+- **Current figures live in `simulation-rules.md`, not in the epics file.** The worked examples in the epic were written before the fire rule changed (revision 3). Current values: building cost 75.534, base cost 166.054 for 7 floors/steel, targets **week 67 and 171 MNOK**, band limits 179.550 / week 71. Revision 4 (R30 amendment, S41–S43, examples (i), (j), (k)) is in the rules; S43 "small" means under 0.900 MNOK **and** under 3 weeks. R31–R34 are written into the rules (revisions 5–8, stories 1.1–1.4, examples (e)–(h)), and spine Open Questions 1–3 are closed. Example (d) ends at 174.354, week 69 (the epics file still shows the pre-fire-rule 172.554). The rule-gap phase is complete with story 1.5.
 - **No unnecessary seed hunting:** targets are derived by R14 and judged in bands (R29: *På mål*, *Litt over*, *Klart over*), never stored.
 - **Scope boundary:** no UI work in this epic beyond a placeholder `main.ts`; surfaces start in Epic 2.
 - `npm test` and `npm run build` in `FraTomtTilTak/app` must pass at the end of every story.
@@ -58,8 +58,8 @@ Every simulation rule runs as an automated test, every estimate can be changed i
 
 ## Cross-Story Dependencies
 
-- **Phase A (rules):** 1.1–1.4 are independent; 1.5 depends on 1.3 (slots 15–16).
-- **Phase B (clear the ground):** 1.6 → 1.7 → 1.8, one at a time, since 1.6 and 1.7 touch nearly every file. Hold other code branches until 1.7 merges. Can run alongside phase A.
-- **Phase C (engine):** 1.9 (after 1.7) → 1.10 → 1.11 → 1.12 → 1.13. 1.13 also needs 1.5. If 1.2/1.3/1.5 are not merged when 1.9 starts, S36–S43 go in as proposed.
+- **Phase A (rules):** 1.1–1.4 are merged; 1.5 closes the phase.
+- **Phase B (clear the ground):** 1.6 is merged; 1.7 → 1.8 next, one at a time, since 1.7 touches nearly every file. Hold other code branches until 1.7 merges.
+- **Phase C (engine):** 1.9 (after 1.7) → 1.10 → 1.11 → 1.12 → 1.13. 1.13 also needs 1.5. S36–S43 come from the rules as written.
 - **Downstream:** Epic 2 builds on the engine; Story 2.2 can start after 1.7. Adviser rule stories 3.1 and 3.2 need only 1.13. Story 3.7 turns on the server package in CI. R31–R34 are implemented in 2.7, 4.2, 4.3, 4.4 and 4.9, not in this epic.
 - **Archive:** `02. Arkiv/` is history and not a source. The only planned exception is Story 3.7, which copies server code from it.

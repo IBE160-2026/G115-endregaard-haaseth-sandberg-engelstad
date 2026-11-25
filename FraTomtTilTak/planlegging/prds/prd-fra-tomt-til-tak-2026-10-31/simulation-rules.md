@@ -2,7 +2,7 @@
 title: "Simulation rules: Fra tomt til tak"
 status: draft
 created: 2026-10-31
-updated: 2026-11-24
+updated: 2026-11-25
 ---
 
 # Simulation rules: Fra tomt til tak
@@ -821,7 +821,7 @@ Fixed costs are 152.254. The estimates are 12, 10, 7, 8, 8, 4 and the actual dur
 
 ### Example (i): R15, seed 115 (the group number) on the reference plan
 
-Generator: mulberry32 from v0.5 (`FraTomtTilTak/app/src/engine/game.ts` at git tag `v0.5`; the file was removed in story 1.6). The test compares to 4 decimals. The values were checked by running the generator on 2026-11-18.
+Generator: mulberry32 from v0.5 (`ByggAPP/src/engine/game.ts` at git tag `v0.5`, the folder's name at the time; the file was removed in story 1.6). The test compares to 4 decimals. The values were checked by running the generator on 2026-11-18 and again on 2026-11-25 (story 1.5).
 
 | Slots | Used for | Values | Result |
 |---|---|---|---|
@@ -906,7 +906,7 @@ Final 174.354, week 69. Estimate rows are measured against the plan, the other r
 17. The warning threshold is 20 % (±30 % is the alternative). Target cost is rounded up to whole MNOK.
 18. The "AI advice" goal counts stage 1 suggestions, and "followed" in stage 1 means the estimate equals the suggestion exactly.
 19. All main parts run in sequence, so the critical path is always all six.
-20. Milestones (FR-32) are specified in R31 (revision 5). Site capacity (FR-33) is specified in R32 (revision 6). Opportunities (FR-35) are specified in R33 (revision 7).
+20. Milestones (FR-32) are specified in R31 (revision 5). Site capacity (FR-33) is specified in R32 (revision 6). Opportunities (FR-35) are specified in R33 (revision 7). The visible forecast (FR-34) is specified in R34 (revision 8). No rule gap remains (epics story 1.5). R20, R22 and R23 are worked in examples (c) and (d) (overtime, the E5 alternative, the E8 change request) without being named by id.
 21. **The capacity record comes once per event** (R32). The confirmed wording says the adviser explains the limit "once". This document reads that as once per hiring decision. Once per playthrough is the alternative.
 
 ---
