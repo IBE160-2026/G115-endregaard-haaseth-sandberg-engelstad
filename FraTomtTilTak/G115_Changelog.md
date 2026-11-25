@@ -2,6 +2,11 @@
 
 Major iterations of the *Regjeringskvartalet Light* project management simulator. Each entry has a summary of at most four lines.
 
+## Rule gaps closed, story 1.5 – 2026-11-25
+
+No rule or figure changes. Story 1.5 is checked against `main`: examples (i), (j) and (k), the amended R30 and S41–S43 have been in the rules since revision 4. Seed 115 was run again from tag `v0.5` and gives all 17 values, and the sums in (j) and (k) and the closeness figures hold.
+Example (i) now names the generator file at `v0.5` correctly (`ByggAPP/src/engine/game.ts`). §5 item 20 adds R34, so it lists no rule gap. Spine Open Questions 1–3 are closed, and the rule-gap phase of Epic 1 is done.
+
 ## R34 visible forecast, story 1.4 – 2026-11-24
 
 Simulation rules revision 8 (5–7 belong to stories 1.1–1.3). The forecast gets two views of one replay: R24 stays as the full forecast, and the new R34 counts unstarted parts at the student's estimate and drives everything shown in stage 2. R13 uses R34.
