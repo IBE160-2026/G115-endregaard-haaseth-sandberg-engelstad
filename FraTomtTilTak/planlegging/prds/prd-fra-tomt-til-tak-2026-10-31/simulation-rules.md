@@ -27,6 +27,8 @@ Simplicity beats precision (PRD SM-C3). Every value is either sourced or marked 
 
 **Revision 5 (R31 confirmed by the group, 2026-11-18, epics story 1.1):** milestones get a rule, R31, with worked example (e). They change no cost or time.
 
+**Revision 6 (site capacity confirmed by the group, 2026-11-18, epics story 1.2):** the student chooses how many workers to hire. R21 is generalised from a fixed 12 to `h` = 4 to 16 in steps of 4 (S32, S37). With `h = 12` it gives exactly the old R21, so example (c) does not change. The new R32 caps the site at 40 workers at once (S36), so FR-33 can actually fire. Worked example (f) is added.
+
 Sources:
 
 - **P1–P17**: parameter table in `../../research/research-fra-tomt-til-tak-2026-10-31/research.md`.
@@ -90,7 +92,7 @@ For each main part, the engine keeps:
 - the start week;
 - **work weeks**: work that overtime or hiring can compress;
 - **idle weeks**: waiting that nothing compresses, such as a risk delay;
-- the work mode: normal, overtime, heavy overtime or hired;
+- the work mode: normal, overtime, heavy overtime or hired, and for hired the number hired `h` (R21);
 - the extra cost so far.
 
 For the project it keeps the current week, the cost so far, the reserve used, the decision log and the events still to come. The milestones (R31) come from the plan; their status is computed from this state, not stored or logged.
@@ -134,10 +136,12 @@ For the project it keeps the current week, the cost so far, the reserve used, th
 | S29 | Overtime premium | +40 % (factor 1.4 on overtime hours) | P16 / aml § 10-6 [26]: at least 40 % | [SOURCED] (legal minimum) |
 | S30 | Overtime caps | 10 h per week, 25 h per 4 weeks, 200 h per 52 weeks | P17 / [26] | [SOURCED] |
 | S31 | Overtime level | 6.25 h per worker per week (= 25 h per 4 weeks, exactly at the cap) | Derived from S30 | design choice |
-| S32 | Hired workers | +50 % of crew = 12 workers | v0.5 | [ESTIMATE] |
+| S32 | Hired workers (`h`) | The student chooses 4 to 16 in steps of S37. The stepper starts at 12 (+50 % of crew, as in v0.5) | v0.5 | [ESTIMATE] |
 | S33 | Crowding | Each hired worker gives 0.5 of a full worker's output and is paid in full | v0.5, PRD FR-20 | [ESTIMATE] |
 | S34 | Change request (E8) | Now: +2.000 MNOK and +2 weeks. Later: +3.000 MNOK and 0 weeks | V12 / E8 (changes ~14 % of contract cost; later costs more) | [ESTIMATE] anchored |
 | S35 | AI reliability by difficulty | easy 100 % · medium 80 % · hard 60 % | v0.5 | design choice |
+| S36 | Site capacity (R32) | **40 workers** on site at once (planned crew + hired) | UX placeholder, confirmed by the group 2026-11-18 | [ESTIMATE] |
+| S37 | Hiring step (R21) | 4 workers per click on the crew stepper | Group decision 2026-11-18 | design choice |
 | S41 | Result band width (R29) | 5 % over the target cost or the target week | PRD FR-26 | design choice |
 | S42 | Closeness threshold for the adviser (R30, stage 1) | 2 % of the target cost (3.420 MNOK at 171) | PRD FR-14 | design choice |
 | S43 | "Small" in the debrief (R30) | Cost impact under 3 construction weeks of site overhead (3 × S14 = **0.900 MNOK**) **and** week impact under 3 weeks | Group decision 2026-11-18; 3 weeks is just under the S41 week band (3.35) | design choice |
@@ -359,9 +363,19 @@ One pseudo-random stream gives numbers u in [0, 1); the architecture picks the g
 
 **R21. Hiring with crowding** (FR-20)
 
-- +12 hired workers at 0.5 output each: the effective crew is 30, output ×1.25, `D = round(W × 0.8)`.
-- Extra cost = the unproductive half of the hired hours: `12 × 37.5 × 650 × 0.5 = 146,250 NOK` = **0.14625 MNOK per week**, times D (rounded at the end).
-- Overtime costs about 6 × 0.039 = 0.234 MNOK per week saved, less than the site overhead of 0.300, so it usually pays off. Hiring costs about 4 × 0.14625 = 0.585 MNOK per week saved: it is faster, but rarely pays off.
+- The student hires `h` workers on the crew stepper, in steps of S37 (4), starting at 12 (S32). The lowest is one step (4). The highest is the largest step that fits within R32, today 16.
+- Each hired worker gives 0.5 output (S33). With the planned crew S27 (24), the effective crew is `24 + 0.5h`, so `D = round(W × 24 ÷ (24 + 0.5h))`. In whole numbers this is `round(W × 48 ÷ (48 + h))`, which is exact.
+- Extra cost = the unproductive half of the hired hours: `h × 37.5 × 650 × 0.5 = h × 12,187.5 NOK` per week, times D (rounded at the end).
+- **With `h = 12`** (the default) the effective crew is 30, output ×1.25, `D = round(W × 0.8)`, and the extra cost is `146,250 NOK` = **0.14625 MNOK per week**. This is the rule before revision 6, so example (c) does not change. Example (f) shows every `h`.
+- Overtime costs about 6 × 0.039 = 0.234 MNOK per week saved, less than the site overhead of 0.300, so it usually pays off. Hiring costs about 0.585 MNOK per week saved at any `h` before rounding (at 12: 4 × 0.14625): it is faster, but rarely pays off. More hired workers save more weeks at about the same price per week; rounding decides the rest (example (f)).
+- **Which `h` each rule uses.** The AI (R25) ranks the hire option at the default `h = 12`, because it compares listed options. R27, R28 and R30 use the `h` the student chose.
+
+**R32. Site capacity** (FR-33)
+
+- The planned crew plus the hired workers may never exceed the site capacity: `S27 + h ≤ S36`, today `24 + h ≤ 40`. So `h` is at most 16.
+- At the highest `h` (16) the plus on the crew stepper is disabled, with "Maks 40 på byggeplassen samtidig" beside it.
+- The first time the plus is disabled at an event, the adviser returns one capacity record that explains the limit. It does not repeat it at the same event. [ASSUMPTION: the group's "once" is read as once per event, not once per playthrough; §5 point 21.]
+- Site capacity changes no cost or time by itself. It only limits the hire option (R21).
 
 **R22. External risk event options** (FR-20, FR-21)
 
@@ -694,6 +708,24 @@ Difficulty: easy.
 
 The final cost (174.354) and week (69) are the same as in example (d): milestones change nothing (R31).
 
+### Example (f): R21 and R32, every crew size at the overrun in example (c)
+
+The event is the groundworks overrun in example (c): W = 16 work weeks. Fixed costs are 152.254, and the later parts take 37 weeks. Taking the delay gives **168.154** in week 65.
+
+| h | Crew (24 + h) | D = round(16 × 24 ÷ (24 + 0.5h)) | Extra cost (h × 12,187.5 NOK × D) | Forecast final cost | Week | Against taking the delay |
+|---|---|---|---|---|---|---|
+| 4 | 28 | round(14.77) = **15** | 48,750 × 15 = **0.731** | 152.254 + 0.300 × 52 + 0.731 = 168.585 | 64 | **+0.431** |
+| 8 | 32 | round(13.71) = **14** | 97,500 × 14 = **1.365** | 152.254 + 0.300 × 51 + 1.365 = 168.919 | 63 | **+0.765** |
+| 12 | 36 | round(12.80) = **13** | 146,250 × 13 = **1.901** | 152.254 + 0.300 × 50 + 1.901 = 169.155 | 62 | **+1.001** |
+| 16 | 40 | round(12.00) = **12** | 195,000 × 12 = **2.340** | 152.254 + 0.300 × 49 + 2.340 = 169.294 | 61 | **+1.140** |
+
+**Answer:**
+
+- The `h = 12` row is the "Hire 12" row of example (c), unchanged.
+- `h = 20` is not possible: 24 + 20 = 44 > 40 (R32). At `h = 16` the plus is disabled.
+- Overtime still gives D = round(16 × 6 ÷ 7) = 14 for 0.546. Hiring 4 (15 weeks, 0.731) or 8 (14 weeks, 1.365) saves no more weeks for a higher cost, so either misses "resources have limits" (R28). Hiring 12 or 16 saves more weeks than overtime, so it does not.
+- The AI ranks the hire option at `h = 12` (R25), so its recommendation is overtime, as in example (c), whatever `h` the student picks.
+
 ### Example (i): R15, seed 115 (the group number) on the reference plan
 
 Generator: mulberry32 from v0.5 (`FraTomtTilTak/app/src/engine/game.ts`). The test compares to 4 decimals. The values were checked by running the generator on 2026-11-18.
@@ -762,7 +794,7 @@ Final 174.354, week 69. Estimate rows are measured against the plan, the other r
 5. **System factors** 0.96 / 1.00 / 1.02 (only CLT's 1.05 is sourced), and **precast frame 1.5 weeks per floor**. P12 said 1.0, which would make precast identical to steel in speed and cheaper.
 6. **Lift rule** (1 or 2 lifts, 0.300 per lift per floor). No source gives a lift cost.
 7. **Deviation list** −10 % to +30 %. **Permit fixed at 12 weeks.**
-8. **Labour:** crew 24, 650 NOK/h, overtime level 6.25 h a week, +12 hired at 0.5 output.
+8. **Labour:** crew 24, 650 NOK/h, overtime level 6.25 h a week, 4 to 16 hired in steps of 4 (default 12) at 0.5 output, site capacity 40 workers (S36).
 9. **Risk values** (R10) and **response prices** (reduce 20 % of I, transfer 125 % of p × c, avoid 50 % of I).
 10. **Change request** sizes (2.000 + 2 weeks now, 3.000 later).
 11. **AI reliability** 100 / 80 / 60 %.
@@ -781,7 +813,8 @@ Final 174.354, week 69. Estimate rows are measured against the plan, the other r
 17. The warning threshold is 20 % (±30 % is the alternative). Target cost is rounded up to whole MNOK.
 18. The "AI advice" goal counts stage 1 suggestions, and "followed" in stage 1 means the estimate equals the suggestion exactly.
 19. All main parts run in sequence, so the critical path is always all six.
-20. Opportunities (FR-35) are not specified until they are approved. Milestones (FR-32) are specified in R31 (revision 5).
+20. Opportunities (FR-35) are not specified until they are approved. Milestones (FR-32) are specified in R31 (revision 5). Site capacity (FR-33) is specified in R32 (revision 6).
+21. **The capacity record comes once per event** (R32). The confirmed wording says the adviser explains the limit "once". This document reads that as once per hiring decision. Once per playthrough is the alternative.
 
 ---
 

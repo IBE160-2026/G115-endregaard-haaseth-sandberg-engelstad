@@ -10,6 +10,8 @@
 - [x] 2026-11-18 [vercel-root-fratomttiltak](996-2026-11-18-21-49-02-vercel-root-fratomttiltak.md) — før sprintplanlegging: pek `planning_artifacts` og `implementation_artifacts` i `_bmad/config.toml` til `FraTomtTilTak/planlegging` og `FraTomtTilTak/implementering` (løst før 2026-11-22: config peker dit)
 - [ ] 2026-11-18 [vercel-root-fratomttiltak](996-2026-11-18-21-49-02-vercel-root-fratomttiltak.md) — få PR #6 (plassholderside) gjennomgått og flettet, og sjekke at https://g115-endregaard-haaseth-sandberg-en.vercel.app viser «Fra tomt til tak»
 - [ ] 2026-11-22 [story-1-1-milepaeler](995-2026-11-22-20-58-09-story-1-1-milepaeler.md) — få gruppens bekreftelse av R31 i PR #7 og flette den
-- [ ] 2026-11-22 [story-1-1-milepaeler](995-2026-11-22-20-58-09-story-1-1-milepaeler.md) — story 1.2 må bli revisjon 6 i `simulation-rules.md` etter at PR #7 er flettet
+- [x] 2026-11-22 [story-1-1-milepaeler](995-2026-11-22-20-58-09-story-1-1-milepaeler.md) — story 1.2 må bli revisjon 6 i `simulation-rules.md` etter at PR #7 er flettet (løst 2026-11-22: revisjon 6 i PR #8, oppå #7)
 - [ ] 2026-11-22 [story-1-1-milepaeler](995-2026-11-22-20-58-09-story-1-1-milepaeler.md) — utsatt fra story 1.1: FR-32 i `prd.md`, fire tilstander i `EXPERIENCE.md`, `.memlog.md` for revisjon 5
 - [ ] 2026-11-22 [story-1-1-milepaeler](995-2026-11-22-20-58-09-story-1-1-milepaeler.md) — fjerne worktreen `../G115-story-1-1` når PR #7 er flettet
+- [ ] 2026-11-22 [story-1-2-byggeplasskapasitet](994-2026-11-22-21-18-25-story-1-2-byggeplasskapasitet.md) — få gruppens bekreftelse av R21/R32 i PR #8 (særlig «once» = per hendelse, §5 punkt 21), flette etter #7 og bytte base til main
+- [ ] 2026-11-22 [story-1-2-byggeplasskapasitet](994-2026-11-22-21-18-25-story-1-2-byggeplasskapasitet.md) — utsatt fra story 1.2: «fulgt» i R27 ved annen h enn 12, prognose på hendelseskortet mot stepperen, «proposed» i PRD FR-33/epics, eksempel for kapasitetsmeldingen i R32
