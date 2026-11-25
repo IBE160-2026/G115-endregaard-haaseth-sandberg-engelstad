@@ -2,6 +2,11 @@
 
 Major iterations of the *Regjeringskvartalet Light* project management simulator. Each entry has a summary of at most four lines.
 
+## R34 visible forecast, story 1.4 – 2026-11-24
+
+Simulation rules revision 8 (5–7 belong to stories 1.1–1.3). The forecast gets two views of one replay: R24 stays as the full forecast, and the new R34 counts unstarted parts at the student's estimate and drives everything shown in stage 2. R13 uses R34.
+Worked example (h) follows example (c): 163.354 and week 49 at week 0, where R24 already says 168.154 and week 65. The ranking of options is the same in both. The spine's Open Question 1 is closed, and AD-6 names R34.
+
 ## R33 opportunities, story 1.3 – 2026-11-23
 
 Simulation rules revision 7. Positive events get a rule, R33: O1 *Gjenbruk av steinmasser* and O2 *Rabatt mot senere fasadeleveranse* save money for one idle week (S39, S40). At most one occurs: never with 4 other events, at 30 % with 3 (S38), always with fewer. R15 adds slots 15–16, and R17/R18 point to R33.
