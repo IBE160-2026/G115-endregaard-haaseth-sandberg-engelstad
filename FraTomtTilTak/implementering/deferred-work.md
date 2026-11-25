@@ -21,3 +21,6 @@
 - source_spec: `FraTomtTilTak/implementering/spec-1-2-rule-gap-site-capacity-and-the-crew-stepper.md`
   summary: R32's adviser capacity record (once per event) has no worked example to become a test.
   evidence: FR-31 asks for an example per rule; example (f) only covers the cap on h. Add it with the adviser rules (story 3.2) or the hiring story (4.3).
+- source_spec: `spec-1-6-remove-the-v0-5-code.md`
+  summary: Add a lasting test that no non-parked file imports a parked or removed v0.5 module (tsc pulls an imported parked file back in and fails).
+  evidence: Only a one-time grep checks it today; the import-direction scan planned in story 1.10 should cover parked paths too.

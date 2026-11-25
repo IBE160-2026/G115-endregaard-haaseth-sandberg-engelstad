@@ -38,3 +38,5 @@
 - [ ] 2026-11-18 [prd-tilbakemelding-bard](988-2026-11-18-20-07-14-prd-tilbakemelding-bard.md) — Write R31–R34 into simulation-rules.md (epics stories 1.1–1.4) to close the rest of spine Open Question 2
 - [ ] 2026-11-18 [prd-tilbakemelding-bard](988-2026-11-18-20-07-14-prd-tilbakemelding-bard.md) — Before submission: all four members add their input to `refleksjon-prd.md` (Bård §7), the answers are rewritten in the group's words and set to final. Reminder in CLAUDE.md
 - [ ] 2026-11-18 [prd-tilbakemelding-bard](988-2026-11-18-20-07-14-prd-tilbakemelding-bard.md) — Answer from Bård/Istvan: is technology.md a template, principles, or a required stack? Log the reply in G115_Dilemmas.md
+- [x] 2026-11-22 [sync-package-lock](987-2026-11-18-21-48-55-sync-package-lock.md) — Find out what Vercel needs to publish *Fra tomt til tak* v1.6 (root directory/build, `vercel.json`, version, server env vars) (løst 2026-11-22: nothing is missing; every push to main deploys, see 986)
+- [ ] 2026-11-22 [story-1-6-remove-v0-5-code](985-2026-11-22-22-55-00-story-1-6-remove-v0-5-code.md) — Story 1.6: run `npm run dev` and check that the landing page and `/spill/` look as before

@@ -12,5 +12,17 @@
     "resolveJsonModule": true,
     "types": ["vite/client"]
   },
-  "include": ["src", "vite.config.ts"]
+  "include": ["src", "vite.config.ts"],
+  // Parked until adapted (story 1.6). These v0.5 files are kept for reuse but still import
+  // removed modules; the stories that adapt them take them off this list. Keep it in step
+  // with the `parked` list in vite.config.ts.
+  "exclude": [
+    "src/ui/view3d.ts",
+    "src/ui/gantt.ts",
+    "src/ui/scene/visuals.ts",
+    "src/ui/scene/visuals.test.ts",
+    "src/ui/scene/world.ts",
+    "src/ui/scene/props.ts",
+    "src/ui/scene/cast.ts"
+  ]
 }

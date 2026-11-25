@@ -31,6 +31,8 @@ Every simulation rule runs as an automated test, every estimate can be changed i
 - **Current figures live in `simulation-rules.md`, not in the epics file.** The worked examples in the epic were written before the fire rule changed (revision 3). Current values: building cost 75.534, base cost 166.054 for 7 floors/steel, targets **week 67 and 171 MNOK**, band limits 179.550 / week 71. Revision 4 (R30 amendment, S41–S43, examples (i), (j), (k)) is already in the rules; S43 "small" means under 0.900 MNOK **and** under 3 weeks. R31 is written into the rules (revision 5, story 1.1); R32–R34 are not yet written.
 - **No unnecessary seed hunting:** targets are derived by R14 and judged in bands (R29: *På mål*, *Litt over*, *Klart over*), never stored.
 - **Scope boundary:** no UI work in this epic beyond a placeholder `main.ts`; surfaces start in Epic 2.
+- `npm test` and `npm run build` in `FraTomtTilTak/app` must pass at the end of every story.
+- Vercel deploys `main` automatically and does not run tests; CI (story 1.8) fills that gap.
 
 ## Technical Decisions
 
@@ -45,6 +47,11 @@ Every simulation rule runs as an automated test, every estimate can be changed i
 - **Ids:** parts `permit, ground, frame, envelope, interior, handover`; systems `cast, precast, steel, clt`; responses `accept, reduce, transfer, avoid`; events `E1`–`E10`, opportunities `O1`, `O2`.
 - **Files:** camelCase `.ts`, test beside code as `name.test.ts`, one rule group per engine file. Target layout: `engine/{data, adviser, debrief}`, `engine/units, draws, concept, risks, targets, …`.
 - **v0.5 removal (1.6):** remove `engine/scenario, game, simulate, events, chapters, advisor`, `ui/story, scenes, play, hud, budgetLines`, `ui/tabs/*`, `scene/walk`, `scene/challenge`, with their tests. Keep the mulberry32 generator and the reliability values (copy them into the new code first). Move `ui/format.ts` to `src/content/format.ts`; move `iconUrl` out of `ui/tabs/context`. Park the files marked "Adapt" (`ui/view3d.ts`, `ui/gantt.ts`, `ui/scene/visuals.ts`, `world.ts`, `props.ts`, `cast.ts`) in one commented exclusion block in `tsconfig.json` and `vite.config.ts`. Rewrite `main.ts` to `mountApp(root, realDeps)` with a placeholder title; drop `?uke`, `?scene`, and `BASE_PATH`; rename the package and page title to *Fra tomt til tak*.
+- **v0.5 disposition:** Remove `ui/story, scenes, play, hud, budgetLines`, `ui/tabs/*`, `scene/walk` (+tests) and `scene/challenge`. Rewrite `main.ts` as `mountApp(root, deps)` (keep `setHtml` and delegated `data-action` clicks; `?uke`/`?scene` give way to `?seed`). Adapt later: `ui/view3d.ts`, `scene/visuals.ts`, `scene/world, props, cast`, `ui/gantt.ts`. Keep `ui/format.ts`, moved to `src/content/format.ts`. `styles.css` is replaced by `DESIGN.md` tokens later.
+- **UI:** vanilla TypeScript, no framework; surfaces are pure HTML-string renderers via `setHtml`, one delegated listener.
+- **Tests:** Vitest in Node for engine/content; DOM flows under jsdom later.
+- **Conventions:** camelCase `.ts` files, test beside code as `name.test.ts`; code, comments and docs in English; student-facing text Norwegian, only in `src/content`.
+- **Deployment:** Vercel is the only deployment; GitHub Pages is dropped, so `BASE_PATH` goes. Package and page title read *Fra tomt til tak*.
 - **Stack:** TypeScript 7.0.2 (app), Vite 8.3.5, Vitest 5.0.5, Node 22.x. The server package (later, Story 3.7) stays on TypeScript ~5.9.3.
 - **Lint/format (1.7):** proposed Biome, because TypeScript 7 lacks the JS API that `typescript-eslint` relies on. Verify before choosing, and record the reason if it changes. The one-time reformat goes in that pull request only, and parked files are left out.
 - **CI (1.8):** a root GitHub Action on Node 22 runs lint, tests and build for `FraTomtTilTak/app`. It skips `FraTomtTilTak/app/server` while it does not exist. Vercel does not run tests.

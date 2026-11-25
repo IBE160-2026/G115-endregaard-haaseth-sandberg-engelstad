@@ -44,7 +44,7 @@ development_status:
   1-3-rule-gap-opportunities: review
   1-4-rule-gap-a-forecast-that-does-not-reveal-the-overrun: review
   1-5-rule-gap-worked-examples-for-r15-r29-and-r30: in-progress
-  1-6-remove-the-v0-5-code: backlog
+  1-6-remove-the-v0-5-code: review
   1-7-linter-and-formatter: backlog
   1-8-continuous-integration: backlog
   1-9-units-parameter-file-and-references: backlog

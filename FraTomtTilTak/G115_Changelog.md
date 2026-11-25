@@ -22,6 +22,10 @@ Worked example (f) shows every crew size at example (c)'s overrun: hiring 4 or 8
 Simulation rules revision 5. Milestones get a rule, R31: a fixed name per main part, 2 or 3 kept, *Råbygg ferdig* and *Tett bygg* pre-filled, and four states (*Planlagt*, *I fare*, *Nådd*, *Ikke nådd*). They change no cost or time.
 Worked example (e) follows the playthrough of examples (c) and (d): both milestones end *Ikke nådd*, 12 and 14 weeks late. The spine's Open Question 2 no longer lists FR-32.
 
+## v0.5 code removed, story 1.6 – 2026-11-22
+
+The old game's engine, story layer, HUD, tabs and walking are deleted (the game stays as git tag `v0.5`). The 3D scene and Gantt files are parked: kept, but outside type-check and tests in one list in `tsconfig.json` and `vite.config.ts`, until the stories that adapt them. `main.ts` starts through `mountApp(root, deps)`, which shows the landing page as before; `format.ts` moved to `src/content/`, and `BASE_PATH` is gone.
+
 ## One project folder – 2026-11-18
 
 The repo is reorganised around the chosen project. `FraTomtTilTak/` holds the app (`app/`, formerly `ByggAPP/`), the plans (`planlegging/`, formerly `01. Admin/planning-artifacts/`), `implementering/` for stories, and these G115 files. AI_BYGGplant, its agents and the ByggAPP v0.x specs moved to `02. Arkiv/`. BMAD and all current documents point to the new paths.

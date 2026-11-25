@@ -821,7 +821,7 @@ Fixed costs are 152.254. The estimates are 12, 10, 7, 8, 8, 4 and the actual dur
 
 ### Example (i): R15, seed 115 (the group number) on the reference plan
 
-Generator: mulberry32 from v0.5 (`FraTomtTilTak/app/src/engine/game.ts`). The test compares to 4 decimals. The values were checked by running the generator on 2026-11-18.
+Generator: mulberry32 from v0.5 (`FraTomtTilTak/app/src/engine/game.ts` at git tag `v0.5`; the file was removed in story 1.6). The test compares to 4 decimals. The values were checked by running the generator on 2026-11-18.
 
 | Slots | Used for | Values | Result |
 |---|---|---|---|

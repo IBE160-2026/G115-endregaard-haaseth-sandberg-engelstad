@@ -1,7 +1,7 @@
 // Generates the Gantt chart as an SVG string from a simulation result.
 import type { Scenario } from '../engine/scenario';
 import type { SimulationResult } from '../engine/simulate';
-import { iconUrl } from './tabs/context';
+import { iconUrl } from './icons';
 
 const LABEL_W = 230;
 const PX_PER_WEEK = 6;
