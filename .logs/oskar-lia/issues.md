@@ -39,4 +39,4 @@
 - [ ] 2026-11-25 [godkjenne-pr-7-12](992-2026-11-25-20-28-59-godkjenne-pr-7-12.md) — ny revisjon av simuleringsreglene: høyere kostnad for innleie (R21); påvirker eksempel (c), (f), (g), (h) og R25; tas opp på gruppemøtet
 - [ ] 2026-11-25 [godkjenne-pr-7-12](992-2026-11-25-20-28-59-godkjenne-pr-7-12.md) — rådgiveren og R28 forklarer hvorfor tid koster (maskiner, rigg, kran, kontrakter), gjerne med oppdeling av 0,300 per uke (S14)
 - [ ] 2026-11-25 [godkjenne-pr-7-12](992-2026-11-25-20-28-59-godkjenne-pr-7-12.md) — svar på refleksjonsspørsmål 3 sammen med Heddas to punkter om utkast 2 (FR-32–37 mot R31–R34; «point by point»)
-- [ ] 2026-11-25 [godkjenne-pr-7-12](992-2026-11-25-20-28-59-godkjenne-pr-7-12.md) — sprintstatus: sett 1.1–1.4 og 1.6 fra `review` til `done` nå som de er flettet
+- [x] 2026-11-25 [godkjenne-pr-7-12](992-2026-11-25-20-28-59-godkjenne-pr-7-12.md) — sprintstatus: sett 1.1–1.4 og 1.6 fra `review` til `done` nå som de er flettet (løst 2026-11-25: `aba24ff`)
