@@ -31,7 +31,8 @@ export default defineConfig({
   // three.js alone is about 600 kB; the game is one screen, so one chunk is fine.
   build: { chunkSizeWarningLimit: 900 },
   test: {
-    include: ['src/**/*.test.ts'],
+    // api/ holds the server function (plain JS, see api/_lib/contract.js).
+    include: ['src/**/*.test.ts', 'api/**/*.test.js'],
     exclude: [...configDefaults.exclude, ...parked],
   },
 });

@@ -7,7 +7,7 @@ paradigm: 'Functional core, imperative shell, with ports and adapters at the AI 
 scope: 'The whole simulator: engine, adviser, view, server function, deployment'
 status: final
 created: '2026-11-05'
-updated: '2026-11-05'
+updated: '2026-11-25'
 binds: ['FR-1..FR-38', 'NFR-1..NFR-10']
 sources:
   - ../../prds/prd-fra-tomt-til-tak-2026-10-31/prd.md
@@ -32,7 +32,7 @@ companions: []
 | **Engine** (core) | `FraTomtTilTak/app/src/engine` | Calculate. No effects. |
 | **Adviser rules** (core) | `FraTomtTilTak/app/src/engine/adviser` | Suggestions, warnings, recommendations, as data. |
 | **Content** | `FraTomtTilTak/app/src/content` | Norwegian text, prepared answers, formatting of facts. |
-| **AI layer** (adapter) | `FraTomtTilTak/app/src/ai`, `FraTomtTilTak/app/server` | Ask the language model for text. Fall back. |
+| **AI layer** (adapter) | `FraTomtTilTak/app/src/ai`, `FraTomtTilTak/app/api` | Ask the language model for text. Fall back. |
 | **View** (shell) | `FraTomtTilTak/app/src/ui`, `FraTomtTilTak/app/src/main.ts` | Hold state, render, draw 3D, run the clock. |
 
 ```mermaid
@@ -43,13 +43,13 @@ graph TD
   ui --> engine[engine + engine/adviser]
   ai --> content
   ai --> engine
-  ai -.import type only.-> contract[server/contract.ts]
+  ai -.mirrors.-> contract[api/_lib/contract.js]
   content --> engine
-  server[server: Vercel function] --> contract
+  server[api: Vercel function] --> contract
   server --> claude[Claude API]
 ```
 
-Arrows are the only allowed imports. `engine` imports nothing outside itself. `server` imports nothing from `src`. No code imports from `02. Arkiv/AI_BYGGplant/`.
+Arrows are the only allowed imports. `engine` imports nothing outside itself. `api` imports nothing from `src` (only its end-to-end test does). No code imports from `02. Arkiv/AI_BYGGplant/`.
 
 ## Invariants & Rules
 
@@ -129,7 +129,7 @@ Arrows are the only allowed imports. `engine` imports nothing outside itself. `s
 
 - **Binds:** NFR-1, NFR-2, FR-17
 - **Prevents:** A key in the bundle, the SDK in the client, and client and server drifting apart.
-- **Rule:** `FraTomtTilTak/app/server` is its own package and Vercel service with its own `package.json`. It is the only code that reads `ANTHROPIC_API_KEY` or imports `@anthropic-ai/sdk`. TypeScript stays `~5.9.3` there, because Vercel's Node builder cannot use TypeScript 7 (build log 2026-11-03). `server/contract.ts` is the source of the contract below; the client uses `import type` only. Code worth keeping from the archive is copied in and adapted, never imported. The status route reports `live: false` with no key, and the POST route answers 503.
+- **Rule:** The server function lives in `FraTomtTilTak/app/api`, inside the app's Vercel Root Directory, and uses the app's `package.json`. `api/_lib/adviser.js` is the only code that reads `FTTT_API_KEY` (from `process.env`) or imports `@anthropic-ai/sdk`. The key never gets a `VITE_` prefix, never reaches `src`, and is never logged; only the status code of a failed model call is logged. Everything under `api/` is plain JavaScript (ESM, types in JSDoc), because Vercel's Node builder cannot use the app's TypeScript 7 (build log 2026-11-03). Helpers and tests sit in `api/_lib`, which Vercel does not route. `api/_lib/contract.js` is the source of the contract below; `src/ai/contract.ts` mirrors it by hand, and the two are kept in step. The model is `claude-haiku-5-5`, fixed as `MODEL` in `api/_lib/adviser.js`. Code worth keeping from the archive is copied in and adapted, never imported. The status route reports `live: false` with no key, and the POST route answers 503. *Revised 2026-11-25:* was a separate `app/server` package on TypeScript ~5.9.3 reading `ANTHROPIC_API_KEY` and `ADVISER_MODEL`.
 
 ```ts
 // GET /api/adviser/status -> { live: boolean }
@@ -143,14 +143,14 @@ interface AdviserRequest {
   facts: { id: string; label: string; value: string }[]; // the approved facts
 }
 interface AdviserReply { answer: string; basis: string; onTopic: boolean } // 200 only
-// Any other status (400, 405, 413, 429, 502, 503) means: use the prepared answer.
+// Any other status (400, 405, 413, 429, 502, 503, 504) means: use the prepared answer.
 ```
 
 ### AD-14 — Fixed budget per call and per playthrough
 
 - **Binds:** PRD §6, FR-17, EXPERIENCE (adviser thinking)
 - **Prevents:** Open-ended cost and a student left waiting.
-- **Rule:** The client allows 20 calls per playthrough [ASSUMPTION, from PRD §6], then uses prepared answers. It aborts at 8 s. The server sets the SDK to a 7 s timeout with `maxRetries: 0`, rejects bodies over 32 KB, and applies an in-memory limit per playthrough id and per `x-forwarded-for` IP. That limit is best effort, since each function instance has its own memory; the hard cap is a spend limit in the Claude Console. The server does not log questions or facts. The client asks the status route once per playthrough, so the no-key path never waits.
+- **Rule:** The client allows 20 calls per playthrough [ASSUMPTION, from PRD §6], then uses prepared answers. It aborts at 8 s. The server sets the SDK to a 7 s timeout with `maxRetries: 0`, rejects bodies over 32 KB, and applies an in-memory limit of 20 calls per playthrough id and 60 per `x-forwarded-for` IP per hour. A 429 from Claude is passed on as 429; a timeout gives 504; credits used up (402), a bad key and every other model failure give 502. That limit is best effort, since each function instance has its own memory; the hard cap is a spend limit in the Claude Console. The server does not log questions or facts. The client asks the status route once per playthrough, so the no-key path never waits.
 
 ### AD-15 — 3D reads state and never changes it [ADOPTED]
 
@@ -180,13 +180,13 @@ interface AdviserReply { answer: string; basis: string; onTopic: boolean } // 20
 
 - **Binds:** NFR-8, NFR-10, SM-3, instructor feedback
 - **Prevents:** Logic tested through the DOM, and flows tested nowhere.
-- **Rule:** (1) Vitest in Node for `engine`, `content`, `ai` with a fake `fetch`, and `server` with an injected client; no network and no key. (2) DOM tests under jsdom, set per file, that drive click flows through `mountApp` with a fake `View3d` and adviser port, one per UX flow, including the no-key path. (3) A manual test plan in `FraTomtTilTak/app/docs/manual-test-plan.md` [ASSUMPTION] for the 3D view, free-text answers and a full playthrough, with results recorded per round (NFR-10). The purity scan from AD-1 runs in layer 1.
+- **Rule:** (1) Vitest in Node for `engine`, `content`, `ai` with a fake `fetch`, and `api` with an injected client; no network and no key. (2) DOM tests under jsdom, set per file, that drive click flows through `mountApp` with a fake `View3d` and adviser port, one per UX flow, including the no-key path. (3) A manual test plan in `FraTomtTilTak/app/docs/manual-test-plan.md` [ASSUMPTION] for the 3D view, free-text answers and a full playthrough, with results recorded per round (NFR-10). The purity scan from AD-1 runs in layer 1.
 
 ### AD-20 — Vercel is the one deployment, and local needs nothing
 
 - **Binds:** NFR-1, NFR-2, SM-4
 - **Prevents:** A README that needs a key, and two hosting paths.
-- **Rule:** `vercel.json` has the services `byggapp` (root `FraTomtTilTak/app`) and `adviser` (root `FraTomtTilTak/app/server`, entrypoint `vercel.ts`) [ASSUMPTION until the first deploy]. `/api/(.*)` is rewritten to `adviser` before the catch-all; Vercel keeps the path, so routes include `/api`. `npm install && npm run dev` in `FraTomtTilTak/app` runs the full game on prepared answers. `FraTomtTilTak/app/server/.env.example` lists `ANTHROPIC_API_KEY` and `ADVISER_MODEL`, with no values. The key is set in Vercel for Production only. With a local key, `npm start` in `server` runs the same handler and the Vite dev proxy forwards `/api` to it. GitHub Pages is dropped: remove `02. Arkiv/ByggAPP-v0.x-specs/.github` and `BASE_PATH`.
+- **Rule:** The Vercel project's Root Directory is `FraTomtTilTak/app`. Vercel serves the static Vite build and turns each file in `api/` into a function by its path (`api/adviser/index.js` is `POST /api/adviser`, `api/adviser/status.js` is `GET /api/adviser/status`), so `vercel.json` needs no services or rewrites. `npm install && npm run dev` in `FraTomtTilTak/app` runs the full game on prepared answers: Vite does not run `api/`, so the status route does not answer with `live: true` and the client stays on prepared answers. `FraTomtTilTak/app/.env.example` lists `FTTT_API_KEY` with no value. The key is set in Vercel for Production and Preview. To run the language model locally, `vercel dev` in `FraTomtTilTak/app` runs Vite and the functions together, with the key pulled into the git-ignored `.env.local` by `vercel env pull .env.local --environment=preview`. *Revised 2026-11-25:* was two Vercel services with a rewrite, `npm start` in `server` with a Vite proxy, and the key in Production only. GitHub Pages is dropped: remove `02. Arkiv/ByggAPP-v0.x-specs/.github` and `BASE_PATH`.
 
 ## Consistency Conventions
 
@@ -207,16 +207,16 @@ interface AdviserReply { answer: string; basis: string; onTopic: boolean } // 20
 | Name | Version |
 |---|---|
 | TypeScript, app | 7.0.2 |
-| TypeScript, server | ~5.9.3 |
+| Server function | Plain JavaScript (ESM, JSDoc types) in `api/` |
 | Vite | 8.3.5 |
 | Vitest | 5.0.5 |
 | three | 0.186.1 |
 | @types/three | ^0.186.0 |
 | jsdom [ASSUMPTION] | 31.0.0 |
-| @anthropic-ai/sdk | ^1.6.0 |
-| Claude model | `claude-sonnet-5-5` via `ADVISER_MODEL`; cost and response time to be measured |
+| @anthropic-ai/sdk | ^1.14.0 |
+| Claude model | `claude-haiku-5-5`, fixed in `api/_lib/adviser.js`; cost and response time to be measured |
 | Node, functions and CI [ASSUMPTION] | 22.x |
-| Hosting | Vercel services |
+| Hosting | Vercel: static build plus functions from `api/` |
 
 ## Structural Seed
 
@@ -229,12 +229,14 @@ FraTomtTilTak/app/
       debrief/     bridge, trust, goals, bands, impact
       units, draws, concept, risks, targets, events, replay, playthrough, derive
     content/       no.ts, terms, prepared answers, facts, describeScene, format
-    ai/            ask, client, guard, nearest
+    ai/            contract, ask, guard, prepared
     ui/            store, dom (setHtml), frame, adviserWindow, gantt
       surfaces/    start, meeting, concept, schedule, risk, present, execution, debrief
       scene/       view3d, sceneState, world, props, cast
     main.ts        mountApp(root, realDeps)
-  server/          own package: contract, handler, ratelimit, prompt, claude, vercel, start
+  api/
+    adviser/       index.js (POST), status.js (GET)
+    _lib/          contract, adviser, prompt, ratelimit, tests
   docs/            manual-test-plan.md
 ```
 
@@ -258,8 +260,8 @@ graph LR
     app[Static app]
   end
   subgraph Vercel
-    rw{{rewrites}} -->|"/api/(.*)"| fn[adviser service<br/>key in env]
-    rw -->|"/(.*)"| static[byggapp service]
+    rw{{routing}} -->|"/api/adviser…"| fn[api/ functions<br/>key in env]
+    rw -->|"/(.*)"| static[static Vite build]
   end
   app --> rw
   fn --> anthropic[Claude API]
@@ -269,8 +271,8 @@ graph LR
 | Environment | Key | Adviser free text |
 |---|---|---|
 | Local, `npm run dev` | none | Prepared answers |
-| Local, plus `npm start` in `server` | `server/.env` | Language model |
-| Vercel Preview | none | Prepared answers |
+| Local, `vercel dev` | `.env.local`, pulled from Preview | Language model, then prepared |
+| Vercel Preview | Vercel env | Language model, then prepared |
 | Vercel Production | Vercel env | Language model, then prepared |
 
 ## Capability → Architecture Map
@@ -283,12 +285,12 @@ graph LR
 | FR-10–FR-12, FR-36 Risk, reserve | `risks`, `adviser/warn`, `surfaces/risk` | AD-5, AD-10 |
 | FR-13 Approve | `playthrough`, `surfaces/present` | AD-7, AD-8 |
 | FR-14–FR-16 Adviser rules, chips | `engine/adviser`, `content`, `adviserWindow` | AD-10, AD-12 |
-| FR-17 Free text | `ai`, `server` | AD-11–AD-14 |
+| FR-17 Free text | `ai`, `api` | AD-11–AD-14 |
 | FR-18–FR-22, FR-33–FR-35 Execution | `events`, `replay`, `adviser/recommend`, `surfaces/execution` | AD-2, AD-6, AD-9 |
 | FR-23–FR-29, FR-38 Debrief | `engine/debrief`, `surfaces/debrief` | AD-8, AD-9 |
 | FR-30, FR-31 Simulation model | `engine`, `worked-examples.test.ts` | AD-1, AD-2, AD-18 |
 | FR-37 Assignment trace | PRD §13 | No code |
-| NFR-1, NFR-2 | `ai`, `server`, deploy | AD-12, AD-13, AD-20 |
+| NFR-1, NFR-2 | `ai`, `api`, deploy | AD-12, AD-13, AD-20 |
 | NFR-3, NFR-7 Session, desktop | `surfaces`, frame | UX spine |
 | NFR-4, NFR-5 3D, accessibility | `scene`, `content` | AD-15, AD-17 |
 | NFR-6, NFR-9 Language | `content` | AD-16 |
@@ -299,7 +301,7 @@ graph LR
 1. ~~**R24 forecast shows the truth too early.** Example (c) forecasts with actual durations for parts not yet started, so the top bar shows the real overrun from week 0 of stage 2 and stands still between events. Keep it, or use estimates for unstarted parts? The second option changes example (c). Implemented as written until the group decides.~~ *Closed 2026-11-24:* both, as two views of one replay. R24 stays as the full forecast for R25, R26, R27, R30 and the final AI path, so example (c) does not change. The new R34 is the visible forecast, with the student's estimates for unstarted parts, and drives everything shown in stage 2. See simulation rules revision 8 and example (h) (epics story 1.4).
 2. ~~**Rules are missing for MVP scope.** FR-33 and FR-35 have no rule (open point 20). R15, R29 and R30 have no worked example, though FR-31 asks for one per rule. Those stories wait for these.~~ *Closed 2026-11-23:* FR-32, FR-33 and FR-35 have rules (R31, R32 and R33, simulation rules revisions 5–7), and R15, R29 and R30 have worked examples (revision 4). History: *Update 2026-11-18:* the R15, R29 and R30 half is closed (simulation rules revision 4, examples (i), (j), (k)). The FR-32, FR-33 and FR-35 half stays open until R31–R34, now confirmed by the group, are written into the rules (epics stories 1.1–1.4). *Update 2026-11-22:* FR-32 is closed by R31 and example (e) (simulation rules revision 5, epics story 1.1). FR-33 and FR-35 stay open until R32 and R33 are written (stories 1.2 and 1.3); R34 (story 1.4) closes Open Question 1. *Update 2026-11-22 (story 1.2, after 1.1):* FR-33 is closed by R32 and example (f) (simulation rules revision 6, epics story 1.2). FR-35 stays open until R33 is written (story 1.3). *Update 2026-11-23 (story 1.3, after 1.2):* FR-35 is closed by R33 and example (g) (simulation rules revision 7, epics story 1.3), with the opportunity draws in slots 15–16 as AD-2 already allows.
 3. ~~**Crew stepper against R21.** UX shows a stepper stopped by site capacity. R21 hires a fixed 12, so 36 workers never reach the placeholder 40. Which holds?~~ *Closed 2026-11-22:* the stepper holds. R21 is generalised to `h` hired workers, 4 to 16 in steps of 4 (default 12), and R32 caps the site at 24 + h ≤ 40 (S36). See simulation rules revision 6 and example (f) (epics story 1.2).
-4. **Model, cost and owner.** Confirm the model and the cost per playthrough, measure whether it answers within 7 s, and name who owns the key and the spend limit.
+4. **Model, cost and owner.** *Model decided 2026-11-25:* `claude-haiku-5-5`. Still open: measure the cost per playthrough and whether it answers within 7 s, and name who owns the key and the spend limit.
 
 ## Deferred
 
@@ -307,7 +309,7 @@ graph LR
 - **Prompt caching and token budget per call.** Wait for measured cost.
 - **Dependency bumps** (three 0.187, vite 8.3.6, vitest 5.1). Routine; no decision depends on them.
 - **Delivery order and when v0.5 is deleted.** Epic planning decides. Whatever the order, AD-4 bans new imports of the old engine.
-- **CI.** A root GitHub Action for tests and build of both packages [ASSUMPTION]; add it when the first engine tests land. Vercel does not run tests.
+- **CI.** A root GitHub Action for tests and build of the app, which includes the `api/` tests [ASSUMPTION]; add it when the first engine tests land. Vercel does not run tests.
 - **Rate-limit store outside memory.** Only if the deployed app is abused; the spend limit covers cost until then.
 - **Renaming `FraTomtTilTak/app`.** Cosmetic; it touches `vercel.json` only.
 - **Save and resume, the AI's own plan, the HMS check, analytics.** Out of MVP per PRD §8.3.
