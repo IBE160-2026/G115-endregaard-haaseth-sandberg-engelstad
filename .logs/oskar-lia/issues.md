@@ -35,7 +35,8 @@
 - [ ] 2026-11-22 [pull-og-status](993-2026-11-22-19-09-09-pull-og-status.md) — avklar hvem som eier Claude-API-kontoen og nøkkelen; spør Bård om kurset gir API-kreditt; vurder Haiku 5.5 i stedet for Sonnet 5.5
 - [ ] 2026-11-22 [pull-og-status](993-2026-11-22-19-09-09-pull-og-status.md) — bestem hva som skjer med den lokale testbranchen `test/ekte-3d-i-spillet` (mer ekte 3D, slått sammen med spillet; ikke publisert)
 - [x] 2026-11-22 [pull-og-status](993-2026-11-22-19-09-09-pull-og-status.md) — start den ekte appen: Epic 1, historie 1.1 (med `bmad-build`) (løst 2026-11-25: Elisabeth gjorde historie 1.1 i PR #7, og gruppa er i gang med Epic 1)
-- [ ] 2026-11-25 [godkjenne-pr-7-12](992-2026-11-25-20-28-59-godkjenne-pr-7-12.md) — flett de godkjente PR-ene i rekkefølgen #7 → #8 (bytt base til main) → #10 → #11 → #9 → #12
+- [x] 2026-11-25 [godkjenne-pr-7-12](992-2026-11-25-20-28-59-godkjenne-pr-7-12.md) — flett de godkjente PR-ene i rekkefølgen #7 → #8 (bytt base til main) → #10 → #11 → #9 → #12 (løst 2026-11-25: alle flettet og pushet, `4de0005`)
 - [ ] 2026-11-25 [godkjenne-pr-7-12](992-2026-11-25-20-28-59-godkjenne-pr-7-12.md) — ny revisjon av simuleringsreglene: høyere kostnad for innleie (R21); påvirker eksempel (c), (f), (g), (h) og R25; tas opp på gruppemøtet
 - [ ] 2026-11-25 [godkjenne-pr-7-12](992-2026-11-25-20-28-59-godkjenne-pr-7-12.md) — rådgiveren og R28 forklarer hvorfor tid koster (maskiner, rigg, kran, kontrakter), gjerne med oppdeling av 0,300 per uke (S14)
 - [ ] 2026-11-25 [godkjenne-pr-7-12](992-2026-11-25-20-28-59-godkjenne-pr-7-12.md) — svar på refleksjonsspørsmål 3 sammen med Heddas to punkter om utkast 2 (FR-32–37 mot R31–R34; «point by point»)
+- [ ] 2026-11-25 [godkjenne-pr-7-12](992-2026-11-25-20-28-59-godkjenne-pr-7-12.md) — sprintstatus: sett 1.1–1.4 og 1.6 fra `review` til `done` nå som de er flettet
