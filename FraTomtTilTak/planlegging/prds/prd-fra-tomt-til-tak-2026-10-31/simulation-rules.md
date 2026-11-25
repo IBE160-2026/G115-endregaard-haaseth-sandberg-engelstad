@@ -2,7 +2,7 @@
 title: "Simulation rules: Fra tomt til tak"
 status: draft
 created: 2026-10-31
-updated: 2026-11-22
+updated: 2026-11-23
 ---
 
 # Simulation rules: Fra tomt til tak
@@ -28,6 +28,8 @@ Simplicity beats precision (PRD SM-C3). Every value is either sourced or marked 
 **Revision 5 (R31 confirmed by the group, 2026-11-18, epics story 1.1):** milestones get a rule, R31, with worked example (e). They change no cost or time.
 
 **Revision 6 (site capacity confirmed by the group, 2026-11-18, epics story 1.2):** the student chooses how many workers to hire. R21 is generalised from a fixed 12 to `h` = 4 to 16 in steps of 4 (S32, S37). With `h = 12` it gives exactly the old R21, so example (c) does not change. The new R32 caps the site at 40 workers at once (S36), so FR-33 can actually fire. Worked example (f) is added.
+
+**Revision 7 (opportunities confirmed by the group, 2026-11-18, epics story 1.3):** positive events get a rule, R33, with two opportunities from v0.5 (O1, O2) that save money at the cost of an idle week (S38–S40). At most one occurs, and only when the playthrough has fewer than four other events. R15 gets two new draws (slots 15 and 16), and R17 and R18 point to R33. Worked example (g) is added.
 
 Sources:
 
@@ -142,6 +144,9 @@ For the project it keeps the current week, the cost so far, the reserve used, th
 | S35 | AI reliability by difficulty | easy 100 % · medium 80 % · hard 60 % | v0.5 | design choice |
 | S36 | Site capacity (R32) | **40 workers** on site at once (planned crew + hired) | UX placeholder, confirmed by the group 2026-11-18 | [ESTIMATE] |
 | S37 | Hiring step (R21) | 4 workers per click on the crew stepper | Group decision 2026-11-18 | design choice |
+| S38 | Opportunity chance at n = 3 (R33) | 30 % | Group decision 2026-11-18 | [ESTIMATE] |
+| S39 | O1 *Gjenbruk av steinmasser* (R33), if taken | −1.200 MNOK and +1 idle week | v0.5 | [ESTIMATE] |
+| S40 | O2 *Rabatt mot senere fasadeleveranse* (R33), if taken | −0.800 MNOK and +1 idle week | v0.5 | [ESTIMATE] |
 | S41 | Result band width (R29) | 5 % over the target cost or the target week | PRD FR-26 | design choice |
 | S42 | Closeness threshold for the adviser (R30, stage 1) | 2 % of the target cost (3.420 MNOK at 171) | PRD FR-14 | design choice |
 | S43 | "Small" in the debrief (R30) | Cost impact under 3 construction weeks of site overhead (3 × S14 = **0.900 MNOK**) **and** week impact under 3 weeks | Group decision 2026-11-18; 3 weeks is just under the S41 week band (3.35) | design choice |
@@ -327,7 +332,8 @@ One pseudo-random stream gives numbers u in [0, 1); the architecture picks the g
 
 1. Five draws, one each for main parts 2 to 6, for the deviation (R16).
 2. One draw per known risk, in R10's table order, for occurrence (R17). An avoided risk still uses its draw, so the rest of the stream does not shift.
-3. One draw per event, in event order, for the AI's reliability (R25).
+3. One draw per event, in event order, for the AI's reliability (R25). This group is always six draws (slots 9–14, AD-2), used in event order; a playthrough has at most 4 events (R17–R19, and R33 adds one only when there are fewer than 4), so six is enough. Unused draws are left unused.
+4. Two draws for the opportunity (R33): slot 15 for whether one occurs and slot 16 for which one. They come after the reliability draws and are always drawn, whether or not an opportunity can occur, so slot 15 is a fixed index.
 
 **R16. Actual durations** (FR-19)
 
@@ -339,19 +345,19 @@ One pseudo-random stream gives numbers u in [0, 1); the architecture picks the g
 
 - A known risk occurs if `u < p` and the student did not avoid it. At most two occur; if more qualify, the two with the lowest u are kept.
 - If none qualifies, the non-avoided risk with the lowest `u ÷ p` occurs, so there is always at least one external event while one is possible.
-- If every risk is avoided, there is no external event; if FR-35 is approved, an opportunity takes its place.
+- If every risk is avoided, there is no external event. Whether an opportunity occurs instead is decided by R33.
 
 **R18. Estimate overrun (E1)** (FR-19)
 
 - `gap[i] = actual[i] − estimate[i]` for parts 2 to 6. Part 1 is left out because a permit cannot be sped up; an underestimated permit still shows in bridge step 2.
 - The event hits the part with the largest positive gap; on a tie, the earlier part. Its size is the gap in weeks.
-- If no gap is positive, one more external risk takes its place (the eligible risk with the next-lowest `u ÷ p`). If there is none, an opportunity (FR-35) or nothing.
+- If no gap is positive, one more external risk takes its place (the eligible risk with the next-lowest `u ÷ p`). If there is none, no event takes its place here; R33 then decides whether an opportunity occurs.
 
 **R19. Event timing and idle weeks** (FR-18)
 
 - Every event fires at the **start** of the main part it concerns. The change request fires at the start of part 5.
-- Within one part the order is: estimate overrun, then external risks, then the change request.
-- A part's duration = work weeks + idle weeks. Overtime and hiring compress only work weeks. Risk delays and the change request's weeks are idle weeks.
+- Within one part the order is: estimate overrun, then external risks, then the change request, then the opportunity (R33).
+- A part's duration = work weeks + idle weeks. Overtime and hiring compress only work weeks. Risk delays, the change request's weeks and an opportunity's week are idle weeks.
 
 **R20. Overtime** (FR-20)
 
@@ -392,6 +398,22 @@ One per playthrough, at the start of part 5:
 - **Approve later** (a separate job after handover): +3.000 MNOK, no delay.
 
 Approving now is usually cheaper (2.600 incl. site overhead against 3.000), but later protects the target week.
+
+**R33. Opportunities** (FR-35, FR-19, FR-20)
+Both opportunities come from v0.5 and keep its trade-off: money saved at the cost of time.
+
+| ID | Event | Fires at start of | Take it | Decline |
+|---|---|---|---|---|
+| O1 | *Gjenbruk av steinmasser* | Part 2, groundworks | S39: −1.200 MNOK and +1 idle week | No change |
+| O2 | *Rabatt mot senere fasadeleveranse* | Part 4, envelope | S40: −0.800 MNOK and +1 idle week | No change |
+
+- **Whether one occurs.** Let `n` be the number of events after R17–R19, the change request (R23) included. If `n = 4`, no opportunity occurs. If `n = 3`, one occurs when slot 15 `u < S38` (30 %). If `n < 3`, one always occurs. At most one opportunity occurs per playthrough.
+- **Which one.** `floor(u × 2)` with slot 16: 0 gives O1, 1 gives O2.
+- **Options.** *Take it*: the saving and +1 idle week on the part it fires at (S39 or S40). *Decline*: no change. Taking it costs one week of site overhead (S14, 0.300), so O1 saves 0.900 net and O2 0.500.
+- **Timing.** It fires at the start of its part, after any other event at that part (R19).
+- **Otherwise an event like any other.** All other rules treat it as an event: the forecast (R24), the AI's recommendation and reliability draw (R25), the bridge (R26, in run 3 the AI's choice), "right" recommendations (R27), the learning goals (R28) and the ranking (R30). The bridge, R25 and R27 need no change.
+- **R28 "Time costs money".** The options' extra costs are compared with each other: declining costs 1.200 (O1) or 0.800 (O2) more than taking for one week saved, which is more than S14 × 1 week (0.300). Taking an opportunity therefore never misses "time costs money".
+- **A consequence accepted** [confirmed by the group 2026-11-18]. A student who avoids every risk and has no overrun gets two events in total (the change request and the opportunity), one short of FR-19's 3–4. Allowing more than one opportunity would conflict with FR-35, so this edge case stays.
 
 **R24. Forecast** (FR-22, FR-34)
 The engine runs on from the current state with no new events (v0.5). Forecast final cost = cost so far + the remaining parts at their actual durations and current work modes + site overhead for every remaining construction week.
@@ -726,6 +748,43 @@ The event is the groundworks overrun in example (c): W = 16 work weeks. Fixed co
 - Overtime still gives D = round(16 × 6 ÷ 7) = 14 for 0.546. Hiring 4 (15 weeks, 0.731) or 8 (14 weeks, 1.365) saves no more weeks for a higher cost, so either misses "resources have limits" (R28). Hiring 12 or 16 saves more weeks than overtime, so it does not.
 - The AI ranks the hire option at `h = 12` (R25), so its recommendation is overtime, as in example (c), whatever `h` the student picks.
 
+### Example (g): R33, an opportunity in the playthrough of example (d)
+
+*Re-based:* the epics file (story 1.3) wrote this example against the old target of 169 MNOK, before the fire rule (revision 3). Here it uses the current figures from example (d) and the 171 MNOK target. The method and the weeks are unchanged. Every cost figure taken from example (d) is 1.800 higher than in the epics file and the target 2.000 higher, so bridge cause 1 and the sum are each 0.200 lower (epics: 171.654, 171.100 and +2.654).
+
+The playthrough is example (d), but slot 15 = 0.20 and slot 16 = 0.20. (Example (d) itself, and the examples built on it, (e) and (k), read slot 15 ≥ 0.30, so no opportunity occurs there. Examples (c) and (f) stop at the overrun, before any opportunity.)
+
+**Does one occur (R33)?** The events after R17–R19 are E1, E5 and E8, so `n = 3`. Slot 15: 0.20 < 0.30 (S38), so an opportunity occurs. Slot 16: floor(0.20 × 2) = floor(0.40) = 0, so it is **O1** *Gjenbruk av steinmasser*, at the start of groundworks, after E1 and E5 (R19).
+
+**Options, forecast from the student's state (R24).** The student has taken the delay at E1 and the impact at E5, so groundworks is 16 + 4 = 20 weeks. The forecast has no new events, so the change request is not in it.
+
+| Option | Groundworks | Event costs | Construction weeks | Site overhead | **Forecast final cost** | **Week** |
+|---|---|---|---|---|---|---|
+| Take it | 16 + 4 + 1 = 21 | 2.000 − 1.200 = 0.800 | 21 + 37 = 58 | 17.400 | 152.254 + 17.400 + 0.800 = **170.454** | **70** |
+| Decline | 20 | 2.000 | 57 | 17.100 | 152.254 + 17.100 + 2.000 = **171.354** | **69** |
+
+The AI recommends taking it (lowest forecast final cost, R25; difficulty easy).
+
+**The playthrough.** The student takes O1 and later handles E8 as in example (d) (later, +3.000):
+
+- **Take it:** 174.354 − 1.200 + 0.300 = **173.454**, week 69 + 1 = **70**.
+- **Decline** (for comparison): **174.354**, week **69**, exactly example (d).
+
+**Run 3 (R26).** The AI takes O1 too, so run 3 is 173.800 − 1.200 + 0.300 = **172.900**, week 67 + 1 = **68**.
+
+**The bridge for the student who takes it (target cost 171.000):**
+
+| Cause | Calculation | MNOK |
+|---|---|---|
+| 1 The plan | 163.354 − 171.000 | **−7.646** |
+| 2 The schedule estimate | 168.154 − 163.354 | **+4.800** |
+| 3 Events | 172.900 − 168.154 | **+4.746** |
+| 4 The student's decisions | 173.454 − 172.900 | **+0.554** |
+| **Sum** | −7.646 + 4.800 + 4.746 + 0.554 | **+2.454** |
+| Check: final − target | 173.454 − 171.000 | **+2.454** ✓ |
+
+The opportunity saves 0.900 net in both run 3 and run 4, so it moves cause 3 and leaves cause 4 as in example (d). The bands do not change (R29): 173.454 and week 70 are both slightly over (limits 179.550 and week 71).
+
 ### Example (i): R15, seed 115 (the group number) on the reference plan
 
 Generator: mulberry32 from v0.5 (`FraTomtTilTak/app/src/engine/game.ts`). The test compares to 4 decimals. The values were checked by running the generator on 2026-11-18.
@@ -796,7 +855,7 @@ Final 174.354, week 69. Estimate rows are measured against the plan, the other r
 7. **Deviation list** −10 % to +30 %. **Permit fixed at 12 weeks.**
 8. **Labour:** crew 24, 650 NOK/h, overtime level 6.25 h a week, 4 to 16 hired in steps of 4 (default 12) at 0.5 output, site capacity 40 workers (S36).
 9. **Risk values** (R10) and **response prices** (reduce 20 % of I, transfer 125 % of p × c, avoid 50 % of I).
-10. **Change request** sizes (2.000 + 2 weeks now, 3.000 later).
+10. **Change request** sizes (2.000 + 2 weeks now, 3.000 later), and **opportunity** values (R33): chance 30 % at n = 3 (S38), O1 −1.200 and +1 idle week (S39), O2 −0.800 and +1 idle week (S40).
 11. **AI reliability** 100 / 80 / 60 %.
 
 **Design decisions to confirm:**
@@ -808,12 +867,12 @@ Final 174.354, week 69. Estimate rows are measured against the plan, the other r
     - FR-4 should mention the fire-class step.
     - §4.10's risk condition should say "expected cost at the time of the choice".
 14. **The risk goal compares only accept with reduce/avoid**, following the wording of PRD §4.10. A stricter version would also flag overpaying (avoiding a risk whose expected cost is lower than the avoid price, as FR-36 proposes). Ties do not count as missed (E5 in example (d)).
-15. **Known risks per concept are fixed at four** (E4, E5, E2 and one system risk). E6 (price rise) and E7 (bankruptcy) from the addendum are not used. They could come back as fallback events (R18) or with FR-35.
+15. **Known risks per concept are fixed at four** (E4, E5, E2 and one system risk). E6 (price rise) and E7 (bankruptcy) from the addendum are not used. They could come back only as fallback events (R18); R33 uses only O1 and O2.
 16. **V2** (central infill sites take 18–21 months, planned) is not modelled. Adding it would lengthen every concept equally and does not change the puzzle.
 17. The warning threshold is 20 % (±30 % is the alternative). Target cost is rounded up to whole MNOK.
 18. The "AI advice" goal counts stage 1 suggestions, and "followed" in stage 1 means the estimate equals the suggestion exactly.
 19. All main parts run in sequence, so the critical path is always all six.
-20. Opportunities (FR-35) are not specified until they are approved. Milestones (FR-32) are specified in R31 (revision 5). Site capacity (FR-33) is specified in R32 (revision 6).
+20. Milestones (FR-32) are specified in R31 (revision 5). Site capacity (FR-33) is specified in R32 (revision 6). Opportunities (FR-35) are specified in R33 (revision 7).
 21. **The capacity record comes once per event** (R32). The confirmed wording says the adviser explains the limit "once". This document reads that as once per hiring decision. Once per playthrough is the alternative.
 
 ---

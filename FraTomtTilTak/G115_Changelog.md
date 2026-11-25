@@ -2,6 +2,11 @@
 
 Major iterations of the *Regjeringskvartalet Light* project management simulator. Each entry has a summary of at most four lines.
 
+## R33 opportunities, story 1.3 – 2026-11-23
+
+Simulation rules revision 7. Positive events get a rule, R33: O1 *Gjenbruk av steinmasser* and O2 *Rabatt mot senere fasadeleveranse* save money for one idle week (S39, S40). At most one occurs: never with 4 other events, at 30 % with 3 (S38), always with fewer. R15 adds slots 15–16, and R17/R18 point to R33.
+Worked example (g) takes O1 in example (d)'s playthrough, re-based to 171 MNOK: 173.454 in week 70, bridge +2.454. The spine's Open Question 2 no longer lists FR-35.
+
 ## R32 site capacity, story 1.2 – 2026-11-22
 
 Simulation rules revision 6. R21 is generalised: the student hires 4 to 16 workers in steps of 4 (default 12, S32, S37), and `h = 12` gives the old R21, so example (c) is unchanged. The new R32 caps the site at 40 workers at once (S36), so FR-33 can fire.
