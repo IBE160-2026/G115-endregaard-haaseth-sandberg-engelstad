@@ -308,7 +308,7 @@ The student can type a question. With a key, a language model answers within the
 - **Tests run without a key.** Every automated test runs with no key and no network. Tests of the server function replace the model call with a fixed reply, and tests of the figure check use replies with a correct figure, a wrong figure and no figure.
 - **Off-topic.** An off-topic question gets an answer that steers back to the current step.
 - **Reasons.** Every answer gives its reasons, so the student can discuss and push back.
-- **Abuse limits.** The server function rejects requests over 32 KB and limits calls per playthrough and per IP address. Because the function is public, the hard cap on cost is a monthly spend limit on the Claude account, set before the key goes live.
+- **Abuse limits.** The server function rejects requests over 32 KB and limits calls per playthrough and per IP address. Because the function is public, the hard cap on cost is the prepaid credit on the Claude account, topped up by hand when needed. When the credit is used up, the API answers 402 and every question gets a prepared answer.
 - **No key.** With no key configured, every free-text question still gets a prepared answer, and the client never waits on the network.
 - This FR is must-have (see §8). The live path depends on the Vercel setup; everything above except the live reply is testable without it.
 
@@ -501,7 +501,7 @@ Each learning goal is made visible by specific FRs and has a condition that deci
 ## 5. Cross-Cutting NFRs
 
 - **NFR-1 Runs without keys.** The whole must-have scope runs from the README with no keys, accounts or backend: the game, the tests and the adviser on prepared answers. The server function for FR-17 is an addition that only the live language model needs; without it, FR-17 falls back as specified (UJ-2).
-- **NFR-2 No secrets in the repo.** The language model key is never committed and never sent to the browser; calls go through a server-side function with the key in an environment variable, and the repo has a `.env.example` without real values. The function runs as a Vercel function from the app's `api/` folder (architecture AD-13, AD-20). The key is named `FTTT_API_KEY`, is read only on the server, never has a `VITE_` prefix, and is set for Production and Preview, so preview deployments also spend credits; the monthly spend limit covers both.
+- **NFR-2 No secrets in the repo.** The language model key is never committed and never sent to the browser; calls go through a server-side function with the key in an environment variable, and the repo has a `.env.example` without real values. The function runs as a Vercel function from the app's `api/` folder (architecture AD-13, AD-20). The key is named `FTTT_API_KEY`, is read only on the server, never has a `VITE_` prefix, and is set for Production and Preview, so preview deployments also spend credits; the prepaid credit caps both. The key stays in Preview until the group decides otherwise (2026-11-25).
 - **NFR-3 Session length.** A playthrough takes about 20 minutes: about 10 for planning, 6 for execution and 4 for the debrief.
 - **NFR-4 Performance.** The 3D view keeps a smooth frame rate on an ordinary student laptop and lowers its quality by itself when it cannot. [ASSUMPTION: at least 30 fps.]
 - **NFR-5 Accessibility.** All choices can be made with the keyboard, text has readable contrast, and the 3D view has a text alternative for what it shows.
@@ -514,7 +514,7 @@ Each learning goal is made visible by specific FRs and has a condition that deci
 ## 6. Constraints and Guardrails
 
 - **AI safety.** The adviser cannot change the plan, cannot state figures that differ from the building-block model, and steers off-topic questions back to the step.
-- **Cost.** With a key, language model calls are limited per playthrough and per IP address, and a monthly spend limit on the Claude account is the hard cap (FR-17). [ASSUMPTION: at most about 20 calls per playthrough.]
+- **Cost.** With a key, language model calls are limited per playthrough and per IP address, and the prepaid credit on the Claude account is the hard cap (FR-17). [ASSUMPTION: at most about 20 calls per playthrough.]
 - **Privacy.** No personal data is collected; the decision log stays in the browser unless the student downloads it.
 - **Openness.** The product is public on GitHub and uses only a fictional scenario.
 
@@ -592,7 +592,7 @@ Assignment coverage (§13) holds after every cut in this list, because each row 
 
 *Answered on 2026-11-18 and removed:* target values (week 67 and 171 MNOK, simulation rules R14 and example (a)), options per choice (floors, structural systems and the fire-class step, simulation rules §2.3 and §2.4) and the language model provider (FR-17). Also confirmed on 2026-11-18: R31 to R34 and parameter S36 (milestones, site capacity of at most 40 workers, opportunities, visible forecast), epics stories 1.1 to 1.4.
 
-1. **Live language model.** Who owns the key and the spend limit. The key is set on Vercel as `FTTT_API_KEY` for Production and Preview, and the model is `claude-haiku-5-5` (both 2026-11-25). Cost per playthrough and response time are measured in the first live round (NFR-10, SM-5).
+1. **Live language model.** *Answered 2026-11-25:* Elisabeth owns the key. It is set on Vercel as `FTTT_API_KEY` for Production and Preview, the model is `claude-haiku-5-5`, and the cost cap is prepaid credit, topped up by hand. Still open: cost per playthrough and response time, measured in the first live round (NFR-10, SM-5).
 2. **Phase shares.** The shares of total duration come from one project (Elvebredden); can a better source be found?
 3. **Weak figures.** Land prices and structural-system factors are estimates; can the group find better sources (a current Norsk Prisbok or a broker report)?
 

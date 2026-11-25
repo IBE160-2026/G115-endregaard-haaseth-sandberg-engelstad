@@ -1026,7 +1026,7 @@ So that the language model can answer without the key reaching the browser.
 
 **Traces:** FR-17, NFR-1, NFR-2, AD-11, AD-13, AD-14, AD-19, spine Open Question 4. **Depends on:** Story 3.6.
 
-**External dependency.** The live path needs the key `FTTT_API_KEY` on Vercel. Elisabeth set it for Production and Preview on 2026-11-25. **This story does not wait for it.** It merges and passes with no key: the status route says `live: false`, POST answers 503, and the client uses prepared answers. The live check is in Story 3.9.
+**External dependency.** The live path needs the key `FTTT_API_KEY` on Vercel. Elisabeth owns it and set it for Production and Preview on 2026-11-25; it stays in Preview until the group decides otherwise. The cost cap is prepaid credit, topped up by hand. **This story does not wait for it.** It merges and passes with no key: the status route says `live: false`, POST answers 503, and the client uses prepared answers. The live check is in Story 3.9.
 
 **Status 2026-11-25.** Built ahead of Stories 3.5 and 3.6, not yet merged: `api/adviser/index.js`, `api/adviser/status.js` and `api/_lib/` (contract, adviser, prompt, ratelimit, tests). The acceptance criteria below were revised to match: the function is in `api/` as plain JavaScript instead of a `server` package on TypeScript ~5.9.3, the key is `FTTT_API_KEY`, and the model is `claude-haiku-5-5` in code instead of `ADVISER_MODEL`.
 
@@ -1132,7 +1132,7 @@ So that I can discuss and push back, without ever waiting long or seeing an erro
 
 **Given** the Vercel variables are set
 **When** the group tests production
-**Then** the result is recorded in the manual test plan: response time against 7 s, cost per playthrough, and who owns the key and the Console spend limit
+**Then** the result is recorded in the manual test plan: response time against 7 s, cost per playthrough, and the credit left (Elisabeth owns the key; the cap is prepaid credit)
 **And** the same round asks 20 typical free-text questions: no reply shown has a figure outside the approved facts, and at least 16 of 20 are judged on topic and useful by two group members independently (SM-5)
 
 **Given** the variables are not yet set
@@ -1860,4 +1860,4 @@ This is a suggestion. The tracks show what can run side by side; they are **not 
 
 - Rules §5 items 1–19 are estimates and design choices awaiting approval. All of them sit in `params.ts` or a rule, so approval can come at any time.
 - The rules document is still `status: draft`.
-- Model cost, response time and the owner of the key and spend limit (spine Open Question 4) are settled in Story 3.9.
+- Model cost and response time (spine Open Question 4) are measured in Story 3.9. The model, the key owner (Elisabeth) and the cost cap (prepaid credit) were settled on 2026-11-25.
