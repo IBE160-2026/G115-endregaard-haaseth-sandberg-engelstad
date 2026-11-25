@@ -2,7 +2,7 @@
 title: "Reflection: answers to Bård's PRD feedback, §7"
 status: draft
 created: 2026-11-18
-updated: 2026-11-18
+updated: 2026-11-24
 answers: tilbakemelding-prd.md §7 (2026-11-12)
 ---
 
@@ -16,7 +16,7 @@ answers: tilbakemelding-prd.md §7 (2026-11-12)
 |---|---|---|
 | Trond Engelstad | [ ] | [ ] |
 | Oskar Lia | [ ] | [ ] |
-| Hedda Endregaard | [ ] | [ ] |
+| Hedda Endregaard | [x] | [ ] |
 | Elisabeth Sandberg | [ ] | [ ] |
 
 **How:** write a few lines under your name in "Input from the group" (Norwegian or English, rough notes are fine) and tick your box. Or tell Claude Code "legg inn mitt refleksjonsinnspill" in a session; `CLAUDE.md` tells it what to do with the input.
@@ -40,7 +40,7 @@ Facts for both answers. Check that your own row is right.
 |---|---|---|
 | **Trond** | Built ByggAPP v0.1–v0.5 with Claude Code (game, 3D site, AI roles), including three test rounds with comments. Made the two earlier ideas: the brief of 29 Oct and AI_BYGGplant v0.1–v0.5. Restructured the repo (29 Oct and 18 Nov). Approved PR #2 and #3, and the R30 fix on 18 Nov. | `.logs/trond-engelstad/` 988–999, `brief-G115-2026-10-29/.memlog.md` |
 | **Oskar** | Proposed the three stages (plan → execute → debrief) and carried out "Fra tomt til tak" with Claude Code: brief, research, PRD, simulation rules, UX, architecture and epics. The product decisions in them were made by the group in its weekly meetings; Oskar brought them into the sessions, which is why the memlogs record them as "Source: Oskar" (23 in the brief, 27 in the PRD, 7 in UX). Challenged the AI on the fire rule and the 30 % warning threshold. Answered Bård's feedback (PR #3). | `.logs/oskar-lia/` 994–999, the `.memlog.md` files; Oskar's input below |
-| **Hedda** | Wrote the PRD for ByggAPP (3 Nov) with 22 proposals (P-1 to P-22) for the group to decide, ahead of the group meeting on 5 Nov. | `.logs/hedda-endregaard/999-2026-11-03-…-byggapp-prd.md` |
+| **Hedda** | Wrote the PRD for ByggAPP (3 Nov) with 22 proposals (P-1 to P-22) and a decisions overview for the group to decide, ahead of the group meeting on 5 Nov. Wrote a PRD draft for AI_BYGGplant (5 Nov). Built stories 1.3 (R33 opportunities, PR #10) and 1.4 (R34 visible forecast, PR #11) with Claude Code (23–24 Nov). | `.logs/hedda-endregaard/` 997–999, git commits `f754068` and `e03ab85` |
 | **Elisabeth** | Set up the deploy on Vercel (3, 5 and 11 Nov) and is assumed to own the Claude key and spend limit (to be confirmed). | `.logs/elisabeth-sandberg/`, architecture `.memlog.md` |
 | **The group** | Meets every week; all four take part and make the decisions together. Chose "Fra tomt til tak" as the only project, keeping the good parts of the earlier ideas. Confirmed the four PR #3 points on 18 Nov. | `G115_Dilemmas.md`; Oskar's input below |
 
@@ -95,7 +95,12 @@ Write a few lines under your name: what you did, what you think of the AI's role
 
 ### Hedda
 
-*(not added yet)*
+*Added 2026-11-24, word for word from a Claude Code session. Text outside quotation marks is context added by Claude Code.*
+
+- **On the row in "Who did what":** "Ja, beskrivelsen av arbeidet mitt stemmer."
+- **The AI's role:** "Jeg synes KI har vært et nyttig verktøy i prosjektet, spesielt til å strukturere arbeidet, utarbeide dokumentasjon og effektivisere arbeidsprosessen. Samtidig har det vært utfordrende å forstå enkelte tekniske begreper og kommandoer. Derfor har jeg stilt spørsmål underveis for å forstå hva KI-en gjør, og for å beholde kontrollen over endringene."
+- **Keeping control of the AI:** "sjekk git status før du kjører git pull, slik at ingen lokale endringer går tapt", and "ja, commit lokat, men ikke push".
+- **The draft answers:** "Jeg synes begge utkastene er rimelige. Jeg er enig i at KI bør brukes som et hjelpemiddel, men at gruppen må kontrollere og vurdere forslagene før de godkjennes. Jeg synes også det er viktig å presisere at R31–R34 kun dekker FR-32 til FR-35."
 
 ### Elisabeth
 

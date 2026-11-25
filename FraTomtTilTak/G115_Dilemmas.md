@@ -2,6 +2,12 @@
 
 The choices the AI (Claude Code) put to the group, with the group's reply word for word, one section per simulator version (newest first). Each entry has at most four lines: the prompt, the reply, and what came of it.
 
+## R34 visible forecast, story 1.4 – 2026-11-24
+
+1. **When "the reserve ran out" is judged.** Prompt: with R34 the overrun can pass the reserve during stage 2 and drop back, and R28 does not say when it counts. The AI offered A (at the end), B (once run out, always run out) and C (leave it out of the rule and note it in the pull request), and recommended C.
+   Reply: "1C, 2 ja, godkjenn og fortsett"
+   Result: nothing is added to R13 or R28. PR #11 asks the group to decide before story 4.2 or 5.2. The "2 ja" was for using subagents, and the rest approved the spec.
+
 ## One project folder – 2026-11-18
 
 1. **Structure for Fra tomt til tak.** Prompt: the AI showed three options: one project folder, only renaming ByggAPP, or waiting for story 1.6. It also asked where AI_BYGGplant should go, since Trond had just approved bringing it out of the archive.
