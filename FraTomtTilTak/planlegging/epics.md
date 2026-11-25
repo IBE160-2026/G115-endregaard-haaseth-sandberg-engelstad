@@ -100,14 +100,14 @@ From the architecture spine (status final). There is no starter template: this i
 - AD-10: adviser rules return records, not text; citations point only into `references.ts`.
 - AD-11: the language model only explains; `src/ai` has no access to `dispatch` or `reduce`.
 - AD-12: prepared answers are the floor; `ask.ts` is the one entry point; `guard` checks every number; no streaming to the browser.
-- AD-13: `FraTomtTilTak/app/server` is its own package on TypeScript ~5.9.3 and the only reader of the key; `contract.ts` is the source of the contract.
+- AD-13: the server function lives in `FraTomtTilTak/app/api` as plain JavaScript; `api/_lib/adviser.js` is the only reader of `FTTT_API_KEY` and the only importer of the SDK; `api/_lib/contract.js` is the source of the contract, mirrored in `src/ai/contract.ts`; the model is `claude-haiku-5-5`.
 - AD-14: 20 calls per playthrough, client abort at 8 s, server timeout 7 s with no retries, 32 KB body limit, in-memory rate limit, no question logging.
 - AD-15: 3D reads `SceneState` only; `three` loads lazily; missing WebGL gives a static illustration; `describeScene` gives the text alternative.
 - AD-16: student-facing text lives only in `src/content`; ids never show in the UI.
 - AD-17: vanilla TypeScript renderers, one mounted form per step, `mountApp(root, deps)`, delegated `data-action`.
 - AD-18: every worked example is a test; rule functions and test titles start with the rule id; a test fails if an R id has no test.
 - AD-19: three test layers: Vitest in Node, DOM flows under jsdom, a manual test plan.
-- AD-20: Vercel is the one deployment; local `npm install && npm run dev` needs nothing; GitHub Pages is dropped (the workflow is archived in `02. Arkiv/ByggAPP-v0.x-specs/.github`; `BASE_PATH` goes in story 1.6).
+- AD-20: Vercel is the one deployment, with Root Directory `FraTomtTilTak/app` and functions from `api/`; the key is set for Production and Preview; local `npm install && npm run dev` needs nothing, and `vercel dev` runs the functions locally; GitHub Pages is dropped (the workflow is archived in `02. Arkiv/ByggAPP-v0.x-specs/.github`; `BASE_PATH` goes in story 1.6).
 - Conventions: ids for parts, systems and responses; commands as plain objects with `type` and `at`; only `content/format.ts` formats numbers; decision log as UTF-8 CSV with BOM and `;`; no analytics, cookies or storage.
 - Deferred by the spine and picked up here: delivery order, when v0.5 is deleted, and root CI [ASSUMPTION in the spine].
 - Spine Open Questions 1–3 are closed by the Epic 1 rule-gap stories. Open Question 4 (model, cost, owner) is handled in the FR-17 stories.
@@ -456,9 +456,9 @@ So that a red branch is seen before review, since Vercel does not run tests.
 **Then** a root GitHub Action on Node 22 runs lint, tests and build for `FraTomtTilTak/app`
 **And** a failure shows on the pull request
 
-**Given** `FraTomtTilTak/app/server` does not exist yet
+**Given** the server function in `FraTomtTilTak/app/api`
 **When** the workflow runs
-**Then** it skips that package without failing, and Story 3.7 turns it on
+**Then** its tests run as part of `npm test` in `FraTomtTilTak/app`, since `api/` is in the same package (revised 2026-11-25; there is no separate `server` package)
 
 ### Story 1.9: Units, parameter file and references
 
@@ -990,6 +990,8 @@ So that the adviser works before any key exists.
 
 **Traces:** FR-17, NFR-1, AD-11, AD-12, AD-16, UX-DR19. **Depends on:** Story 3.5.
 
+**Status 2026-11-25.** Partly built with Story 3.7, not yet merged: `src/ai/ask.ts`, `guard.ts` (with tests for a correct figure, a wrong figure and no figure), `prepared.ts` (`nearestPrepared`) and the fallback lines in `src/content/adviser.ts`. Still open: the prepared answers themselves (Story 3.5), the guard test over all prepared answers, the off-topic chips, the `dispatch`/`reduce` scan and "Rådgiver skriver …" in the window.
+
 **Acceptance Criteria:**
 
 **Given** no server and no key
@@ -1024,26 +1026,33 @@ So that the language model can answer without the key reaching the browser.
 
 **Traces:** FR-17, NFR-1, NFR-2, AD-11, AD-13, AD-14, AD-19, spine Open Question 4. **Depends on:** Story 3.6.
 
-**External dependency.** The live path needs Elisabeth to add `ANTHROPIC_API_KEY` and `ADVISER_MODEL` (value `claude-sonnet-5-5`) on Vercel, Production only. **This story does not wait for that.** It merges and passes with no key: the status route says `live: false`, POST answers 503, and the client uses prepared answers. The live check is in Story 3.9.
+**External dependency.** The live path needs the key `FTTT_API_KEY` on Vercel. Elisabeth owns it and set it for Production and Preview on 2026-11-25; it stays in Preview until the group decides otherwise. The cost cap is prepaid credit, topped up by hand. **This story does not wait for it.** It merges and passes with no key: the status route says `live: false`, POST answers 503, and the client uses prepared answers. The live check is in Story 3.9.
+
+**Status 2026-11-25.** Built ahead of Stories 3.5 and 3.6, not yet merged: `api/adviser/index.js`, `api/adviser/status.js` and `api/_lib/` (contract, adviser, prompt, ratelimit, tests). The acceptance criteria below were revised to match: the function is in `api/` as plain JavaScript instead of a `server` package on TypeScript ~5.9.3, the key is `FTTT_API_KEY`, and the model is `claude-haiku-5-5` in code instead of `ADVISER_MODEL`.
 
 **Acceptance Criteria:**
 
-**Given** `FraTomtTilTak/app/server`
-**When** the package is created
-**Then** it has its own `package.json` with TypeScript ~5.9.3 and `@anthropic-ai/sdk`, and `contract.ts` holds the contract from AD-13
+**Given** `FraTomtTilTak/app/api`
+**When** the function is created
+**Then** it is plain JavaScript using the app's `package.json`, which has `@anthropic-ai/sdk`, and `api/_lib/contract.js` holds the contract from AD-13
+**And** only `api/_lib/adviser.js` reads `FTTT_API_KEY` or imports the SDK, and the key is never logged
 **And** kept code from `02. Arkiv/AI_BYGGplant/server` is copied and adapted, never imported
 
-**Given** no `ANTHROPIC_API_KEY` or no `ADVISER_MODEL`
+**Given** no `FTTT_API_KEY`, or an empty one
 **When** `GET /api/adviser/status` and `POST /api/adviser` are called
 **Then** status returns `{ live: false }` and POST returns 503
 
 **Given** a key and an injected fake client
 **When** a valid request arrives
-**Then** the reply is `{ answer, basis, onTopic }` with status 200, and the model comes from `ADVISER_MODEL`
+**Then** the reply is `{ answer, basis, onTopic }` with status 200, and the model is `claude-haiku-5-5`
 
 **Given** a bad request
 **When** it has the wrong method, an invalid shape, more than 500 characters of question, more than 6 history items, a body over 32 KB, or too many calls
-**Then** it returns 405, 400, 413 or 429, and a client failure returns 502
+**Then** it returns 405, 400, 413 or 429
+
+**Given** the model call fails
+**When** Claude answers 429, the credits are used up (402), the key is wrong, or the call times out
+**Then** the function returns 429, 502 or 504, and never an error text with the key, the question or the facts
 
 **Given** the SDK call
 **When** it is configured
@@ -1051,7 +1060,7 @@ So that the language model can answer without the key reaching the browser.
 
 **Given** the server tests
 **When** CI runs
-**Then** they run with no network and no key, and the workflow from Story 1.8 now covers this package
+**Then** they run with no network and no key, as part of `npm test` in `FraTomtTilTak/app`
 
 ### Story 3.8: Vercel services and local proxy
 
@@ -1061,27 +1070,33 @@ So that production and local runs behave the same way.
 
 **Traces:** NFR-1, NFR-2, AD-13, AD-20, SM-4. **Depends on:** Story 3.7.
 
+**Revised 2026-11-25.** The title is kept so it matches `sprint-status.yaml`, but there are no longer two services or a Vite proxy: Vercel runs the functions in `api/` under Root Directory `FraTomtTilTak/app`, and `vercel dev` is the local path. `.env.example` is built, not yet merged.
+
 **Acceptance Criteria:**
 
-**Given** `vercel.json`
-**When** it is updated
-**Then** it holds services `byggapp` and `adviser`, with `/api/(.*)` rewritten to `adviser` before the catch-all
+**Given** the Vercel project with Root Directory `FraTomtTilTak/app`
+**When** it deploys
+**Then** `api/adviser/index.js` answers `POST /api/adviser` and `api/adviser/status.js` answers `GET /api/adviser/status`, with no services or rewrites in `vercel.json`
 
 **Given** a deployment with no key
 **When** the app is opened
 **Then** the game runs, status says `live: false`, and answers are prepared
 
-**Given** `FraTomtTilTak/app/server/.env.example`
+**Given** `FraTomtTilTak/app/.env.example`
 **When** it is read
-**Then** it lists `ANTHROPIC_API_KEY` and `ADVISER_MODEL` with no values, and real env files are in `.gitignore`
+**Then** it lists `FTTT_API_KEY` with no value, and real env files (`.env`, `.env.local`) are in `.gitignore`
 
-**Given** a local key
-**When** `npm start` runs in `server` next to `npm run dev`
-**Then** the Vite proxy forwards `/api` to it
+**Given** the key pulled with `vercel env pull .env.local --environment=preview`
+**When** `vercel dev` runs in `FraTomtTilTak/app`
+**Then** the game and the functions run together, and the status route says `live: true`
+
+**Given** only `npm run dev`
+**When** the app asks the status route
+**Then** Vite does not run `api/`, and the client stays on prepared answers with no error
 
 **Given** the production bundle
 **When** it is searched
-**Then** it holds no key and no SDK code
+**Then** it holds no key and no SDK code, and `src/ai/secrets.test.ts` finds no `FTTT_API_KEY`, `VITE_` variable, `process.env`, SDK import or Claude API host in the client sources
 
 ### Story 3.9: Live adviser client
 
@@ -1090,6 +1105,8 @@ I want real answers when a key is available,
 So that I can discuss and push back, without ever waiting long or seeing an error.
 
 **Traces:** FR-17, NFR-1, SM-5, AD-12, AD-14, spine Open Question 4, spine Deferred (prompt text and approved-facts list). **Depends on:** Story 3.8. Live checks need the Vercel variables from Story 3.7.
+
+**Status 2026-11-25.** The client side of the fake-`fetch` criteria is built in `src/ai/ask.ts` with tests, not yet merged: one status call per playthrough, the guard before display, fallback on non-200, guard miss and 8 s, and the stop after 20 calls. A first prompt is in `api/_lib/prompt.js`. Still open: building the facts list from `derive`, wiring `createAdviser` into the adviser window, and the live round.
 
 **Acceptance Criteria:**
 
@@ -1115,7 +1132,7 @@ So that I can discuss and push back, without ever waiting long or seeing an erro
 
 **Given** the Vercel variables are set
 **When** the group tests production
-**Then** the result is recorded in the manual test plan: response time against 7 s, cost per playthrough, and who owns the key and the Console spend limit
+**Then** the result is recorded in the manual test plan: response time against 7 s, cost per playthrough, and the credit left (Elisabeth owns the key; the cap is prepaid credit)
 **And** the same round asks 20 typical free-text questions: no reply shown has a figure outside the approved facts, and at least 16 of 20 are judged on topic and useful by two group members independently (SM-5)
 
 **Given** the variables are not yet set
@@ -1843,4 +1860,4 @@ This is a suggestion. The tracks show what can run side by side; they are **not 
 
 - Rules §5 items 1–19 are estimates and design choices awaiting approval. All of them sit in `params.ts` or a rule, so approval can come at any time.
 - The rules document is still `status: draft`.
-- Model cost, response time and the owner of the key and spend limit (spine Open Question 4) are settled in Story 3.9.
+- Model cost and response time (spine Open Question 4) are measured in Story 3.9. The model, the key owner (Elisabeth) and the cost cap (prepaid credit) were settled on 2026-11-25.

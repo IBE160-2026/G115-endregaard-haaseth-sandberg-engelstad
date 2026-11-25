@@ -54,7 +54,7 @@ Every simulation rule runs as an automated test, every estimate can be changed i
 - **Deployment:** Vercel is the only deployment; GitHub Pages is dropped, so `BASE_PATH` goes. Package and page title read *Fra tomt til tak*.
 - **Stack:** TypeScript 7.0.2 (app), Vite 8.3.5, Vitest 5.0.5, Node 22.x. The server package (later, Story 3.7) stays on TypeScript ~5.9.3.
 - **Lint/format (1.7):** proposed Biome, because TypeScript 7 lacks the JS API that `typescript-eslint` relies on. Verify before choosing, and record the reason if it changes. The one-time reformat goes in that pull request only, and parked files are left out.
-- **CI (1.8):** a root GitHub Action on Node 22 runs lint, tests and build for `FraTomtTilTak/app`. It skips `FraTomtTilTak/app/server` while it does not exist. Vercel does not run tests.
+- **CI (1.8):** a root GitHub Action on Node 22 runs lint, tests and build for `FraTomtTilTak/app`. The server function in `FraTomtTilTak/app/api` is tested by the same `npm test` (revised 2026-11-25). Vercel does not run tests.
 
 ## Cross-Story Dependencies
 
